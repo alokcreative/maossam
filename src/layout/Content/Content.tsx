@@ -42,7 +42,9 @@ const LOADING = (
 const Content = () => {
 	// const { userData } = useContext(AuthContext);
 	const { user } = useSelector((state: RootState) => state.auth);
-	const admin = user.isAdmin;
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const admin = user.isAdmin || localUser.isAdmin;
 
 	return (
 		<main className='content'>

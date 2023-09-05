@@ -13,8 +13,11 @@ const DefaultAside = () => {
 	const { asideStatus, setAsideStatus } = useContext(ThemeContext);
 	// const { userData } = useContext(AuthContext);
 
-	const user = useSelector((state: RootState) => state.auth.user);
-	const { isAdmin } = user;
+	
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const isAdmin = user.isAdmin || localUser.isAdmin;
 	// console.log(isAdmin);
 
 	return (

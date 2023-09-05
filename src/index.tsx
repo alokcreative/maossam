@@ -14,13 +14,13 @@ import './i18n';
 const children = (
 	<Provider store={store}>
 		{/* <AuthContextProvider> */}
-			<ThemeContextProvider>
-				<Router>
-					<React.StrictMode>
-						<App />
-					</React.StrictMode>
-				</Router>
-			</ThemeContextProvider>
+		<ThemeContextProvider>
+			<Router>
+				<React.StrictMode>
+					<App />
+				</React.StrictMode>
+			</Router>
+		</ThemeContextProvider>
 		{/* </AuthContextProvider> */}
 	</Provider>
 );
