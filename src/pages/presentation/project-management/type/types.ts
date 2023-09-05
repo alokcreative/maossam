@@ -13,21 +13,20 @@ export type TCard = {
 	label: string;
 	img?: string;
 	user: {
-		
-	username: string;
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-	isAdmin: boolean;
-	src: any;
-	srcSet?: string;
-	fullImage?: string;
-	role?: string;
-	company?: string;
-	noOfTeam?: string;
-	country?: string;
-	state?: string;
+		username: string;
+		name: string;
+		surname: string;
+		email: string;
+		password: string;
+		isAdmin: boolean;
+		src: any;
+		srcSet?: string;
+		fullImage?: string;
+		role?: string;
+		company?: string;
+		noOfTeam?: string;
+		country?: string;
+		state?: string;
 	};
 	tasks: { status: boolean; id: string | number; text: string }[];
 	tags: {

@@ -6,8 +6,7 @@ import useDarkMode from '../../../hooks/useDarkMode';
 import AuthContext from '../../../contexts/authContext';
 
 const DashboardBookingHeader = () => {
-
-	const { darkModeStatus } = useDarkMode();
+ 	const { darkModeStatus } = useDarkMode();
 	// const { userData, setUser } = useContext(AuthContext);
 	const savedValue = localStorage.getItem('user');
 	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
