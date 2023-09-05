@@ -147,7 +147,7 @@ const UserList = () => {
 			// console.log(values.isAdmin);
 			setIsOpen(false);
 			resetForm();
-			const tmpbolval = values.isAdmin === '"Yes"';
+			const tmpbolval = values.isAdmin === 'Yes';
 			const user: IUserProps = {
 				id: (userData.length + 1).toString(),
 				username: values.username,

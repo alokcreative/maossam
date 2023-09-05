@@ -174,7 +174,7 @@ const TaskManagement = () => {
 										<td>{i.category}</td>
 										<td>{i.expectedTime}</td>
 										<td>
-											<Badge
+											{/* <Badge
 												color={
 													(i.status === 'Rejected' && 'danger') ||
 													(i.status === 'Cancelled' && 'warning') ||
@@ -182,7 +182,7 @@ const TaskManagement = () => {
 													'info'
 												}>
 												{i.status}
-											</Badge>
+											</Badge> */}
 										</td>
 
 										<td>

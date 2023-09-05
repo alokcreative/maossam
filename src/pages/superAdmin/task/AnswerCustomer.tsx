@@ -111,14 +111,14 @@ const AnswerCustomer: FC<IAnswerCustomerProps> = (props: IAnswerCustomerProps) =
 						<Popovers desc='Remaining time' trigger='hover'>
 							<span className='me-3'>%{value}</span>
 						</Popovers>
-						<Chart
+						{/* <Chart
 							series={state.series}
 							options={state.options}
 							type={state.options.chart?.type}
 							height={state.options.chart?.height}
 							width={state.options.chart?.width}
 							className='me-3'
-						/>
+						/> */}
 						<Button
 							color='info'
 							isLight
