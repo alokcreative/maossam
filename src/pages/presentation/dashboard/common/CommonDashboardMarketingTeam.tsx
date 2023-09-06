@@ -45,7 +45,7 @@ const CommonDashboardMarketingTeam = () => {
 				</CardActions>
 			</CardHeader>
 			<CardBody>
-				<AvatarGroup>
+				{/* <AvatarGroup>
 					<Avatar
 						srcSet={USERS.GRACE.srcSet}
 						src={USERS.GRACE.src}
@@ -83,7 +83,8 @@ const CommonDashboardMarketingTeam = () => {
 						userName={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
 						color='info'
 					/>
-				</AvatarGroup>
+				</AvatarGroup> */}
+				Avatar removed3
 			</CardBody>
 		</Card>
 	);

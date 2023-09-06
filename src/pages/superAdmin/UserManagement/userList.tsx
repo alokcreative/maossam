@@ -99,20 +99,18 @@ const TableRow: FC<ITableRowProps> = ({
 
 export interface IUserProps {
 	id: string;
-	username: string;
 	name: string;
-	surname: string;
+	lastname: string;
 	email: string;
 	password: string;
-	isAdmin: boolean;
-	src: any;
-	srcSet?: string;
-	fullImage?: string;
-	role?: string;
-	company?: string;
-	noOfTeam?: string;
+	src: string;
+	role: string;
+	teamMember?: string;
 	country?: string;
+	company?: string;
 	state?: string;
+	contact?: number;
+	about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
 const UserList = () => {
 	const { themeStatus, darkModeStatus } = useDarkMode();
@@ -134,32 +132,25 @@ const UserList = () => {
 	const formik = useFormik({
 		initialValues: {
 			id: userData.length + 1,
-			username: '',
 			name: '',
-			surname: '',
+			lastname: '',
 			email: '',
 			password: '',
-			isAdmin: 'no',
+			role: 'user',
 			src: '',
-			role: '',
 		},
 		onSubmit: (values, { resetForm }) => {
 			// console.log(values.isAdmin);
 			setIsOpen(false);
 			resetForm();
-			const tmpbolval = values.isAdmin === 'Yes';
 			const user: IUserProps = {
 				id: (userData.length + 1).toString(),
-				username: values.username,
 				name: values.name,
-				surname: values.surname,
-				role: values.role,
+				lastname: values.lastname,
 				email: values.email,
 				src: '',
-				srcSet: '',
-				fullImage: UserImage7Webp,
 				password: '',
-				isAdmin: tmpbolval,
+				role: values.role,
 			};
 			setUserData([...userData, user]);
 			// console.log(values.id.toString());
@@ -231,11 +222,11 @@ const UserList = () => {
 						<div className='col-12'>
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
-									<Avatar
+									{/* <Avatar
 										srcSet={USERS.JOHN.srcSet}
 										src={USERS.JOHN.src}
 										color='info'
-									/>
+									/> */}
 								</div>
 								<div className='col-lg'>
 									<div className='row g-4'>
@@ -266,7 +257,7 @@ const UserList = () => {
 							<Input
 								type='text'
 								onChange={formik.handleChange}
-								value={formik.values.surname}
+								value={formik.values.lastname}
 							/>
 						</FormGroup>
 						<FormGroup id='email' label='Email' className='col-lg-6'>
@@ -274,13 +265,6 @@ const UserList = () => {
 								type='email'
 								onChange={formik.handleChange}
 								value={formik.values.email}
-							/>
-						</FormGroup>
-						<FormGroup id='username' label='Username' className='col-lg-6'>
-							<Input
-								type='text'
-								onChange={formik.handleChange}
-								value={formik.values.username}
 							/>
 						</FormGroup>
 						<FormGroup id='position' label='Position' className='col-lg-6'>
@@ -323,7 +307,7 @@ const UserList = () => {
 									value='Yes'
 									name='isAdmin'
 									onChange={formik.handleChange}
-									checked={formik.values.isAdmin}
+									checked={formik.values.role}
 								/>
 								<Checks
 									type='radio'
@@ -332,7 +316,7 @@ const UserList = () => {
 									value='No'
 									name='isAdmin'
 									onChange={formik.handleChange}
-									checked={formik.values.isAdmin}
+									checked={formik.values.role}
 								/>
 							</ChecksGroup>
 						</FormGroup>

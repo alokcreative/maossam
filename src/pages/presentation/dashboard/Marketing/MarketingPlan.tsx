@@ -100,54 +100,54 @@ const Item: FC<IItemProps> = ({
 							<AvatarGroup url='/teamlists'>
 								<Link to='/profile-pages/modern'>
 									<Avatar
-										srcSet={USERS.GRACE.srcSet}
+										srcSet={USERS.GRACE.src}
 										src={USERS.GRACE.src}
-										userName={`${USERS.GRACE.name} ${USERS.GRACE.surname}`}
+										userName={`${USERS.GRACE.name} ${USERS.GRACE.lastname}`}
 										color='info'
 										size={35}
 									/>
 								</Link>
 								<Link to='/profile-pages/modern'>
 									<Avatar
-										srcSet={USERS.SAM.srcSet}
+										srcSet={USERS.SAM.src}
 										src={USERS.SAM.src}
-										userName={`${USERS.SAM.name} ${USERS.SAM.surname}`}
+										userName={`${USERS.SAM.name} ${USERS.SAM.lastname}`}
 										color='info'
 										size={35}
 									/>
 								</Link>
 								<Link to='/profile-pages/modern'>
 									<Avatar
-										srcSet={USERS.CHLOE.srcSet}
+										srcSet={USERS.CHLOE.src}
 										src={USERS.CHLOE.src}
-										userName={`${USERS.CHLOE.name} ${USERS.CHLOE.surname}`}
+										userName={`${USERS.CHLOE.name} ${USERS.CHLOE.lastname}`}
 										color='info'
 										size={35}
 									/>
 								</Link>
 								<Link to='/profile-pages/modern'>
 									<Avatar
-										srcSet={USERS.JANE.srcSet}
+										srcSet={USERS.JANE.src}
 										src={USERS.JANE.src}
-										userName={`${USERS.JANE.name} ${USERS.JANE.surname}`}
+										userName={`${USERS.JANE.name} ${USERS.JANE.lastname}`}
 										color='info'
 										size={35}
 									/>
 								</Link>
 								<Link to='/profile-pages/modern'>
 									<Avatar
-										srcSet={USERS.JOHN.srcSet}
+										srcSet={USERS.JOHN.src}
 										src={USERS.JOHN.src}
-										userName={`${USERS.JOHN.name} ${USERS.JOHN.surname}`}
+										userName={`${USERS.JOHN.name} ${USERS.JOHN.lastname}`}
 										color='info'
 										size={35}
 									/>
 								</Link>
 								<Link to='/profile-pages/modern'>
 									<Avatar
-										srcSet={USERS.RYAN.srcSet}
+										srcSet={USERS.RYAN.src}
 										src={USERS.RYAN.src}
-										userName={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
+										userName={`${USERS.RYAN.name} ${USERS.RYAN.lastname}`}
 										color='info'
 										size={35}
 									/>

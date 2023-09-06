@@ -14,7 +14,7 @@ const DefaultAside = () => {
 	const { user } = useSelector((state: RootState) => state.auth);
 	const savedValue = localStorage?.getItem('user');
 	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const admin = user.isAdmin || localUser?.isAdmin;
+	const admin = user.role || localUser?.role;
 
 	return (
 		<Aside>
@@ -22,7 +22,7 @@ const DefaultAside = () => {
 				<Brand asideStatus={asideStatus} setAsideStatus={setAsideStatus} />
 			</AsideHead>
 			<AsideBody>
-				{admin ? (
+				{admin === 'admin' ? (
 					<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
 				) : (
 					<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />

@@ -9,13 +9,13 @@ const CommonDashboardUserCard = () => {
 
 	return (
 		<UserContact
-			name={`${USERS.SAM.name} ${USERS.SAM.surname}`}
+			name={`${USERS.SAM.name} ${USERS.SAM.lastname}`}
 			position='Team Lead'
-			mail={`${USERS.SAM.username}@site.com`}
+			mail={`${USERS.SAM.lastname}@site.com`}
 			phone='1234567'
 			onChat={() => navigate(`../${demoPagesMenu.chat.subMenu.withListChat.path}`)}
 			src={USERS.SAM.src}
-			srcSet={USERS.SAM.srcSet}
+			srcSet={USERS.SAM.src}
 			color='info'
 		/>
 	);

@@ -72,21 +72,17 @@ const Signup: FC = () => {
 				startTransition(() => {
 					const userdetails = {
 						id: '0',
-						username: values.username,
 						name: values.username,
-						surname: values.surname,
-						role: '',
+						lastname: values.surname,
 						email: values.email,
-						isOnline: false,
-						fullImage: '',
-						isAdmin: false,
 						src: '',
-						srcSet: '',
-						company: '',
-						noOfTeam: '',
+						role: 'user',
+						teamMember: '',
 						country: '',
+						company: '',
 						state: '',
-						phoneNo: 0,
+						contact: 0,
+						about: { type: '', exp: '', FeieldActivity: '' },
 					};
 					const value = JSON.stringify(userdetails);
 					localStorage.setItem('user', value);

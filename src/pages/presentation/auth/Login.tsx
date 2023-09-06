@@ -73,14 +73,14 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
-			loginUsername: '',
+			email: '',
 			loginPassword: '',
 		},
 		validate: (values) => {
-			const errors: { loginUsername?: string; loginPassword?: string } = {};
+			const errors: { email?: string; loginPassword?: string } = {};
 
-			if (!values.loginUsername) {
-				errors.loginUsername = 'Required';
+			if (!values.email) {
+				errors.email = 'Required';
 			}
 
 			if (!values.loginPassword) {
@@ -92,18 +92,16 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 		validateOnChange: false,
 		onSubmit: (values) => {
 			setIsLoading(true);
-			if (usernameCheck(values.loginUsername)) {
-				if (passwordCheck(values.loginUsername, values.loginPassword)) {
-					const userdata = getUserDataWithUsername(values.loginUsername);
+			if (usernameCheck(values.email)) {
+				if (passwordCheck(values.email, values.loginPassword)) {
+					const userdata = getUserDataWithUsername(values.email);
 					const userdetails = {
 						id: userdata.id,
-						username: userdata.username,
 						name: userdata.name,
-						surname: userdata.surname,
-						role: userdata.role,
+						lastname: userdata.lastname,
 						email: userdata.email,
-						isAdmin: userdata.isAdmin,
-						src:userdata.src,
+						role: userdata.role,
+						src: userdata.src,
 					};
 					const user = { user: userdetails };
 					dispatch(login(user));
@@ -127,11 +125,9 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 		setIsLoading(true);
 		setTimeout(() => {
 			if (
-				!Object.keys(USERS).find(
-					(f) => USERS[f].username.toString() === formik.values.loginUsername,
-				)
+				!Object.keys(USERS).find((f) => USERS[f].email.toString() === formik.values.email)
 			) {
-				formik.setFieldError('loginUsername', 'User not found');
+				formik.setFieldError('email', 'User not found');
 			} else {
 				setSignInPassword(true);
 				// dispatch(login(user))
@@ -160,15 +156,11 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 					// console.log(res.data);
 					const userdetails = {
 						id: res.data.id,
-						username: res.data.given_name,
 						name: res.data.given_name,
-						surname: res.data.family_name,
-						position: 'Other',
+						lastname: res.data.family_name,
+						role: 'user',
 						email: res.data.email,
-						isOnline: false,
-						fullImage: res.data.picture,
-						isAdmin: false,
-						src:'',
+						src: res.data.picture,
 					};
 					const user = { user: userdetails };
 					dispatch(login(user));
@@ -248,7 +240,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 								<Alert isLight icon='Lock' isDismissible>
 									<div className='row'>
 										<div className='col-12'>
-											<strong>Username:</strong> {USERS.JOHN.username}
+											<strong>Username:</strong> {USERS.JOHN.email}
 										</div>
 										<div className='col-12'>
 											<strong>Password:</strong> {USERS.JOHN.password}
@@ -262,7 +254,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 										<>
 											<div className='col-12'>
 												<FormGroup
-													id='loginUsername'
+													id='email'
 													isFloating
 													label='Your email or username'
 													className={classNames({
@@ -270,11 +262,9 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 													})}>
 													<Input
 														autoComplete='username'
-														value={formik.values.loginUsername}
-														isTouched={formik.touched.loginUsername}
-														invalidFeedback={
-															formik.errors.loginUsername
-														}
+														value={formik.values.email}
+														isTouched={formik.touched.email}
+														invalidFeedback={formik.errors.email}
 														isValid={formik.isValid}
 														onChange={formik.handleChange}
 														onBlur={formik.handleBlur}
@@ -285,7 +275,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												</FormGroup>
 												{signInPassword && (
 													<div className='text-center h4 mb-3 fw-bold'>
-														Hi, {formik.values.loginUsername}.
+														Hi, {formik.values.email}.
 													</div>
 												)}
 												<FormGroup
@@ -315,7 +305,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 													<Button
 														color='warning'
 														className='w-100 py-3'
-														isDisable={!formik.values.loginUsername}
+														isDisable={!formik.values.email}
 														onClick={handleContinue}>
 														{isLoading && (
 															<Spinner isSmall inButton isGrow />

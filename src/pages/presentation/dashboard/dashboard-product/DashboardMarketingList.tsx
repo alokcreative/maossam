@@ -80,7 +80,7 @@ const SocialItem: FC<IItemPropsSocial> = ({
 							<Progress isAutoColor value={percent} height={10} />
 						</div>
 						<div className='col-md-6 d-flex justify-content-end'>
-							<AvatarGroup url='/'>
+							{/* <AvatarGroup url='/'>
 								<Avatar
 									srcSet={USERS.GRACE.srcSet}
 									src={USERS.GRACE.src}
@@ -115,10 +115,11 @@ const SocialItem: FC<IItemPropsSocial> = ({
 								<Avatar
 									srcSet={USERS.RYAN.srcSet}
 									src={USERS.RYAN.src}
-									userName={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
+									userName={`${USERS.RYAN.name} ${USERS.RYAN.las}`}
 									color='info'
 								/>
-							</AvatarGroup>
+							</AvatarGroup> */}
+							Avatar removed2
 						</div>
 					</div>
 				</CardBody>

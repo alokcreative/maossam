@@ -39,11 +39,11 @@ const Teams = () => {
 	const searchUsers = Object.keys(USERS)
 		.filter(
 			(key) =>
-				USERS[key].username
+				USERS[key].email
 					.toLowerCase()
 					.includes(formik.values.searchInput.toLowerCase()) ||
 				USERS[key].name.toLowerCase().includes(formik.values.searchInput.toLowerCase()) ||
-				USERS[key].surname.toLowerCase().includes(formik.values.searchInput.toLowerCase()),
+				USERS[key].lastname.toLowerCase().includes(formik.values.searchInput.toLowerCase()),
 		)
 		.map((i) => USERS[i]);
 	return (
@@ -88,7 +88,7 @@ const Teams = () => {
 				<div className='display-4 fw-bold py-3'>Teams</div>
 				<div className='row row-cols-xxl-3 row-cols-lg-3 row-cols-md-2'>
 					{searchUsers.map((user) => (
-						<div key={user.username} className='col'>
+						<div key={user.email} className='col'>
 							<Card>
 								<CardBody>
 									<div className='row g-3'>
@@ -121,7 +121,7 @@ const Teams = () => {
 														<div className='col'>
 															<div className='d-flex align-items-center'>
 																<div className='fw-bold fs-5 me-2'>
-																	{`${user.name} ${user.surname}`}
+																	{`${user.name} ${user.lastname}`}
 																</div>
 																<small className='border border-success border-2 text-success fw-bold px-2 py-1 rounded-1'>
 																	{user.role}
@@ -129,7 +129,7 @@ const Teams = () => {
 															</div>
 
 															<div className='text-muted'>
-																@{user.username}
+																@{user.email}
 															</div>
 														</div>
 														<div className='col-auto'>

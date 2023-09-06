@@ -202,7 +202,7 @@ const ProfileTour = () => {
 						<p>In just a few steps you’ll be ready to start your journey to success!</p>
 					</div>
 					<div>
-						{userData.isAdmin ? (
+						{userData.role==='admin' ? (
 							<ChecksGroup>
 								<Checks
 									id='dashboard'

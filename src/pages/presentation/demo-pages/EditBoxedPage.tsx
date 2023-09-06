@@ -205,7 +205,7 @@ const EditBoxedPage = () => {
 				eventStart: dayjs(eventItem.start).format(),
 				eventEnd: dayjs(eventItem.end).format(),
 				eventAllDay: eventItem.allDay,
-				eventEmployee: `${eventItem?.user?.name} ${eventItem?.user?.surname}`,
+				eventEmployee: `${eventItem?.user?.name} ${eventItem?.user?.lastname}`,
 			});
 		return () => {};
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
@@ -372,11 +372,11 @@ const EditBoxedPage = () => {
 										<div className='col-12'>
 											<div className='row g-4 align-items-center'>
 												<div className='col-lg-auto'>
-													<Avatar
+													{/* <Avatar
 														srcSet={USERS.JOHN.srcSet}
 														src={USERS.JOHN.src}
 														color='info'
-													/>
+													/> */}
 												</div>
 												<div className='col-lg'>
 													<div className='row g-4'>
@@ -987,7 +987,7 @@ const EditBoxedPage = () => {
 																	}
 																	list={Object.keys(USERS).map(
 																		(u) =>
-																			`${USERS[u].name} ${USERS[u].surname}`,
+																			`${USERS[u].name} ${USERS[u].lastname}`,
 																	)}
 																/>
 															</FormGroup>

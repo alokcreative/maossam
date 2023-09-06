@@ -44,11 +44,11 @@ const Content = () => {
 	const { user } = useSelector((state: RootState) => state.auth);
 	const savedValue = localStorage?.getItem('user');
 	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const admin = user.isAdmin || localUser?.isAdmin;
+	const admin = user.role || localUser?.role;
 
 	return (
 		<main className='content'>
-			{!admin ? (
+			{admin !== 'admin' ? (
 				<Suspense fallback={LOADING}>
 					<ContentRoutes />
 				</Suspense>

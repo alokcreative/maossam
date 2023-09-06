@@ -5,40 +5,36 @@ import { googleLogout } from '@react-oauth/google';
 export interface AuthState {
 	user: {
 		id: string;
-		username: string;
 		name: string;
-		surname: string;
+		lastname: string;
 		email: string;
-		isAdmin: boolean;
+		password?: string;
 		src: string;
-		srcSet?: string;
-		fullImage?: string;
-		role?: string;
-		company?: string;
-		noOfTeam?: string;
+		role: string;
+		teamMember?: string;
 		country?: string;
+		company?: string;
 		state?: string;
-		phoneNo?: number;
+		contact?: number;
+		about?: { type?: string; exp?: string; FeieldActivity?: string };
 	};
 }
 
 const initialState: AuthState = {
 	user: {
 		id: '',
-		username: '',
 		name: '',
-		surname: '',
-		role: '',
+		lastname: '',
 		email: '',
-		isAdmin: false,
+		password: '',
 		src: '',
-		srcSet: '',
-		fullImage: '',
-		company: '',
-		noOfTeam: '',
+		role: '',
+		teamMember: '',
 		country: '',
+		company: '',
 		state: '',
-		phoneNo: 0,
+		contact: 0,
+		about: { type: '', exp: '', FeieldActivity: '' },
 	},
 };
 

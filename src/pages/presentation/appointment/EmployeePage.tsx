@@ -58,7 +58,7 @@ const EmployeePage = () => {
 	const formik = useFormik({
 		initialValues: {
 			firstName: user.name,
-			lastName: user.surname,
+			lastName: user.lastname,
 			displayName: user.name,
 			emailAddress: user.email,
 			phone: '',
@@ -75,7 +75,7 @@ const EmployeePage = () => {
 	});
 
 	return (
-		<PageWrapper title={`${user.name} ${user.surname}`}>
+		<PageWrapper title={`${user.name} ${user.lastname}`}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

@@ -87,47 +87,6 @@ const Item: FC<IItemProps> = ({
 							{percent}%
 							<Progress isAutoColor value={percent} height={10} />
 						</div>
-						<div className='col-md-6 d-flex justify-content-end'>
-							<AvatarGroup>
-								<Avatar
-									srcSet={USERS.GRACE.srcSet}
-									src={USERS.GRACE.src}
-									userName={`${USERS.GRACE.name} ${USERS.GRACE.surname}`}
-									color='info'
-								/>
-								<Avatar
-									srcSet={USERS.SAM.srcSet}
-									src={USERS.SAM.src}
-									userName={`${USERS.SAM.name} ${USERS.SAM.surname}`}
-									color='info'
-								/>
-								<Avatar
-									srcSet={USERS.CHLOE.srcSet}
-									src={USERS.CHLOE.src}
-									userName={`${USERS.CHLOE.name} ${USERS.CHLOE.surname}`}
-									color='info'
-								/>
-
-								<Avatar
-									srcSet={USERS.JANE.srcSet}
-									src={USERS.JANE.src}
-									userName={`${USERS.JANE.name} ${USERS.JANE.surname}`}
-									color='info'
-								/>
-								<Avatar
-									srcSet={USERS.JOHN.srcSet}
-									src={USERS.JOHN.src}
-									userName={`${USERS.JOHN.name} ${USERS.JOHN.surname}`}
-									color='info'
-								/>
-								<Avatar
-									srcSet={USERS.RYAN.srcSet}
-									src={USERS.RYAN.src}
-									userName={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
-									color='info'
-								/>
-							</AvatarGroup>
-						</div>
 					</div>
 				</CardBody>
 			</Card>

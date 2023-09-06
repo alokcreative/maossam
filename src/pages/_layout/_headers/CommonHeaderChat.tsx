@@ -19,7 +19,7 @@ const CommonHeaderChat = () => {
 			showNotification(
 				<span className='d-flex align-items-center'>
 					<Avatar
-						srcSet={USERS.CHLOE.srcSet}
+						srcSet={USERS.CHLOE.src}
 						src={USERS.CHLOE.src}
 						size={36}
 						color='info'
@@ -51,7 +51,7 @@ const CommonHeaderChat = () => {
 				<div className='me-3'>
 					<div className='text-end'>
 						<div className='fw-bold fs-6 mb-0'>
-							{`${USERS.CHLOE.name} ${USERS.CHLOE.surname}`}
+							{`${USERS.CHLOE.name} ${USERS.CHLOE.lastname}`}
 						</div>
 						<div className='text-muted'>
 							<small>{USERS.CHLOE.role}</small>
@@ -60,7 +60,7 @@ const CommonHeaderChat = () => {
 				</div>
 				<div className='position-relative'>
 					<Avatar
-						srcSet={USERS.CHLOE.srcSet}
+						srcSet={USERS.CHLOE.src}
 						src={USERS.CHLOE.src}
 						size={48}
 						color='info'
