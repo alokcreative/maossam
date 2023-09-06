@@ -6,6 +6,8 @@ import { ISubHeaderProps } from '../SubHeader/SubHeader';
 import { IPageProps } from '../Page/Page';
 import AuthContext from '../../contexts/authContext';
 import { demoPagesMenu } from '../../menu';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface IPageWrapperProps {
 	isProtected?: boolean;
@@ -31,14 +33,18 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 		});
 
 		// const { user } = useContext(AuthContext);
-		const savedValue = localStorage.getItem('user');
-		const user = savedValue ? JSON.parse(savedValue) : null;
+		// const savedValue = localStorage.getItem('user');
+		// const user = savedValue ? JSON.parse(savedValue) : null;
+
+		const { user } = useSelector((state: RootState) => state.auth);
+		const savedValue = localStorage?.getItem('user');
+		const localUser = savedValue ? JSON.parse(savedValue) : null;
 
 		const navigate = useNavigate();
 		// console.log("page wrapper",user);
 		// console.log("page wrapper",isProtected);
-		useEffect(() => {
-			if (isProtected && user === null) {
+		useLayoutEffect(() => {
+			if (isProtected && (user === null || localUser === null)) {
 				navigate(`../${demoPagesMenu.login.path}`);
 			}
 			return () => {};

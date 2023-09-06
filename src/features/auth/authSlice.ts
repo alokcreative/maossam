@@ -11,7 +11,7 @@ export interface AuthState {
 		email: string;
 		password?: string;
 		src: string;
-		role: Role;
+		role: Role ;
 		teamMember?: string;
 		country?: string;
 		company?: string;
@@ -20,7 +20,8 @@ export interface AuthState {
 		about?: { type?: string; exp?: string; FeieldActivity?: string };
 	};
 }
-
+const savedValue = localStorage?.getItem('user');
+const localUser = savedValue ? JSON.parse(savedValue) : null;
 const initialState: AuthState = {
 	user: {
 		id: '',
@@ -29,7 +30,7 @@ const initialState: AuthState = {
 		email: '',
 		password: '',
 		src: '',
-		role: Role.user,
+		role: localUser && Number(localUser?.role),
 		teamMember: '',
 		country: '',
 		company: '',

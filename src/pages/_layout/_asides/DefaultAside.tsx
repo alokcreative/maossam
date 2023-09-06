@@ -1,20 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import Brand from '../../../layout/Brand/Brand';
 import Navigation from '../../../layout/Navigation/Navigation';
 import User from '../../../layout/User/User';
-import { adminDashboardPagesMenu, dashboardPagesMenu } from '../../../menu';
+import {
+	adminDashboardPagesMenu,
+	dashboardPagesMenu,
+	demoPagesMenu,
+	memberDashboardPagesMenu,
+} from '../../../menu';
 import ThemeContext from '../../../contexts/themeContext';
 // import AuthContext from '../../../contexts/authContext';
 import Aside, { AsideBody, AsideHead } from '../../../layout/Aside/Aside';
+import { Role } from '../../../common/data/userDummyData';
+import { useNavigate } from 'react-router-dom';
 
 const DefaultAside = () => {
 	const { asideStatus, setAsideStatus } = useContext(ThemeContext);
 	const { user } = useSelector((state: RootState) => state.auth);
 	const savedValue = localStorage?.getItem('user');
 	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const admin = user.role || localUser?.role;
+	const navigate = useNavigate();
+
+	const role = user.role || Number(localUser?.role);
+	useLayoutEffect(() => {
+		if (user === null || localUser === null) {
+			navigate(`../${demoPagesMenu.login.path}`);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<Aside>
@@ -22,10 +37,12 @@ const DefaultAside = () => {
 				<Brand asideStatus={asideStatus} setAsideStatus={setAsideStatus} />
 			</AsideHead>
 			<AsideBody>
-				{admin === 'admin' ? (
+				{role === Role.admin ? (
 					<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
-				) : (
+				) : role === Role.user ? (
 					<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
+				) : (
+					<Navigation menu={memberDashboardPagesMenu} id='aside-dashboard' />
 				)}
 			</AsideBody>
 			<User />

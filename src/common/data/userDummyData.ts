@@ -105,6 +105,15 @@ const ravinder: IUserProps = {
 	src: UserImage7,
 	password: '@ABC123',
 };
+const alok: IUserProps = {
+	id: '9',
+	name: 'Alok',
+	lastname: 'Raj',
+	role: Role.member,
+	email: 'alok@alok.com',
+	src: UserImage7,
+	password: '@ABC123',
+};
 
 const USERS: { [key: string]: IUserProps } = {
 	JOHN: john,
@@ -115,6 +124,7 @@ const USERS: { [key: string]: IUserProps } = {
 	CHLOE: chloe,
 	SAM: sam,
 	RAVINDER: ravinder,
+	Alok: alok,
 };
 
 export function getUserDataWithUsername(email: string): IUserProps {
