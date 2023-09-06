@@ -9,6 +9,7 @@ import Button from '../../../components/bootstrap/Button';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Spinner from '../../../components/bootstrap/Spinner';
 import * as Yup from 'yup';
+import { Role } from '../../../common/data/userDummyData';
 
 const Signup: FC = () => {
 	const { darkModeStatus } = useDarkMode();
@@ -76,7 +77,7 @@ const Signup: FC = () => {
 						lastname: values.surname,
 						email: values.email,
 						src: '',
-						role: 'user',
+						role: Role.user,
 						teamMember: '',
 						country: '',
 						company: '',

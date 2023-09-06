@@ -1,6 +1,7 @@
 import { createSlice, isAction } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { googleLogout } from '@react-oauth/google';
+import { Role } from '../../common/data/userDummyData';
 
 export interface AuthState {
 	user: {
@@ -10,7 +11,7 @@ export interface AuthState {
 		email: string;
 		password?: string;
 		src: string;
-		role: string;
+		role: Role;
 		teamMember?: string;
 		country?: string;
 		company?: string;
@@ -28,7 +29,7 @@ const initialState: AuthState = {
 		email: '',
 		password: '',
 		src: '',
-		role: '',
+		role: Role.user,
 		teamMember: '',
 		country: '',
 		company: '',

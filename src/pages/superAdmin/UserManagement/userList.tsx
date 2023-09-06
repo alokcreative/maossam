@@ -37,6 +37,7 @@ import Label from '../../../components/bootstrap/forms/Label';
 import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
 import UserImage7Webp from '../../../assets/img/wanna/wanna7.webp';
 import SERVICES, { IServiceProps } from '../../../common/data/serviceDummyData';
+import { Role } from '../../../common/data/userDummyData';
 
 interface ITableRowProps {
 	id: string;
@@ -104,7 +105,7 @@ export interface IUserProps {
 	email: string;
 	password: string;
 	src: string;
-	role: string;
+	role: Role;
 	teamMember?: string;
 	country?: string;
 	company?: string;
@@ -150,7 +151,7 @@ const UserList = () => {
 				email: values.email,
 				src: '',
 				password: '',
-				role: values.role,
+				role: Role.user,
 			};
 			setUserData([...userData, user]);
 			// console.log(values.id.toString());

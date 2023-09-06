@@ -13,7 +13,7 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
 import Button from '../../../components/bootstrap/Button';
 import useDarkMode from '../../../hooks/useDarkMode';
-import USERS, { getUserDataWithUsername } from '../../../common/data/userDummyData';
+import USERS, { Role, getUserDataWithUsername } from '../../../common/data/userDummyData';
 import Spinner from '../../../components/bootstrap/Spinner';
 import Alert from '../../../components/bootstrap/Alert';
 import { login } from '../../../features/auth/authSlice';
@@ -158,7 +158,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 						id: res.data.id,
 						name: res.data.given_name,
 						lastname: res.data.family_name,
-						role: 'user',
+						role: Role.user,
 						email: res.data.email,
 						src: res.data.picture,
 					};
