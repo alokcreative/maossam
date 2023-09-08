@@ -42,6 +42,7 @@ const Tasks: FC = () => {
 			category: '',
 			expectedTime: '',
 			status: '',
+			goalId: 0,
 		},
 		onSubmit: (values) => {
 			const newTask = {
@@ -52,6 +53,7 @@ const Tasks: FC = () => {
 				expectedTime: values.expectedTime,
 				status: values.status,
 				edit: 'Edit',
+				goalId: values.goalId,
 			};
 			setTaskList([...taskList, newTask]);
 			setIsOpen(false);

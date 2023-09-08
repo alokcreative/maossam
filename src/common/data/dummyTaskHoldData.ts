@@ -7,6 +7,7 @@ const data: {
 	status: string;
 	assigned?: string;
 	edit: string;
+	goalId: number;
 }[] = [
 	{
 		id: 1,
@@ -17,6 +18,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Mohan',
 		edit: 'Edit',
+		goalId: 1,
 	},
 	{
 		id: 2,
@@ -27,6 +29,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'John',
 		edit: 'Edit',
+		goalId: 1,
 	},
 	{
 		id: 3,
@@ -37,6 +40,7 @@ const data: {
 		status: 'Cancelled',
 		assigned: 'Mayc',
 		edit: 'Edit',
+		goalId: 3,
 	},
 	{
 		id: 4,
@@ -47,6 +51,7 @@ const data: {
 		status: 'Rejected',
 		assigned: 'Singh',
 		edit: 'Edit',
+		goalId: 3,
 	},
 	{
 		id: 5,
@@ -57,6 +62,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Jaspal singh',
 		edit: 'Edit',
+		goalId: 2,
 	},
 	{
 		id: 6,
@@ -67,6 +73,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Chandra',
 		edit: 'Edit',
+		goalId: 2,
 	},
 	{
 		id: 7,
@@ -77,6 +84,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Rajiv',
 		edit: 'Edit',
+		goalId: 4,
 	},
 	{
 		id: 8,
@@ -87,6 +95,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Sohan',
 		edit: 'Edit',
+		goalId: 3,
 	},
 ];
 export default data;

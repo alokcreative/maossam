@@ -51,6 +51,7 @@ interface ITaskData {
 	expectedTime: string;
 	status: string;
 	edit: string;
+	goalId: number;
 }
 const TaskManagement = () => {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -70,6 +71,7 @@ const TaskManagement = () => {
 		category: string;
 		expectedTime: string;
 		status: string;
+		goalId: number;
 	}) => {
 		const errors: {
 			name: string;
@@ -77,12 +79,14 @@ const TaskManagement = () => {
 			category: string;
 			expectedTime: string;
 			status: string;
+			goalId: number;
 		} = {
 			name: '',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
 			status: '',
+			goalId: 0,
 		};
 		if (!values.name) {
 			errors.name = 'Required';
@@ -98,7 +102,7 @@ const TaskManagement = () => {
 		}
 		if (!values.status) {
 			errors.status = 'Required';
-		}
+		}	
 	};
 
 	const formik = useFormik({
@@ -108,6 +112,7 @@ const TaskManagement = () => {
 			category: '',
 			expectedTime: '',
 			status: '',
+			goalId: 0,
 		},
 		validate,
 		onSubmit: (values) => {
@@ -121,6 +126,7 @@ const TaskManagement = () => {
 				expectedTime: values.expectedTime,
 				status: values.status,
 				edit: 'Edit',
+				goalId: values.goalId,
 			};
 			setTaskData([...taskData, newTask]);
 		},

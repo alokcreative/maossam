@@ -45,6 +45,7 @@ const john: IUserProps = {
 	srcSet: UserImageWebp,
 	password: '@ABC123',
 	isAdmin: false,
+
 };
 
 const grace: IUserProps = {
