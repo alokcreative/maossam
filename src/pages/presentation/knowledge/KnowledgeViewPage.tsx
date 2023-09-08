@@ -46,9 +46,9 @@ const KnowledgeViewPage = () => {
 				<SubHeaderRight>
 					<span className='text-muted fst-italic'>Written by</span>
 					{/* eslint-disable-next-line react/jsx-props-no-spreading */}
-					<Avatar {...USERS.GRACE} size={32} />
+					
 					<span>
-						<strong>{`${USERS.GRACE.name} ${USERS.GRACE.surname}`}</strong>
+						<strong>{`${USERS.GRACE.name} ${USERS.GRACE.lastname}`}</strong>
 					</span>
 				</SubHeaderRight>
 			</SubHeader>

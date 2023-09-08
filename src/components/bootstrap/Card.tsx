@@ -520,10 +520,10 @@ const Card = forwardRef<HTMLDivElement, ICardProps>(
 		}, []);
 
 		const [employeeList, setEmployeeList] = useState({
-			[USERS.JOHN.username]: true,
-			[USERS.ELLA.username]: true,
-			[USERS.RYAN.username]: true,
-			[USERS.GRACE.username]: true,
+			[USERS.JOHN.email]: true,
+			[USERS.ELLA.email]: true,
+			[USERS.RYAN.email]: true,
+			[USERS.GRACE.email]: true,
 		});
 
 		return (
@@ -575,17 +575,17 @@ const Card = forwardRef<HTMLDivElement, ICardProps>(
 							
 							<div className="all_users d-flex flex-wrap">
 								{Object.keys(USERS).map((u) => (
-									<div key={USERS[u].username} className='col-auto px-1'>
+									<div key={USERS[u].email} className='col-auto px-1'>
 										<Popovers
 											trigger='hover'
 											desc={
 												<>
-													<div className='h6'>{`${USERS[u].name} ${USERS[u].surname}`}</div>
+													<div className='h6'>{`${USERS[u].name} ${USERS[u].lastname}`}</div>
 													<div>
 														<b>Event: </b>
 														{
 															events.filter(
-																(i) => i.user?.username === USERS[u].username,
+																(i) => i.user?.email === USERS[u].email,
 															).length
 														}
 													</div>
@@ -594,7 +594,7 @@ const Card = forwardRef<HTMLDivElement, ICardProps>(
 														{
 															events.filter(
 																(i) =>
-																	i.user?.username === USERS[u].username &&
+																	i.user?.email === USERS[u].email &&
 																	i.color === 'info',
 															).length
 														}
@@ -603,26 +603,26 @@ const Card = forwardRef<HTMLDivElement, ICardProps>(
 											}>
 											<div className='position-relative'>
 												<Avatar
-													srcSet={USERS[u].srcSet}
+													srcSet={USERS[u].src}
 													src={USERS[u].src}
 													color='brand'
 													size={64}
 													border={4}
 													className='cursor-pointer'
 													borderColor={
-														employeeList[USERS[u].username] ? 'info' : themeStatus
+														employeeList[USERS[u].email] ? 'info' : themeStatus
 													}
 													onClick={() =>
 														setEmployeeList({
 															...employeeList,
-															[USERS[u].username]:
-																!employeeList[USERS[u].username],
+															[USERS[u].email]:
+																!employeeList[USERS[u].email],
 														})
 													}
 												/>
 												{!!events.filter(
 													(i) =>
-														i.user?.username === USERS[u].username &&
+														i.user?.email === USERS[u].email &&
 														i.start &&
 														i.start < now &&
 														i.end &&

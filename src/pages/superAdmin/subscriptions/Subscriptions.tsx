@@ -112,7 +112,7 @@ const Subscriptions = () => {
 		</div>
 	);
 	return (
-		<PageWrapper title={adminDashboardPagesMenu.subscription.text}>
+		<PageWrapper title={adminDashboardPagesMenu.subscription.text} isProtected>
 			<Page container='fluid'>
 				<div className='row'>
 				<div id='first' className='row scroll-margin'>

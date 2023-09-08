@@ -1,44 +1,42 @@
 import { createSlice, isAction } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { googleLogout } from '@react-oauth/google';
+import { Role } from '../../common/data/userDummyData';
 
 export interface AuthState {
 	user: {
 		id: string;
-		username: string;
 		name: string;
-		surname: string;
+		lastname: string;
 		email: string;
-		isAdmin: boolean;
+		password?: string;
 		src: string;
-		srcSet?: string;
-		fullImage?: string;
-		role?: string;
-		company?: string;
-		noOfTeam?: string;
+		role: Role ;
+		teamMember?: string;
 		country?: string;
+		company?: string;
 		state?: string;
-		phoneNo?: number;
+		contact?: number;
+		about?: { type?: string; exp?: string; FeieldActivity?: string };
 	};
 }
-
+const savedValue = localStorage?.getItem('user');
+const localUser = savedValue ? JSON.parse(savedValue) : null;
 const initialState: AuthState = {
 	user: {
 		id: '',
-		username: '',
 		name: '',
-		surname: '',
-		role: '',
+		lastname: '',
 		email: '',
-		isAdmin: false,
+		password: '',
 		src: '',
-		srcSet: '',
-		fullImage: '',
-		company: '',
-		noOfTeam: '',
+		role: localUser && Number(localUser?.role),
+		teamMember: '',
 		country: '',
+		company: '',
 		state: '',
-		phoneNo: 0,
+		contact: 0,
+		about: { type: '', exp: '', FeieldActivity: '' },
 	},
 };
 

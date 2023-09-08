@@ -115,17 +115,18 @@ const CommonRightPanel: FC<ICommonRightPanel> = ({ setOpen, isOpen }) => {
 				<div className='row mb-5'>
 					<div className='col'>
 						<div className='d-flex align-items-center'>
-							<AvatarGroup className='me-3'>
+							{/* <AvatarGroup className='me-3'>
 								{Object.keys(USERS).map((u) => (
 									<Avatar
-										key={USERS[u].username}
+										key={USERS[u].email}
 										srcSet={USERS[u].srcSet}
 										src={USERS[u].src}
 										userName={`${USERS[u].name} ${USERS[u].surname}`}
 										color='info'
 									/>
 								))}
-							</AvatarGroup>
+							</AvatarGroup> */}
+							Avatar removed4
 							<div className='h5 mb-0 text-muted'>
 								<strong>Gym</strong> Team
 							</div>
@@ -158,15 +159,15 @@ const CommonRightPanel: FC<ICommonRightPanel> = ({ setOpen, isOpen }) => {
 				</div>
 				<div className='d-flex justify-content-center mb-3'>
 					<Avatar
-						srcSet={USERS.JOHN.srcSet}
+						srcSet={USERS.JOHN.src}
 						src={USERS.JOHN.src}
 						color='info'
 						shadow='default'
 					/>
 				</div>
 				<div className='d-flex flex-column align-items-center mb-5'>
-					<div className='h2 fw-bold'>{`${USERS.JOHN.name} ${USERS.JOHN.surname}`}</div>
-					<div className='h5 text-muted text-lowercase opacity-50'>{`@${USERS.JOHN.name}${USERS.JOHN.surname}`}</div>
+					<div className='h2 fw-bold'>{`${USERS.JOHN.name} ${USERS.JOHN.lastname}`}</div>
+					<div className='h5 text-muted text-lowercase opacity-50'>{`@${USERS.JOHN.name}${USERS.JOHN.lastname}`}</div>
 				</div>
 				<div
 					className={classNames('rounded-3', {

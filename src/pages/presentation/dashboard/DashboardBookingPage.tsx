@@ -72,7 +72,8 @@ const MyEvent = (data: { event: IEvent }) => {
 				<div className='col-auto'>
 					<div className='row g-1 align-items-baseline'>
 						<div className='col-auto'>
-							<Avatar src={event?.user?.src} srcSet={event?.user?.srcSet} size={18} />
+							{/* <Avatar src={event?.user?.src} srcSet={event?.user?.sc} size={18} /> */}
+							Avatar re1
 						</div>
 						<small
 							className={classNames('col-auto text-truncate', {
@@ -86,12 +87,13 @@ const MyEvent = (data: { event: IEvent }) => {
 			)}
 			{event?.users && (
 				<div className='col-auto'>
-					<AvatarGroup size={18}>
+					{/* <AvatarGroup size={18}>
 						{event.users.map((user) => (
 							// eslint-disable-next-line react/jsx-props-no-spreading
 							<Avatar key={user.src} {...user} />
 						))}
-					</AvatarGroup>
+					</AvatarGroup> */}
+					Avatar removed
 				</div>
 			)}
 		</div>
@@ -112,7 +114,7 @@ const MyWeekEvent = (data: { event: IEvent }) => {
 					<div className='row g-1 align-items-baseline'>
 						<div className='col-auto'>
 							{/* eslint-disable-next-line react/jsx-props-no-spreading */}
-							<Avatar {...event?.user} size={18} />
+							Avatar removed
 						</div>
 						<small
 							className={classNames('col-auto text-truncate', {
@@ -126,12 +128,13 @@ const MyWeekEvent = (data: { event: IEvent }) => {
 			)}
 			{event?.users && (
 				<div className='col-12'>
-					<AvatarGroup size={18}>
+					Avatar removed
+					{/* <AvatarGroup size={18}>
 						{event.users.map((user) => (
 							// eslint-disable-next-line react/jsx-props-no-spreading
-							<Avatar key={user.src} {...user} />
+							// <Avatar key={user.src} {...user} />
 						))}
-					</AvatarGroup>
+					</AvatarGroup> */}
 				</div>
 			)}
 		</div>
@@ -147,10 +150,10 @@ const DashboardBookingPage = () => {
 	// BEGIN :: Calendar
 	// Active employee
 	const [employeeList, setEmployeeList] = useState({
-		[USERS.JOHN.username]: true,
-		[USERS.ELLA.username]: true,
-		[USERS.RYAN.username]: true,
-		[USERS.GRACE.username]: true,
+		[USERS.JOHN.email]: true,
+		[USERS.ELLA.email]: true,
+		[USERS.RYAN.email]: true,
+		[USERS.GRACE.email]: true,
 	});
 	// Events
 	const [events, setEvents] = useState(eventList);
@@ -279,7 +282,7 @@ const DashboardBookingPage = () => {
 				eventName: eventItem.name || '',
 				eventStart: dayjs(eventItem.start).format(),
 				eventEnd: dayjs(eventItem.end).format(),
-				eventEmployee: eventItem?.user?.username || '',
+				eventEmployee: eventItem?.user?.email || '',
 			});
 		return () => {};
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
@@ -336,19 +339,19 @@ const DashboardBookingPage = () => {
 					<>
 						<div className='row mb-4 g-3'>
 							{Object.keys(USERS).map((u) => (
-								<div key={USERS[u].username} className='col-auto'>
+								<div key={USERS[u].email} className='col-auto'>
 									<Popovers
 										trigger='hover'
 										desc={
 											<>
-												<div className='h6'>{`${USERS[u].name} ${USERS[u].surname}`}</div>
+												<div className='h6'>{`${USERS[u].name} ${USERS[u].lastname}`}</div>
 												<div>
 													<b>Event: </b>
 													{
 														events.filter(
 															(i) =>
-																i.user?.username ===
-																USERS[u].username,
+																i.user?.email ===
+																USERS[u].email,
 														).length
 													}
 												</div>
@@ -357,8 +360,8 @@ const DashboardBookingPage = () => {
 													{
 														events.filter(
 															(i) =>
-																i.user?.username ===
-																	USERS[u].username &&
+																i.user?.email ===
+																	USERS[u].email &&
 																i.color === 'info',
 														).length
 													}
@@ -367,28 +370,28 @@ const DashboardBookingPage = () => {
 										}>
 										<div className='position-relative'>
 											<Avatar
-												srcSet={USERS[u].srcSet}
+												srcSet={USERS[u].src}
 												src={USERS[u].src}
 												color='info'
 												size={64}
 												border={4}
 												className='cursor-pointer'
 												borderColor={
-													employeeList[USERS[u].username]
+													employeeList[USERS[u].email]
 														? 'info'
 														: themeStatus
 												}
 												onClick={() =>
 													setEmployeeList({
 														...employeeList,
-														[USERS[u].username]:
-															!employeeList[USERS[u].username],
+														[USERS[u].email]:
+															!employeeList[USERS[u].email],
 													})
 												}
 											/>
 											{!!events.filter(
 												(i) =>
-													i.user?.username === USERS[u].username &&
+													i.user?.email === USERS[u].email &&
 													i.start &&
 													i.start < now &&
 													i.end &&
@@ -434,7 +437,7 @@ const DashboardBookingPage = () => {
 											toolbar={false}
 											localizer={localizer}
 											events={events.filter(
-												(i) => i?.user && employeeList[i.user.username],
+												(i) => i?.user && employeeList[i.user.email],
 											)}
 											defaultView={Views.WEEK}
 											views={views}
@@ -624,8 +627,8 @@ const DashboardBookingPage = () => {
 												{Object.keys(USERS).map((u) => (
 													<Option
 														key={USERS[u].id}
-														value={USERS[u].username}>
-														{`${USERS[u].name} ${USERS[u].surname}`}
+														value={USERS[u].email}>
+														{`${USERS[u].name} ${USERS[u].lastname}`}
 													</Option>
 												))}
 											</Select>

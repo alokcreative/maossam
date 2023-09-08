@@ -60,7 +60,7 @@ const ColumnCard: FC<IColumnCard> = ({
 			cardName: card.title || '',
 			groupId: columnKey || '',
 			description: card.description || '',
-			assignee: card.user.username || '',
+			assignee: card.user.email || '',
 			task:
 				(card.tasks && card.tasks.filter((f) => f.status).map((m) => m.id.toString())) ||
 				[],
@@ -101,13 +101,13 @@ const ColumnCard: FC<IColumnCard> = ({
 				</CardLabel>
 				{card.user && (
 					<CardActions>
-						<Avatar
+						{/* <Avatar
 							src={card.user.src}
 							srcSet={card.user.srcSet}
 							color='info'
 							size={24}
 							userName={`${card.user.name} ${card.user.surname}`}
-						/>
+						/> */}
 					</CardActions>
 				)}
 			</CardHeader>

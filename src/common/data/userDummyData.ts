@@ -1,143 +1,118 @@
 import UserImage from '../../assets/img/wanna/wanna1.png';
-import UserImageWebp from '../../assets/img/wanna/wanna1.webp';
 import UserImage2 from '../../assets/img/wanna/wanna2.png';
-import UserImage2Webp from '../../assets/img/wanna/wanna2.webp';
 import UserImage3 from '../../assets/img/wanna/wanna3.png';
-import UserImage3Webp from '../../assets/img/wanna/wanna3.webp';
 import UserImage4 from '../../assets/img/wanna/wanna4.png';
-import UserImage4Webp from '../../assets/img/wanna/wanna4.webp';
 import UserImage5 from '../../assets/img/wanna/wanna5.png';
-import UserImage5Webp from '../../assets/img/wanna/wanna5.webp';
 import UserImage6 from '../../assets/img/wanna/wanna6.png';
-import UserImage6Webp from '../../assets/img/wanna/wanna6.webp';
 import UserImage7 from '../../assets/img/wanna/wanna7.png';
-import UserImage7Webp from '../../assets/img/wanna/wanna7.webp';
 
-import User7Landing from '../../assets/img/wanna/landing1.png';
-
+export enum Role {
+	admin,
+	user,
+	member,
+}
 export interface IUserProps {
 	id: string;
-	username: string;
 	name: string;
-	surname: string;
+	lastname: string;
 	email: string;
 	password: string;
-	isAdmin: boolean;
 	src: string;
-	srcSet?: string;
-	fullImage?: string;
-	role?: string;
-	company?: string;
-	noOfTeam?: string;
+	role: Role;
+	teamMember?: string;
 	country?: string;
+	company?: string;
 	state?: string;
-	phoneNo?: number;
+	contact?: number;
+	about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
 
 const john: IUserProps = {
 	id: '1',
-	username: 'john',
 	name: 'John',
-	surname: 'Doe',
-	role: 'CEO, Founder',
+	lastname: 'Doe',
+	role: Role.user,
 	email: 'john@omtanke.studio',
 	src: UserImage,
-	srcSet: UserImageWebp,
 	password: '@ABC123',
-	isAdmin: false,
-
 };
 
 const grace: IUserProps = {
 	id: '2',
-	username: 'grace',
 	name: 'Grace',
-	surname: 'Buckland',
-	role: 'Staff',
+	lastname: 'Buckland',
+	role: Role.user,
 	email: 'grace@omtanke.studio',
 	src: UserImage2,
-	srcSet: UserImage2Webp,
 	password: '@ABC123',
-	isAdmin: false,
 };
 
 const jane: IUserProps = {
 	id: '3',
-	username: 'jane',
 	name: 'Jane',
-	surname: 'Lee',
-	role: 'Staff',
+	lastname: 'Lee',
+	role: Role.user,
 	email: 'jane@omtanke.studio',
 	src: UserImage3,
-	srcSet: UserImage3Webp,
 	password: '@ABC123',
-	isAdmin: false,
 };
 
 const ryan: IUserProps = {
 	id: '4',
-	username: 'ryan',
 	name: 'Ryan',
-	surname: 'McGrath',
-	role: 'Worker',
+	lastname: 'McGrath',
+	role: Role.user,
 	email: 'ryan@omtanke.studio',
 	src: UserImage4,
-	srcSet: UserImage4Webp,
 	password: '@ABC123',
-	isAdmin: false,
 };
 
 const ella: IUserProps = {
 	id: '5',
-	username: 'ella',
 	name: 'Ella',
-	surname: 'Oliver',
-	role: 'Worker',
+	lastname: 'Oliver',
+	role: Role.user,
 	email: 'ella@omtanke.studio',
 	src: UserImage5,
-	srcSet: UserImage5Webp,
 	password: '@ABC123',
-	isAdmin: false,
 };
 
 const chloe: IUserProps = {
 	id: '6',
-	username: 'chloe',
 	name: 'Chloe',
-	surname: 'Walker',
-	role: 'Staff',
+	lastname: 'Walker',
+	role: Role.user,
 	email: 'chloe@omtanke.studio',
 	src: UserImage6,
-	srcSet: UserImage6Webp,
 	password: '@ABC123',
-	isAdmin: false,
 };
 
 const sam: IUserProps = {
 	id: '7',
-	username: 'sam',
 	name: 'Sam',
-	surname: 'Roberts',
-	role: 'Worker',
+	lastname: 'Roberts',
+	role: Role.user,
 	email: 'sam@omtanke.studio',
 	src: UserImage7,
-	srcSet: UserImage7Webp,
-	fullImage: User7Landing,
 	password: '@ABC123',
-	isAdmin: false,
 };
 const ravinder: IUserProps = {
 	id: '8',
-	username: 'ravinder',
 	name: 'Ravinder',
-	surname: 'Kumar',
-	role: 'Co-Founder',
+	lastname: 'Kumar',
+	role: Role.admin,
 	email: 'ravinder@omtanke.studio',
 	src: UserImage7,
-	srcSet: UserImage7Webp,
-	fullImage: User7Landing,
 	password: '@ABC123',
-	isAdmin: true,
+};
+const alok: IUserProps = {
+	id: '9',
+	name: 'Alok',
+	lastname: 'Raj',
+	role: Role.member,
+	email: 'alok@alok.com',
+	src: UserImage7,
+	password: '@ABC123',
 };
 
 const USERS: { [key: string]: IUserProps } = {
@@ -149,17 +124,17 @@ const USERS: { [key: string]: IUserProps } = {
 	CHLOE: chloe,
 	SAM: sam,
 	RAVINDER: ravinder,
+	Alok: alok,
 };
 
-export function getUserDataWithUsername(username: string): IUserProps {
+export function getUserDataWithUsername(email: string): IUserProps {
 	// @ts-ignore
-	return USERS[Object.keys(USERS).filter((f) => USERS[f].username.toString() === username)];
+	return USERS[Object.keys(USERS).filter((f) => USERS[f].email.toString() === email)];
 }
 
 export function getUserDataWithId(id?: string): IUserProps {
 	// @ts-ignore
 	return USERS[Object.keys(USERS).filter((f) => USERS[f].id.toString() === id.toString())];
 }
-
 
 export default USERS;

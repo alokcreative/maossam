@@ -45,7 +45,7 @@ const CommonDashboardDesignTeam = () => {
 				</CardActions>
 			</CardHeader>
 			<CardBody>
-				<AvatarGroup>
+				{/* <AvatarGroup>
 					<Avatar
 						srcSet={USERS.JANE.srcSet}
 						src={USERS.JANE.src}
@@ -70,7 +70,8 @@ const CommonDashboardDesignTeam = () => {
 						userName={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
 						color='info'
 					/>
-				</AvatarGroup>
+				</AvatarGroup> */}
+				Avatar removed 4
 			</CardBody>
 		</Card>
 	);

@@ -244,11 +244,11 @@ const WithListChatPage = () => {
 								<CardHeader>
 									<CardActions>
 										<div className='d-flex align-items-center'>
-											<ChatAvatar
+											{/* <ChatAvatar
 												// eslint-disable-next-line react/jsx-props-no-spreading
 												{...activeTab}
 												className='me-3'
-											/>
+											/> */}ChatAvtar12
 											<div className='fw-bold'>
 												{activeTab
 													? `${'name' in activeTab && activeTab.name} ${
