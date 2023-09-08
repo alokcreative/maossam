@@ -1,10 +1,9 @@
-import React, { useLayoutEffect, forwardRef, ReactElement, useContext, useEffect } from 'react';
+import React, { useLayoutEffect, forwardRef, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { ISubHeaderProps } from '../SubHeader/SubHeader';
 import { IPageProps } from '../Page/Page';
-import AuthContext from '../../contexts/authContext';
 import { demoPagesMenu } from '../../menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';

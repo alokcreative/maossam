@@ -24,12 +24,6 @@ const DefaultAside = () => {
 	const navigate = useNavigate();
 
 	const role = user.role || Number(localUser?.role);
-	useLayoutEffect(() => {
-		if (user === null || localUser === null) {
-			navigate(`../${demoPagesMenu.login.path}`);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<Aside>

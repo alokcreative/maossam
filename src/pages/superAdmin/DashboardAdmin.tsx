@@ -97,7 +97,7 @@ const Dashboard = () => {
 	const { darkModeStatus } = useDarkMode();
 	const { t } = useTranslation('menu');
 	return (
-		<PageWrapper>
+		<PageWrapper isProtected>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Icon icon='Info' className='me-2' size='2x' />

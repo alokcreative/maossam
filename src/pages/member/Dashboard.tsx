@@ -4,7 +4,7 @@ import { memberDashboardPagesMenu } from '../../menu';
 
 const Dashboard = () => {
 	return (
-		<PageWrapper title={memberDashboardPagesMenu.dashboard.text}>
+		<PageWrapper title={memberDashboardPagesMenu.dashboard.text} isProtected>
 			<div>Hello</div>
 		</PageWrapper>
 	);
