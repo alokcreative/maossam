@@ -201,14 +201,14 @@ const ProductViewPage = () => {
 						Back to List
 					</Button>
 					<SubheaderSeparator />
-					<Avatar
+					{/* <Avatar
 						srcSet={USERS.RYAN.srcSet}
 						src={USERS.RYAN.src}
 						size={32}
 						color='info'
-					/>
+					/> */}
 					<span>
-						<strong>{`${USERS.RYAN.name} ${USERS.RYAN.surname}`}</strong>
+						<strong>{`${USERS.RYAN.name} ${USERS.RYAN.lastname}`}</strong>
 					</span>
 					{/* <span className='text-muted'>Owner</span> */}
 				</SubHeaderLeft>
@@ -504,12 +504,12 @@ const ProductViewPage = () => {
 										<div className='row g-4'>
 											<div className='col-12 d-flex align-items-center'>
 												<div className='flex-shrink-0'>
-													<Avatar
+													{/* <Avatar
 														src={USERS.GRACE.src}
 														srcSet={USERS.GRACE.srcSet}
 														color='info'
 														size={64}
-													/>
+													/> */}
 												</div>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
@@ -529,12 +529,12 @@ const ProductViewPage = () => {
 											</div>
 											<div className='col-12 d-flex align-items-center'>
 												<div className='flex-shrink-0'>
-													<Avatar
+													{/* <Avatar
 														src={USERS.SAM.src}
 														srcSet={USERS.SAM.srcSet}
 														color='info'
 														size={64}
-													/>
+													/> */}
 												</div>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
@@ -553,14 +553,14 @@ const ProductViewPage = () => {
 												</div>
 											</div>
 											<div className='col-12 d-flex align-items-center'>
-												<div className='flex-shrink-0'>
+												{/* <div className='flex-shrink-0'>
 													<Avatar
 														src={USERS.CHLOE.src}
 														srcSet={USERS.CHLOE.srcSet}
 														color='info'
 														size={64}
 													/>
-												</div>
+												</div> */}
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>

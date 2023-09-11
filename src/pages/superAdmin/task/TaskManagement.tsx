@@ -27,8 +27,6 @@ import Dropdown, {
 	DropdownMenu,
 	DropdownToggle,
 } from '../../../components/bootstrap/Dropdown';
-import AnswerCustomer from './AnswerCustomer';
-import USERS from '../../../common/data/userDummyData';
 import useDarkMode from '../../../hooks/useDarkMode';
 import CommonDashboardRecentActivities from '../../presentation/dashboard/common/CommonDashboardRecentActivities';
 import Modal, {
@@ -51,6 +49,7 @@ interface ITaskData {
 	expectedTime: string;
 	status: string;
 	edit: string;
+	goalId: number;
 }
 const TaskManagement = () => {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -70,6 +69,7 @@ const TaskManagement = () => {
 		category: string;
 		expectedTime: string;
 		status: string;
+		goalId: number;
 	}) => {
 		const errors: {
 			name: string;
@@ -77,12 +77,14 @@ const TaskManagement = () => {
 			category: string;
 			expectedTime: string;
 			status: string;
+			goalId: number;
 		} = {
 			name: '',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
 			status: '',
+			goalId: 0,
 		};
 		if (!values.name) {
 			errors.name = 'Required';
@@ -98,7 +100,7 @@ const TaskManagement = () => {
 		}
 		if (!values.status) {
 			errors.status = 'Required';
-		}
+		}	
 	};
 
 	const formik = useFormik({
@@ -108,6 +110,7 @@ const TaskManagement = () => {
 			category: '',
 			expectedTime: '',
 			status: '',
+			goalId: 0,
 		},
 		validate,
 		onSubmit: (values) => {
@@ -121,6 +124,7 @@ const TaskManagement = () => {
 				expectedTime: values.expectedTime,
 				status: values.status,
 				edit: 'Edit',
+				goalId: values.goalId,
 			};
 			setTaskData([...taskData, newTask]);
 		},
@@ -249,53 +253,7 @@ const TaskManagement = () => {
 								</CardActions>
 							</CardHeader>
 							<CardBody>
-								<div className='row g-3'>
-									<AnswerCustomer
-										id={USERS.GRACE.id}
-										img={USERS.GRACE.src}
-										imgWebp={USERS.GRACE.src}
-										name={`${USERS.GRACE.name} ${USERS.GRACE.surname}`}
-										color='info'
-										job='Maryland'
-										value={43}
-									/>
-									<AnswerCustomer
-										id={USERS.JANE.id}
-										img={USERS.JANE.src}
-										imgWebp={USERS.JANE.src}
-										name={`${USERS.JANE.name} ${USERS.JANE.surname}`}
-										color='info'
-										job='North Carolina'
-										value={35}
-									/>
-									<AnswerCustomer
-										id={USERS.RYAN.id}
-										img={USERS.RYAN.src}
-										imgWebp={USERS.RYAN.src}
-										name={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
-										color='info'
-										job='Rhode Island'
-										value={27}
-									/>
-									<AnswerCustomer
-										id={USERS.ELLA.id}
-										img={USERS.ELLA.src}
-										imgWebp={USERS.ELLA.src}
-										name={`${USERS.ELLA.name} ${USERS.ELLA.surname}`}
-										color='info'
-										job='Washington'
-										value={15}
-									/>
-									<AnswerCustomer
-										id={USERS.CHLOE.id}
-										img={USERS.CHLOE.src}
-										imgWebp={USERS.CHLOE.src}
-										name={`${USERS.CHLOE.name} ${USERS.CHLOE.surname}`}
-										color='info'
-										job='Kentucky'
-										value={12}
-									/>
-								</div>
+								<div className='row g-3'>Time</div>
 							</CardBody>
 						</Card>
 					</div>

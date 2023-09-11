@@ -1,5 +1,5 @@
-const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric'})
-const data: {
+export const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric'})
+export const data: {
 	id: number;
 	name: string;
 	attributes: string;
@@ -35,7 +35,7 @@ const data: {
 		name: 'Enhance customer engagement',
 		attributes:
 			'Email marketing campaigns, social media engagement, customer feedback surveys, loyalty programs, interactive content',
-		timeline: (new Date(2023, 7,23 )).toISOString().split('T')[0],
+		timeline: (new Date(2023, 7,23 )).toISOString().split('T')[ 0],
 		status: 'Done',
 	},
 	{

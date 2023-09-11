@@ -6,7 +6,7 @@ import GridFluidPage from '../../presentation/demo-pages/GridFluidPage';
 
 const Projects = () => {
 	return (
-		<PageWrapper title={adminDashboardPagesMenu.projects.text}>
+		<PageWrapper title={adminDashboardPagesMenu.projects.text} isProtected>
 				<GridFluidPage/>
 		</PageWrapper>
 	);

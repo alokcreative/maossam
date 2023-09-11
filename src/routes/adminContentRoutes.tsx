@@ -2,7 +2,6 @@ import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { demoPagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
-import Projects from '../pages/superAdmin/projects/Projects';
 import ReportAndAnalysis from '../pages/superAdmin/reportingandanalysis/ReportAndAnalysis';
 import Subscriptions from '../pages/superAdmin/subscriptions/Subscriptions';
 import TimeManagement from '../pages/superAdmin/time/TimeManagement';

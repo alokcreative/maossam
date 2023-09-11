@@ -33,7 +33,7 @@ const UserDetail: FC = () => {
 	const formik = useFormik({
 		initialValues: {
 			firstName: userData.name,
-			lastName: userData.surname,
+			lastName: userData.lastname,
 			phone: '',
 			emailAddress: userData.email,
 		},
@@ -60,18 +60,18 @@ const UserDetail: FC = () => {
 								<div className='col-12'>
 									<div className='row g-4 align-items-center'>
 										<div className='col-lg-auto'>
-											<Avatar
+											{/* <Avatar
 												src={userData.src}
 												srcSet={userData.srcSet}
 												color='info'
-											/>
+											/> */}
 										</div>
 										<div className='col-lg'>
 											<div className='row g-4'>
 												<div className='col-12'>
 													<p className='lead text-muted'>
 														<CardTitle tag='div' className='h5'>
-															{`${userData.name} ${userData.surname}`}
+															{`${userData.name}`}
 														</CardTitle>
 														<CardSubTitle tag='div' className='h6'>
 															{userData.email}

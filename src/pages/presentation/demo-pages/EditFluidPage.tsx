@@ -213,7 +213,7 @@ const EditFluidPage = () => {
 				eventStart: dayjs(eventItem.start).format(),
 				eventEnd: dayjs(eventItem.end).format(),
 				eventAllDay: eventItem.allDay,
-				eventEmployee: `${eventItem?.user?.name} ${eventItem?.user?.surname}`,
+				eventEmployee: `${eventItem?.user?.name} ${eventItem?.user?.lastname}`,
 			});
 		return () => {};
 		//	eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1062,7 +1062,7 @@ const EditFluidPage = () => {
 																	}
 																	list={Object.keys(USERS).map(
 																		(u) =>
-																			`${USERS[u].name} ${USERS[u].surname}`,
+																			`${USERS[u].name} ${USERS[u].lastname}`,
 																	)}
 																/>
 															</FormGroup>

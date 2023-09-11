@@ -117,12 +117,7 @@ const EditModernPage = () => {
 								<div className='col-12'>
 									<div className='row g-4 align-items-center'>
 										<div className='col-lg-auto'>
-											<Avatar
-												srcSet={USERS.JOHN.srcSet}
-												src={USERS.JOHN.src}
-												color='info'
-												rounded={3}
-											/>
+											Avatar removed
 										</div>
 										<div className='col-lg'>
 											<div className='row g-4'>

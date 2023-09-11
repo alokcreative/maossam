@@ -63,7 +63,7 @@ const CommonUpcomingEvents: FC<ICommonUpcomingEventsProps> = ({ isFluid }) => {
 		initialValues: {
 			customerName: 'Alison Berry',
 			service: 'Exercise Bike',
-			employee: `${USERS.GRACE.name} ${USERS.GRACE.surname}`,
+			employee: `${USERS.GRACE.name} ${USERS.GRACE.lastname}`,
 			location: 'Maryland',
 			date: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 			time: '10:30',

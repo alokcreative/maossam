@@ -14,45 +14,45 @@ const CommonAvatarTeam: FC<ICommonAvatarTeamProps> = ({ children, isAlignmentEnd
 			<AvatarGroup>
 				<Avatar
 					src={USERS.GRACE.src}
-					srcSet={USERS.GRACE.srcSet}
+					srcSet={USERS.GRACE.src}
 					// @ts-ignore
 					color='info'
-					userName={`${USERS.GRACE.name} ${USERS.GRACE.surname}`}
+					userName={`${USERS.GRACE.name} ${USERS.GRACE.lastname}`}
 				/>
 				<Avatar
 					src={USERS.JANE.src}
-					srcSet={USERS.JANE.srcSet}
+					srcSet={USERS.JANE.src}
 					// @ts-ignore
 					color='info'
-					userName={`${USERS.JANE.name} ${USERS.JANE.surname}`}
+					userName={`${USERS.JANE.name} ${USERS.JANE.lastname}`}
 				/>
 				<Avatar
 					src={USERS.RYAN.src}
-					srcSet={USERS.RYAN.srcSet}
+					srcSet={USERS.RYAN.src}
 					// @ts-ignore
 					color='info'
-					userName={`${USERS.RYAN.name} ${USERS.RYAN.surname}`}
+					userName={`${USERS.RYAN.name} ${USERS.RYAN.lastname}`}
 				/>
 				<Avatar
 					src={USERS.ELLA.src}
-					srcSet={USERS.ELLA.srcSet}
+					srcSet={USERS.ELLA.src}
 					// @ts-ignore
 					color='info'
-					userName={`${USERS.ELLA.name} ${USERS.ELLA.surname}`}
+					userName={`${USERS.ELLA.name} ${USERS.ELLA.lastname}`}
 				/>
 				<Avatar
 					src={USERS.CHLOE.src}
-					srcSet={USERS.CHLOE.srcSet}
+					srcSet={USERS.CHLOE.src}
 					// @ts-ignore
 					color='info'
-					userName={`${USERS.CHLOE.name} ${USERS.CHLOE.surname}`}
+					userName={`${USERS.CHLOE.name} ${USERS.CHLOE.lastname}`}
 				/>
 				<Avatar
 					src={USERS.SAM.src}
-					srcSet={USERS.SAM.srcSet}
+					srcSet={USERS.SAM.src}
 					// @ts-ignore
 					color='info'
-					userName={`${USERS.SAM.name} ${USERS.SAM.surname}`}
+					userName={`${USERS.SAM.name} ${USERS.SAM.lastname}`}
 				/>
 			</AvatarGroup>
 			{children && isAlignmentEnd && <span>{children}</span>}

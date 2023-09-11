@@ -202,6 +202,15 @@ export const adminDashboardPagesMenu = {
 		subMenu: null,
 	},
 };
+export const memberDashboardPagesMenu = {
+	dashboard: {
+		id: 'dashboard',
+		text: 'Dashboard',
+		path: '/',
+		icon: 'Dashboard',
+		subMenu: null,
+	},
+}
 export const modalPages = {
 	modal: {
 		id: 'modal',

@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import Checks, { ChecksGroup } from './components/bootstrap/forms/Checks';
 import { useFormik } from 'formik';
 import { RootState } from './store/store';
+import { Role } from './common/data/userDummyData';
 
 /**
  * Steps style
@@ -202,7 +203,7 @@ const ProfileTour = () => {
 						<p>In just a few steps you’ll be ready to start your journey to success!</p>
 					</div>
 					<div>
-						{userData.isAdmin ? (
+						{userData.role=== Role.admin ? (
 							<ChecksGroup>
 								<Checks
 									id='dashboard'

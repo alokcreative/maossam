@@ -64,20 +64,16 @@ const Profile = () => {
 			// console.log(values);
 			const userdetails = {
 				id: userdata.id,
-				username: values.firstName,
 				name: values.firstName,
-				surname: values.lastName,
-				role: userdata.role,
+				lastname: values.lastName,
 				email: values.emailAddress,
-				fullImage: userdata.fullImage,
-				isAdmin: userdata.isAdmin,
 				src,
-				srcSet: userdata.srcSet,
-				company: userdata.company,
-				noOfTeam: userdata.noOfTeam,
+				role: userdata.role,
+				teamMember: userdata.teamMember,
 				country: userdata.country,
+				company: userdata.company,
 				state: userdata.state,
-				phoneNo: values.phone,
+				contact: values.phone,
 			};
 			// console.log(values);
 			const value = JSON.stringify(userdetails);
@@ -89,11 +85,10 @@ const Profile = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
 		const file = event.target.files[0];
-		console.log("file >>", file)
+		console.log('file >>', file);
 		if (file) {
 			const imageURL = URL.createObjectURL(file);
 			console.log(imageURL);
-			
 
 			setSrc(imageURL);
 			formik.setFieldValue('image', imageURL);

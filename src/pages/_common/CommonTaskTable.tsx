@@ -21,6 +21,7 @@ const CommonTaskTable: FC = () => {
 			category: '',
 			expectedTime: '',
 			status: '',
+			goalId: 0,
 		},
 		onSubmit: (values) => {
 			const newTask = {
@@ -31,6 +32,7 @@ const CommonTaskTable: FC = () => {
 				expectedTime: values.expectedTime,
 				status: values.status,
 				edit: 'Edit',
+				goalId: values.goalId,
 			};
 			setTaskList([...taskList, newTask]);
 			setIsOpen(false);
