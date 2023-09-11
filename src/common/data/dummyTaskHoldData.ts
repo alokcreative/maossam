@@ -73,7 +73,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Chandra',
 		edit: 'Edit',
-		goalId: 2,
+		goalId: 4,
 	},
 	{
 		id: 7,
@@ -84,7 +84,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Rajiv',
 		edit: 'Edit',
-		goalId: 4,
+		goalId: 3,
 	},
 	{
 		id: 8,
@@ -95,7 +95,7 @@ const data: {
 		status: 'Approved',
 		assigned: 'Sohan',
 		edit: 'Edit',
-		goalId: 3,
+		goalId: 2,
 	},
 ];
 export default data;
