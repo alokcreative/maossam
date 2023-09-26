@@ -121,35 +121,7 @@ export const dashboardPagesMenu = {
 		path: '/faq',
 		icon: 'contact_support',
 		subMenu: null,
-	},
-	// dashboardProject: {
-	// 	id: 'dashboardProject',
-	// 	text: 'Dashboard Projects',
-	// 	path: 'project-management/list',
-	// 	icon: 'AutoStories',
-	// 	notification: true,
-	// 	subMenu: null,
-	// },
-	// dashboardBooking: {
-	// 	id: 'dashboard-booking',
-	// 	text: 'Dashboard Booking',
-	// 	path: 'dashboard-booking',
-	// 	icon: 'emoji_transportation',
-	// 	subMenu: null,
-	// },
-	// crmDashboard: {
-	// 	id: 'crmDashboard',
-	// 	text: 'CRM Dashboard',
-	// 	path: 'crm/dashboard',
-	// 	icon: 'RecentActors',
-	// },
-	// summary: {
-	// 	id: 'summary',
-	// 	text: 'Summary',
-	// 	path: 'summary',
-	// 	icon: 'sticky_note_2',
-	// 	subMenu: null,
-	// },
+	}
 };
 export const adminDashboardPagesMenu = {
 	dashboard: {
@@ -202,15 +174,7 @@ export const adminDashboardPagesMenu = {
 		subMenu: null,
 	},
 };
-export const memberDashboardPagesMenu = {
-	dashboard: {
-		id: 'dashboard',
-		text: 'Dashboard',
-		path: '/',
-		icon: 'Dashboard',
-		subMenu: null,
-	},
-}
+
 export const modalPages = {
 	modal: {
 		id: 'modal',

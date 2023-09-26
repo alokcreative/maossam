@@ -4,12 +4,7 @@ import { RootState } from '../../../store/store';
 import Brand from '../../../layout/Brand/Brand';
 import Navigation from '../../../layout/Navigation/Navigation';
 import User from '../../../layout/User/User';
-import {
-	adminDashboardPagesMenu,
-	dashboardPagesMenu,
-	demoPagesMenu,
-	memberDashboardPagesMenu,
-} from '../../../menu';
+import { adminDashboardPagesMenu, dashboardPagesMenu } from '../../../menu';
 import ThemeContext from '../../../contexts/themeContext';
 // import AuthContext from '../../../contexts/authContext';
 import Aside, { AsideBody, AsideHead } from '../../../layout/Aside/Aside';
@@ -33,10 +28,8 @@ const DefaultAside = () => {
 			<AsideBody>
 				{role === Role.admin ? (
 					<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
-				) : role === Role.user ? (
-					<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
 				) : (
-					<Navigation menu={memberDashboardPagesMenu} id='aside-dashboard' />
+					<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
 				)}
 			</AsideBody>
 			<User />

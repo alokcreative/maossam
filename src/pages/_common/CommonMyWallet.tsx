@@ -228,7 +228,7 @@ const CommonMyWallet = () => {
 												? '9999 999999 99999'
 												: '9999 9999 9999 9999'
 										}
-										maskChar='_'
+										maskchar='_'
 										autoComplete='cc-number'
 										placeholder='Digit Numbers'
 										required

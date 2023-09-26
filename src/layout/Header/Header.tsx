@@ -8,7 +8,7 @@ import Portal from '../Portal/Portal';
 import useDarkMode from '../../hooks/useDarkMode';
 
 interface IHeaderLeftProps {
-	children: ReactNode;
+	children?: ReactNode;
 	className?: string;
 }
 export const HeaderLeft: FC<IHeaderLeftProps> = ({ children, className }) => {
@@ -23,7 +23,7 @@ HeaderLeft.defaultProps = {
 };
 
 interface IHeaderRightProps {
-	children: ReactNode;
+	children?: ReactNode;
 	className?: string;
 }
 export const HeaderRight: FC<IHeaderRightProps> = ({ children, className }) => {

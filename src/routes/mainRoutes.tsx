@@ -214,7 +214,26 @@ const EXTRA = {
 };
 
 
-const presentation: RouteProps[] = [
+export const presentation: RouteProps[] = [
+	/**
+	 * Auth Page
+	 */
+	{
+		path: demoPagesMenu.page404.path,
+		element: <AUTH.PAGE_404 />,
+	},
+	{
+		path: demoPagesMenu.login.path,
+		element: <Login />,
+	},
+	{
+		path: demoPagesMenu.signUp.path,
+		element: <Login isSignUp />,
+	},
+	{
+		path: `${demoPagesMenu.profile.path}/:id`,
+		element: <Profile />,
+	},
 	/**
 	 * Landing
 	 */
@@ -310,25 +329,7 @@ const presentation: RouteProps[] = [
 	 * END - Pages
 	 */
 
-	/**
-	 * Auth Page
-	 */
-	{
-		path: demoPagesMenu.page404.path,
-		element: <AUTH.PAGE_404 />,
-	},
-	{
-		path: demoPagesMenu.login.path,
-		element: <Login />,
-	},
-	{
-		path: demoPagesMenu.signUp.path,
-		element: <Login isSignUp />,
-	},
-	{
-		path: `${demoPagesMenu.profile.path}/:id`,
-		element: <Profile />,
-	},
+
 
 	/**
 	 * App

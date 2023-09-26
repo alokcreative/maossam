@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
-import { demoPagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu';
+import { demoPagesMenu, adminDashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
 import ReportAndAnalysis from '../pages/superAdmin/reportingandanalysis/ReportAndAnalysis';
 import Subscriptions from '../pages/superAdmin/subscriptions/Subscriptions';
@@ -57,19 +57,10 @@ const APP = {
 	},
 };
 
-
 const presentation: RouteProps[] = [
 	/**
 	 * Landing
 	 */
-	{
-		path: adminDashboardPagesMenu.dashboard.path,
-		element: <DASHBOARD.DashboardAdmin />,
-	},
-	{
-		path: demoPagesMenu.page404.path,
-		element: <AUTH.PAGE_404 />,
-	},
 	{
 		path: demoPagesMenu.login.path,
 		element: <Login />,
@@ -78,6 +69,15 @@ const presentation: RouteProps[] = [
 		path: demoPagesMenu.signUp.path,
 		element: <Login isSignUp />,
 	},
+	{
+		path: adminDashboardPagesMenu.dashboard.path,
+		element: <DASHBOARD.DashboardAdmin />,
+	},
+	{
+		path: demoPagesMenu.page404.path,
+		element: <AUTH.PAGE_404 />,
+	},
+
 	{
 		path: `${demoPagesMenu.appointment.subMenu.employeeID.path}/:id`,
 		element: <APP.APPOINTMENT.EMPLOYEE_VIEW />,

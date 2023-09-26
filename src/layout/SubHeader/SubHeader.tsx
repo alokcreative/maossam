@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useMeasure } from 'react-use';
 
 interface ISubHeaderLeftProps {
-	children: ReactNode;
+	children?: ReactNode;
 	className?: string;
 }
 export const SubHeaderLeft: FC<ISubHeaderLeftProps> = ({ children, className }) => {

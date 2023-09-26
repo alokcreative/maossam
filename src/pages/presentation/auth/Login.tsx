@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState, lazy, startTransition, useEffect } fr
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import PropTypes, { any } from 'prop-types';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
@@ -17,6 +17,7 @@ import Spinner from '../../../components/bootstrap/Spinner';
 import Alert from '../../../components/bootstrap/Alert';
 import { login } from '../../../features/auth/authSlice';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useGetUserMutation } from '../../../features/auth/authApiSlice';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -54,6 +55,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 
 	const [signInPassword, setSignInPassword] = useState<boolean>(false);
 	const [singUpStatus, setSingUpStatus] = useState<boolean>(!!isSignUp);
+	const [getUserMutation] = useGetUserMutation();
 
 	const navigate = useNavigate();
 
@@ -89,7 +91,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 			return errors;
 		},
 		validateOnChange: false,
-		onSubmit: (values) => {
+		onSubmit: async (values) => {
 			setIsLoading(true);
 			if (usernameCheck(values.email)) {
 				if (passwordCheck(values.email, values.loginPassword)) {
@@ -105,6 +107,13 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 					const user = { user: userdetails };
 					dispatch(login(user));
 					const value = JSON.stringify(userdetails);
+
+					try {
+						const  data  = await getUserMutation(values);
+						console.log(data);
+					} catch (error) {
+						console.log(error);
+					}
 					localStorage.setItem('user', value);
 					setIsLoading(true);
 					startTransition(() => {
@@ -129,6 +138,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 				formik.setFieldError('email', 'User not found');
 			} else {
 				setSignInPassword(true);
+
 				// dispatch(login(user))
 			}
 			setIsLoading(false);
@@ -403,3 +413,4 @@ Login.defaultProps = {
 };
 
 export default Login;
+ 

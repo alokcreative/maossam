@@ -1,4 +1,4 @@
-import { createSlice, isAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { googleLogout } from '@react-oauth/google';
 import { Role } from '../../common/data/userDummyData';
@@ -11,7 +11,7 @@ export interface AuthState {
 		email: string;
 		password?: string;
 		src: string;
-		role: Role ;
+		role: Role;
 		teamMember?: string;
 		country?: string;
 		company?: string;

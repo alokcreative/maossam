@@ -9,7 +9,6 @@ import UserImage7 from '../../assets/img/wanna/wanna7.png';
 export enum Role {
 	admin,
 	user,
-	member,
 }
 export interface IUserProps {
 	id: string;
@@ -109,10 +108,19 @@ const alok: IUserProps = {
 	id: '9',
 	name: 'Alok',
 	lastname: 'Raj',
-	role: Role.member,
+	role: Role.admin,
 	email: 'alok@alok.com',
 	src: UserImage7,
 	password: '@ABC123',
+};
+const tung: IUserProps = {
+	id: '10',
+	name: 'tung1234',
+	lastname: 'Raj',
+	role: Role.user,
+	email: 'tung1234',
+	src: UserImage7,
+	password: 'tu1234556',
 };
 
 const USERS: { [key: string]: IUserProps } = {
@@ -125,6 +133,7 @@ const USERS: { [key: string]: IUserProps } = {
 	SAM: sam,
 	RAVINDER: ravinder,
 	Alok: alok,
+	Tung: tung,
 };
 
 export function getUserDataWithUsername(email: string): IUserProps {

@@ -55,11 +55,11 @@ export interface IInputProps extends HTMLAttributes<HTMLInputElement>, Partial<I
 	/**
 	 * Character to cover unfilled parts of the mask. Default character is "_". If set to null or empty string, unfilled parts will be empty as in ordinary input.
 	 */
-	maskChar?: string;
+	maskchar?: string;
 	/**
 	 * Defines format characters with characters as a keys and corresponding RegExp strings as a values.
 	 */
-	formatChars?: object;
+	formatchars?: object;
 	accept?: string;
 }
 const Input = forwardRef<HTMLInputElement, IInputProps>(
@@ -359,8 +359,8 @@ Input.defaultProps = {
 	onSelect: undefined,
 	mask: undefined,
 	format: undefined,
-	maskChar: undefined,
-	formatChars: undefined,
+	maskchar: undefined,
+	formatchars: undefined,
 	accept: undefined,
 };
 

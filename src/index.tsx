@@ -8,7 +8,6 @@ import './styles/styles.scss';
 import App from './App/App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeContextProvider } from './contexts/themeContext';
-import { AuthContextProvider } from './contexts/authContext';
 import './i18n';
 
 const children = (
