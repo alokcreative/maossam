@@ -8,7 +8,6 @@ import SubHeader, {
 	SubheaderSeparator,
 } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
-import Company1 from '../../../assets/logos/company1.png';
 import CommonGridProductItem from '../../_common/CommonGridProductItem';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
@@ -76,13 +75,13 @@ const validate = (values: IValues) => {
 	return errors;
 };
 
-const GridBoxedPage = () => {
+const ProductPage = () => {
 	const { darkModeStatus } = useDarkMode();
 	const [data, setData] = useState(tableData);
 	const [editItem, setEditItem] = useState<IValues | null>(null);
 	const [editPanel, setEditPanel] = useState<boolean>(false);
 	const [productView, setproductView] = useState<boolean>(false);
-	const countryName = 'India'
+	const countryName = 'India';
 	function handleRemove(id: number) {
 		const newData = data.filter((item) => item.id !== id);
 		setData(newData);
@@ -182,7 +181,7 @@ const GridBoxedPage = () => {
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='display-4 fw-bold py-3'>Our Services</div>
-				{productView == false ? (
+				{productView === false ? (
 					<div className='row'>
 						{data.map((item) => (
 							<div key={item.id} className='col-xxl-3 col-xl-4 col-md-6'>
@@ -370,4 +369,4 @@ const GridBoxedPage = () => {
 	);
 };
 
-export default GridBoxedPage;
+export default ProductPage;

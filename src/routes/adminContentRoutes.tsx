@@ -2,18 +2,15 @@ import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { demoPagesMenu, adminDashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
-import ReportAndAnalysis from '../pages/superAdmin/reportingandanalysis/ReportAndAnalysis';
-import Subscriptions from '../pages/superAdmin/subscriptions/Subscriptions';
-import TimeManagement from '../pages/superAdmin/time/TimeManagement';
 import TaskManagement from '../pages/superAdmin/task/TaskManagement';
 import Profile from '../pages/presentation/profile/Profile';
+import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
 
 const DASHBOARD = {
-	DashboardAdmin: lazy(() => import('../pages/superAdmin/DashboardAdmin')),
+	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
 };
 const USERS = {
 	USERLIST: lazy(() => import('../pages/superAdmin/UserManagement/userList')),
-	USERDETAILS: lazy(() => import('../pages/superAdmin/UserManagement/UserDetail')),
 };
 
 const AUTH = {
@@ -47,7 +44,6 @@ const APP = {
 	},
 	CRM: {
 		CRM_DASHBOARD: lazy(() => import('../pages/presentation/crm/CrmDashboard')),
-		CUSTOMERS: lazy(() => import('../pages/presentation/crm/CustomersLists')),
 		CUSTOMER: lazy(() => import('../pages/presentation/crm/CustomerDetails')),
 		CUSTOMER_PROFILE: lazy(() => import('../pages/presentation/crm/CustomerProfile')),
 	},
@@ -93,28 +89,12 @@ const documentation: RouteProps[] = [
 		element: <USERS.USERLIST />,
 	},
 	{
-		path: `${adminDashboardPagesMenu.users.path}/:id`,
-		element: <USERS.USERDETAILS />,
-	},
-	{
-		path: `${adminDashboardPagesMenu.projects.path}`,
-		element: <APP.PROJECT_MANAGEMENT.PROJECT />,
-	},
-	{
-		path: `${adminDashboardPagesMenu.reportingAndAnalytics.path}`,
-		element: <ReportAndAnalysis />,
-	},
-	{
-		path: `${adminDashboardPagesMenu.subscription.path}`,
-		element: <Subscriptions />,
-	},
-	{
-		path: `${adminDashboardPagesMenu.timeTracking.path}`,
-		element: <TimeManagement />,
-	},
-	{
 		path: `${adminDashboardPagesMenu.task.path}`,
 		element: <TaskManagement />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.marketing_assets.path}`,
+		element: <MarketingAssets />,
 	},
 ];
 const adminContents = [...presentation, ...documentation];

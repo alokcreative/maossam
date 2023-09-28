@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import { useFormik } from 'formik';
 import SubHeader, {
@@ -11,7 +11,7 @@ import { adminDashboardPagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Button from '../../../components/bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import USERS from '../../../common/data/userDummyData';
+import USERS, { Role } from '../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooterLeft,
@@ -35,9 +35,9 @@ import Avatar from '../../../components/Avatar';
 import Select from '../../../components/bootstrap/forms/Select';
 import Label from '../../../components/bootstrap/forms/Label';
 import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
-import UserImage7Webp from '../../../assets/img/wanna/wanna7.webp';
-import SERVICES, { IServiceProps } from '../../../common/data/serviceDummyData';
-import { Role } from '../../../common/data/userDummyData';
+import { Country, State, City } from 'country-state-city';
+import { useEffectOnce } from 'react-use';
+import { IServiceProps } from '../../../common/data/serviceDummyData';
 
 interface ITableRowProps {
 	id: string;
@@ -48,6 +48,7 @@ interface ITableRowProps {
 	color: TColor;
 	services: IServiceProps[];
 	handleClick(...args: unknown[]): unknown;
+	handleEditUser(...args: unknown[]): unknown;
 }
 const TableRow: FC<ITableRowProps> = ({
 	id,
@@ -58,9 +59,8 @@ const TableRow: FC<ITableRowProps> = ({
 	color,
 	services,
 	handleClick,
+	handleEditUser,
 }) => {
-	const navigate = useNavigate();
-
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
@@ -79,13 +79,12 @@ const TableRow: FC<ITableRowProps> = ({
 			<td>
 				<Button
 					color='info'
-					icon='Visibility'
+					icon='Edit'
 					className='me-2'
 					isLight
 					isDisable={Number(id) > 8}
-					onClick={() => navigate(`../${adminDashboardPagesMenu.users.path}/${id || 0}`)}
+					onClick={() => handleEditUser(id)}
 				/>
-
 				<Button
 					icon='Delete'
 					className='me-1'
@@ -113,17 +112,34 @@ export interface IUserProps {
 	contact?: number;
 	about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
+
+interface IOptionsProps {
+	value?: string | number;
+	text?: string | number;
+}
+
 const UserList = () => {
 	const { themeStatus, darkModeStatus } = useDarkMode();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
-	const navigate = useNavigate();
+	const [countryList, setcountryList] = useState<IOptionsProps[]>();
+	const [stateList, setstateList] = useState<IOptionsProps[]>();
+	const [modalTitle, setmodalTitle] = useState<string>('');
+	// const [userData, setUserData] = useState();
 	const [userData, setUserData] = useState(
 		Object.keys(USERS).map((key) => ({
 			...USERS[key],
 		})),
 	);
-	// console.log(userData);
+	console.log(userData);
+	useEffectOnce(() => {
+		const countryListDetails = Country.getAllCountries();
+		const LIST = countryListDetails.map(({ name, isoCode }) => ({
+			value: isoCode,
+			text: name,
+		}));
+		setcountryList(LIST);
+	});
 	const handleData = (id: unknown) => {
 		const updatedData = userData.filter((user) => user.id !== id);
 		setUserData(updatedData);
@@ -133,12 +149,15 @@ const UserList = () => {
 	const formik = useFormik({
 		initialValues: {
 			id: userData.length + 1,
-			name: '',
+			fastname: '',
 			lastname: '',
 			email: '',
 			password: '',
-			role: 'user',
-			src: '',
+			phoneNumber: '',
+			companyName: '',
+			Country: '',
+			State: '',
+			gender: '',
 		},
 		onSubmit: (values, { resetForm }) => {
 			// console.log(values.isAdmin);
@@ -146,7 +165,7 @@ const UserList = () => {
 			resetForm();
 			const user: IUserProps = {
 				id: (userData.length + 1).toString(),
-				name: values.name,
+				name: values.fastname,
 				lastname: values.lastname,
 				email: values.email,
 				src: '',
@@ -157,16 +176,72 @@ const UserList = () => {
 			// console.log(values.id.toString());
 		},
 	});
+	useEffect(() => {
+		const stateListupdated = State.getStatesOfCountry(formik.values.Country);
+		const LIST = stateListupdated.map(({ name }) => ({
+			value: name,
+			text: name,
+		}));
+		setstateList(LIST);
+	}, [formik.values.Country]);
+
+	const newUser = () => {
+		setIsOpen(true);
+		setmodalTitle('New User');
+	};
+	const updateUserForm = useFormik({
+		initialValues: {
+			id: '',
+			fastname: '',
+			lastname: '',
+			email: '',
+			password: '',
+			phoneNumber: '',
+			companyName: '',
+			Country: '',
+			State: '',
+			gender: '',
+		},
+		enableReinitialize: true,
+		onSubmit: (values, { resetForm }) => {
+			// console.log(values.isAdmin);
+			setIsOpen(false);
+			resetForm();
+			const user: IUserProps = {
+				id: (userData.length + 1).toString(),
+				name: values.fastname,
+				lastname: values.lastname,
+				email: values.email,
+				src: '',
+				password: '',
+				role: Role.user,
+			};
+			setUserData([...userData, user]);
+			// console.log(values.id.toString());
+		},
+	});
+	const handleEditUser = (id: string) => {
+		setIsOpen(true);
+		const user = userData.find((i) => i.id === id);
+		updateUserForm.setFieldValue('id', user?.id);
+		updateUserForm.setFieldValue('fastname', user?.name);
+		updateUserForm.setFieldValue('lastname', user?.lastname);
+		updateUserForm.setFieldValue('email', user?.email);
+		updateUserForm.setFieldValue('password', user?.password);
+		// updateUserForm.setFieldValue('phoneNumber', user?.phoneNumber);
+		// updateUserForm.setFieldValue('companyName', user?.companyName);
+		// updateUserForm.setFieldValue('Country', user?.Country);
+		// updateUserForm.setFieldValue('State', user?.State);
+		// updateUserForm.setFieldValue('gender', user?.gender);
+		setmodalTitle(`Update User`);
+	};
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text}>
 			<SubHeader>
-				<SubHeaderLeft>
-					<span className='text-muted fst-italic me-2'>Last update:</span>
-					<span className='fw-bold'>13 hours ago</span>
-				</SubHeaderLeft>
+				<SubHeaderLeft />
 				<SubHeaderRight>
-					<Button color='info' icon='Add' isLight onClick={() => setIsOpen(true)}>
-						Add New
+					<Button color='info' icon='Add' isLight onClick={newUser}>
+						Add User
 					</Button>
 				</SubHeaderRight>
 			</SubHeader>
@@ -180,16 +255,16 @@ const UserList = () => {
 									<th scope='col' className='cursor-pointer'>
 										#
 									</th>
-									<th scope='col'>Name</th>
+									<th scope='col'>FirstName</th>
 									<th scope='col' className='cursor-pointer'>
-										Surname
+										LastName
 									</th>
 									<th scope='col'>Email</th>
 									<th scope='col' className='cursor-pointer'>
-										Position
+										Company Name
 									</th>
 									<th scope='col' className='cursor-pointer'>
-										Services
+										Phone Number
 									</th>
 									<th scope='col' className='cursor-pointer'>
 										Action
@@ -198,8 +273,13 @@ const UserList = () => {
 							</thead>
 							<tbody>
 								{dataPagination(userData, currentPage, perPage).map((i) => (
-									// eslint-disable-next-line react/jsx-props-no-spreading
-									<TableRow key={i.id} {...i} handleClick={handleData} />
+									<TableRow
+										key={i.id}
+										// eslint-disable-next-line react/jsx-props-no-spreading
+										{...i}
+										handleClick={handleData}
+										handleEditUser={handleEditUser}
+									/>
 								))}
 							</tbody>
 						</table>
@@ -216,18 +296,18 @@ const UserList = () => {
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='user'>New User</ModalTitle>
+					<ModalTitle id='user'>{modalTitle}</ModalTitle>
 				</ModalHeader>
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12'>
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
-									{/* <Avatar
-										srcSet={USERS.JOHN.srcSet}
+									<Avatar
+										srcSet={USERS.JOHN.src}
 										src={USERS.JOHN.src}
 										color='info'
-									/> */}
+									/>
 								</div>
 								<div className='col-lg'>
 									<div className='row g-4'>
@@ -251,75 +331,135 @@ const UserList = () => {
 							</div>
 						</div>
 						<div className='col-12 border-bottom' />
-						<FormGroup id='name' label='Name' className='col-lg-6'>
-							<Input onChange={formik.handleChange} value={formik.values.name} />
+						<FormGroup id='fastname' label='First Name' className='col-lg-6'>
+							<Input onChange={formik.handleChange} value={formik.values.fastname} />
 						</FormGroup>
-						<FormGroup id='surname' label='Surname' className='col-lg-6'>
+						<FormGroup id='fastname' label='Last name' className='col-lg-6'>
 							<Input
 								type='text'
-								onChange={formik.handleChange}
-								value={formik.values.lastname}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.fastname
+										: updateUserForm.values.fastname
+								}
 							/>
 						</FormGroup>
 						<FormGroup id='email' label='Email' className='col-lg-6'>
 							<Input
 								type='email'
-								onChange={formik.handleChange}
-								value={formik.values.email}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.email
+										: updateUserForm.values.email
+								}
 							/>
 						</FormGroup>
-						<FormGroup id='position' label='Position' className='col-lg-6'>
+						{modalTitle === 'New User' && (
+							<FormGroup id='Password' label='Password' className='col-lg-6'>
+								<Input
+									type='password'
+									onChange={formik.handleChange}
+									value={formik.values.password}
+								/>
+							</FormGroup>
+						)}
+						<FormGroup id='phoneNumber' label='Phone Number' className='col-lg-6'>
 							<Input
 								type='text'
-								onChange={formik.handleChange}
-								value={formik.values.role}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.phoneNumber
+										: updateUserForm.values.phoneNumber
+								}
 							/>
 						</FormGroup>
-						<FormGroup id='Password' label='Password' className='col-lg-6'>
+						<FormGroup id='companyName' label='Company Name' className='col-lg-6'>
 							<Input
-								type='password'
-								onChange={formik.handleChange}
-								value={formik.values.password}
+								type='text'
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.companyName
+										: updateUserForm.values.companyName
+								}
 							/>
 						</FormGroup>
-						<FormGroup id='subscriptions' label='Subscriptions' className='col-lg-6'>
+						<FormGroup id='Country' label='Country' className='col-lg-6'>
 							<Select
-								ariaLabel='Default select example'
-								placeholder='Select...'
-								onChange={formik.handleChange}
-								value={formik.values.name}
-								list={[
-									{ value: 'no', text: 'No' },
-									{ value: 'basic', text: 'Basic' },
-									{ value: 'pro', text: 'Pro' },
-								]}
+								ariaLabel='Country'
+								placeholder='Choose from list of countries'
+								required
+								list={countryList}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.Country
+										: updateUserForm.values.Country
+								}
 							/>
 						</FormGroup>
-						<FormGroup>
-							{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-							<Label>
-								Group checkboxes or radios on the same horizontal row by adding{' '}
-							</Label>
-							<ChecksGroup isInline>
-								<Checks
-									type='radio'
-									id='isAdmin'
-									label='Yes'
-									value='Yes'
-									name='isAdmin'
-									onChange={formik.handleChange}
-									checked={formik.values.role}
-								/>
-								<Checks
-									type='radio'
-									id='isAdmin1'
-									label='No'
-									value='No'
-									name='isAdmin'
-									onChange={formik.handleChange}
-									checked={formik.values.role}
-								/>
-							</ChecksGroup>
+						<FormGroup id='State' label='State' className='col-lg-6'>
+							<Select
+								ariaLabel='State'
+								placeholder='Choose from list of State'
+								required
+								list={stateList}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.State
+										: updateUserForm.values.State
+								}
+							/>
+						</FormGroup>
+						<FormGroup id='gender' label='Gender' className='col-lg-6'>
+							<Select
+								ariaLabel='gender'
+								placeholder='Choose gender'
+								required
+								list={[
+									{ value: 'male', text: 'Male' },
+									{ value: 'female', text: 'Female' },
+									{ value: 'other', text: 'Other' },
+								]}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
+								value={
+									modalTitle === 'New User'
+										? formik.values.gender
+										: updateUserForm.values.gender
+								}
+							/>
 						</FormGroup>
 					</div>
 				</ModalBody>
@@ -334,8 +474,14 @@ const UserList = () => {
 						</Button>
 					</CardFooterLeft>
 					<CardFooterRight>
-						<Button color='info' onClick={formik.handleSubmit}>
-							Save
+						<Button
+							color='info'
+							onClick={
+								modalTitle === 'New User'
+									? formik.handleSubmit
+									: updateUserForm.handleSubmit
+							}>
+							{modalTitle === 'New User' ? 'Save' : 'Update'}
 						</Button>
 					</CardFooterRight>
 				</ModalFooter>

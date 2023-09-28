@@ -287,7 +287,6 @@ const MarketingAssets = () => {
 	]);
 
 	const getFormValue = (isSocialMedia: string, isSocialMediaimportant: string) => {
-		// console.log('getDta', ' ', isSocialMedia, isSocialMediaimportant);
 		const element: CardProp[] = cards.filter((card) => card.id === elementId);
 		if (isSocialMedia === 'yes' && isSocialMediaimportant === 'yes') {
 			notifyOnYes();
@@ -330,7 +329,7 @@ const MarketingAssets = () => {
 					</CommonAvatarTeam>
 				</SubHeaderRight>
 			</SubHeader>
-			<Page  container='fluid'>
+			<Page container='fluid'>
 				<div className='row mt-3'>
 					<div className='display-6 fw-bold py-3'>EXISTING MARKETING CHANNELS</div>
 					{existingCards.length === 0 ? (

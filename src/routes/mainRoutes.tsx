@@ -12,27 +12,16 @@ import Login from '../pages/presentation/auth/Login';
 import ModalsStepForm from '../pages/presentation/dashboard/ModalsStepForm';
 import WorkingTimeSlot from '../pages/presentation/project-management/component/WorkingTimeSlot';
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
-import MarketingPlan from '../pages/presentation/dashboard/Marketing/MarketingPlan';
-import MarketingTools from '../pages/presentation/dashboard/Marketing/MarketingTools';
 import AddTask from '../pages/presentation/project-management/component/AddTask';
 import ProductPage from '../pages/presentation/products/ProductPage';
-import DashboardProductPage from '../pages/presentation/dashboard/dashboard-product/DashboardProductPage';
 import Goals from '../pages/presentation/project-management/component/Goals';
 import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusiness';
-import MarketingActions from '../pages/presentation/dashboard/Marketing/MarketingActions';
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
 import Tasks from '../pages/presentation/dashboard/Tasks';
 import Profile from '../pages/presentation/profile/Profile';
 
-
-
 const LANDING = {
 	DASHBOARD: lazy(() => import('../pages/presentation/dashboard/DashboardPage')),
-};
-
-const PARTNER = {
-	PARTNERS: lazy(() => import('../pages/presentation/Partners/PartnersList')),
-	PARTNER: lazy(() => import('../pages/presentation/Partners/PartnerDetails')),
 };
 const SINGLE = {
 	BOXED: lazy(() => import('../pages/presentation/single-pages/SingleBoxedPage')),
@@ -91,7 +80,6 @@ const APP = {
 	},
 	CRM: {
 		CRM_DASHBOARD: lazy(() => import('../pages/presentation/crm/CrmDashboard')),
-		CUSTOMERS: lazy(() => import('../pages/presentation/crm/CustomersLists')),
 		CUSTOMER: lazy(() => import('../pages/presentation/crm/CustomerDetails')),
 		CUSTOMER_PROFILE: lazy(() => import('../pages/presentation/crm/CustomerProfile')),
 	},
@@ -208,10 +196,10 @@ const CHARTS_PAGE = {
 	HEAT_MAP: lazy(() => import('../pages/documentation/charts/ChartHeatMapPage')),
 	TREE_MAP: lazy(() => import('../pages/documentation/charts/ChartTreeMapPage')),
 };
-const EXTRA = {
-	NOTIFICATION: lazy(() => import('../pages/documentation/extras/NotificationPage')),
-	HOOKS: lazy(() => import('../pages/documentation/extras/HooksPage')),
-};
+// const EXTRA = {
+// 	NOTIFICATION: lazy(() => import('../pages/documentation/extras/NotificationPage')),
+// 	HOOKS: lazy(() => import('../pages/documentation/extras/HooksPage')),
+// };
 
 
 export const presentation: RouteProps[] = [
@@ -324,17 +312,6 @@ export const presentation: RouteProps[] = [
 		path: demoPagesMenu.pricingTable.path,
 		element: <PRICING.PRICING_TABLE />,
 	},
-
-	/**
-	 * END - Pages
-	 */
-
-
-
-	/**
-	 * App
-	 */
-
 	/**
 	 * App > Project Management
 	 */
@@ -405,14 +382,6 @@ export const presentation: RouteProps[] = [
 	{
 		path: demoPagesMenu.crm.subMenu.dashboard.path,
 		element: <APP.CRM.CRM_DASHBOARD />,
-	},
-	// {
-	// 	path: dashboardPagesMenu.Customers.path,
-	// 	element: <CustomerGridView />,
-	// },
-	{
-		path: dashboardPagesMenu.Customers.path,
-		element: <APP.CRM.CUSTOMERS />,
 	},
 	{
 		path: `${demoPagesMenu.crm.subMenu.customerID.path}/:id`,
@@ -840,14 +809,14 @@ const documentation: RouteProps[] = [
 		element: <CHARTS_PAGE.TREE_MAP />,
 	},
 
-	{
-		path: componentPagesMenu.notification.path,
-		element: <EXTRA.NOTIFICATION />,
-	},
-	{
-		path: componentPagesMenu.hooks.path,
-		element: <EXTRA.HOOKS />,
-	},
+	// {
+	// 	path: componentPagesMenu.notification.path,
+	// 	element: <EXTRA.NOTIFICATION />,
+	// },
+	// {
+	// 	path: componentPagesMenu.hooks.path,
+	// 	element: <EXTRA.HOOKS />,
+	// },
 	{
 		path: modalPages.modal.path,
 		element: <ModalsStepForm />,
@@ -859,26 +828,6 @@ const documentation: RouteProps[] = [
 	{
 		path: dashboardPagesMenu.marketingassets.path,
 		element: <MarketingAssets />,
-	},
-	{
-		path: `${dashboardPagesMenu.marketingplan.path}`,
-		element: <MarketingPlan />,
-	},
-	{
-		path: dashboardPagesMenu.marketingtools.path,
-		element: <MarketingTools />,
-	},
-	{
-		path: dashboardPagesMenu.marketingaction.path,
-		element: <MarketingActions />,
-	},
-	{
-		path: dashboardPagesMenu.partners.path,
-		element: <PARTNER.PARTNERS />,
-	},
-	{
-		path: `${demoPagesMenu.partnerID.path}/:id`,
-		element: <PARTNER.PARTNER />,
 	},
 	{
 		path: demoPagesMenu.addtask.path,
@@ -897,12 +846,8 @@ const documentation: RouteProps[] = [
 		element: <SetupBusiness />,
 	},
 	{
-		path: dashboardPagesMenu.products.path,
+		path: dashboardPagesMenu.product_services.path,
 		element: <ProductPage />,
-	},
-	{
-		path: dashboardPagesMenu.dashboardproduct.path,
-		element: <DashboardProductPage />,
 	},
 	{
 		path: dashboardPagesMenu.faq.path,

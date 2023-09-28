@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useDispatch } from 'react-redux';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import UserImage from '../../../assets/img/wanna/wanna1.png';
@@ -24,17 +22,13 @@ import Avatar from '../../../components/Avatar';
 import CommonDesc from '../../../common/other/CommonDesc';
 import { useFormik } from 'formik';
 import { update } from '../../../features/auth/authSlice';
-import Todo, { ITodoListItem } from '../../../components/extras/Todo';
-import { TColor } from '../../../type/color-type';
-import dayjs from 'dayjs';
 
 const Profile = () => {
 	useTourStep(19);
 
-	const { id } = useParams();
+	// const { id } = useParams();
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const userdata = JSON.parse(localStorage.getItem('user')!);
-	// console.log('userdata>>>', userdata);
-
 	const [src, setSrc] = useState(userdata ? userdata.src : UserImage);
 
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
@@ -85,84 +79,15 @@ const Profile = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
 		const file = event.target.files[0];
-		console.log('file >>', file);
+		// console.log('file >>', file);
 		if (file) {
 			const imageURL = URL.createObjectURL(file);
-			console.log(imageURL);
+			// console.log(imageURL);
 
 			setSrc(imageURL);
 			formik.setFieldValue('image', imageURL);
 		}
 	};
-
-	/**
-	 * To/Do List
-	 */
-	const TODO_BADGES: {
-		[key: string]: {
-			text: string;
-			color?: TColor;
-		};
-	} = {
-		NEW: { text: 'New', color: 'success' },
-		UPDATE: { text: 'Update', color: 'info' },
-		TEST: { text: 'Test', color: 'warning' },
-		REPORT: { text: 'Report', color: 'info' },
-		PRINT: { text: 'Print', color: 'danger' },
-		CONTROL: { text: 'Control', color: 'primary' },
-		MEETING: { text: 'Meeting', color: 'secondary' },
-	};
-	const [list, setList] = useState<ITodoListItem[]>([
-		{
-			id: 1,
-			status: true,
-			title: 'New Products will be added',
-			date: dayjs().add(0.5, 'day'),
-			badge: TODO_BADGES.NEW,
-		},
-		{
-			id: 2,
-			status: true,
-			title: 'Cover images will be edited',
-			date: dayjs().add(2, 'day'),
-			badge: TODO_BADGES.UPDATE,
-		},
-		{
-			id: 3,
-			status: false,
-			title: 'Preparing for A/B testing',
-			date: dayjs().add(2, 'day'),
-			badge: TODO_BADGES.TEST,
-		},
-		{
-			id: 4,
-			status: false,
-			title: 'Google Analytics data will be examined',
-			date: dayjs().add(4, 'day'),
-			badge: TODO_BADGES.REPORT,
-		},
-		{
-			id: 5,
-			status: false,
-			title: 'Invoices will be issued',
-			date: dayjs().add(9, 'day'),
-			badge: TODO_BADGES.PRINT,
-		},
-		{
-			id: 6,
-			status: false,
-			title: 'Dependencies check and update',
-			date: dayjs().add(15, 'day'),
-			badge: TODO_BADGES.CONTROL,
-		},
-		{
-			id: 7,
-			status: false,
-			title: 'End of month meeting',
-			date: dayjs().add(32, 'day'),
-			badge: TODO_BADGES.MEETING,
-		},
-	]);
 
 	return (
 		<PageWrapper title={`${userdata.name} ${userdata.surname}`}>
@@ -180,14 +105,14 @@ const Profile = () => {
 					<span className='fw-bold'>13 hours ago</span>
 				</SubHeaderRight>
 			</SubHeader>
-			<Page>
+			<Page container='fluid'>
 				<div className='row'>
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Profile</div>
 					</div>
 				</div>
 				<div className='row h-100 align-content-start'>
-					<div className='col-md-8'>
+					<div className='col-md-12'>
 						<Card>
 							<CardBody>
 								<div className='col-12'>
@@ -225,8 +150,7 @@ const Profile = () => {
 									</div>
 								</div>
 							</CardBody>
-						</Card>
-						<Card>
+
 							<CardHeader>
 								<CardLabel icon='Person' iconColor='success'>
 									<CardTitle tag='div' className='h5'>
@@ -270,21 +194,7 @@ const Profile = () => {
 										</FormGroup>
 									</div>
 								</div>
-							</CardBody>
-						</Card>
-						<Card>
-							<CardHeader>
-								<CardLabel icon='Phonelink' iconColor='danger'>
-									<CardTitle tag='div' className='h5'>
-										Contact Information
-									</CardTitle>
-									<CardSubTitle tag='div' className='h6'>
-										User's contact information
-									</CardSubTitle>
-								</CardLabel>
-							</CardHeader>
-							<CardBody>
-								<div className='row g-4'>
+								<div className='row g-4 mt-2'>
 									<div className='col-md-6'>
 										<FormGroup
 											id='emailAddress'
@@ -310,6 +220,42 @@ const Profile = () => {
 												type='tel'
 												placeholder='Phone Number'
 												autoComplete='tel'
+												onChange={formik.handleChange}
+												onBlur={formik.handleBlur}
+												value={formik.values.phone}
+												isValid={formik.isValid}
+												// isTouched={formik.touched.phone}
+												// invalidFeedback={formik.errors.phone}
+												validFeedback='Looks good!'
+											/>
+										</FormGroup>
+									</div>
+								</div>
+								<div className='row g-4 mt-2'>
+									<div className='col-md-6'>
+										<FormGroup
+											id='gender'
+											label='Gender'
+											isFloating>
+											<Input
+												type='email'
+												placeholder='Email address'
+												autoComplete='email'
+												onChange={formik.handleChange}
+												onBlur={formik.handleBlur}
+												value={formik.values.emailAddress}
+												isValid={formik.isValid}
+												// isTouched={formik.touched.emailAddress}
+												// invalidFeedback={formik.errors.emailAddress}
+												validFeedback='Looks good!'
+											/>
+										</FormGroup>
+									</div>
+									<div className='col-md-6'>
+										<FormGroup id='dob' label='Date of Birth' isFloating>
+											<Input
+												type='date'
+												placeholder='Date of Birth'
 												onChange={formik.handleChange}
 												onBlur={formik.handleBlur}
 												value={formik.values.phone}
@@ -420,21 +366,6 @@ const Profile = () => {
 									every 3 months at most.
 								</CommonDesc>
 							</CardFooter>
-						</Card>
-					</div>
-					<div className='col-md-4'>
-						<Card className='position-sticky sticky-top-size'>
-							<CardHeader>
-								<CardLabel icon='MarkEmailUnread'>
-									<CardTitle tag='div' className='h5'>
-										Email notification
-									</CardTitle>
-								</CardLabel>
-							</CardHeader>
-							<CardBody>
-								<h3>Tasks</h3>
-								<Todo list={list} setList={setList} />
-							</CardBody>
 						</Card>
 					</div>
 				</div>

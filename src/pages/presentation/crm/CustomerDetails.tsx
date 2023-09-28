@@ -193,8 +193,7 @@ const Customer = () => {
 						color='primary'
 						isLink
 						icon='ArrowBack'
-						tag='a'
-						to={`../${dashboardPagesMenu.Customers.path}`}>
+						tag='a'>
 						Back to List
 					</Button>
 					<SubheaderSeparator />

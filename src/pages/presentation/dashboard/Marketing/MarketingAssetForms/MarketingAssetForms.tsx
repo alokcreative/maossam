@@ -74,7 +74,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 			isStaticBackdrop>
 			<ModalHeader setIsOpen={setIsModalOpen}>
 				<ModalTitle id='mks1' />
-			</ModalHeader>
+			</ModalHeader>  
 			<ModalBody>
 				<div className='row p-auto'>
 					<div className=' mb-4'>

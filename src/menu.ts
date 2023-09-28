@@ -38,39 +38,18 @@ export const dashboardPagesMenu = {
 		icon: 'Dashboard',
 		subMenu: null,
 	},
-	dashboardproduct: {
-		id: 'dashboardproduct',
-		text: 'Dashboard/Product',
-		path: 'dashboard-product',
-		icon: 'inventory_2',
-		subMenu: null,
-	},
-	workingslot: {
-		id: 'workingslot',
-		text: 'Working Time Slot',
-		path: '/timeslot',
-		icon: 'schedule',
-		subMenu: null,
-	},
-	products: {
-		id: 'products',
-		text: 'Products',
-		path: '/products',
+	product_services: {
+		id: 'product_services',
+		text: 'Product-Services',
+		path: 'product-services',
 		icon: 'inventory',
-		subMenu: null,
-	},
-	Customers: {
-		id: 'clientprofile',
-		text: 'Customers',
-		path: 'customers-lists',
-		icon: 'person',
 		subMenu: null,
 	},
 	goals: {
 		id: 'goals',
 		text: 'Goals',
 		path: '/goals',
-		icon: 'task',
+		icon: 'AdsClick',
 		subMenu: null,
 	},
 	tasks: {
@@ -80,11 +59,11 @@ export const dashboardPagesMenu = {
 		icon: 'flag',
 		subMenu: null,
 	},
-	partners: {
-		id: 'partners',
-		text: 'Partners',
-		path: '/partners-list',
-		icon: 'group',
+	workingslot: {
+		id: 'workingslot',
+		text: 'Working Time Slot',
+		path: '/timeslot',
+		icon: 'schedule',
 		subMenu: null,
 	},
 	marketingassets: {
@@ -94,34 +73,13 @@ export const dashboardPagesMenu = {
 		icon: 'analytics',
 		subMenu: null,
 	},
-	marketingplan: {
-		id: 'marketingplan',
-		text: 'Marketing Plan',
-		path: 'marketing-plans',
-		icon: 'description',
-		subMenu: null,
-	},
-	marketingtools: {
-		id: 'marketingtools',
-		text: 'Marketing Tools',
-		path: '/marketing-toolbox',
-		icon: 'insights',
-		subMenu: null,
-	},
-	marketingaction: {
-		id: 'marketingactions',
-		text: 'Marketing Actions',
-		path: '/marketing-actions',
-		icon: 'Wysiwyg',
-		subMenu: null,
-	},
 	faq: {
 		id: 'faq',
 		text: 'FAQ',
 		path: '/faq',
 		icon: 'contact_support',
 		subMenu: null,
-	}
+	},
 };
 export const adminDashboardPagesMenu = {
 	dashboard: {
@@ -138,6 +96,20 @@ export const adminDashboardPagesMenu = {
 		icon: 'Group',
 		subMenu: null,
 	},
+	product: {
+		id: 'products',
+		text: 'Products',
+		path: '/products',
+		icon: 'inventory_2',
+		subMenu: null,
+	},
+	goals: {
+		id: 'goals',
+		text: 'Goals',
+		path: '/goals',
+		icon: 'AdsClick',
+		subMenu: null,
+	},
 	task: {
 		id: 'task',
 		text: 'Task',
@@ -145,32 +117,11 @@ export const adminDashboardPagesMenu = {
 		icon: 'Task',
 		subMenu: null,
 	},
-	projects: {
+	marketing_assets: {
 		id: 'projects',
-		text: 'Projects',
-		path: '/projects',
+		text: 'Marketing Assets',
+		path: '/marketing-assets',
 		icon: 'Fact Check',
-		subMenu: null,
-	},
-	timeTracking: {
-		id: 'timetracking',
-		text: 'Time Tracking ',
-		path: '/time-tracking',
-		icon: 'Schedule',
-		subMenu: null,
-	},
-	subscription: {
-		id: 'subscription',
-		text: 'Subscription',
-		path: '/subscription',
-		icon: 'Subscriptions',
-		subMenu: null,
-	},
-	reportingAndAnalytics : {
-		id: 'reportingAndAnalytics',
-		text: 'Reporting and Analytics',
-		path: '/reporting-and-Analytics',
-		icon: 'Summarize',
 		subMenu: null,
 	},
 };

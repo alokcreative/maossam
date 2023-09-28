@@ -31,7 +31,6 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 				.setAttribute('content', description || process.env.REACT_APP_META_DESC || '');
 		});
 
-
 		const { user } = useSelector((state: RootState) => state.auth);
 		const savedValue = localStorage?.getItem('user');
 		const localUser = savedValue ? JSON.parse(savedValue) : null;

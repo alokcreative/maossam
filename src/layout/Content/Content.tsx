@@ -4,10 +4,6 @@ import PageWrapper from '../PageWrapper/PageWrapper';
 import Page from '../Page/Page';
 import SubHeader from '../SubHeader/SubHeader';
 import ContentRoutes from './ContentRoutes';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import Login from '../../pages/presentation/auth/Login';
 
 const LOADING = (
 	<PageWrapper>
