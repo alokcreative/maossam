@@ -94,16 +94,16 @@ const Tasks: FC = () => {
 									<th scope='col' className='cursor-pointer'>
 										#
 									</th>
-									<th scope='col'>Due Date</th>
 									<th scope='col' className='cursor-pointer'>
 										Name
 									</th>
+									<th scope='col'>Due Date</th>
 									<th scope='col'>Expected Time</th>
 									<th scope='col' className='cursor-pointer'>
 										Status
 									</th>
 									<th scope='col' className='cursor-pointer'>
-										Edit
+										Action
 									</th>
 								</tr>
 							</thead>

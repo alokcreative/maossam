@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import Badge from '../components/bootstrap/Badge';
 import Button from '../components/bootstrap/Button';
 
-
 interface ITableRowProps {
 	id: number;
 	dueDate: string;
@@ -25,7 +24,6 @@ const TableRow: FC<ITableRowProps> = ({
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
-			<td>{dueDate}</td>
 			<td>
 				<div>
 					{name}
@@ -34,6 +32,7 @@ const TableRow: FC<ITableRowProps> = ({
 					</div>
 				</div>
 			</td>
+			<td>{dueDate}</td>
 			<td>{expectedTime}</td>
 			<td className='h5'>
 				<Badge
@@ -47,9 +46,9 @@ const TableRow: FC<ITableRowProps> = ({
 				</Badge>
 			</td>
 			<td>
-				<Button icon='Edit' color='primary' isLight>
-					{edit}
-				</Button>
+				<Button icon='Visibility' color='primary' isLight />
+				<Button icon='Edit' color='success' isLight />
+				<Button icon='Delete' color='danger' isLight />
 			</td>
 		</tr>
 	);

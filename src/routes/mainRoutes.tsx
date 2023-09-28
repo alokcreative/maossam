@@ -19,6 +19,7 @@ import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusine
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
 import Tasks from '../pages/presentation/dashboard/Tasks';
 import Profile from '../pages/presentation/profile/Profile';
+import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
 
 const LANDING = {
 	DASHBOARD: lazy(() => import('../pages/presentation/dashboard/DashboardPage')),
@@ -847,6 +848,10 @@ const documentation: RouteProps[] = [
 	{
 		path: dashboardPagesMenu.product_services.path,
 		element: <ProductPage />,
+	},
+	{
+		path: `${pagesMenu.goalId.path}/:id`,
+		element: <TaskManagement />,
 	},
 	{
 		path: dashboardPagesMenu.faq.path,
