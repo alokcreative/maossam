@@ -6,7 +6,7 @@ import Checks from '../../components/bootstrap/forms/Checks';
 import Chart from '../../components/extras/Chart';
 import Badge from '../../components/bootstrap/Badge';
 import Button from '../../components/bootstrap/Button';
-import { demoPagesMenu } from '../../menu';
+import { pagesMenu } from '../../menu';
 import useDarkMode from '../../hooks/useDarkMode';
 
 interface ICommonTableRowProps {
@@ -87,14 +87,14 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({
 			</th> */}
 			<th scope='row'>{id}</th>
 			<td>
-				<Link to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}>
+				<Link to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`}>
 					<img src={image} alt={name} width={54} height={54} />
 				</Link>
 			</td>
 			<td>
 				<div>
 					<Link
-						to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}
+						to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`}
 						className={classNames('fw-bold', {
 							'link-dark': !darkModeStatus,
 							'link-light': darkModeStatus,
@@ -145,7 +145,7 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({
 					isLight
 					icon='info'
 					tag='a'
-					to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}
+					to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`}
 					aria-label='Detail'
 				/>
 			</td>

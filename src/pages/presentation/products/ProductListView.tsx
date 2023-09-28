@@ -37,7 +37,7 @@ import Select from '../../../components/bootstrap/forms/Select';
 import Popovers from '../../../components/bootstrap/Popovers';
 
 import data from '../../../common/data/dummyProductData';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,

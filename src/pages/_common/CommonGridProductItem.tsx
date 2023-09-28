@@ -20,7 +20,7 @@ import Badge from '../../components/bootstrap/Badge';
 import { priceFormat } from '../../helpers/helpers';
 import showNotification from '../../components/extras/showNotification';
 import Icon from '../../components/icon/Icon';
-import { demoPagesMenu } from '../../menu';
+import { pagesMenu } from '../../menu';
 import useDarkMode from '../../hooks/useDarkMode';
 
 interface ICommonGridProductItemProps {
@@ -167,7 +167,7 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 					}`}
 					size='lg'
 					tag='a'
-					to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}>
+					to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`}>
 					View Product
 				</Button>
 			</CardFooter>

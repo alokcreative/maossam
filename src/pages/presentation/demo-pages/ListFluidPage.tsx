@@ -8,7 +8,7 @@ import Page from '../../../layout/Page/Page';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import CommonUpcomingEvents from '../../_common/CommonUpcomingEvents';
 import Popovers from '../../../components/bootstrap/Popovers';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 const ListFluidPage = () => {
@@ -17,7 +17,7 @@ const ListFluidPage = () => {
 	const [date, setDate] = useState<Date>(new Date());
 
 	return (
-		<PageWrapper title={demoPagesMenu.listPages.subMenu.listFluid.text}>
+		<PageWrapper title={pagesMenu.listPages.subMenu.listFluid.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Icon icon='Info' className='me-2' size='2x' />

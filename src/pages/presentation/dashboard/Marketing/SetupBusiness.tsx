@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
-import { demoPagesMenu } from '../../../../menu';
+import { pagesMenu } from '../../../../menu';
 import Page from '../../../../layout/Page/Page';
 import Wizard, { WizardItem } from '../../../../components/Wizard';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
@@ -45,7 +45,7 @@ const SetupBusiness = () => {
 		},
 	});
 	return (
-		<PageWrapper title={demoPagesMenu.setupbusiness.text}>
+		<PageWrapper title={pagesMenu.setupbusiness.text}>
 			<Page>
 				<div className='row'>
 					<div className='col-12'>

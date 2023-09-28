@@ -16,7 +16,7 @@ import useDarkMode from './hooks/useDarkMode';
 import Button from './components/bootstrap/Button';
 import AuthContext from './contexts/authContext';
 import {useSelector} from 'react-redux'
-import { componentPagesMenu, demoPagesMenu } from './menu';
+import { componentPagesMenu, pagesMenu } from './menu';
 // import FormGroup from './components/bootstrap/forms/FormGroup';
 // import { Input } from './components/icon/material-icons';
 import { useNavigate } from 'react-router-dom';
@@ -158,7 +158,7 @@ const ProfileTour = () => {
 			}
 			if (values.tourLink === 'customerProfiles') {
 				navigate(
-					`../${demoPagesMenu.appointment.subMenu.employeeID.path}/${userData?.id || 0}`,
+					`../${pagesMenu.appointment.subMenu.employeeID.path}/${userData?.id || 0}`,
 				);
 				setIsOpen(false);
 			}

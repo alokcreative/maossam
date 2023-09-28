@@ -1,7 +1,7 @@
 import React, { FC, HTMLAttributes, useCallback, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
-import { dashboardPagesMenu, demoPagesMenu } from '../../../../menu';
+import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../../layout/SubHeader/SubHeader';
 import useDarkMode from '../../../../hooks/useDarkMode';
 import Card, {
@@ -175,7 +175,7 @@ const MarketingAssets = () => {
 	useTourStep(12);
 	const navigate = useNavigate();
 	const handleOnClickToProjectPage = useCallback(
-		() => navigate(`../${demoPagesMenu.projectManagement.subMenu.itemID.path}/1`),
+		() => navigate(`../${pagesMenu.projectManagement.subMenu.itemID.path}/1`),
 		[navigate],
 	);
 

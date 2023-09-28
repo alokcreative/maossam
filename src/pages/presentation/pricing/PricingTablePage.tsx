@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubheaderSeparator } from '../../../layout/SubHeader/SubHeader';
 import Page from '../../../layout/Page/Page';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import Card, { CardBody, CardHeader } from '../../../components/bootstrap/Card';
 import Icon from '../../../components/icon/Icon';
 import Button from '../../../components/bootstrap/Button';
@@ -15,14 +15,14 @@ const PricingTablePage = () => {
 	const { darkModeStatus } = useDarkMode();
 	const [activeElementId, setActiveElementId] = useState<string | null>(null);
 	return (
-		<PageWrapper title={demoPagesMenu.pricingTable.text}>
+		<PageWrapper title={pagesMenu.pricingTable.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
 						list={[
 							{
-								title: demoPagesMenu.pricingTable.text,
-								to: `/${demoPagesMenu.pricingTable.path}`,
+								title: pagesMenu.pricingTable.text,
+								to: `/${pagesMenu.pricingTable.path}`,
 							},
 						]}
 					/>

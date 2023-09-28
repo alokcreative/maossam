@@ -27,7 +27,7 @@ import Card, {
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import Input from '../../../components/bootstrap/forms/Input';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IValues {
@@ -125,7 +125,7 @@ const GridFluidPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.gridPages.subMenu.gridFluid.text}>
+		<PageWrapper title={pagesMenu.gridPages.subMenu.gridFluid.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<img src={Company2} alt='Company' height={24} />

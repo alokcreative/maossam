@@ -3,7 +3,7 @@ import { RouteProps } from 'react-router-dom';
 import {
 	componentPagesMenu,
 	dashboardPagesMenu,
-	demoPagesMenu,
+	pagesMenu,
 	gettingStartedPagesMenu,
 	pageLayoutTypesPagesMenu,
 	modalPages,
@@ -207,19 +207,19 @@ export const presentation: RouteProps[] = [
 	 * Auth Page
 	 */
 	{
-		path: demoPagesMenu.page404.path,
+		path: pagesMenu.page404.path,
 		element: <AUTH.PAGE_404 />,
 	},
 	{
-		path: demoPagesMenu.login.path,
+		path: pagesMenu.login.path,
 		element: <Login />,
 	},
 	{
-		path: demoPagesMenu.signUp.path,
+		path: pagesMenu.signUp.path,
 		element: <Login isSignUp />,
 	},
 	{
-		path: `${demoPagesMenu.profile.path}/:id`,
+		path: `${pagesMenu.profile.path}/:id`,
 		element: <Profile />,
 	},
 	/**
@@ -248,11 +248,11 @@ export const presentation: RouteProps[] = [
 	 * Single Pages
 	 */
 	{
-		path: demoPagesMenu.singlePages.subMenu.boxedSingle.path,
+		path: pagesMenu.singlePages.subMenu.boxedSingle.path,
 		element: <SINGLE.BOXED />,
 	},
 	{
-		path: demoPagesMenu.singlePages.subMenu.fluidSingle.path,
+		path: pagesMenu.singlePages.subMenu.fluidSingle.path,
 		element: <SINGLE.FLUID />,
 	},
 
@@ -260,11 +260,11 @@ export const presentation: RouteProps[] = [
 	 * List
 	 */
 	{
-		path: demoPagesMenu.listPages.subMenu.listBoxed.path,
+		path: pagesMenu.listPages.subMenu.listBoxed.path,
 		element: <LIST.BOXED />,
 	},
 	{
-		path: demoPagesMenu.listPages.subMenu.listFluid.path,
+		path: pagesMenu.listPages.subMenu.listFluid.path,
 		element: <LIST.FLUID />,
 	},
 
@@ -272,11 +272,11 @@ export const presentation: RouteProps[] = [
 	 * Grid
 	 */
 	{
-		path: demoPagesMenu.gridPages.subMenu.gridBoxed.path,
+		path: pagesMenu.gridPages.subMenu.gridBoxed.path,
 		element: <GRID.BOXED />,
 	},
 	{
-		path: demoPagesMenu.gridPages.subMenu.gridFluid.path,
+		path: pagesMenu.gridPages.subMenu.gridFluid.path,
 		element: <GRID.FLUID />,
 	},
 
@@ -284,43 +284,43 @@ export const presentation: RouteProps[] = [
 	 * Edit
 	 */
 	{
-		path: demoPagesMenu.editPages.subMenu.editModern.path,
+		path: pagesMenu.editPages.subMenu.editModern.path,
 		element: <EDIT.MODERN />,
 	},
 	{
-		path: demoPagesMenu.editPages.subMenu.editBoxed.path,
+		path: pagesMenu.editPages.subMenu.editBoxed.path,
 		element: <EDIT.BOXED />,
 	},
 	{
-		path: demoPagesMenu.editPages.subMenu.editFluid.path,
+		path: pagesMenu.editPages.subMenu.editFluid.path,
 		element: <EDIT.FLUID />,
 	},
 	{
-		path: demoPagesMenu.editPages.subMenu.editWizard.path,
+		path: pagesMenu.editPages.subMenu.editWizard.path,
 		element: <EDIT.WIZARD />,
 	},
 	{
-		path: demoPagesMenu.editPages.subMenu.editInCanvas.path,
+		path: pagesMenu.editPages.subMenu.editInCanvas.path,
 		element: <EDIT.IN_CANVAS />,
 	},
 	{
-		path: demoPagesMenu.editPages.subMenu.editInModal.path,
+		path: pagesMenu.editPages.subMenu.editInModal.path,
 		element: <EDIT.IN_MODAL />,
 	},
 
 	{
-		path: demoPagesMenu.pricingTable.path,
+		path: pagesMenu.pricingTable.path,
 		element: <PRICING.PRICING_TABLE />,
 	},
 	/**
 	 * App > Project Management
 	 */
 	{
-		path: demoPagesMenu.projectManagement.subMenu.list.path,
+		path: pagesMenu.projectManagement.subMenu.list.path,
 		element: <APP.PROJECT_MANAGEMENT.PROJECTS_LIST />,
 	},
 	{
-		path: `${demoPagesMenu.projectManagement.subMenu.itemID.path}/:id`,
+		path: `${pagesMenu.projectManagement.subMenu.itemID.path}/:id`,
 		element: <APP.PROJECT_MANAGEMENT.PROJECT />,
 	},
 
@@ -328,11 +328,11 @@ export const presentation: RouteProps[] = [
 	 * App > Knowledge
 	 */
 	{
-		path: demoPagesMenu.knowledge.subMenu.grid.path,
+		path: pagesMenu.knowledge.subMenu.grid.path,
 		element: <APP.KNOWLEDGE.GRID />,
 	},
 	{
-		path: `${demoPagesMenu.knowledge.subMenu.itemID.path}/:id`,
+		path: `${pagesMenu.knowledge.subMenu.itemID.path}/:id`,
 		element: <APP.KNOWLEDGE.VIEW />,
 	},
 
@@ -340,19 +340,19 @@ export const presentation: RouteProps[] = [
 	 * App > Sales
 	 */
 	{
-		path: demoPagesMenu.sales.subMenu.transactions.path,
+		path: pagesMenu.sales.subMenu.transactions.path,
 		element: <APP.SALES.TRANSACTIONS />,
 	},
 	{
-		path: demoPagesMenu.sales.subMenu.salesList.path,
+		path: pagesMenu.sales.subMenu.salesList.path,
 		element: <APP.SALES.PRODUCTS />,
 	},
 	{
-		path: demoPagesMenu.sales.subMenu.productsGrid.path,
+		path: pagesMenu.sales.subMenu.productsGrid.path,
 		element: <APP.SALES.PRODUCTS_GRID />,
 	},
 	{
-		path: `${demoPagesMenu.sales.subMenu.productID.path}/:id`,
+		path: `${pagesMenu.sales.subMenu.productID.path}/:id`,
 		element: <APP.SALES.PRODUCTS_VIEW />,
 	},
 
@@ -360,19 +360,19 @@ export const presentation: RouteProps[] = [
 	 * App > Appointment
 	 */
 	{
-		path: demoPagesMenu.appointment.subMenu.calendar.path,
+		path: pagesMenu.appointment.subMenu.calendar.path,
 		element: <APP.APPOINTMENT.CALENDAR />,
 	},
 	{
-		path: demoPagesMenu.appointment.subMenu.employeeList.path,
+		path: pagesMenu.appointment.subMenu.employeeList.path,
 		element: <APP.APPOINTMENT.EMPLOYEE_LIST />,
 	},
 	{
-		path: `${demoPagesMenu.appointment.subMenu.employeeID.path}/:id`,
+		path: `${pagesMenu.appointment.subMenu.employeeID.path}/:id`,
 		element: <APP.APPOINTMENT.EMPLOYEE_VIEW />,
 	},
 	{
-		path: demoPagesMenu.appointment.subMenu.appointmentList.path,
+		path: pagesMenu.appointment.subMenu.appointmentList.path,
 		element: <APP.APPOINTMENT.APPOINTMENT_LIST />,
 	},
 
@@ -380,15 +380,15 @@ export const presentation: RouteProps[] = [
 	 * App > CRM
 	 */
 	{
-		path: demoPagesMenu.crm.subMenu.dashboard.path,
+		path: pagesMenu.crm.subMenu.dashboard.path,
 		element: <APP.CRM.CRM_DASHBOARD />,
 	},
 	{
-		path: `${demoPagesMenu.crm.subMenu.customerID.path}/:id`,
+		path: `${pagesMenu.crm.subMenu.customerID.path}/:id`,
 		element: <APP.CRM.CUSTOMER />,
 	},
 	{
-		path: `${demoPagesMenu.crm.subMenu.customerProfile.path}`,
+		path: `${pagesMenu.crm.subMenu.customerProfile.path}`,
 		element: <APP.CRM.CUSTOMER_PROFILE />,
 	},
 
@@ -396,11 +396,11 @@ export const presentation: RouteProps[] = [
 	 * App > Chat
 	 */
 	{
-		path: demoPagesMenu.chat.subMenu.withListChat.path,
+		path: pagesMenu.chat.subMenu.withListChat.path,
 		element: <APP.CHAT.WITH_LIST />,
 	},
 	{
-		path: demoPagesMenu.chat.subMenu.onlyListChat.path,
+		path: pagesMenu.chat.subMenu.onlyListChat.path,
 		element: <APP.CHAT.ONLY_LIST />,
 	},
 
@@ -830,7 +830,7 @@ const documentation: RouteProps[] = [
 		element: <MarketingAssets />,
 	},
 	{
-		path: demoPagesMenu.addtask.path,
+		path: pagesMenu.addtask.path,
 		element: <AddTask />,
 	},
 	{
@@ -842,7 +842,7 @@ const documentation: RouteProps[] = [
 		element: <Tasks />,
 	},
 	{
-		path: demoPagesMenu.setupbusiness.path,
+		path: pagesMenu.setupbusiness.path,
 		element: <SetupBusiness />,
 	},
 	{
@@ -854,7 +854,7 @@ const documentation: RouteProps[] = [
 		element: <FaqPage />,
 	},
 	{
-		path: demoPagesMenu.temslist.path,
+		path: pagesMenu.temslist.path,
 		element: <TEAMS.TEAMS_LIST />,
 	},
 ];

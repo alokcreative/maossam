@@ -49,7 +49,7 @@ import OffCanvas, {
 } from '../../../components/bootstrap/OffCanvas';
 import Checks from '../../../components/bootstrap/forms/Checks';
 import Popovers from '../../../components/bootstrap/Popovers';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import showNotification from '../../../components/extras/showNotification';
 import { TColor } from '../../../type/color-type';
 
@@ -231,7 +231,7 @@ const EditBoxedPage = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.editPages.subMenu.editBoxed.text}>
+		<PageWrapper title={pagesMenu.editPages.subMenu.editBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

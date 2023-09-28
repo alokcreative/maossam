@@ -10,7 +10,7 @@ import SubHeader, {
 	SubheaderSeparator,
 } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import tableData from '../../../common/data/dummyProductData';
 import Avatar from '../../../components/Avatar';
 import USERS from '../../../common/data/userDummyData';
@@ -194,7 +194,7 @@ const ProductViewPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.sales.subMenu.product.text}>
+		<PageWrapper title={pagesMenu.sales.subMenu.product.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>

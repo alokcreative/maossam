@@ -28,7 +28,7 @@ import User1Img from '../../../../assets/img/wanna/wanna2.png';
 import CommonMyWallet from '../../../_common/CommonMyWallet';
 import showNotification from '../../../../components/extras/showNotification';
 import Icon from '../../../../components/icon/Icon';
-import { demoPagesMenu } from '../../../../menu';
+import { pagesMenu } from '../../../../menu';
 import editPasswordValidate from '../../demo-pages/helper/editPasswordValidate';
 
 // interface IPreviewItemProps {
@@ -227,7 +227,7 @@ const AddTask: FC = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.addtask.text}>
+		<PageWrapper title={pagesMenu.addtask.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>

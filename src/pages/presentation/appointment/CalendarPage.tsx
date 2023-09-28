@@ -15,7 +15,7 @@ import {
 } from '../../../components/extras/calendarHelper';
 import SERVICES, { getServiceDataWithServiceName } from '../../../common/data/serviceDummyData';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-// import { demoPagesMenu } from '../../../menu';
+// import { pagesMenu } from '../../../menu';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
 import Icon from '../../../components/icon/Icon';
 import Button from '../../../components/bootstrap/Button';

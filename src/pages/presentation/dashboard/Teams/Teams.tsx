@@ -14,7 +14,7 @@ import USERS from '../../../../common/data/userDummyData';
 import Badge from '../../../../components/bootstrap/Badge';
 import Button from '../../../../components/bootstrap/Button';
 import Input from '../../../../components/bootstrap/forms/Input';
-import { demoPagesMenu } from '../../../../menu';
+import { pagesMenu } from '../../../../menu';
 import useTourStep from '../../../../hooks/useTourStep';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,7 +47,7 @@ const Teams = () => {
 		)
 		.map((i) => USERS[i]);
 	return (
-		<PageWrapper title={demoPagesMenu.appointment.subMenu.employeeList.text}>
+		<PageWrapper title={pagesMenu.appointment.subMenu.employeeList.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button
@@ -79,7 +79,7 @@ const Teams = () => {
 						color='info'
 						isLight
 						tag='a'
-						to={`../${demoPagesMenu.editPages.subMenu.editWizard.path}`}>
+						to={`../${pagesMenu.editPages.subMenu.editWizard.path}`}>
 						New Team
 					</Button>
 				</SubHeaderRight>
@@ -140,7 +140,7 @@ const Teams = () => {
 																hoverShadow='sm'
 																tag='a'
 																to={`../${
-																	demoPagesMenu.appointment
+																	pagesMenu.appointment
 																		.subMenu.employeeID.path
 																}/${user.id || 0}`}
 																data-tour={user.name}

@@ -39,7 +39,7 @@ import data from '../../../common/data/dummyProductData';
 
 // import data from '../../../common/data/dummyProductData';
 // import data from '../../../common/data/dummyProductData';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
@@ -100,7 +100,7 @@ const ListBoxedPage = () => {
 	const { selectTable, SelectAllCheck } = useSelectTable(onCurrentPageItems);
 
 	return (
-		<PageWrapper title={demoPagesMenu.listPages.subMenu.listBoxed.text}>
+		<PageWrapper title={pagesMenu.listPages.subMenu.listBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Avatar srcSet={UserImageWebp} src={UserImage} size={32} />

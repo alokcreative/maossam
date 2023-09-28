@@ -4,7 +4,7 @@ import {
 	adminDashboardPagesMenu,
 	componentPagesMenu,
 	dashboardPagesMenu,
-	demoPagesMenu,
+	pagesMenu,
 	gettingStartedPagesMenu,
 	pageLayoutTypesPagesMenu,
 } from '../menu';
@@ -29,78 +29,78 @@ const headers: RouteProps[] = [
 	{ path: pageLayoutTypesPagesMenu.pageLayout.subMenu.onlySubheader.path, element: null },
 	{ path: pageLayoutTypesPagesMenu.pageLayout.subMenu.onlyContent.path, element: null },
 	{ path: pageLayoutTypesPagesMenu.blank.path, element: null },
-	{ path: demoPagesMenu.login.path, element: null },
-	{ path: demoPagesMenu.signUp.path, element: null },
-	{ path: demoPagesMenu.page404.path, element: null },
-	{ path: demoPagesMenu.knowledge.subMenu.grid.path, element: null },
+	{ path: pagesMenu.login.path, element: null },
+	{ path: pagesMenu.signUp.path, element: null },
+	{ path: pagesMenu.page404.path, element: null },
+	{ path: pagesMenu.knowledge.subMenu.grid.path, element: null },
 	{ path: dashboardPagesMenu.dashboard.path,
 		 element: <DashboardHeader /> 
 		},
 	{
-		path: demoPagesMenu.projectManagement.subMenu.list.path,
+		path: pagesMenu.projectManagement.subMenu.list.path,
 		element: <DashboardHeader />,
 	},
-	{ path: demoPagesMenu.pricingTable.path, 
+	{ path: pagesMenu.pricingTable.path, 
 		// element: <DashboardHeader /> 
 	},
 	{
-		path: demoPagesMenu.appointment.subMenu.calendar.path,
+		path: pagesMenu.appointment.subMenu.calendar.path,
 		element: <DashboardBookingHeader />,
 	},
 	{
-		path: demoPagesMenu.appointment.subMenu.employeeList.path,
+		path: pagesMenu.appointment.subMenu.employeeList.path,
 		element: <DashboardBookingHeader />,
 	},
 	{
-		path: demoPagesMenu.listPages.subMenu.listFluid.path,
+		path: pagesMenu.listPages.subMenu.listFluid.path,
 		element: <DashboardBookingHeader />,
 	},
 	{
-		path: `${demoPagesMenu.editPages.path}/*`,
+		path: `${pagesMenu.editPages.path}/*`,
 		element: <DashboardBookingHeader />,
 	},
 	{
-		path: `${demoPagesMenu.appointment.subMenu.employeeID.path}/*`,
+		path: `${pagesMenu.appointment.subMenu.employeeID.path}/*`,
 		element: <DashboardBookingHeader />,
 	},
 	{
-		path: `${demoPagesMenu.projectManagement.subMenu.itemID.path}/*`,
+		path: `${pagesMenu.projectManagement.subMenu.itemID.path}/*`,
 		element: <DashboardBookingHeader />,
 	},
 	{
-		path: demoPagesMenu.singlePages.subMenu.fluidSingle.path,
+		path: pagesMenu.singlePages.subMenu.fluidSingle.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: demoPagesMenu.singlePages.subMenu.boxedSingle.path,
+		path: pagesMenu.singlePages.subMenu.boxedSingle.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: demoPagesMenu.sales.subMenu.transactions.path,
+		path: pagesMenu.sales.subMenu.transactions.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: demoPagesMenu.chat.subMenu.withListChat.path,
+		path: pagesMenu.chat.subMenu.withListChat.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: demoPagesMenu.chat.subMenu.onlyListChat.path,
+		path: pagesMenu.chat.subMenu.onlyListChat.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: `${demoPagesMenu.knowledge.subMenu.itemID.path}/:id`,
+		path: `${pagesMenu.knowledge.subMenu.itemID.path}/:id`,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: demoPagesMenu.crm.subMenu.dashboard.path,
+		path: pagesMenu.crm.subMenu.dashboard.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: demoPagesMenu.crm.subMenu.customersList.path,
+		path: pagesMenu.crm.subMenu.customersList.path,
 		element: <ProfilePageHeader />,
 	},
 	{
-		path: `${demoPagesMenu.crm.subMenu.customerID.path}/:id`,
+		path: `${pagesMenu.crm.subMenu.customerID.path}/:id`,
 		element: <ProfilePageHeader />,
 	},
 	// {
@@ -108,27 +108,27 @@ const headers: RouteProps[] = [
 	// 	element: <SummaryHeader />,
 	// },
 	{
-		path: demoPagesMenu.gridPages.subMenu.gridBoxed.path,
+		path: pagesMenu.gridPages.subMenu.gridBoxed.path,
 		element: <ProductsHeader />,
 	},
 	{
-		path: demoPagesMenu.gridPages.subMenu.gridFluid.path,
+		path: pagesMenu.gridPages.subMenu.gridFluid.path,
 		element: <ProductsHeader />,
 	},
 	{
-		path: demoPagesMenu.listPages.subMenu.listBoxed.path,
+		path: pagesMenu.listPages.subMenu.listBoxed.path,
 		element: <ProductListHeader />,
 	},
 	{
-		path: demoPagesMenu.sales.subMenu.salesList.path,
+		path: pagesMenu.sales.subMenu.salesList.path,
 		element: <ProductListHeader />,
 	},
 	{
-		path: demoPagesMenu.sales.subMenu.productsGrid.path,
+		path: pagesMenu.sales.subMenu.productsGrid.path,
 		element: <ProductListHeader />,
 	},
 	{
-		path: `${demoPagesMenu.sales.subMenu.productID.path}/:id`,
+		path: `${pagesMenu.sales.subMenu.productID.path}/:id`,
 		element: <ProductListHeader />,
 	},
 	{

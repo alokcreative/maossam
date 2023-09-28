@@ -11,7 +11,7 @@ import Card, { CardBody, CardTitle } from '../../../components/bootstrap/Card';
 import Badge from '../../../components/bootstrap/Badge';
 
 import data, { CATEGORIES, TTags } from './helper/dummyKnowledgeData';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import useTourStep from '../../../hooks/useTourStep';
 import { TColor } from '../../../type/color-type';
@@ -30,7 +30,7 @@ const Item: FC<IItemProps> = ({ id, image, title, description, tags, color }) =>
 
 	const navigate = useNavigate();
 	const handleOnClick = useCallback(
-		() => navigate(`../${demoPagesMenu.knowledge.subMenu.itemID.path}/${id}`),
+		() => navigate(`../${pagesMenu.knowledge.subMenu.itemID.path}/${id}`),
 		[navigate, id],
 	);
 	return (
@@ -136,7 +136,7 @@ const KnowledgeGridPage = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.knowledge.subMenu.grid.text}>
+		<PageWrapper title={pagesMenu.knowledge.subMenu.grid.text}>
 			<Page>
 				<div className='row'>
 					<div className='col-12 text-center my-5'>

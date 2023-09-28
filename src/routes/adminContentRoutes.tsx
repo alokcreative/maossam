@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
-import { demoPagesMenu, adminDashboardPagesMenu } from '../menu';
+import { pagesMenu, adminDashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
 import TaskManagement from '../pages/superAdmin/task/TaskManagement';
 import Profile from '../pages/presentation/profile/Profile';
@@ -58,11 +58,11 @@ const presentation: RouteProps[] = [
 	 * Landing
 	 */
 	{
-		path: demoPagesMenu.login.path,
+		path: pagesMenu.login.path,
 		element: <Login />,
 	},
 	{
-		path: demoPagesMenu.signUp.path,
+		path: pagesMenu.signUp.path,
 		element: <Login isSignUp />,
 	},
 	{
@@ -70,16 +70,16 @@ const presentation: RouteProps[] = [
 		element: <DASHBOARD.DashboardAdmin />,
 	},
 	{
-		path: demoPagesMenu.page404.path,
+		path: pagesMenu.page404.path,
 		element: <AUTH.PAGE_404 />,
 	},
 
 	{
-		path: `${demoPagesMenu.appointment.subMenu.employeeID.path}/:id`,
+		path: `${pagesMenu.appointment.subMenu.employeeID.path}/:id`,
 		element: <APP.APPOINTMENT.EMPLOYEE_VIEW />,
 	},
 	{
-		path: `${demoPagesMenu.profile.path}/:id`,
+		path: `${pagesMenu.profile.path}/:id`,
 		element: <Profile />,
 	},
 ];

@@ -53,7 +53,7 @@ import OffCanvas, {
 } from '../../../components/bootstrap/OffCanvas';
 import Checks from '../../../components/bootstrap/forms/Checks';
 import showNotification from '../../../components/extras/showNotification';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import { TColor } from '../../../type/color-type';
 
@@ -238,7 +238,7 @@ const EditFluidPage = () => {
 		},
 	});
 	return (
-		<PageWrapper title={demoPagesMenu.editPages.subMenu.editFluid.text}>
+		<PageWrapper title={pagesMenu.editPages.subMenu.editFluid.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>

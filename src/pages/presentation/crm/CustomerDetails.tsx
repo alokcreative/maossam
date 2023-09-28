@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubheaderSeparator } from '../../../layout/SubHeader/SubHeader';
 import Page from '../../../layout/Page/Page';
-import { dashboardPagesMenu, demoPagesMenu } from '../../../menu';
+import { dashboardPagesMenu, pagesMenu } from '../../../menu';
 // import data from '../../../common/data/dummyCustomerData';
 import tableData from '../../../common/data/dummyProductData';
 import Button from '../../../components/bootstrap/Button';
@@ -186,7 +186,7 @@ const Customer = () => {
 		setShowAllItem(!showAllItem);
 	};
 	return (
-		<PageWrapper title={demoPagesMenu.projectManagement.subMenu.item.text}>
+		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button
@@ -280,7 +280,7 @@ const Customer = () => {
 															isLight
 															hoverShadow='sm'
 															tag='a'
-															to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+															to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 															aria-label='More info'
 														/>
 													</div>
@@ -344,7 +344,7 @@ const Customer = () => {
 																isLight
 																hoverShadow='sm'
 																tag='a'
-																to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+																to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 																aria-label='More info'
 															/>
 														</div>
@@ -398,7 +398,7 @@ const Customer = () => {
 																isLight
 																hoverShadow='sm'
 																tag='a'
-																to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+																to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 																aria-label='More info'
 															/>
 														</div>
@@ -452,7 +452,7 @@ const Customer = () => {
 																isLight
 																hoverShadow='sm'
 																tag='a'
-																to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+																to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 																aria-label='More info'
 															/>
 														</div>

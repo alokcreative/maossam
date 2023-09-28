@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
@@ -201,7 +201,7 @@ const ProjectManagementsProject = () => {
 	};
 
 	return (
-		<PageWrapper title={demoPagesMenu.projectManagement.subMenu.item.text}>
+		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					{/* <Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>

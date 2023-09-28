@@ -25,7 +25,7 @@ import Badge from '../../../components/bootstrap/Badge';
 import Input from '../../../components/bootstrap/forms/Input';
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import ProductListView from './ProductListView';
 import Select from '../../../components/bootstrap/forms/Select';
@@ -141,7 +141,7 @@ const ProductPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.gridPages.subMenu.gridBoxed.text}>
+		<PageWrapper title={pagesMenu.gridPages.subMenu.gridBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					{/* <img src={countryName} alt='Company' height={24} /> */}
@@ -193,7 +193,7 @@ const ProductPage = () => {
 									color={item.color}
 									series={item.series}
 									price={item.price}
-									editAction={`../${demoPagesMenu.sales.subMenu.productID.path}/${item.id}`}
+									editAction={`../${pagesMenu.sales.subMenu.productID.path}/${item.id}`}
 									deleteAction={() => handleRemove(item.id)}
 								/>
 							</div>

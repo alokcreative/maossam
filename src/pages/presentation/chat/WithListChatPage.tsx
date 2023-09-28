@@ -24,7 +24,7 @@ import Textarea from '../../../components/bootstrap/forms/Textarea';
 import USERS, { IUserProps } from '../../../common/data/userDummyData';
 import Icon from '../../../components/icon/Icon';
 import ThemeContext from '../../../contexts/themeContext';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import CHATS, { IMessages } from '../../../common/data/chatDummyData';
 import CommonChatStatus from '../../_common/CommonChatStatus';
 
@@ -78,11 +78,11 @@ const WithListChatPage = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const handleLogout = () => {
 		dispatch(logout());
-		navigate(`../${demoPagesMenu.login.path}`)
+		navigate(`../${pagesMenu.login.path}`)
 	};
 
 	return (
-		<PageWrapper title={demoPagesMenu.chat.subMenu.withListChat.text}>
+		<PageWrapper title={pagesMenu.chat.subMenu.withListChat.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<span>

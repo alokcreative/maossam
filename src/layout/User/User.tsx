@@ -5,7 +5,7 @@ import { RootState, AppDispatch } from '../../store/store';
 import { logout } from '../../features/auth/authSlice';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { demoPagesMenu } from '../../menu';
+import { pagesMenu } from '../../menu';
 import { DropdownItem, DropdownMenu } from '../../components/bootstrap/Dropdown';
 import Button from '../../components/bootstrap/Button';
 import useDarkMode from '../../hooks/useDarkMode';
@@ -36,7 +36,7 @@ const User = () => {
 		// 	setUser('');
 		// }
 		// localStorage.setItem('user')
-		navigate(`../${demoPagesMenu.login.path}`);
+		navigate(`../${pagesMenu.login.path}`);
 	};
 
 	return (
@@ -69,7 +69,7 @@ const User = () => {
 						icon='AccountBox'
 						onClick={() =>
 							navigate(
-								`../${demoPagesMenu.profile.path}/${(user?.id || 0).toString()}`,
+								`../${pagesMenu.profile.path}/${(user?.id || 0).toString()}`,
 							)
 						}>
 						{t('menu:Profile') as ReactNode}
@@ -93,7 +93,7 @@ const User = () => {
 							className='navigation-item cursor-pointer'
 							onClick={() =>
 								navigate(
-									`../${demoPagesMenu.profile.path}/${user?.id || 0}`,
+									`../${pagesMenu.profile.path}/${user?.id || 0}`,
 									// @ts-ignore
 									handleItem(),
 								)

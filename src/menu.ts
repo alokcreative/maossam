@@ -134,7 +134,7 @@ export const modalPages = {
 		icon: 'ReportGmailerrorred',
 	},
 };
-export const demoPagesMenu = {
+export const pagesMenu = {
 	pages: {
 		id: 'pages',
 		text: 'Pages',

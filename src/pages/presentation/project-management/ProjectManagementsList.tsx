@@ -1,7 +1,7 @@
 import React, { FC, HTMLAttributes, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
@@ -46,7 +46,7 @@ const Item: FC<IItemProps> = ({
 	const { darkModeStatus } = useDarkMode();
 	const navigate = useNavigate();
 	const handleOnClickToProjectPage = useCallback(
-		() => navigate(`../${demoPagesMenu.projectManagement.subMenu.itemID.path}/1`),
+		() => navigate(`../${pagesMenu.projectManagement.subMenu.itemID.path}/1`),
 		[navigate],
 	);
 	return (
@@ -98,12 +98,12 @@ const ProjectManagementsList = () => {
 	const { darkModeStatus } = useDarkMode();
 	const navigate = useNavigate();
 	const handleOnClickToEmployeeListPage = useCallback(
-		() => navigate(`../${demoPagesMenu.appointment.subMenu.employeeList.path}`),
+		() => navigate(`../${pagesMenu.appointment.subMenu.employeeList.path}`),
 		[navigate],
 	);
 
 	return (
-		<PageWrapper title={demoPagesMenu.projectManagement.subMenu.list.text}>
+		<PageWrapper title={pagesMenu.projectManagement.subMenu.list.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<strong className='fs-5'>Hi John</strong>

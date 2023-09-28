@@ -11,7 +11,7 @@ import Card, {
 } from '../../components/bootstrap/Card';
 import Icon from '../../components/icon/Icon';
 import Button from '../../components/bootstrap/Button';
-import { demoPagesMenu } from '../../menu';
+import { pagesMenu } from '../../menu';
 import Chart, { IChartOptions } from '../../components/extras/Chart';
 import useDarkMode from '../../hooks/useDarkMode';
 
@@ -113,7 +113,7 @@ const CommonApprovedAppointmentChart = () => {
 					<Button
 						color='success'
 						tag='a'
-						to={`../${demoPagesMenu.appointment.subMenu.appointmentList.path}`}>
+						to={`../${pagesMenu.appointment.subMenu.appointmentList.path}`}>
 						View Appointments
 					</Button>
 				</CardActions>

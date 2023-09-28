@@ -27,7 +27,7 @@ import Badge from '../../../components/bootstrap/Badge';
 import Input from '../../../components/bootstrap/forms/Input';
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IValues {
@@ -126,7 +126,7 @@ const GridBoxedPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.gridPages.subMenu.gridBoxed.text}>
+		<PageWrapper title={pagesMenu.gridPages.subMenu.gridBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<img src={Company1} alt='Company' height={24} />

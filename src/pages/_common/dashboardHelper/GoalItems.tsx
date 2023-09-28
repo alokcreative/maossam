@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import useDarkMode from '../../../hooks/useDarkMode';
 import { useNavigate } from 'react-router-dom';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import Card, {
 	CardActions,
 	CardBody,
@@ -22,7 +22,7 @@ interface IItemProps {
 const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
 	const navigate = useNavigate();
 	const handleOnClickToProjectPage = useCallback(
-		() => navigate(`../${demoPagesMenu.projectManagement.subMenu.itemID.path}/${id}`),
+		() => navigate(`../${pagesMenu.projectManagement.subMenu.itemID.path}/${id}`),
 		[navigate, id],
 	);
 	return (
