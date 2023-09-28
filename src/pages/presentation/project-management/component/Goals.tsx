@@ -159,7 +159,7 @@ const Goals: FC = () => {
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
-				<div className='display-4 fw-bold py-3'>Product Goals</div>
+				<div className='display-4 fw-bold py-3'> Goals</div>
 				<div className='row h-100'>
 					<div className='col-12'>
 						<Card stretch>
@@ -178,44 +178,59 @@ const Goals: FC = () => {
 												<tr>
 													<th scope='col'>#</th>
 													<th scope='col'>Name</th>
-													<th scope='col'>Attributes</th>
-													<th scope='col'>TImeline</th>
+													<th scope='col'>Description</th>
+													<th scope='col'>Date</th>
 													<th scope='col'>Status</th>
-													<th scope='col'>Edit</th>
+													<th scope='col'>Action</th>
 												</tr>
 											</thead>
 											<tbody>
 												{dataPagination(goalList, currentPage, perPage).map(
-													(i) => (
-														<tr>
-															<th scope='row'>{i.id}</th>
-															<th>{i.name}</th>
-															<td>{i.attributes}</td>
-															<td>{i.timeline}</td>
-															<td className='h5'>
-																<Badge
-																	color={
-																		(i.status === 'Progress' &&
-																			'danger') ||
-																		(i.status === 'New' &&
-																			'warning') ||
-																		(i.status === 'Done' &&
-																			'success') ||
-																		'info'
-																	}>
-																	{i.status}
-																</Badge>
-															</td>
-															<td>
-																<Button
-																	icon='Edit'
-																	color='primary'
-																	isLight>
-																	Edit
-																</Button>
-															</td>
-														</tr>
-													),
+													(i) => {
+														return (
+															<tr>
+																<th scope='row'>{i.id}</th>
+																<th>{i.name}</th>
+																<td>{i.attributes}</td>
+																<td>{i.timeline}</td>
+																<td className='h5'>
+																	<Badge
+																		color={
+																			(i.status ===
+																				'Progress' &&
+																				'danger') ||
+																			(i.status === 'New' &&
+																				'warning') ||
+																			(i.status === 'Done' &&
+																				'success') ||
+																			'info'
+																		}>
+																		{i.status}
+																	</Badge>
+																</td>
+																<td>
+																	<Button
+																		icon='Visibility'
+																		color='primary'
+																		isLight
+																	/>
+
+																	<Button
+																		icon='Edit'
+																		color='success'
+																		isLight
+																	/>
+																	<Button
+																		icon='Delete'
+																		color='danger'
+																		isLight
+																	/>
+
+																	{/* </Button> */}
+																</td>
+															</tr>
+														);
+													},
 												)}
 											</tbody>
 										</table>
@@ -242,7 +257,6 @@ const Goals: FC = () => {
 				</ModalHeader>
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
-						
 						<div className='col-12 border-bottom' />
 						<div className='col-12'>
 							<FormGroup id='services' label='Select Product/Services'>

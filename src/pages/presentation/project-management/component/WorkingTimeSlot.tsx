@@ -87,7 +87,7 @@ const WorkingTimeSlot: FC = () => {
 			<Page container='fluid'>
 				<div className='display-4 fw-bold py-3'>Timeslot</div>
 				<Card>
-					<CardHeader>
+					{/* <CardHeader>
 						<div className='row'>
 							<div className='col-lg-12'>
 								<h5>
@@ -102,7 +102,7 @@ const WorkingTimeSlot: FC = () => {
 								<h5>No worries, you can always change it later.</h5>
 							</div>
 						</div>
-					</CardHeader>
+					</CardHeader> */}
 					<CardBody>
 						<div className='row mb-4 mb-lg-5'>
 							<div className='col-12'>
@@ -150,7 +150,7 @@ const WorkingTimeSlot: FC = () => {
 					</CardBody>
 					<CardFooter>
 						<CardFooterLeft>
-							<FormGroup label='' className='col-12'>
+							{/* <FormGroup label='' className='col-12'>
 								<ChecksGroup>
 									<Checks
 										key='d-none'
@@ -162,7 +162,7 @@ const WorkingTimeSlot: FC = () => {
 										checked={formikdisplay.values.display.includes('d-none')}
 									/>
 								</ChecksGroup>
-							</FormGroup>
+							</FormGroup> */}
 						</CardFooterLeft>
 						<CardFooterRight>
 							<button

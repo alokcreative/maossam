@@ -222,9 +222,9 @@ const DashboardPage = () => {
 
 			<Page container='fluid'>
 				<div className='row'>
-					<div className='col-12'>
+					{/* <div className='col-12'>
 						<CommonDashboardAlert />
-					</div>
+					</div> */}
 
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
