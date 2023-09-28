@@ -68,7 +68,6 @@ const APP = {
 	},
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
-		PRODUCTS: lazy(() => import('../pages/presentation/sales/SalesListPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
 		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/sales/ProductViewPage')),
 	},
@@ -343,10 +342,10 @@ export const presentation: RouteProps[] = [
 		path: pagesMenu.sales.subMenu.transactions.path,
 		element: <APP.SALES.TRANSACTIONS />,
 	},
-	{
-		path: pagesMenu.sales.subMenu.salesList.path,
-		element: <APP.SALES.PRODUCTS />,
-	},
+	// {
+	// 	path: pagesMenu.sales.subMenu.salesList.path,
+	// 	element: <APP.SALES.PRODUCTS />,
+	// },
 	{
 		path: pagesMenu.sales.subMenu.productsGrid.path,
 		element: <APP.SALES.PRODUCTS_GRID />,

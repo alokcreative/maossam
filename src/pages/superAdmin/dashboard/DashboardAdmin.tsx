@@ -180,7 +180,6 @@ const DashboardAdmin = () => {
 						</Button>
 					</div>
 				</div>
-				<TaskOnHold />
 				<div className='col-12'>
 					<div className='display-5 fw-bold py-3'>Display by media/marketing support</div>
 				</div>

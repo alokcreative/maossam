@@ -2,9 +2,11 @@ import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { pagesMenu, adminDashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
-import TaskManagement from '../pages/superAdmin/task/TaskManagement';
 import Profile from '../pages/presentation/profile/Profile';
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
+import Task from '../pages/superAdmin/task/Task';
+import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
+import ProductPage from '../pages/presentation/products/ProductPage';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -32,7 +34,6 @@ const APP = {
 	},
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
-		PRODUCTS: lazy(() => import('../pages/presentation/sales/SalesListPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
 		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/sales/ProductViewPage')),
 	},
@@ -90,11 +91,19 @@ const documentation: RouteProps[] = [
 	},
 	{
 		path: `${adminDashboardPagesMenu.task.path}`,
-		element: <TaskManagement />,
+		element: <Task />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.marketing_assets.path}`,
 		element: <MarketingAssets />,
+	},
+	{
+		path: `${pagesMenu.goalId.path}/:id`,
+		element: <TaskManagement />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.product.path}`,
+		element: <ProductPage />,
 	},
 ];
 const adminContents = [...presentation, ...documentation];

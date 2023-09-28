@@ -48,6 +48,13 @@ import useSelectTable from '../../../hooks/useSelectTable';
 import useDarkMode from '../../../hooks/useDarkMode';
 import useTourStep from '../../../hooks/useTourStep';
 
+interface IValues {
+	name: string;
+	price: number;
+	stock: number;
+	category: string;
+	image?: string | null;
+}
 const ProductListView = () => {
 	/**
 	 * For Tour
@@ -82,12 +89,12 @@ const ProductListView = () => {
 			f.category === formik.values.categoryName &&
 			// Price
 			(formik.values.minPrice === '' || f.price > Number(formik.values.minPrice)) &&
-			(formik.values.maxPrice === '' || f.price < Number(formik.values.maxPrice)) &&
+			(formik.values.maxPrice === '' || f.price < Number(formik.values.maxPrice)) 
 			//	Company
-			((formik.values.companyA ? f.store === 'Company A' : false) ||
-				(formik.values.companyB ? f.store === 'Company B' : false) ||
-				(formik.values.companyC ? f.store === 'Company C' : false) ||
-				(formik.values.companyD ? f.store === 'Company D' : false)),
+			// ((formik.values.companyA ? f.store === 'Company A' : false) ||
+			// 	(formik.values.companyB ? f.store === 'Company B' : false) ||
+			// 	(formik.values.companyC ? f.store === 'Company C' : false) ||
+			// 	(formik.values.companyD ? f.store === 'Company D' : false)),
 	);
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -116,7 +123,6 @@ const ProductListView = () => {
 							</th>
 							<th scope='col'>Image</th>
 							<th scope='col'>Name</th>
-							
 							<th
 								scope='col'
 								onClick={() => requestSort('price')}

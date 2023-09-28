@@ -87,7 +87,7 @@ const GridFluidPage = () => {
 
 	function handleEdit(id: number) {
 		const newData = data.filter((item) => item.id === id);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 
 	const formik = useFormik({
@@ -156,8 +156,6 @@ const GridFluidPage = () => {
 								name={item.name}
 								category={item.category}
 								img={item.image}
-								color={item.color}
-								series={item.series}
 								price={item.price}
 								editAction={() => {
 									setEditPanel(true);

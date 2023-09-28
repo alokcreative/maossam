@@ -1,32 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import { pagesMenu } from '../../../menu';
+import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
+import { pagesMenu } from '../../../../menu';
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../layout/SubHeader/SubHeader';
-import Page from '../../../layout/Page/Page';
-import Badge from '../../../components/bootstrap/Badge';
-import COLORS from '../../../common/data/enumColors';
-import USERS from '../../../common/data/userDummyData';
+} from '../../../../layout/SubHeader/SubHeader';
+import Page from '../../../../layout/Page/Page';
+import Badge from '../../../../components/bootstrap/Badge';
+import COLORS from '../../../../common/data/enumColors';
+import USERS from '../../../../common/data/userDummyData';
 
-import Slide2 from '../../../assets/img/wanna/slide/scene-2.png';
-import Slide4 from '../../../assets/img/wanna/slide/scene-4.png';
-import Slide6 from '../../../assets/img/wanna/slide/scene-6.png';
-import TAGS from '../../../common/data/boardTagsData';
-import CommonAvatarTeam from '../../../common/other/CommonAvatarTeam';
-import Button from '../../../components/bootstrap/Button';
-import useDarkMode from '../../../hooks/useDarkMode';
-import { TCards, TColumnsData } from './type/types';
-import { move, reorder } from './helper/helper';
-import Board from './component/Board';
-import Columns from './component/Columns';
+import Slide2 from '../../../../assets/img/wanna/slide/scene-2.png';
+import Slide4 from '../../../../assets/img/wanna/slide/scene-4.png';
+import Slide6 from '../../../../assets/img/wanna/slide/scene-6.png';
+import TAGS from '../../../../common/data/boardTagsData';
+import CommonAvatarTeam from '../../../../common/other/CommonAvatarTeam';
+import useDarkMode from '../../../../hooks/useDarkMode';
+import { TCards, TColumnsData } from '../../project-management/type/types';
+import { move, reorder } from '../../project-management/helper/helper';
+import Board from '../../project-management/component/Board';
+import Columns from '../../project-management/component/Columns';
+import Button from '../../../../components/bootstrap/Button';
 
-const ProjectManagementsProject = () => {
+const TaskManagement = () => {
 	const { darkModeStatus } = useDarkMode();
+	const navigate = useNavigate();
 	const columnsData: TColumnsData = {
 		column1: {
 			id: 'column1',
@@ -199,31 +200,17 @@ const ProjectManagementsProject = () => {
 		}
 	};
 
+	const handleBackClick = () => {
+		navigate(-1);
+	};
 	return (
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>
-						Back to List
+					<Button icon='ArrowBackIos' color='info' isLink onClick={handleBackClick}>
+						Back
 					</Button>
-					{/* <SubheaderSeparator />
-					<span>
-						There are{' '}
-						<Badge color='info' isLight>
-							2 teams
-						</Badge>{' '}
-						you are in and{' '}
-						<Badge color='success' isLight>
-							5 projects
-						</Badge>
-						.
-					</span> */}
 				</SubHeaderLeft>
-				{/* <SubHeaderRight>
-					<CommonAvatarTeam>
-						<strong>Facit</strong> Team
-					</CommonAvatarTeam>
-				</SubHeaderRight> */}
 			</SubHeader>
 			<Page container='fluid'>
 				<DragDropContext onDragEnd={onDragEnd}>
@@ -240,4 +227,4 @@ const ProjectManagementsProject = () => {
 	);
 };
 
-export default ProjectManagementsProject;
+export default TaskManagement;

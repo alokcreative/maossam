@@ -22,7 +22,7 @@ interface IItemProps {
 const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
 	const navigate = useNavigate();
 	const handleOnClickToProjectPage = useCallback(
-		() => navigate(`../${pagesMenu.projectManagement.subMenu.itemID.path}/${id}`),
+		() => navigate(`../${pagesMenu.goalId.path}/${id}`),
 		[navigate, id],
 	);
 	return (
