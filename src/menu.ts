@@ -292,6 +292,13 @@ export const pagesMenu = {
 		icon: 'AdsClick',
 		subMenu: null,
 	},
+	productId: {
+		id: 'product',
+		text: 'Product',
+		path: '/product',
+		icon: 'inventory',
+		subMenu: null,
+	},
 	projectManagement: {
 		id: 'projectManagement',
 		text: 'Project Management',

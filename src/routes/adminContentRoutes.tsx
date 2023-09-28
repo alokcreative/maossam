@@ -7,6 +7,7 @@ import MarketingAssets from '../pages/presentation/dashboard/Marketing/Marketing
 import Task from '../pages/superAdmin/task/Task';
 import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
 import ProductPage from '../pages/presentation/products/ProductPage';
+import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -35,7 +36,7 @@ const APP = {
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
-		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/sales/ProductViewPage')),
+		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/products/productDetails/ProductDetailsPage')),
 	},
 	APPOINTMENT: {
 		CALENDAR: lazy(() => import('../pages/presentation/appointment/CalendarPage')),
@@ -100,6 +101,10 @@ const documentation: RouteProps[] = [
 	{
 		path: `${pagesMenu.goalId.path}/:id`,
 		element: <TaskManagement />,
+	},
+	{
+		path: `${pagesMenu.productId.path}/:id`,
+		element: <ProductDetailsPage />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.product.path}`,

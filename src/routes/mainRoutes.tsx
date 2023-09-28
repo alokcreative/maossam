@@ -19,6 +19,8 @@ import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusine
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
 import Tasks from '../pages/presentation/dashboard/Tasks';
 import Profile from '../pages/presentation/profile/Profile';
+import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
+import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 
 const LANDING = {
 	DASHBOARD: lazy(() => import('../pages/presentation/dashboard/DashboardPage')),
@@ -69,7 +71,7 @@ const APP = {
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
-		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/sales/ProductViewPage')),
+		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/products/productDetails/ProductDetailsPage')),
 	},
 	APPOINTMENT: {
 		CALENDAR: lazy(() => import('../pages/presentation/appointment/CalendarPage')),
@@ -199,7 +201,6 @@ const CHARTS_PAGE = {
 // 	NOTIFICATION: lazy(() => import('../pages/documentation/extras/NotificationPage')),
 // 	HOOKS: lazy(() => import('../pages/documentation/extras/HooksPage')),
 // };
-
 
 export const presentation: RouteProps[] = [
 	/**
@@ -350,9 +351,13 @@ export const presentation: RouteProps[] = [
 		path: pagesMenu.sales.subMenu.productsGrid.path,
 		element: <APP.SALES.PRODUCTS_GRID />,
 	},
+	// {
+	// 	path: `${pagesMenu.sales.subMenu.productID.path}/:id`,
+	// 	element: <APP.SALES.PRODUCTS_VIEW />,
+	// },
 	{
-		path: `${pagesMenu.sales.subMenu.productID.path}/:id`,
-		element: <APP.SALES.PRODUCTS_VIEW />,
+		path: `${pagesMenu.productId.path}/:id`,
+		element: <ProductDetailsPage />,
 	},
 
 	/**
@@ -479,6 +484,10 @@ const documentation: RouteProps[] = [
 	/**
 	 * Content
 	 */
+	{
+		path: `${pagesMenu.goalId.path}/:id`,
+		element: <TaskManagement />,
+	},
 	{
 		path: componentPagesMenu.content.path,
 		element: <CONTENT.CONTENTS />,
