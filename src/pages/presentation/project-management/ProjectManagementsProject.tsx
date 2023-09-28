@@ -27,7 +27,6 @@ import Columns from './component/Columns';
 
 const ProjectManagementsProject = () => {
 	const { darkModeStatus } = useDarkMode();
-
 	const navigate = useNavigate();
 	const columnsData: TColumnsData = {
 		column1: {

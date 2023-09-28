@@ -36,7 +36,7 @@ import BusinessLogo from '../../../assets/logos/business.png';
 // import FacebookImg from '../../../assets/logos/facebook.png';
 import InstagramImg from '../../../assets/logos/instagram.png';
 import LinkedinImg from '../../../assets/logos/linkedin.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import { success } from '../../../stories/components/bootstrap/Alert/AlertUseColor.stories';
 import OffCanvas, {
 	OffCanvasBody,

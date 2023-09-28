@@ -9,7 +9,7 @@ import SubHeader, {
 	SubheaderSeparator,
 } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from './ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
@@ -170,7 +170,6 @@ const ProductPage = () => {
 	const onFormSubmit = (values: { search: any }) => {
 		const searchValue = values.search.toString().toLowerCase();
 		const newData = searchAndFilterData(searchValue);
-
 		if (!values.search) {
 			setFilterableData(data);
 		} else {
@@ -183,12 +182,13 @@ const ProductPage = () => {
 		},
 
 		onSubmit: onFormSubmit,
+		onReset: () => setFilterableData(data),
 	});
 	return (
 		<PageWrapper title={pagesMenu.gridPages.subMenu.gridBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					<div className='col-md-5'>
+					<div className='col-md-4'>
 						<Input
 							id='search'
 							size='lg'
@@ -198,7 +198,6 @@ const ProductPage = () => {
 							})}
 							onChange={(e: { target: { value: string | any[] } }) => {
 								formikSearch.handleChange(e);
-
 								if (e.target.value.length > 2)
 									debounce(
 										() =>
@@ -220,7 +219,7 @@ const ProductPage = () => {
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView == false ? 'me-0 active' : 'me-0'}`}
+						className={`${productView === false ? 'me-0 active' : 'me-0'}`}
 						onClick={() => setProductView(false)}>
 						Grid View
 					</Button>
@@ -228,7 +227,7 @@ const ProductPage = () => {
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView == true ? 'active' : ''}`}
+						className={`${productView === true ? 'active' : ''}`}
 						onClick={() => setProductView(true)}>
 						List View
 					</Button>
@@ -256,14 +255,14 @@ const ProductPage = () => {
 									category={item.category}
 									img={item.image}
 									price={item.price}
-									editAction={`../${pagesMenu.sales.subMenu.productID.path}/${item.id}`}
+									editAction={`../${pagesMenu.productId.path}/${item.id}`}
 									deleteAction={() => handleRemove(item.id)}
 								/>
 							</div>
 						))}
 					</div>
 				) : (
-					<ProductListView />
+					<ProductListView listData={filterableData} />
 				)}
 			</Page>
 

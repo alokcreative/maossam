@@ -8,20 +8,20 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../components/bootstrap/Card';
-import Button from '../../components/bootstrap/Button';
-import Chart from '../../components/extras/Chart';
+} from '../../../components/bootstrap/Card';
+import Button from '../../../components/bootstrap/Button';
+import Chart from '../../../components/extras/Chart';
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../components/bootstrap/Dropdown';
-import Badge from '../../components/bootstrap/Badge';
-import { priceFormat } from '../../helpers/helpers';
-import showNotification from '../../components/extras/showNotification';
-import Icon from '../../components/icon/Icon';
-import { pagesMenu } from '../../menu';
-import useDarkMode from '../../hooks/useDarkMode';
+} from '../../../components/bootstrap/Dropdown';
+import Badge from '../../../components/bootstrap/Badge';
+import { priceFormat } from '../../../helpers/helpers';
+import showNotification from '../../../components/extras/showNotification';
+import Icon from '../../../components/icon/Icon';
+import { pagesMenu } from '../../../menu';
+import useDarkMode from '../../../hooks/useDarkMode';
 
 interface ICommonGridProductItemProps {
 	id: string | number;
@@ -45,38 +45,6 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 }) => {
 	const { themeStatus, darkModeStatus } = useDarkMode();
 
-	// const dummyOptions: ApexOptions = {
-	// 	colors: [color],
-	// 	chart: {
-	// 		type: 'line',
-	// 		width: 100,
-	// 		height: 35,
-	// 		sparkline: {
-	// 			enabled: true,
-	// 		},
-	// 	},
-	// 	tooltip: {
-	// 		theme: 'dark',
-	// 		fixed: {
-	// 			enabled: false,
-	// 		},
-	// 		x: {
-	// 			show: false,
-	// 		},
-	// 		y: {
-	// 			title: {
-	// 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	// 				formatter(seriesName: string) {
-	// 					return '';
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// 	stroke: {
-	// 		curve: 'smooth',
-	// 		width: 2,
-	// 	},
-	// };
 	return (
 		<Card>
 			<CardHeader>
@@ -104,11 +72,6 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 							/>
 						</DropdownToggle>
 						<DropdownMenu isAlignmentEnd>
-							<DropdownItem>
-								<Button icon='info' color='dark' isLight tag='a' to={editAction}>
-									Detail
-								</Button>
-							</DropdownItem>
 							<DropdownItem>
 								<Button
 									icon='FileCopy'
@@ -163,7 +126,7 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 					}`}
 					size='lg'
 					tag='a'
-					to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`}>
+					to={`../${pagesMenu.productId.path}/${id}`}>
 					View Product
 				</Button>
 			</CardFooter>

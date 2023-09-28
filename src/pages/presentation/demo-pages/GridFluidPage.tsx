@@ -10,7 +10,7 @@ import SubHeader, {
 import Button from '../../../components/bootstrap/Button';
 
 import Company2 from '../../../assets/logos/company2.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
