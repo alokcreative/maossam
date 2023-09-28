@@ -166,6 +166,7 @@ const DashboardAdmin = () => {
 					</div>
 					{goalData.slice(0, 6).map((i) => (
 						<Item
+							id={i.id}
 							key={i.id}
 							name={i.name}
 							attributes={i.attributes}
