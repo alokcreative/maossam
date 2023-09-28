@@ -99,25 +99,7 @@ const Signup: FC = () => {
 	return (
 		<>
 			<div className='col-12'>
-				<FormGroup id='signup-email' isFloating label='Your email'>
-					<Input
-						autoComplete='email'
-						type='email'
-						name='email'
-						onChange={formik.handleChange}
-						value={formik.values.email}
-						isValid={formik.isValid}
-						isTouched={formik.touched.email}
-						invalidFeedback={formik.errors.email}
-						onBlur={formik.handleBlur}
-						onFocus={() => {
-							formik.setErrors({});
-						}}
-					/>
-				</FormGroup>
-			</div>
-			<div className='col-12'>
-				<FormGroup id='signup-name' isFloating label='Your name'>
+				<FormGroup id='signup-name' isFloating label='FirstName'>
 					<Input
 						autoComplete='username'
 						type='text'
@@ -134,8 +116,9 @@ const Signup: FC = () => {
 					/>
 				</FormGroup>
 			</div>
+
 			<div className='col-12'>
-				<FormGroup id='signup-surname' isFloating label='Your surname'>
+				<FormGroup id='signup-surname' isFloating label='LastName'>
 					<Input
 						autoComplete='surname'
 						type='text'
@@ -152,6 +135,25 @@ const Signup: FC = () => {
 					/>
 				</FormGroup>
 			</div>
+			<div className='col-12'>
+				<FormGroup id='signup-email' isFloating label='Email'>
+					<Input
+						autoComplete='email'
+						type='email'
+						name='email'
+						onChange={formik.handleChange}
+						value={formik.values.email}
+						isValid={formik.isValid}
+						isTouched={formik.touched.email}
+						invalidFeedback={formik.errors.email}
+						onBlur={formik.handleBlur}
+						onFocus={() => {
+							formik.setErrors({});
+						}}
+					/>
+				</FormGroup>
+			</div>
+
 			<div className='col-12'>
 				<FormGroup id='signup-password' isFloating label='Password'>
 					<Input

@@ -204,10 +204,10 @@ const ProjectManagementsProject = () => {
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					{/* <Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>
+					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>
 						Back to List
 					</Button>
-					<SubheaderSeparator /> */}
+					{/* <SubheaderSeparator />
 					<span>
 						There are{' '}
 						<Badge color='info' isLight>
@@ -218,13 +218,13 @@ const ProjectManagementsProject = () => {
 							5 projects
 						</Badge>
 						.
-					</span>
+					</span> */}
 				</SubHeaderLeft>
-				<SubHeaderRight>
+				{/* <SubHeaderRight>
 					<CommonAvatarTeam>
 						<strong>Facit</strong> Team
 					</CommonAvatarTeam>
-				</SubHeaderRight>
+				</SubHeaderRight> */}
 			</SubHeader>
 			<Page container='fluid'>
 				<DragDropContext onDragEnd={onDragEnd}>

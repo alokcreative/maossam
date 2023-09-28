@@ -312,7 +312,7 @@ const ColumnCard: FC<IColumnCard> = ({
 										))}
 									</Select>
 								</FormGroup>
-								<FormGroup className='col-12' id='assignee' label='Assignee'>
+								{/* <FormGroup className='col-12' id='assignee' label='Assignee'>
 									<Select
 										ariaLabel='Board select'
 										placeholder='Select group'
@@ -328,7 +328,7 @@ const ColumnCard: FC<IColumnCard> = ({
 											</Option>
 										))}
 									</Select>
-								</FormGroup>
+								</FormGroup> */}
 								<FormGroup className='col-12' id='tags' label='Tags'>
 									<Select
 										multiple

@@ -67,7 +67,7 @@ const WorkingTimeSlot: FC = () => {
 	const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday'];
 	return (
 		<PageWrapper title={dashboardPagesMenu.workingslot.text}>
-			<SubHeader>
+			{/* <SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
 						list={[
@@ -83,7 +83,7 @@ const WorkingTimeSlot: FC = () => {
 						<strong>MA-OSSIM</strong> Team
 					</CommonAvatarTeam>
 				</SubHeaderRight>
-			</SubHeader>
+			</SubHeader> */}
 			<Page container='fluid'>
 				<div className='display-4 fw-bold py-3'>Timeslot</div>
 				<Card>
@@ -169,7 +169,7 @@ const WorkingTimeSlot: FC = () => {
 								type='button'
 								className='btn btn-info'
 								disabled={formikdisplay.values.display[0] === 'd-none'}>
-								Update
+								Save
 							</button>
 							<button
 								type='button'

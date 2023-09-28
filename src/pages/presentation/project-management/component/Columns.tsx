@@ -123,7 +123,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 									</CardBody>
 								)}
 							</Droppable>
-							<CardFooter>
+							{/* <CardFooter>
 								<CardFooterLeft>
 									<Button
 										color={columnData.color}
@@ -133,7 +133,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 										Create
 									</Button>
 								</CardFooterLeft>
-							</CardFooter>
+							</CardFooter> */}
 						</Card>
 					</div>
 				);
@@ -192,7 +192,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 										))}
 									</Select>
 								</FormGroup>
-								<FormGroup className='col-12' id='assignee' label='Assignee'>
+								{/* <FormGroup className='col-12' id='assignee' label='Assignee'>
 									<Select
 										ariaLabel='Board select'
 										placeholder='Select group'
@@ -208,7 +208,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 											</Option>
 										))}
 									</Select>
-								</FormGroup>
+								</FormGroup> */}
 								<FormGroup className='col-12' id='tags' label='Tags'>
 									<Select
 										multiple
