@@ -28,8 +28,6 @@ interface ICommonGridProductItemProps {
 	name: string;
 	category: string;
 	img: string;
-	color: string;
-	series: ApexOptions['series'];
 	price: number;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	editAction: any;
@@ -41,46 +39,44 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 	name,
 	category,
 	img,
-	color,
-	series,
 	price,
 	editAction,
 	deleteAction,
 }) => {
 	const { themeStatus, darkModeStatus } = useDarkMode();
 
-	const dummyOptions: ApexOptions = {
-		colors: [color],
-		chart: {
-			type: 'line',
-			width: 100,
-			height: 35,
-			sparkline: {
-				enabled: true,
-			},
-		},
-		tooltip: {
-			theme: 'dark',
-			fixed: {
-				enabled: false,
-			},
-			x: {
-				show: false,
-			},
-			y: {
-				title: {
-					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					formatter(seriesName: string) {
-						return '';
-					},
-				},
-			},
-		},
-		stroke: {
-			curve: 'smooth',
-			width: 2,
-		},
-	};
+	// const dummyOptions: ApexOptions = {
+	// 	colors: [color],
+	// 	chart: {
+	// 		type: 'line',
+	// 		width: 100,
+	// 		height: 35,
+	// 		sparkline: {
+	// 			enabled: true,
+	// 		},
+	// 	},
+	// 	tooltip: {
+	// 		theme: 'dark',
+	// 		fixed: {
+	// 			enabled: false,
+	// 		},
+	// 		x: {
+	// 			show: false,
+	// 		},
+	// 		y: {
+	// 			title: {
+	// 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	// 				formatter(seriesName: string) {
+	// 					return '';
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	stroke: {
+	// 		curve: 'smooth',
+	// 		width: 2,
+	// 	},
+	// };
 	return (
 		<Card>
 			<CardHeader>

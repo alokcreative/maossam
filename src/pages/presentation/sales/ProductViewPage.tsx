@@ -151,7 +151,7 @@ const ProductViewPage = () => {
 	};
 	const [activeTab, setActiveTab] = useState(TABS.SUMMARY);
 
-	const [editItem, setEditItem] = useState<IValues>(data);
+	// const [editItem, setEditItem] = useState<IValues>(data);
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -173,25 +173,25 @@ const ProductViewPage = () => {
 			);
 		},
 	});
-	useEffect(() => {
-		if (editItem) {
-			formik.setValues({
-				name: editItem.name,
-				price: editItem.price,
-				stock: editItem.stock,
-				category: editItem.category,
-			});
-		}
-		return () => {
-			formik.setValues({
-				name: '',
-				price: 0,
-				stock: 0,
-				category: '',
-			});
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [editItem]);
+	// useEffect(() => {
+	// 	if (editItem) {
+	// 		formik.setValues({
+	// 			name: editItem.name,
+	// 			price: editItem.price,
+	// 			stock: editItem.stock,
+	// 			category: editItem.category,
+	// 		});
+	// 	}
+	// 	return () => {
+	// 		formik.setValues({
+	// 			name: '',
+	// 			price: 0,
+	// 			stock: 0,
+	// 			category: '',
+	// 		});
+	// 	};
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [editItem]);
 
 	return (
 		<PageWrapper title={pagesMenu.sales.subMenu.product.text}>
@@ -319,7 +319,7 @@ const ProductViewPage = () => {
 																	{priceFormat(data.price)}
 																</div>
 																<div className='text-muted'>
-																	<b>Quantity: </b> {data.stock}
+																	{/* <b>Quantity: </b> {data.stock} */}
 																</div>
 															</div>
 														</div>
@@ -343,14 +343,14 @@ const ProductViewPage = () => {
 														</CardLabel>
 													</CardHeader>
 													<CardBody className='py-0'>
-														<Chart
+														{/* <Chart
 															className='mx-n4'
 															series={data.series}
 															options={chartOptions}
 															type={chartOptions.chart?.type}
 															height={chartOptions.chart?.height}
 															width={chartOptions.chart?.width}
-														/>
+														/> */}
 													</CardBody>
 												</Card>
 											</div>
@@ -407,7 +407,7 @@ const ProductViewPage = () => {
 															</div>
 															<div className='flex-grow-1 ms-3'>
 																<div className='fw-bold fs-3 mb-0'>
-																	{data.file}
+																	{/* {data.file} */}
 																</div>
 															</div>
 														</div>
@@ -601,7 +601,7 @@ const ProductViewPage = () => {
 											</CardHeader>
 											<CardBody>
 												<div className='row'>
-													<div className='col-lg-4'>
+													{/* <div className='col-lg-4'>
 														{editItem?.image ? (
 															<img
 																src={editItem.image}
@@ -617,7 +617,7 @@ const ProductViewPage = () => {
 																className='mx-auto d-block img-fluid mb-3 rounded'
 															/>
 														)}
-													</div>
+													</div> */}
 													<div className='col-lg-8'>
 														<div className='row g-4'>
 															<div className='col-12'>
@@ -627,7 +627,7 @@ const ProductViewPage = () => {
 																/>
 															</div>
 															<div className='col-12'>
-																<Button
+																{/* <Button
 																	color='dark'
 																	isLight
 																	icon='Delete'
@@ -638,7 +638,7 @@ const ProductViewPage = () => {
 																		});
 																	}}>
 																	Delete Image
-																</Button>
+																</Button> */}
 															</div>
 														</div>
 													</div>

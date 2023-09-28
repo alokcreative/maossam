@@ -13,207 +13,120 @@ import Cylinder from '../../assets/img/abstract/cylinder.png';
 
 const data: {
 	id: number;
-	image: string;
 	name: string;
+	image: string;
+	description: string;
 	category: string;
-	series: { data: number[] }[];
-	color: string;
-	stock: number;
 	price: number;
-	store: string;
-	file: string;
+	sales: number;
 }[] = [
 	{
 		id: 1,
-		image: BeveledCone,
 		name: 'Beveled Cone',
+		image: BeveledCone,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [25, 66, 41, 89, 63],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 380,
+		sales: 380,
 		price: 14.5,
-		store: 'Company A',
-		file: 'Figma',
 	},
 	{
 		id: 2,
-		image: CloudBall,
 		name: 'Cloud Ball',
+		image: CloudBall,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [12, 24, 33, 12, 48],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 1245,
-		price: 12,
-		store: 'Company A',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 3,
-		image: Quadrilateral,
 		name: 'Quadrilateral',
+		image: Quadrilateral,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [34, 32, 36, 34, 34],
-			},
-		],
-		color: String(process.env.REACT_APP_WARNING_COLOR),
-		stock: 27,
-		price: 12.8,
-		store: 'Company D',
-		file: 'XD',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 4,
-		image: HardSharpDonut,
 		name: 'Bendy Rectangle',
+		image: HardSharpDonut,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [54, 34, 42, 23, 12],
-			},
-		],
-		color: String(process.env.REACT_APP_DANGER_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company C',
-		file: 'Sketch',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 5,
-		image: BendyRectangle,
 		name: 'Bendy Rectangle',
+		image: BendyRectangle,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [23, 21, 12, 34, 14],
-			},
-		],
-		color: String(process.env.REACT_APP_DANGER_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company A',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 6,
-		image: Infinity,
 		name: 'Bendy Rectangle',
+		image: Infinity,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [23, 13, 34, 41, 38],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company C',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 7,
-		image: Octahedron,
 		name: 'Octahedron',
+		image: Octahedron,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [21, 34, 23, 12, 67],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 498,
-		price: 18,
-		store: 'Company B',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 8,
-		image: Triangle,
 		name: 'Triangle',
+		image: Triangle,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [18, 32, 26, 15, 34],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company B',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 9,
-		image: SquiglyGlobe,
 		name: 'SquiglyGlobe',
+		image: SquiglyGlobe,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [18, 32, 26, 15, 34],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company C',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 10,
-		image: Dodecagon,
 		name: 'Dodecagon',
+		image: Dodecagon,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [18, 32, 26, 15, 34],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company A',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 11,
-		image: BeveledCube,
 		name: 'Beveled Cube',
+		image: BeveledCube,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [18, 32, 26, 15, 34],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company A',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 	{
 		id: 12,
-		image: Cylinder,
 		name: 'Cylinder',
+		image: Cylinder,
+		description: 'This is product des',
 		category: '3D Shapes',
-		series: [
-			{
-				data: [18, 32, 26, 15, 34],
-			},
-		],
-		color: String(process.env.REACT_APP_SUCCESS_COLOR),
-		stock: 219,
-		price: 16,
-		store: 'Company B',
-		file: 'Figma',
+		sales: 380,
+		price: 14.5,
 	},
 ];
 export default data;

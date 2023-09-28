@@ -285,6 +285,13 @@ export const pagesMenu = {
 		text: 'Apps',
 		icon: 'Extension',
 	},
+	goalId: {
+		id: 'goal',
+		text: 'Goal',
+		path: '/goal',
+		icon: 'AdsClick',
+		subMenu: null,
+	},
 	projectManagement: {
 		id: 'projectManagement',
 		text: 'Project Management',

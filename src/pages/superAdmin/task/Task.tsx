@@ -51,7 +51,7 @@ interface ITaskData {
 	edit: string;
 	goalId: number;
 }
-const TaskManagement = () => {
+const Task = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const { darkModeStatus } = useDarkMode();
@@ -380,4 +380,4 @@ const TaskManagement = () => {
 	);
 };
 
-export default TaskManagement;
+export default Task;
