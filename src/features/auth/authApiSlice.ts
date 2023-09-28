@@ -1,6 +1,10 @@
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
+interface IPayload {
+	email: string;
+	loginPassword: string;
+}
 export const productsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		// getPosts: builder.query({
@@ -8,7 +12,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 		//     providesTags: ['Post'],
 		//   }),
 		getUser: builder.mutation({
-			query: (payload) => ({
+			query: (payload: IPayload) => ({
 				url: apiEndpoints.login,
 				method: 'POST',
 				body: payload,

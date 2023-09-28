@@ -20,7 +20,7 @@ import ThemeContext from '../../../contexts/themeContext';
 import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
-import {PER_COUNT} from '../../../components/PaginationButtons';
+import { PER_COUNT } from '../../../components/PaginationButtons';
 import data from '../../../common/data/dummyTaskHoldData';
 import goalData from '../../../common/data/dummyGoals';
 import { useFormik } from 'formik';
@@ -189,6 +189,7 @@ const DashboardPage = () => {
 					{goalData.slice(0, 6).map((i) => (
 						<Item
 							key={i.id}
+							id={i.id}
 							name={i.name}
 							attributes={i.attributes}
 							timeline={i.timeline}
