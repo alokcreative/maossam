@@ -57,11 +57,28 @@ const TableRow: FC<ITableRowProps> = ({
 				</Badge>
 			</td>
 			<td>
-				<Button icon='Visibility' color='primary' isLight className='me-1' />
+				<Button
+					icon='Visibility'
+					color='primary'
+					isLight
+					className='me-1'
+					onClick={() => view(id)}
+				/>
 				{role === Role.admin && (
 					<>
-						<Button icon='Edit' color='success' isLight className='me-1'onClick={edit} />
-						<Button icon='Delete' color='danger' isLight />
+						<Button
+							icon='Edit'
+							color='success'
+							isLight
+							className='me-1'
+							onClick={() => edit(id)}
+						/>
+						<Button
+							icon='Delete'
+							color='danger'
+							isLight
+							onClick={() => deleteAction(id)}
+						/>
 					</>
 				)}
 			</td>
