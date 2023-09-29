@@ -13,7 +13,7 @@ import Button from '../../../../components/bootstrap/Button';
 import { pagesMenu } from '../../../../menu';
 import tableData from '../../../../common/data/dummyProductData';
 import Avatar from '../../../../components/Avatar';
-import USERS from '../../../../common/data/userDummyData';
+import USERS, { Role } from '../../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -35,6 +35,8 @@ import showNotification from '../../../../components/extras/showNotification';
 import useDarkMode from '../../../../hooks/useDarkMode';
 import Select from '../../../../components/bootstrap/forms/Select';
 import Alert from '../../../../components/bootstrap/Alert';
+import { RootState } from '../../../../store/store';
+import { useSelector } from 'react-redux';
 
 interface IValues {
 	name: string;
@@ -79,6 +81,10 @@ interface ITabs {
 }
 
 const ProductDetailsPage = () => {
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	const { darkModeStatus } = useDarkMode();
 
 	const { id } = useParams();
@@ -215,39 +221,46 @@ const ProductDetailsPage = () => {
 											{TABS.SUMMARY}
 										</Button>
 									</div>
-									<div className='col-12'>
-										<Button
-											icon='Chat'
-											color='info'
-											className='w-100 p-3'
-											isLight={activeTab !== TABS.COMMENTS}
-											onClick={() => setActiveTab(TABS.COMMENTS)}>
-											{TABS.COMMENTS}
-										</Button>
-									</div>
-									<div className='col-12'>
-										<Button
-											icon='Edit'
-											color='success'
-											className='w-100 p-3'
-											isLight={activeTab !== TABS.EDIT}
-											onClick={() => setActiveTab(TABS.EDIT)}>
-											{TABS.EDIT}
-										</Button>
-									</div>
+
+									{role !== Role.admin && (
+										<>
+											<div className='col-12'>
+												<Button
+													icon='Chat'
+													color='info'
+													className='w-100 p-3'
+													isLight={activeTab !== TABS.COMMENTS}
+													onClick={() => setActiveTab(TABS.COMMENTS)}>
+													{TABS.COMMENTS}
+												</Button>
+											</div>
+											<div className='col-12'>
+												<Button
+													icon='Edit'
+													color='success'
+													className='w-100 p-3'
+													isLight={activeTab !== TABS.EDIT}
+													onClick={() => setActiveTab(TABS.EDIT)}>
+													{TABS.EDIT}
+												</Button>
+											</div>
+										</>
+									)}
 								</div>
 							</CardBody>
-							<CardFooter>
-								<CardFooterLeft className='w-100'>
-									<Button
-										icon='Delete'
-										color='danger'
-										isLight
-										className='w-100 p-3'>
-										Delete
-									</Button>
-								</CardFooterLeft>
-							</CardFooter>
+							{role !== Role.admin && (
+								<CardFooter>
+									<CardFooterLeft className='w-100'>
+										<Button
+											icon='Delete'
+											color='danger'
+											isLight
+											className='w-100 p-3'>
+											Delete
+										</Button>
+									</CardFooterLeft>
+								</CardFooter>
+							)}
 						</Card>
 					</div>
 					<div className='col-lg-8'>
@@ -663,13 +676,18 @@ const ProductDetailsPage = () => {
 																			formik.handleChange
 																		}
 																		onBlur={formik.handleBlur}
-																		value={formik.values.description}
+																		value={
+																			formik.values
+																				.description
+																		}
 																		isValid={formik.isValid}
 																		isTouched={
-																			formik.touched.description
+																			formik.touched
+																				.description
 																		}
 																		invalidFeedback={
-																			formik.errors.description
+																			formik.errors
+																				.description
 																		}
 																		validFeedback='Looks good!'
 																	/>
@@ -784,13 +802,18 @@ const ProductDetailsPage = () => {
 																			formik.handleChange
 																		}
 																		onBlur={formik.handleBlur}
-																		value={formik.values.description}
+																		value={
+																			formik.values
+																				.description
+																		}
 																		isValid={formik.isValid}
 																		isTouched={
-																			formik.touched.description
+																			formik.touched
+																				.description
 																		}
 																		invalidFeedback={
-																			formik.errors.description
+																			formik.errors
+																				.description
 																		}
 																		validFeedback='Looks good!'
 																	/>
