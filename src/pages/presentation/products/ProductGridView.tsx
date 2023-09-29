@@ -47,10 +47,10 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 	const { themeStatus, darkModeStatus } = useDarkMode();
 	const navigate = useNavigate()
 	return (
-		<Card onClick={()=>navigate(`../${pagesMenu.productId.path}/${id}`)}>
+		<Card>
 			<CardHeader>
-				<CardLabel>
-					<CardTitle tag='div' className='h5'>
+				<CardLabel onClick={()=>navigate(`../${pagesMenu.productId.path}/${id}`)}>
+					<CardTitle tag='div' className='h5' >
 						{name}{' '}
 						{price && (
 							<Badge color='success' isLight className='ms-2'>
@@ -98,7 +98,7 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 					</Dropdown>
 				</CardActions>
 			</CardHeader>
-			<CardBody>
+			<CardBody onClick={()=>navigate(`../${pagesMenu.productId.path}/${id}`)}>
 				<img
 					src={img}
 					alt=''
