@@ -57,6 +57,8 @@ const TableRow: FC<ITableRowProps> = ({
 				</Badge>
 			</td>
 			<td>
+
+
 				<Button
 					icon='Visibility'
 					color='primary'
@@ -64,6 +66,7 @@ const TableRow: FC<ITableRowProps> = ({
 					className='me-1'
 					onClick={() => view(id)}
 				/>
+
 				{role === Role.admin && (
 					<>
 						<Button
@@ -71,6 +74,8 @@ const TableRow: FC<ITableRowProps> = ({
 							color='success'
 							isLight
 							className='me-1'
+
+
 							onClick={() => edit(id)}
 						/>
 						<Button
@@ -79,6 +84,7 @@ const TableRow: FC<ITableRowProps> = ({
 							isLight
 							onClick={() => deleteAction(id)}
 						/>
+
 					</>
 				)}
 			</td>

@@ -32,6 +32,9 @@ import ProductListView from './ProductListView';
 import Select from '../../../components/bootstrap/forms/Select';
 import { useNavigate } from 'react-router-dom';
 import { string } from 'yargs';
+import { Role } from '../../../common/data/userDummyData';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 interface IValues {
 	name: string;
@@ -78,6 +81,10 @@ const validate = (values: IValues) => {
 };
 
 const ProductPage = () => {
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	const { darkModeStatus } = useDarkMode();
 	const [data, setData] = useState(tableData);
 	const [editItem, setEditItem] = useState<IValues | null>(null);
@@ -231,16 +238,19 @@ const ProductPage = () => {
 						onClick={() => setProductView(true)}>
 						List View
 					</Button>
-					<Button
-						color={darkModeStatus ? 'light' : 'dark'}
-						isLight
-						icon='Add'
-						onClick={() => {
-							setEditItem(null);
-							setEditPanel(true);
-						}}>
-						Add New
-					</Button>
+
+					{role !== Role.admin && (
+						<Button
+							color={darkModeStatus ? 'light' : 'dark'}
+							isLight
+							icon='Add'
+							onClick={() => {
+								setEditItem(null);
+								setEditPanel(true);
+							}}>
+							Add New
+						</Button>
+					)}
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
