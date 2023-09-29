@@ -22,6 +22,7 @@ import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
 import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
+import { useNavigate } from 'react-router-dom';
 
 interface ICommonGridProductItemProps {
 	id: string | number;
@@ -44,9 +45,9 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 	deleteAction,
 }) => {
 	const { themeStatus, darkModeStatus } = useDarkMode();
-
+	const navigate = useNavigate()
 	return (
-		<Card>
+		<Card onClick={()=>navigate(`../${pagesMenu.productId.path}/${id}`)}>
 			<CardHeader>
 				<CardLabel>
 					<CardTitle tag='div' className='h5'>

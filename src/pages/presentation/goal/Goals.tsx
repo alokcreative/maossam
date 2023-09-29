@@ -55,7 +55,7 @@ export const SELECT_OPTIONS = [
 interface IValues {
 	id: number;
 	name: string;
-	attributes: string;
+	description: string;
 }
 const Goals: FC = () => {
 	const [goalList, setGoalList] = useState<IValues[]>(data);
@@ -111,7 +111,7 @@ const Goals: FC = () => {
 	const formiknewGoal = useFormik({
 		initialValues: {
 			name: '',
-			attribute: '',
+			description: '',
 			timeline: '',
 			photo: '',
 		},
@@ -120,7 +120,7 @@ const Goals: FC = () => {
 			const newGoal = {
 				id: goalList.length + 1,
 				name: values.name,
-				attributes: values.attribute,
+				description: values.description,
 				timeline: values.timeline,
 				status: 'New',
 			};
@@ -157,6 +157,7 @@ const Goals: FC = () => {
 		navigate(`../${pagesMenu.goalId.path}/${id}`)
 	};
 
+	
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -314,7 +315,7 @@ const Goals: FC = () => {
 							<Input
 								type='text'
 								onChange={formiknewGoal.handleChange}
-								value={formiknewGoal.values.attribute}
+								value={formiknewGoal.values.description}
 							/>
 						</FormGroup>
 						<FormGroup id='timeline' label='Timeline' className='col-lg-6'>

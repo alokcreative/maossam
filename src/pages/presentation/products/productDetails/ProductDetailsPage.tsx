@@ -194,10 +194,6 @@ const ProductDetailsPage = () => {
 						Back to List
 					</Button>
 				</SubHeaderLeft>
-				<SubHeaderRight>
-					<span className='text-muted fst-italic me-2'>Last update:</span>
-					<span className='fw-bold'>13 hours ago</span>
-				</SubHeaderRight>
 			</SubHeader>
 			<Page>
 				<div className='display-4 fw-bold py-3'>{data.name}</div>

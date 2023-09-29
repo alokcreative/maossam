@@ -169,7 +169,7 @@ const DashboardAdmin = () => {
 							id={i.id}
 							key={i.id}
 							name={i.name}
-							attributes={i.attributes}
+							attributes={i.description}
 							timeline={i.timeline}
 							status={i.status}
 						/>
