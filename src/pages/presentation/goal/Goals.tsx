@@ -61,7 +61,7 @@ const Goals: FC = () => {
 	const [goalList, setGoalList] = useState<IValues[]>(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	const formikOneWay = useFormik({
 		initialValues: {
 			exampleSelectOneWay: '',
@@ -154,7 +154,7 @@ const Goals: FC = () => {
 	};
 	const handleView = (id: number) => {
 		console.log('id', id);
-		navigate(`../${pagesMenu.goalId.path}/${id}`)
+		navigate(`../${pagesMenu.goalId.path}/${id}`);
 	};
 
 	return (
@@ -259,8 +259,6 @@ const Goals: FC = () => {
 																			handleDelete(i.id)
 																		}
 																	/>
-
-																	{/* </Button> */}
 																</td>
 															</tr>
 														);
