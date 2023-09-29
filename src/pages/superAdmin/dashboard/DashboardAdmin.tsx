@@ -46,6 +46,13 @@ const DashboardAdmin = () => {
 	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
+	const openModal = (id: number, nameOfBussiness: string) => {
+		setElementId(id)
+;
+		setElementName(nameOfBussiness);
+		setIsModalOpen(true);
+	};
+
 
 	// Function to handle closing the modal
 	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !');
@@ -227,6 +234,7 @@ const DashboardAdmin = () => {
 					) : (
 						cards.map((card) => (
 							<SocialItem
+								onClick={() => openModal(card.id, card.name)}
 								key={card.id}
 								name={card.image}
 								teamName={card.teamName}

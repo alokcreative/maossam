@@ -4,12 +4,11 @@ import { pagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu'
 import Login from '../pages/presentation/auth/Login';
 import Profile from '../pages/presentation/profile/Profile';
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
-import Task from '../pages/superAdmin/task/Task';
+import Tasks from '../pages/presentation/dashboard/Tasks';
 import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
 import ProductPage from '../pages/presentation/products/ProductPage';
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 import Goals from '../pages/presentation/goal/Goals';
-import Tasks from '../pages/presentation/dashboard/Tasks';
 import GoalDescription from '../pages/presentation/goal/GoalDescription';
 
 const DASHBOARD = {
@@ -95,7 +94,7 @@ const documentation: RouteProps[] = [
 	},
 	{
 		path: `${adminDashboardPagesMenu.task.path}`,
-		element: <Task />,
+		element: <Tasks />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.marketing_assets.path}`,

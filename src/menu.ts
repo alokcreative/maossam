@@ -53,9 +53,9 @@ export const dashboardPagesMenu = {
 		subMenu: null,
 	},
 	tasks: {
-		id: 'Tasks',
+		id: 'tasks',
 		text: 'Tasks',
-		path: '/Tasks',
+		path: '/tasks',
 		icon: 'flag',
 		subMenu: null,
 	},
