@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
@@ -40,6 +40,8 @@ import Modal, {
 	ModalTitle,
 } from '../../../components/bootstrap/Modal';
 import Badge from '../../../components/bootstrap/Badge';
+import { pagesMenu } from '../../../menu';
+import { useNavigate } from 'react-router-dom';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -59,6 +61,7 @@ const Goals: FC = () => {
 	const [goalList, setGoalList] = useState<IValues[]>(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
+	const navigate = useNavigate()
 	const formikOneWay = useFormik({
 		initialValues: {
 			exampleSelectOneWay: '',
@@ -151,7 +154,9 @@ const Goals: FC = () => {
 	};
 	const handleView = (id: number) => {
 		console.log('id', id);
+		navigate(`../${pagesMenu.goalId.path}/${id}`)
 	};
+
 	return (
 		<PageWrapper>
 			<SubHeader>
