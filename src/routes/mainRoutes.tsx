@@ -14,7 +14,7 @@ import WorkingTimeSlot from '../pages/presentation/project-management/component/
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
 import AddTask from '../pages/presentation/project-management/component/AddTask';
 import ProductPage from '../pages/presentation/products/ProductPage';
-import Goals from '../pages/presentation/project-management/component/Goals';
+import Goals from '../pages/presentation/goal/Goals';
 import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusiness';
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
 import Tasks from '../pages/presentation/dashboard/Tasks';
