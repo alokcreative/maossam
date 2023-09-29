@@ -38,21 +38,20 @@ import Alert from '../../../../components/bootstrap/Alert';
 
 interface IValues {
 	name: string;
-	price: number;
-	sale: number;
+	image: string;
+	description: string;
 	category: string;
-	image?: string;
-	desc?: string;
-	description?: string;
+	price: number;
+	sales: number;
 }
 const validate = (values: IValues) => {
 	const errors = {
 		name: '',
-		price: '',
-		sale: '',
-		category: '',
-		desc: '',
+		image: '',
 		description: '',
+		category: '',
+		price: 0,
+		sales: 0,
 	};
 
 	if (!values.name) {
@@ -61,19 +60,6 @@ const validate = (values: IValues) => {
 		errors.name = 'Must be 3 characters or more';
 	} else if (values.name.length > 20) {
 		errors.name = 'Must be 20 characters or less';
-	}
-
-	if (!values.price) {
-		errors.price = 'Required';
-	} else if (values.price < 0) {
-		errors.price = 'Price should not be 0';
-	}
-
-	if (!values.sale) {
-		errors.sale = 'Required';
-	}
-	if (!values.description) {
-		errors.description = 'Required';
 	}
 
 	if (!values.category) {
@@ -102,6 +88,38 @@ const ProductDetailsPage = () => {
 	const itemData = tableData.filter((item) => item.id.toString() === id.toString());
 	const data = itemData[0];
 
+	const chartOptions: ApexOptions = {
+		colors: [process.env.REACT_APP_WARNING_COLOR],
+		chart: {
+			type: 'line',
+			width: '100%',
+			height: 105,
+			sparkline: {
+				enabled: true,
+			},
+		},
+		tooltip: {
+			theme: 'dark',
+			fixed: {
+				enabled: false,
+			},
+			x: {
+				show: false,
+			},
+			y: {
+				title: {
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					formatter(seriesName: string) {
+						return '';
+					},
+				},
+			},
+		},
+		stroke: {
+			curve: 'smooth',
+			width: 2,
+		},
+	};
 	const formikSelect = useFormik({
 		initialValues: {
 			itemCat: '',
@@ -122,15 +140,15 @@ const ProductDetailsPage = () => {
 	};
 	const [activeTab, setActiveTab] = useState(TABS.SUMMARY);
 
-	// const [editItem, setEditItem] = useState<IValues>(data);
+	const [editItem, setEditItem] = useState<IValues>(data);
 	const formik = useFormik({
 		initialValues: {
 			name: '',
 			price: 0,
-			sale: 0,
 			category: '',
-			desc: '',
+			image: '',
 			description: '',
+			sales: 0,
 		},
 		validate,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -144,25 +162,29 @@ const ProductDetailsPage = () => {
 			);
 		},
 	});
-	// useEffect(() => {
-	// 	if (editItem) {
-	// 		formik.setValues({
-	// 			name: editItem.name,
-	// 			price: editItem.price,
-	// 			stock: editItem.stock,
-	// 			category: editItem.category,
-	// 		});
-	// 	}
-	// 	return () => {
-	// 		formik.setValues({
-	// 			name: '',
-	// 			price: 0,
-	// 			stock: 0,
-	// 			category: '',
-	// 		});
-	// 	};
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [editItem]);
+	useEffect(() => {
+		if (editItem) {
+			formik.setValues({
+				name: data.name,
+				image: data.image,
+				description: data.description,
+				category: data.category,
+				price: data.price,
+				sales: data.sales,
+			});
+		}
+		return () => {
+			formik.setValues({
+				name: '',
+				image: '',
+				description: '',
+				category: '',
+				price: 0,
+				sales: 0,
+			});
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [editItem]);
 
 	return (
 		<PageWrapper title={pagesMenu.sales.subMenu.product.text}>
@@ -172,6 +194,10 @@ const ProductDetailsPage = () => {
 						Back to List
 					</Button>
 				</SubHeaderLeft>
+				<SubHeaderRight>
+					<span className='text-muted fst-italic me-2'>Last update:</span>
+					<span className='fw-bold'>13 hours ago</span>
+				</SubHeaderRight>
 			</SubHeader>
 			<Page>
 				<div className='display-4 fw-bold py-3'>{data.name}</div>
@@ -275,7 +301,7 @@ const ProductDetailsPage = () => {
 																	{priceFormat(data.price)}
 																</div>
 																<div className='text-muted'>
-																	{/* <b>Quantity: </b> {data.stock} */}
+																	<b>Quantity: </b> {data.sales}
 																</div>
 															</div>
 														</div>
@@ -298,22 +324,16 @@ const ProductDetailsPage = () => {
 															</CardTitle>
 														</CardLabel>
 													</CardHeader>
-													<CardBody className='py-0'>
-														<div className='d-flex align-items-center pb-3'>
-															<div className='flex-shrink-0'>
-																<Icon
-																	icon='Sale'
-																	size='4x'
-																	color='success'
-																/>
-															</div>
-															<div className='flex-grow-1 ms-3'>
-																<p className='mb-0'>
-																	{data.description}
-																</p>
-															</div>
-														</div>
-													</CardBody>
+													{/* <CardBody className='py-0'>
+														<Chart
+															className='mx-n4'
+															series={data.series}
+															options={chartOptions}
+															type={chartOptions.chart?.type}
+															height={chartOptions.chart?.height}
+															width={chartOptions.chart?.width}
+														/>
+													</CardBody> */}
 												</Card>
 											</div>
 											<div className='col-lg-6'>
@@ -346,36 +366,106 @@ const ProductDetailsPage = () => {
 													</CardBody>
 												</Card>
 											</div>
-										</div>
-										<div className='col-lg-12'>
-											<Card
-												stretch
-												shadow='sm'
-												className={`bg-l${
-													darkModeStatus ? 'o25' : '25'
-												}-success rounded-2`}>
-												<CardHeader className='bg-transparent'>
-													<CardLabel>
-														<CardTitle>Description</CardTitle>
-													</CardLabel>
-												</CardHeader>
-												<CardBody>
-													<div className='d-flex align-items-center pb-3'>
-														<div className='flex-shrink-0'>
-															<Icon
-																icon='Description'
-																size='4x'
-																color='success'
-															/>
+											<div className='col-lg-6'>
+												<Card
+													stretch
+													shadow='sm'
+													className={`bg-l${
+														darkModeStatus ? 'o25' : '25'
+													}-info rounded-2`}>
+													<CardHeader className='bg-transparent'>
+														<CardLabel>
+															<CardTitle>Compatible</CardTitle>
+														</CardLabel>
+													</CardHeader>
+													{/* <CardBody>
+														<div className='d-flex align-items-center pb-3'>
+															<div className='flex-shrink-0'>
+																<Icon
+																	icon='Extension'
+																	size='4x'
+																	color='info'
+																/>
+															</div>
+															<div className='flex-grow-1 ms-3'>
+																<div className='fw-bold fs-3 mb-0'>
+																	{data.file}
+																</div>
+															</div>
 														</div>
-														<div className='flex-grow-1 ms-3'>
-															<p className='mb-0'>
-																{data.description}
-															</p>
-														</div>
-													</div>
-												</CardBody>
-											</Card>
+													</CardBody> */}
+												</Card>
+											</div>
+											{/* <div className='col-12 shadow-3d-container'>
+												<Accordion id='faq' shadow='sm'>
+													<AccordionItem
+														id='faq1'
+														title='Can I change the colors?'>
+														In at urna nec risus aliquam accumsan.
+														Vivamus rutrum rhoncus massa, sed facilisis
+														justo sodales vitae. Pellentesque mattis
+														felis ac enim viverra faucibus. Curabitur
+														maximus nibh massa, ut dictum quam
+														scelerisque eget. Maecenas scelerisque
+														egestas diam a posuere. Sed non vehicula
+														nunc. Proin feugiat nisi ut mi mattis
+														bibendum. Suspendisse lobortis libero ut
+														libero semper, sed fermentum lectus commodo.
+														Nam pretium mi sit amet purus imperdiet
+														tempus. Aliquam congue ligula quis vulputate
+														viverra. Morbi dapibus vitae odio vel
+														luctus. Vivamus tellus tortor, aliquet id
+														ultricies a, hendrerit non massa. Ut feugiat
+														quam non sollicitudin molestie. Praesent ut
+														ante mattis, efficitur est ac, scelerisque
+														magna. Donec congue erat a suscipit
+														condimentum. Curabitur purus nunc,
+														ullamcorper vitae lectus quis, aliquam
+														lacinia arcu.
+													</AccordionItem>
+													<AccordionItem
+														id='faq2'
+														title='Can I use these for presentations?'>
+														Nunc ex odio, fermentum dignissim urna eu,
+														suscipit vehicula magna. Vestibulum vel
+														risus sed metus pellentesque gravida. Etiam
+														hendrerit lorem vitae elit tempor bibendum.
+														Vivamus tincidunt consectetur erat at
+														venenatis. Nam elementum varius massa non
+														congue. Class aptent taciti sociosqu ad
+														litora torquent per conubia nostra, per
+														inceptos himenaeos. Vivamus fermentum
+														scelerisque ligula, quis bibendum felis
+														luctus quis. Donec magna sem, ullamcorper id
+														tempus ut, pharetra sed felis. Ut quis ante
+														tristique, condimentum lacus eget, mollis
+														magna. Phasellus fringilla diam ac erat
+														consequat feugiat. Vestibulum eu ex eget
+														ligula placerat finibus. Quisque vitae velit
+														feugiat, mattis lectus nec, molestie justo.
+														Vivamus nec tincidunt augue. Pellentesque
+														nec mattis ipsum, non malesuada libero.
+														Proin aliquam est turpis, sit amet efficitur
+														ex gravida ac. Nunc in molestie augue.
+													</AccordionItem>
+													<AccordionItem
+														id='faq3'
+														title='an I use these for commercial projects?'>
+														Cras rutrum turpis in nisl rhoncus volutpat.
+														In vel augue commodo, aliquet dolor sit
+														amet, pellentesque diam. Donec in dolor eu
+														metus venenatis rutrum. Nam eu venenatis
+														diam. Praesent vel tortor ornare, aliquet
+														risus eget, elementum nisi. Morbi at
+														faucibus neque, at luctus massa. Morbi
+														convallis urna lacus, id suscipit nibh
+														viverra at. Suspendisse molestie lorem nec
+														nulla tempor pulvinar. Praesent interdum
+														felis et lorem ullamcorper, sit amet mattis
+														sapien imperdiet.
+													</AccordionItem>
+												</Accordion>
+											</div> */}
 										</div>
 									</CardBody>
 								</>
@@ -395,14 +485,6 @@ const ProductDetailsPage = () => {
 									<CardBody isScrollable>
 										<div className='row g-4'>
 											<div className='col-12 d-flex align-items-center'>
-												<div className='flex-shrink-0'>
-													{/* <Avatar
-														src={USERS.GRACE.src}
-														srcSet={USERS.GRACE.srcSet}
-														color='info'
-														size={64}
-													/> */}
-												</div>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>
@@ -420,14 +502,6 @@ const ProductDetailsPage = () => {
 												</div>
 											</div>
 											<div className='col-12 d-flex align-items-center'>
-												<div className='flex-shrink-0'>
-													{/* <Avatar
-														src={USERS.SAM.src}
-														srcSet={USERS.SAM.srcSet}
-														color='info'
-														size={64}
-													/> */}
-												</div>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>
@@ -445,14 +519,6 @@ const ProductDetailsPage = () => {
 												</div>
 											</div>
 											<div className='col-12 d-flex align-items-center'>
-												{/* <div className='flex-shrink-0'>
-													<Avatar
-														src={USERS.CHLOE.src}
-														srcSet={USERS.CHLOE.srcSet}
-														color='info'
-														size={64}
-													/>
-												</div> */}
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>
@@ -493,6 +559,23 @@ const ProductDetailsPage = () => {
 											</CardHeader>
 											<CardBody>
 												<div className='row'>
+													<div className='col-lg-4'>
+														{editItem?.image ? (
+															<img
+																src={editItem.image}
+																alt=''
+																width={128}
+																height={128}
+																className='mx-auto d-block img-fluid mb-3'
+															/>
+														) : (
+															<PlaceholderImage
+																width={128}
+																height={128}
+																className='mx-auto d-block img-fluid mb-3 rounded'
+															/>
+														)}
+													</div>
 													<div className='col-lg-8'>
 														<div className='row g-4'>
 															<div className='col-12'>
@@ -500,6 +583,20 @@ const ProductDetailsPage = () => {
 																	type='file'
 																	autoComplete='photo'
 																/>
+															</div>
+															<div className='col-12'>
+																<Button
+																	color='dark'
+																	isLight
+																	icon='Delete'
+																	onClick={() => {
+																		setEditItem({
+																			...editItem,
+																			image: '',
+																		});
+																	}}>
+																	Delete Image
+																</Button>
 															</div>
 														</div>
 													</div>
@@ -515,85 +612,439 @@ const ProductDetailsPage = () => {
 											</CardHeader>
 											<CardBody>
 												<div className='row g-4'>
-												<FormGroup id='name' label='Name' isFloating>
-														<Input
-															className='pl-5'
-															placeholder='Name'
-															onChange={formik.handleChange}
-															onBlur={formik.handleBlur}
-															value={formik.values.name}
-															isValid={formik.isValid}
-															isTouched={formik.touched.name}
-															invalidFeedback={formik.errors.name}
-															validFeedback='Looks good!'
-														/>
-													</FormGroup>
-													<FormGroup id='itemCat' label=''>
+													<FormGroup id='itemCat' label=' '>
 														<Select
-														className='p-3'
 															ariaLabel='Item Category'
-															placeholder='Select Category...'
+															placeholder='SELECT ONE OPTION...'
 															list={[
 																{
-																	value: 'Digital Marketing Services',
-																	text: 'Digital Marketing Services',
+																	value: 'Service',
+																	text: 'Service',
 																},
 																{
-																	value: 'Graphic Design',
-																	text: 'Graphic Design',
-																},
-																{
-																	value: 'Content Creation',
-																	text: 'Content Creation',
-																},
-																{
-																	value: 'Website Development',
-																	text: 'Website Development',
+																	value: 'Product',
+																	text: 'Product',
 																},
 															]}
 															onChange={formikSelect.handleChange}
 															value={formikSelect.values.itemCat}
 														/>
 													</FormGroup>
-													<FormGroup id='price' label='price' isFloating>
-														<Input
-															className='pl-5'
-															placeholder='Price'
-															onChange={formik.handleChange}
-															onBlur={formik.handleBlur}
-															value={formik.values.price}
-															isValid={formik.isValid}
-															isTouched={formik.touched.price}
-															invalidFeedback={formik.errors.price}
-															validFeedback='Looks good!'
-														/>
-													</FormGroup>
-													<FormGroup id='sale' label='Sale' isFloating>
-														<Input
-															className='pl-5'
-															placeholder='Sale'
-															onChange={formik.handleChange}
-															onBlur={formik.handleBlur}
-															value={formik.values.sale}
-															isValid={formik.isValid}
-															isTouched={formik.touched.sale}
-															invalidFeedback={formik.errors.sale}
-															validFeedback='Looks good!'
-														/>
-													</FormGroup>
-													<FormGroup id='description' label='Description' isFloating>
-														<Input
-															className='pl-5'
-															placeholder='Description'
-															onChange={formik.handleChange}
-															onBlur={formik.handleBlur}
-															value={formik.values.description}
-															isValid={formik.isValid}
-															isTouched={formik.touched.description}
-															invalidFeedback={formik.errors.description}
-															validFeedback='Looks good!'
-														/>
-													</FormGroup>
+													{formikSelect.values.itemCat === 'Service' ? (
+														<>
+															<div className='col-12'>
+																<FormGroup
+																	id='name'
+																	label='Name'
+																	isFloating>
+																	<Input
+																		placeholder='Name'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={formik.values.name}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.name
+																		}
+																		invalidFeedback={
+																			formik.errors.name
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='desc'
+																	label=' Please describe your Service'
+																	isFloating>
+																	<Input
+																		placeholder='Please describe your Service'
+																		type='text'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={formik.values.description}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.description
+																		}
+																		invalidFeedback={
+																			formik.errors.description
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															{/* <div className='col-12'>
+																<FormGroup
+																	id='price'
+																	label='Price'
+																	isFloating>
+																	<Input
+																		placeholder='Price'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={formik.values.price}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.price
+																		}
+																		invalidFeedback={
+																			formik.errors.price
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='stock'
+																	label='Stock'
+																	isFloating>
+																	<Input
+																		placeholder='Stock'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={formik.values.stock}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.stock
+																		}
+																		invalidFeedback={
+																			formik.errors.stock
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='category'
+																	label='Category'
+																	isFloating>
+																	<Input
+																		placeholder='Category'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={
+																			formik.values.category
+																		}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.category
+																		}
+																		invalidFeedback={
+																			formik.errors.category
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div> */}
+														</>
+													) : (
+														<>
+															<div className='col-12'>
+																<FormGroup
+																	id='name'
+																	label='Name'
+																	isFloating>
+																	<Input
+																		placeholder='Name'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={formik.values.name}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.name
+																		}
+																		invalidFeedback={
+																			formik.errors.name
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='desc'
+																	label=' Please describe your product'
+																	isFloating>
+																	<Input
+																		placeholder='Please describe your product'
+																		type='text'
+																		onChange={
+																			formik.handleChange
+																		}
+																		onBlur={formik.handleBlur}
+																		value={formik.values.description}
+																		isValid={formik.isValid}
+																		isTouched={
+																			formik.touched.description
+																		}
+																		invalidFeedback={
+																			formik.errors.description
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='isSell'
+																	label='Do you sell or would you like to sell this product in 
+																		your local market?'>
+																	<Select
+																		ariaLabel='isSell'
+																		placeholder=' '
+																		list={[
+																			{
+																				value: 'yes',
+																				text: 'Yes',
+																			},
+																			{
+																				value: 'no',
+																				text: 'No',
+																			},
+																		]}
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		value={
+																			formikSelect.values
+																				.isSell
+																		}
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='isSellInOtherCoun'
+																	label='Do you sell or would you like to sell this product in 
+																		other countries?'>
+																	<Select
+																		ariaLabel='isSellInOtherCoun'
+																		placeholder=' '
+																		list={[
+																			{
+																				value: 'yes',
+																				text: 'Yes',
+																			},
+																			{
+																				value: 'no',
+																				text: 'No',
+																			},
+																		]}
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		value={
+																			formikSelect.values
+																				.isSellInOtherCoun
+																		}
+																	/>
+																</FormGroup>
+															</div>
+															{/* {formikSelect.values
+																.isSellInOtherCoun === 'no' ? (
+																<Alert
+																	color='warning'
+																	isLight
+																	isOutline={false}
+																	borderWidth={null}
+																	isDismissible={false}
+																	icon='info'>
+																	Great let’s focus on your local
+																	market, we have a lot of work
+																	there
+																</Alert>
+															) : (
+																<Alert
+																	color='warning'
+																	isLight
+																	isOutline={false}
+																	borderWidth={null}
+																	isDismissible={false}
+																	icon='info'>
+																	{' '}
+																	Great challenge! Let’s focus on
+																	your local market first, you can
+																	answer this product quiz for
+																	each new country later on – just
+																	duplicate the product card and
+																	update it for promotion in the
+																	new country
+																</Alert>
+															)} */}
+															<div className='col-12'>
+																<FormGroup
+																	id='isSellInOtherCoun'
+																	label='Is this your main product to promote?'>
+																	<Select
+																		ariaLabel='ProductPriority'
+																		placeholder=' '
+																		list={[
+																			{
+																				value: 'yes',
+																				text: 'Yes',
+																			},
+																			{
+																				value: 'no',
+																				text: 'No',
+																			},
+																		]}
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		value={
+																			formikSelect.values
+																				.isSellInOtherCoun
+																		}
+																	/>
+																</FormGroup>
+															</div>
+															<div className='col-12'>
+																<FormGroup
+																	id='soldWithCompProducts'
+																	label='Can this product be sold with complimentary 
+products?'>
+																	<Select
+																		ariaLabel='ProductPriority'
+																		placeholder=' '
+																		list={[
+																			{
+																				value: 'yes',
+																				text: 'Yes',
+																			},
+																			{
+																				value: 'no',
+																				text: 'No',
+																			},
+																		]}
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		value={
+																			formikSelect.values
+																				.soldWithCompProducts
+																		}
+																	/>
+																</FormGroup>
+															</div>
+															{/* <div className='col-12'>
+																<FormGroup
+																	id='competitorsList'
+																	label='Please name direct competitors (make sure to write 
+																		the exact name without spelling mistakes)'
+																	isFloating>
+																	<Input
+																		placeholder='Please name direct competitors (make sure to write 
+																			the exact name without spelling mistakes)'
+																		type='text'
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		onBlur={
+																			formikSelect.handleBlur
+																		}
+																		value={
+																			formikSelect.values
+																				.competitorsList
+																		}
+																		isValid={
+																			formikSelect.isValid
+																		}
+																		isTouched={
+																			formikSelect.touched
+																				.competitorsList
+																		}
+																		invalidFeedback={
+																			formikSelect.errors
+																				.competitorsList
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div> */}
+															<div className='col-12'>
+																<FormGroup
+																	id='averageSelling'
+																	label=' What is your average selling price?'
+																	isFloating>
+																	<Input
+																		placeholder=' What is your average selling price? '
+																		type='text'
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		onBlur={
+																			formikSelect.handleBlur
+																		}
+																		value={
+																			formikSelect.values
+																				.averageSelling
+																		}
+																		isValid={
+																			formikSelect.isValid
+																		}
+																		isTouched={
+																			formikSelect.touched
+																				.averageSelling
+																		}
+																		invalidFeedback={
+																			formikSelect.errors
+																				.averageSelling
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div>
+															{/* <div className='col-12'>
+																<FormGroup
+																	id='averageSellingMarket'
+																	label=' What is the average selling price on the market? '
+																	isFloating>
+																	<Input
+																		placeholder=' What is the average selling price on the market? '
+																		type='text'
+																		onChange={
+																			formikSelect.handleChange
+																		}
+																		onBlur={
+																			formikSelect.handleBlur
+																		}
+																		value={
+																			formikSelect.values
+																				.averageSellingMarket
+																		}
+																		isValid={
+																			formikSelect.isValid
+																		}
+																		isTouched={
+																			formikSelect.touched
+																				.averageSellingMarket
+																		}
+																		invalidFeedback={
+																			formikSelect.errors
+																				.averageSellingMarket
+																		}
+																		validFeedback='Looks good!'
+																	/>
+																</FormGroup>
+															</div> */}
+														</>
+													)}
 												</div>
 											</CardBody>
 										</Card>
@@ -608,7 +1059,7 @@ const ProductDetailsPage = () => {
 												// 	!formik.isValid && !!formik.handleSubmit
 												// }
 											>
-												Update
+												Save
 											</Button>
 										</CardFooterRight>
 									</CardFooter>

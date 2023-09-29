@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
-import { pagesMenu, adminDashboardPagesMenu } from '../menu';
+import { pagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
 import Profile from '../pages/presentation/profile/Profile';
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
@@ -8,6 +8,8 @@ import Task from '../pages/superAdmin/task/Task';
 import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
 import ProductPage from '../pages/presentation/products/ProductPage';
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
+import Goals from '../pages/presentation/goal/Goals';
+import Tasks from '../pages/presentation/dashboard/Tasks';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -105,6 +107,14 @@ const documentation: RouteProps[] = [
 	{
 		path: `${pagesMenu.productId.path}/:id`,
 		element: <ProductDetailsPage />,
+	},
+	{
+		path: dashboardPagesMenu.goals.path,
+		element: <Goals />,
+	},
+	{
+		path: dashboardPagesMenu.tasks.path,
+		element: <Tasks />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.product.path}`,
