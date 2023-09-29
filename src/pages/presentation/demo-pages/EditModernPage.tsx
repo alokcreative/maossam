@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import dayjs, { Dayjs } from 'dayjs';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
@@ -82,7 +82,7 @@ const EditModernPage = () => {
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
 
 	return (
-		<PageWrapper title={demoPagesMenu.editPages.subMenu.editModern.text}>
+		<PageWrapper title={pagesMenu.editPages.subMenu.editModern.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

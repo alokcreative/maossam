@@ -1,6 +1,10 @@
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
+interface IPayload {
+	email: string;
+	loginPassword: string;
+}
 export const productsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		// getPosts: builder.query({
@@ -8,7 +12,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 		//     providesTags: ['Post'],
 		//   }),
 		getUser: builder.mutation({
-			query: (payload) => ({
+			query: (payload: IPayload) => ({
 				url: apiEndpoints.login,
 				method: 'POST',
 				body: payload,
@@ -19,7 +23,30 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+
+		// Login
+		login: builder.mutation({
+			query: (payload: IPayload) => ({
+				url: apiEndpoints.login,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}),
+		}),
+		// Signup
+		signup: builder.mutation({
+			query: (payload: IPayload) => ({
+				url: apiEndpoints.signup,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}),
+		}),
 	}),
 });
 
-export const { useGetUserMutation } = productsApiSlice;
+export const { useGetUserMutation, useLoginMutation, useSignupMutation } = productsApiSlice;

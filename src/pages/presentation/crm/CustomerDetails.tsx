@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubheaderSeparator } from '../../../layout/SubHeader/SubHeader';
 import Page from '../../../layout/Page/Page';
-import { dashboardPagesMenu, demoPagesMenu } from '../../../menu';
+import { dashboardPagesMenu, pagesMenu } from '../../../menu';
 // import data from '../../../common/data/dummyCustomerData';
 import tableData from '../../../common/data/dummyProductData';
 import Button from '../../../components/bootstrap/Button';
@@ -36,7 +36,7 @@ import BusinessLogo from '../../../assets/logos/business.png';
 // import FacebookImg from '../../../assets/logos/facebook.png';
 import InstagramImg from '../../../assets/logos/instagram.png';
 import LinkedinImg from '../../../assets/logos/linkedin.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import { success } from '../../../stories/components/bootstrap/Alert/AlertUseColor.stories';
 import OffCanvas, {
 	OffCanvasBody,
@@ -178,7 +178,7 @@ const Customer = () => {
 
 	function handleEdit(uid: number) {
 		const newData = data.filter((it) => it.id === uid);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 	const [showAllItem, setShowAllItem] = useState(false);
 
@@ -186,7 +186,7 @@ const Customer = () => {
 		setShowAllItem(!showAllItem);
 	};
 	return (
-		<PageWrapper title={demoPagesMenu.projectManagement.subMenu.item.text}>
+		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button
@@ -280,7 +280,7 @@ const Customer = () => {
 															isLight
 															hoverShadow='sm'
 															tag='a'
-															to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+															to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 															aria-label='More info'
 														/>
 													</div>
@@ -344,7 +344,7 @@ const Customer = () => {
 																isLight
 																hoverShadow='sm'
 																tag='a'
-																to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+																to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 																aria-label='More info'
 															/>
 														</div>
@@ -398,7 +398,7 @@ const Customer = () => {
 																isLight
 																hoverShadow='sm'
 																tag='a'
-																to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+																to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 																aria-label='More info'
 															/>
 														</div>
@@ -452,7 +452,7 @@ const Customer = () => {
 																isLight
 																hoverShadow='sm'
 																tag='a'
-																to={`../${demoPagesMenu.crm.subMenu.customerProfile.path}`}
+																to={`../${pagesMenu.crm.subMenu.customerProfile.path}`}
 																aria-label='More info'
 															/>
 														</div>
@@ -482,8 +482,6 @@ const Customer = () => {
 										name={it.name}
 										category={it.category}
 										img={it.image}
-										color={it.color}
-										series={it.series}
 										price={it.price}
 										editAction={() => {
 											setEditPanel(true);
@@ -500,8 +498,6 @@ const Customer = () => {
 										name={it.name}
 										category={it.category}
 										img={it.image}
-										color={it.color}
-										series={it.series}
 										price={it.price}
 										editAction={() => {
 											setEditPanel(true);

@@ -25,7 +25,7 @@ import USERS, { IUserProps } from '../../../common/data/userDummyData';
 import OffCanvas, { OffCanvasBody, OffCanvasHeader } from '../../../components/bootstrap/OffCanvas';
 import InputGroup from '../../../components/bootstrap/forms/InputGroup';
 import Textarea from '../../../components/bootstrap/forms/Textarea';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import CHATS, { IMessages } from '../../../common/data/chatDummyData';
 import CommonChatStatus from '../../_common/CommonChatStatus';
 
@@ -80,11 +80,11 @@ const OnlyListChatPage = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const handleLogout = () => {
 		dispatch(logout());
-		navigate(`../${demoPagesMenu.login.path}`)
+		navigate(`../${pagesMenu.login.path}`)
 	};
 
 	return (
-		<PageWrapper title={demoPagesMenu.chat.subMenu.onlyListChat.text}>
+		<PageWrapper title={pagesMenu.chat.subMenu.onlyListChat.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<span>

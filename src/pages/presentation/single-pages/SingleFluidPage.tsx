@@ -36,7 +36,7 @@ import Pic6 from '../../../assets/img/wanna/richie/richie6.png';
 import Pic7 from '../../../assets/img/wanna/richie/richie7.png';
 import Pic8 from '../../../assets/img/wanna/richie/richie8.png';
 import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../components/bootstrap/Modal';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import WannaImg1 from '../../../assets/img/wanna/slide/scene-1.png';
 import WannaImg2 from '../../../assets/img/wanna/slide/scene-2.png';
 import WannaImg5 from '../../../assets/img/wanna/slide/scene-5.png';
@@ -122,7 +122,7 @@ const SingleFluidPage = () => {
 	);
 
 	return (
-		<PageWrapper title={demoPagesMenu.singlePages.subMenu.fluidSingle.text}>
+		<PageWrapper title={pagesMenu.singlePages.subMenu.fluidSingle.text}>
 			<Page container='fluid'>
 				<div className='row'>
 					<div className='col-xxl-4 col-xl-6'>
@@ -350,7 +350,7 @@ const SingleFluidPage = () => {
 												color={darkModeStatus ? 'light' : 'dark'}
 												onClick={() =>
 													navigate(
-														`../${demoPagesMenu.sales.subMenu.productsGrid.path}`,
+														`../${pagesMenu.sales.subMenu.productsGrid.path}`,
 													)
 												}>
 												Click
@@ -368,7 +368,7 @@ const SingleFluidPage = () => {
 												color={darkModeStatus ? 'light' : 'dark'}
 												onClick={() =>
 													navigate(
-														`../${demoPagesMenu.sales.subMenu.dashboard.path}`,
+														`../${pagesMenu.sales.subMenu.dashboard.path}`,
 													)
 												}>
 												Click

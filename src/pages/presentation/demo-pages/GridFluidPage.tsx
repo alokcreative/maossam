@@ -10,7 +10,7 @@ import SubHeader, {
 import Button from '../../../components/bootstrap/Button';
 
 import Company2 from '../../../assets/logos/company2.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
@@ -27,7 +27,7 @@ import Card, {
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import Input from '../../../components/bootstrap/forms/Input';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IValues {
@@ -87,7 +87,7 @@ const GridFluidPage = () => {
 
 	function handleEdit(id: number) {
 		const newData = data.filter((item) => item.id === id);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 
 	const formik = useFormik({
@@ -125,7 +125,7 @@ const GridFluidPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.gridPages.subMenu.gridFluid.text}>
+		<PageWrapper title={pagesMenu.gridPages.subMenu.gridFluid.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<img src={Company2} alt='Company' height={24} />
@@ -156,8 +156,6 @@ const GridFluidPage = () => {
 								name={item.name}
 								category={item.category}
 								img={item.image}
-								color={item.color}
-								series={item.series}
 								price={item.price}
 								editAction={() => {
 									setEditPanel(true);

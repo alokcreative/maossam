@@ -1,12 +1,9 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { ApexOptions } from 'apexcharts';
-import Checks from '../../components/bootstrap/forms/Checks';
-import Chart from '../../components/extras/Chart';
 import Badge from '../../components/bootstrap/Badge';
 import Button from '../../components/bootstrap/Button';
-import { demoPagesMenu } from '../../menu';
+import { pagesMenu } from '../../menu';
 import useDarkMode from '../../hooks/useDarkMode';
 
 interface ICommonTableRowProps {
@@ -14,87 +11,24 @@ interface ICommonTableRowProps {
 	image: string;
 	name: string;
 	category: string;
-	series: ApexOptions['series'];
-	color: string;
-	stock: string | number;
 	price: number;
 	store: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	selectOnChange: any;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	selectChecked: any;
-	selectName: string;
 }
-const CommonTableRow: FC<ICommonTableRowProps> = ({
-	id,
-	image,
-	name,
-	category,
-	series,
-	color,
-	stock,
-	price,
-	store,
-	selectOnChange,
-	selectChecked,
-	selectName,
-}) => {
+// to={`../${pagesMenu.productId.path}/${id}`}
+const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, price, store }) => {
 	const { darkModeStatus } = useDarkMode();
-
-	const dummyOptions: ApexOptions = {
-		colors: [color],
-		chart: {
-			type: 'line',
-			width: 100,
-			height: 35,
-			sparkline: {
-				enabled: true,
-			},
-		},
-		tooltip: {
-			theme: 'dark',
-			fixed: {
-				enabled: false,
-			},
-			x: {
-				show: false,
-			},
-			y: {
-				title: {
-					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					formatter(seriesName: string) {
-						return '';
-					},
-				},
-			},
-		},
-		stroke: {
-			curve: 'smooth',
-			width: 2,
-		},
-	};
 	return (
 		<tr>
-			{/* <th scope='row'>
-				<Checks
-					id={id.toString()}
-					name={selectName}
-					value={id}
-					onChange={selectOnChange}
-					checked={selectChecked}
-					ariaLabel={selectName}
-				/>
-			</th> */}
 			<th scope='row'>{id}</th>
 			<td>
-				<Link to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}>
+				<Link to={`../${pagesMenu.productId.path}/${id}`}>
 					<img src={image} alt={name} width={54} height={54} />
 				</Link>
 			</td>
 			<td>
 				<div>
 					<Link
-						to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}
+						to={`../${pagesMenu.productId.path}/${id}`}
 						className={classNames('fw-bold', {
 							'link-dark': !darkModeStatus,
 							'link-light': darkModeStatus,
@@ -145,7 +79,7 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({
 					isLight
 					icon='info'
 					tag='a'
-					to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}
+					to={`../${pagesMenu.productId.path}/${id}`}
 					aria-label='Detail'
 				/>
 			</td>

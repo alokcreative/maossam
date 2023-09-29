@@ -9,7 +9,7 @@ import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 
 import CommonUpcomingEvents from '../../_common/CommonUpcomingEvents';
 import Popovers from '../../../components/bootstrap/Popovers';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 const EditInCanvasPage = () => {
@@ -18,7 +18,7 @@ const EditInCanvasPage = () => {
 	const [date, setDate] = useState<Date>(new Date());
 
 	return (
-		<PageWrapper title={demoPagesMenu.editPages.subMenu.editInCanvas.text}>
+		<PageWrapper title={pagesMenu.editPages.subMenu.editInCanvas.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Icon icon='Info' className='me-2' size='2x' />

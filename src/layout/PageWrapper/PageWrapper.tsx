@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { ISubHeaderProps } from '../SubHeader/SubHeader';
 import { IPageProps } from '../Page/Page';
-import { demoPagesMenu } from '../../menu';
+import { pagesMenu } from '../../menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
@@ -38,7 +38,7 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 		const navigate = useNavigate();
 		useLayoutEffect(() => {
 			if (isProtected && (user === null || localUser === null)) {
-				navigate(`../${demoPagesMenu.login.path}`);
+				navigate(`../${pagesMenu.login.path}`);
 			}
 			return () => {};
 			// eslint-disable-next-line react-hooks/exhaustive-deps

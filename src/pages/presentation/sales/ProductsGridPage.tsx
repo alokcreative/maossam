@@ -8,7 +8,7 @@ import SubHeader, {
 	SubheaderSeparator,
 } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
@@ -25,7 +25,7 @@ import Badge from '../../../components/bootstrap/Badge';
 import Input from '../../../components/bootstrap/forms/Input';
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
 
 interface IValues {
@@ -84,7 +84,7 @@ const ProductsGridPage = () => {
 
 	function handleEdit(id: number) {
 		const newData = data.filter((item) => item.id === id);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 
 	const formik = useFormik({
@@ -122,15 +122,15 @@ const ProductsGridPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.sales.subMenu.productsGrid.text}>
+		<PageWrapper title={pagesMenu.sales.subMenu.productsGrid.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
 						list={[
-							{ title: demoPagesMenu.sales.text, to: demoPagesMenu.sales.path },
+							{ title: pagesMenu.sales.text, to: pagesMenu.sales.path },
 							{
-								title: demoPagesMenu.sales.subMenu.productsGrid.text,
-								to: demoPagesMenu.sales.subMenu.productsGrid.path,
+								title: pagesMenu.sales.subMenu.productsGrid.text,
+								to: pagesMenu.sales.subMenu.productsGrid.path,
 							},
 						]}
 					/>
@@ -153,7 +153,7 @@ const ProductsGridPage = () => {
 			<Page>
 				<div className='display-4 fw-bold py-3'>All Products</div>
 				<div className='row'>
-					{data.map((item) => (
+					{/* {data.map((item) => (
 						<div key={item.id} className='col-xxl-3 col-xl-4 col-md-6'>
 							<CommonGridProductItem
 								id={item.id}
@@ -170,7 +170,7 @@ const ProductsGridPage = () => {
 								deleteAction={() => handleRemove(item.id)}
 							/>
 						</div>
-					))}
+					))} */}
 				</div>
 			</Page>
 

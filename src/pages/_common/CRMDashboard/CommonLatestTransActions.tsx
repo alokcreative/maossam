@@ -11,7 +11,7 @@ import Card, {
 import Button from '../../../components/bootstrap/Button';
 import { priceFormat } from '../../../helpers/helpers';
 import useDarkMode from '../../../hooks/useDarkMode';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 
 type TStatus = 'Paid' | 'Pending' | 'Failed';
 interface ITransactionsItemProps {
@@ -137,7 +137,7 @@ const CommonLatestTransActions = () => {
 						isLink
 						icon='Summarize'
 						tag='a'
-						to={`../${demoPagesMenu.sales.subMenu.transactions.path}`}>
+						to={`../${pagesMenu.sales.subMenu.transactions.path}`}>
 						All Transactions
 					</Button>
 				</CardActions>

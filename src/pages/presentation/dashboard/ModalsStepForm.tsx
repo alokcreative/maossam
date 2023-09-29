@@ -122,16 +122,16 @@ const ModalsStepForm: React.FC = () => {
 										START YOUR FREE TRIAL
 									</div>
 									<div className='text-center text-muted h5 mb-5'>
-										Try all the features -{' '}
+										{/* Try all the features -{' '}
 										<span className='text-danger'>
 											No credit card required??
-										</span>
+										</span> */}
 									</div>
 									<div className='mb-3'>
 										<FormGroup
 											id='signup-telephone'
 											isFloating
-											label='TELEPHONE'>
+											label='Phone Number'>
 											<Input
 												type='tel'
 												name='phoneNo'
@@ -168,9 +168,9 @@ const ModalsStepForm: React.FC = () => {
 									<div className='text-center h3 mb-2'>
 										Let’s set up your account
 									</div>
-									<div className='text-center mb-5 fst-italic'>
+									{/* <div className='text-center mb-5 fst-italic'>
 										(You can always change it later)
-									</div>
+									</div> */}
 									<div className='mb-3'>
 										<FormGroup id='signup-company' isFloating label='COMPANY'>
 											<Input
@@ -182,150 +182,151 @@ const ModalsStepForm: React.FC = () => {
 										</FormGroup>
 									</div>
 								</div>
-							) : steps[currentStep] === 'Step 3' ? (
-								<div>
-									<div className='text-center h1 fw-bold mb-4'>
-										Which best describes you?
-									</div>
-									<div className='text-center h4 mb-5'>
-										This will help us adapt the platform to fit your business
-										needs
-									</div>
-									<div className='mb-3'>
-										<Checks
-											id='role'
-											type='radio'
-											name='role'
-											value='student'
-											onChange={formik.handleChange}
-											checked={formik.values.role}
-											label='Student'
-										/>
-									</div>
-									<div className='mb-3'>
-										<Checks
-											id='role'
-											type='radio'
-											name='role'
-											value='entrepreneur'
-											onChange={formik.handleChange}
-											checked={formik.values.role}
-											label='Entrepreneur'
-										/>
-									</div>
-									{formik.values.role === 'entrepreneur' ? (
-										<>
-											<Button
-												type='button'
-												onClick={() => onToggleBtn('1')}
-												className={`btn px-4 m-1 ${
-													activeBtn === '1'
-														? 'btn-info'
-														: 'btn-light-info'
-												}`}>
-												1 year and less
-											</Button>
-											<Button
-												type='button'
-												onClick={() => onToggleBtn('2')}
-												className={`btn px-4 m-1 ${
-													activeBtn === '2'
-														? 'btn-info'
-														: 'btn-light-info'
-												}`}>
-												2-3 years
-											</Button>
-											<Button
-												type='button'
-												onClick={() => onToggleBtn('3')}
-												className={`btn px-4 m-1 ${
-													activeBtn === '3'
-														? 'btn-info'
-														: 'btn-light-info'
-												}`}>
-												more than 3 years
-											</Button>
-										</>
-									) : null}
+							) : //  steps[currentStep] === 'Step 3' ? (
+							// 	<div>
+							// 		<div className='text-center h1 fw-bold mb-4'>
+							// 			Which best describes you?
+							// 		</div>
+							// 		<div className='text-center h4 mb-5'>
+							// 			This will help us adapt the platform to fit your business
+							// 			needs
+							// 		</div>
+							// 		<div className='mb-3'>
+							// 			<Checks
+							// 				id='role'
+							// 				type='radio'
+							// 				name='role'
+							// 				value='student'
+							// 				onChange={formik.handleChange}
+							// 				checked={formik.values.role}
+							// 				label='Student'
+							// 			/>
+							// 		</div>
+							// 		<div className='mb-3'>
+							// 			<Checks
+							// 				id='role'
+							// 				type='radio'
+							// 				name='role'
+							// 				value='entrepreneur'
+							// 				onChange={formik.handleChange}
+							// 				checked={formik.values.role}
+							// 				label='Entrepreneur'
+							// 			/>
+							// 		</div>
+							// 		{formik.values.role === 'entrepreneur' ? (
+							// 			<>
+							// 				<Button
+							// 					type='button'
+							// 					onClick={() => onToggleBtn('1')}
+							// 					className={`btn px-4 m-1 ${
+							// 						activeBtn === '1'
+							// 							? 'btn-info'
+							// 							: 'btn-light-info'
+							// 					}`}>
+							// 					1 year and less
+							// 				</Button>
+							// 				<Button
+							// 					type='button'
+							// 					onClick={() => onToggleBtn('2')}
+							// 					className={`btn px-4 m-1 ${
+							// 						activeBtn === '2'
+							// 							? 'btn-info'
+							// 							: 'btn-light-info'
+							// 					}`}>
+							// 					2-3 years
+							// 				</Button>
+							// 				<Button
+							// 					type='button'
+							// 					onClick={() => onToggleBtn('3')}
+							// 					className={`btn px-4 m-1 ${
+							// 						activeBtn === '3'
+							// 							? 'btn-info'
+							// 							: 'btn-light-info'
+							// 					}`}>
+							// 					more than 3 years
+							// 				</Button>
+							// 			</>
+							// 		) : null}
 
-									<div className='mb-3 mt-4'>
-										<FormGroup id='activity' label='Field of activity'>
-											<Select
-												ariaLabel='activity'
-												placeholder='Choose...'
-												list={[
-													{ value: 'a1', text: 'Field of activity 1' },
-													{ value: 'a2', text: 'Field of activity 2' },
-													{ value: 'a3', text: 'Field of activity 3' },
-													{ value: 'a4', text: 'Field of activity 4' },
-												]}
-											/>
-										</FormGroup>
-									</div>
-								</div>
-							) : steps[currentStep] === 'Step 4' ? (
-								<div>
-									<div className='text-center h1 fw-bold mb-4'>MA OSSIM</div>
-									<div className='text-center h4 mb-5'>
-										How many are you on your team?
-									</div>
-									<div className='team-button text-center h-100'>
-										<Button
-											type='button'
-											onClick={() => onToggleBtn('Just Me')}
-											className={`btn px-4 m-1 ${
-												activeBtn === 'Just Me'
-													? 'btn-info'
-													: 'btn-light-info'
-											}`}>
-											Just Me
-										</Button>
-										<Button
-											type='button'
-											onClick={() => onToggleBtn('2-4')}
-											className={`btn px-4 m-1 ${
-												activeBtn === '2-4' ? 'btn-info' : 'btn-light-info'
-											}`}>
-											2-4
-										</Button>
-										<Button
-											type='button'
-											onClick={() => onToggleBtn('5-10')}
-											className={`btn px-4 m-1 ${
-												activeBtn === '5-10' ? 'btn-info' : 'btn-light-info'
-											}`}>
-											5-10
-										</Button>
-										<Button
-											type='button'
-											onClick={() => onToggleBtn('11-30')}
-											className={`btn px-4 m-1 ${
-												activeBtn === '11-30'
-													? 'btn-info'
-													: 'btn-light-info'
-											}`}>
-											11-30
-										</Button>
-										<Button
-											type='button'
-											onClick={() => onToggleBtn('31+')}
-											className={`btn px-4 m-1 ${
-												activeBtn === '31+' ? 'btn-info' : 'btn-light-info'
-											}`}>
-											31+
-										</Button>
-									</div>
-								</div>
-							) : steps[currentStep] === 'Step 5' ? (
+							// 		<div className='mb-3 mt-4'>
+							// 			<FormGroup id='activity' label='Field of activity'>
+							// 				<Select
+							// 					ariaLabel='activity'
+							// 					placeholder='Choose...'
+							// 					list={[
+							// 						{ value: 'a1', text: 'Field of activity 1' },
+							// 						{ value: 'a2', text: 'Field of activity 2' },
+							// 						{ value: 'a3', text: 'Field of activity 3' },
+							// 						{ value: 'a4', text: 'Field of activity 4' },
+							// 					]}
+							// 				/>
+							// 			</FormGroup>
+							// 		</div>
+							// 	</div>
+							// ) : steps[currentStep] === 'Step 4' ? (
+							// 	<div>
+							// 		<div className='text-center h1 fw-bold mb-4'>MA OSSIM</div>
+							// 		<div className='text-center h4 mb-5'>
+							// 			How many are you on your team?
+							// 		</div>
+							// 		<div className='team-button text-center h-100'>
+							// 			<Button
+							// 				type='button'
+							// 				onClick={() => onToggleBtn('Just Me')}
+							// 				className={`btn px-4 m-1 ${
+							// 					activeBtn === 'Just Me'
+							// 						? 'btn-info'
+							// 						: 'btn-light-info'
+							// 				}`}>
+							// 				Just Me
+							// 			</Button>
+							// 			<Button
+							// 				type='button'
+							// 				onClick={() => onToggleBtn('2-4')}
+							// 				className={`btn px-4 m-1 ${
+							// 					activeBtn === '2-4' ? 'btn-info' : 'btn-light-info'
+							// 				}`}>
+							// 				2-4
+							// 			</Button>
+							// 			<Button
+							// 				type='button'
+							// 				onClick={() => onToggleBtn('5-10')}
+							// 				className={`btn px-4 m-1 ${
+							// 					activeBtn === '5-10' ? 'btn-info' : 'btn-light-info'
+							// 				}`}>
+							// 				5-10
+							// 			</Button>
+							// 			<Button
+							// 				type='button'
+							// 				onClick={() => onToggleBtn('11-30')}
+							// 				className={`btn px-4 m-1 ${
+							// 					activeBtn === '11-30'
+							// 						? 'btn-info'
+							// 						: 'btn-light-info'
+							// 				}`}>
+							// 				11-30
+							// 			</Button>
+							// 			<Button
+							// 				type='button'
+							// 				onClick={() => onToggleBtn('31+')}
+							// 				className={`btn px-4 m-1 ${
+							// 					activeBtn === '31+' ? 'btn-info' : 'btn-light-info'
+							// 				}`}>
+							// 				31+
+							// 			</Button>
+							// 		</div>
+							// 	</div>
+							// )
+							steps[currentStep] === 'Step 5' ? (
 								<div>
 									<div className='text-center h1 fw-bold mb-4'>MA OSSIM</div>
 									<div className='text-center h4 mb-5'>
 										Where are you located?
 									</div>
-									<div className='text-center h5 mb-5'>
+									{/* <div className='text-center h5 mb-5'>
 										This will help us adapt the platform to fit your business
 										needs.
-									</div>
+									</div> */}
 									<div className='mb-3'>
 										<FormGroup
 											id='CountryName'

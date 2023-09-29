@@ -24,7 +24,7 @@ import PaginationButtons, {
 import data from '../../../../common/data/dummyProductData';
 import useSortableData from '../../../../hooks/useSortableData';
 import useDarkMode from '../../../../hooks/useDarkMode';
-import { demoPagesMenu } from '../../../../menu';
+import { pagesMenu } from '../../../../menu';
 import Chart from '../../../../components/extras/Chart';
 import Badge from '../../../../components/bootstrap/Badge';
 
@@ -87,16 +87,14 @@ const TableRow: FC<ITableRowProps> = ({
 		<tr>
 			<th scope='row'>{id}</th>
 			<td>
-				<Link
-					to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}
-					aria-label={name}>
+				<Link to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`} aria-label={name}>
 					<img src={image} alt='' width={54} height={54} />
 				</Link>
 			</td>
 			<td>
 				<div>
 					<Link
-						to={`../${demoPagesMenu.sales.subMenu.productID.path}/${id}`}
+						to={`../${pagesMenu.sales.subMenu.productID.path}/${id}`}
 						className={classNames('fw-bold', {
 							'link-dark': !darkModeStatus,
 							'link-light': darkModeStatus,

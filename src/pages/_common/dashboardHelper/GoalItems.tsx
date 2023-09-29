@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import useDarkMode from '../../../hooks/useDarkMode';
 import { useNavigate } from 'react-router-dom';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import Card, {
 	CardActions,
 	CardBody,
@@ -13,17 +13,17 @@ import Badge from '../../../components/bootstrap/Badge';
 import Progress from '../../../components/bootstrap/Progress';
 
 interface IItemProps {
+	id: number;
 	name: string;
 	attributes: string;
 	timeline: string;
 	status: string;
 }
-const Item: FC<IItemProps> = ({ name, attributes, timeline, status }) => {
-	const { darkModeStatus } = useDarkMode();
+const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
 	const navigate = useNavigate();
 	const handleOnClickToProjectPage = useCallback(
-		() => navigate(`../${demoPagesMenu.projectManagement.subMenu.itemID.path}/1`),
-		[navigate],
+		() => navigate(`../${pagesMenu.goalId.path}/${id}`),
+		[navigate, id],
 	);
 	return (
 		// eslint-disable-next-line react/jsx-props-no-spreading

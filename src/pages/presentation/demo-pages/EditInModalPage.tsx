@@ -29,7 +29,7 @@ import Checks from '../../../components/bootstrap/forms/Checks';
 import Popovers from '../../../components/bootstrap/Popovers';
 import data from '../../../common/data/dummyEventsData';
 import USERS from '../../../common/data/userDummyData';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 const EditInModalPage = () => {
@@ -67,7 +67,7 @@ const EditInModalPage = () => {
 		},
 	});
 	return (
-		<PageWrapper title={demoPagesMenu.editPages.subMenu.editInModal.text}>
+		<PageWrapper title={pagesMenu.editPages.subMenu.editInModal.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Icon icon='Info' className='me-2' size='2x' />

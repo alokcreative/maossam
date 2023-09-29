@@ -28,12 +28,20 @@ import Modal, {
 import Select from '../../../components/bootstrap/forms/Select';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { Role } from '../../../common/data/userDummyData';
 
 const Tasks: FC = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
+	const [modalState, setModalState] = useState('Add Task');
 	const [taskList, setTaskList] = useState(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 
 	const formiknewTask = useFormik({
 		initialValues: {
@@ -66,15 +74,17 @@ const Tasks: FC = () => {
 					<Breadcrumb list={[{ title: 'Tasks', to: '/' }]} />
 				</SubHeaderLeft>
 				<SubHeaderRight>
-					<Button
-						color='success'
-						isLight
-						icon='Add'
-						onClick={() => {
-							setIsOpen(true);
-						}}>
-						Add Task
-					</Button>
+					{role === Role.admin && (
+						<Button
+							color='success'
+							isLight
+							icon='Add'
+							onClick={() => {
+								setIsOpen(true);
+							}}>
+							Add Task
+						</Button>
+					)}
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
@@ -94,16 +104,16 @@ const Tasks: FC = () => {
 									<th scope='col' className='cursor-pointer'>
 										#
 									</th>
-									<th scope='col'>Due Date</th>
 									<th scope='col' className='cursor-pointer'>
 										Name
 									</th>
+									<th scope='col'>Due Date</th>
 									<th scope='col'>Expected Time</th>
 									<th scope='col' className='cursor-pointer'>
 										Status
 									</th>
 									<th scope='col' className='cursor-pointer'>
-										Edit
+										Action
 									</th>
 								</tr>
 							</thead>
@@ -127,7 +137,7 @@ const Tasks: FC = () => {
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='new_task'>Add Task</ModalTitle>
+					<ModalTitle id='new_task'>{modalState}</ModalTitle>
 				</ModalHeader>
 				<ModalBody className='px-4'>
 					<div className='row g-4'>

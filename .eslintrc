@@ -30,7 +30,7 @@
 		"@typescript-eslint/ban-ts-comment": "off",
 		"no-mixed-spaces-and-tabs":"off",
 		"import/order": "off",
-		"linebreak-style": "off",
+		// "linebreak-style": "off",
 		"no-nested-ternary": "off",
 		"prettier/prettier": ["warn"],
 		"no-use-before-define": "off",

@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTour } from '@reactour/tour';
 import useDarkMode from '../../../hooks/useDarkMode';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, {
 	SubHeaderLeft,
@@ -20,13 +20,15 @@ import ThemeContext from '../../../contexts/themeContext';
 import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
-import {PER_COUNT} from '../../../components/PaginationButtons';
+import { PER_COUNT } from '../../../components/PaginationButtons';
 import data from '../../../common/data/dummyTaskHoldData';
 import goalData from '../../../common/data/dummyGoals';
 import { useFormik } from 'formik';
 import SocialItem from '../../_common/dashboardHelper/SocialItem';
 import Item from '../../_common/dashboardHelper/GoalItems';
 import TaskOnHold from '../../_common/dashboardHelper/TaskOnHold';
+import MarketingAssetForms from './Marketing/MarketingAssetForms/MarketingAssetForms';
+import { toast } from 'react-toastify';
 
 interface ITableRowProps {
 	id: number;
@@ -92,16 +94,37 @@ interface CardProp {
 
 const DashboardPage = () => {
 	const { mobileDesign } = useContext(ThemeContext);
-	const { setIsOpen } = useTour();
-	const [currentPage, setCurrentPage] = useState(1);
-	const [perPage, setPerPage] = useState(PER_COUNT['5']);
+	// const { setIsOpen } = useTour();
+	// const [currentPage, setCurrentPage] = useState(1);
+	// const [perPage, setPerPage] = useState(PER_COUNT['5']);
 	const { themeStatus } = useDarkMode();
-	const [activeTab, setActiveTab] = useState<TTabs>(TABS.YEARLY);
+	// const [activeTab, setActiveTab] = useState<TTabs>(TABS.YEARLY);
 	const navigate = useNavigate();
-	const [cards] = useState<CardProp[]>([
+	const [elementId, setElementId] = useState<number>();
+	const [elementName, setElementName] = useState<string>();
+	const [maybeCards, setMaybeCards] = useState<CardProp[]>([]);
+	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
+	const openModal = (id: number, nameOfBussiness: string) => {
+		setElementId(id);
+		setElementName(nameOfBussiness);
+		setIsModalOpen(true);
+	};
+
+	// Function to handle closing the modal
+	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !');
+	const notifyOnNoAndNotSure = () =>
+		toast(
+			'I guess we’ll need to check that out – will send you more info on this media and add it to media to check!',
+		);
+	const notifyOnNoAndNope = () =>
+		toast('– Ok, Good to know, no need to spend time and energy when not necessary ');
+
+	const [cards, setCards] = useState<CardProp[]>([
 		{
 			id: 1,
-			name: 'googleBusiness',
+			name: 'Google Business',
 			image: googleBusiness,
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
@@ -112,7 +135,7 @@ const DashboardPage = () => {
 		},
 		{
 			id: 2,
-			name: 'facebook',
+			name: 'Facebook',
 			image: facebook,
 			option: 'yes',
 			teamName: 'Code Team',
@@ -123,7 +146,7 @@ const DashboardPage = () => {
 		},
 		{
 			id: 3,
-			name: 'instagram',
+			name: 'Instagram',
 			image: instagram,
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
@@ -153,9 +176,29 @@ const DashboardPage = () => {
 
 	const filteredData = data.filter((f) => formik.values.taskHoldFil.includes(f.category));
 
+	const getFormValue = (isSocialMedia: string, isSocialMediaimportant: string) => {
+		const element: CardProp[] = cards.filter((card) => card.id === elementId);
+		if (isSocialMedia === 'yes' && isSocialMediaimportant === 'yes') {
+			notifyOnYes();
+			setExistingCards((elements) => [...elements, element[0]]);
+			const updatedCards = cards.filter((card) => card.id !== elementId);
+			setCards(updatedCards);
+		} else if (isSocialMedia === 'no' && isSocialMediaimportant === 'maybe') {
+			notifyOnNoAndNotSure();
+			setMaybeCards((elements) => [...elements, element[0]]);
+			const updatedCards = cards.filter((card) => card.id !== elementId);
+			setCards(updatedCards);
+		} else if (isSocialMedia === 'no' && isSocialMediaimportant === 'nope') {
+			notifyOnNoAndNope();
+			setNotInUseCards((elements) => [...elements, element[0]]);
+			const updatedCards = cards.filter((card) => card.id !== elementId);
+			setCards(updatedCards);
+		}
+	};
+
 	return (
-		<PageWrapper title={demoPagesMenu.sales.subMenu.dashboard.text}>
-			<SubHeader>
+		<PageWrapper title={pagesMenu.sales.subMenu.dashboard.text}>
+			{/* <SubHeader>
 				<SubHeaderLeft>
 					<span className='h4 mb-0 fw-bold'>Overview</span>
 					<SubheaderSeparator />
@@ -175,13 +218,13 @@ const DashboardPage = () => {
 						<strong>Marketing</strong> Team
 					</CommonAvatarTeam>
 				</SubHeaderRight>
-			</SubHeader>
+			</SubHeader> */}
 
 			<Page container='fluid'>
 				<div className='row'>
-					<div className='col-12'>
+					{/* <div className='col-12'>
 						<CommonDashboardAlert />
-					</div>
+					</div> */}
 
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
@@ -189,8 +232,9 @@ const DashboardPage = () => {
 					{goalData.slice(0, 6).map((i) => (
 						<Item
 							key={i.id}
+							id={i.id}
 							name={i.name}
-							attributes={i.attributes}
+							attributes={i.description}
 							timeline={i.timeline}
 							status={i.status}
 						/>
@@ -201,9 +245,9 @@ const DashboardPage = () => {
 						</Button>
 					</div>
 					<TaskOnHold />
-					<div className='col-xxl-3'>
+					{/* <div className='col-xxl-3'>
 						<CommonDashboardRecentActivities />
-					</div>
+					</div> */}
 
 					<div className='col-12'>
 						<div className='display-5 fw-bold py-3'>
@@ -216,6 +260,7 @@ const DashboardPage = () => {
 					) : (
 						cards.map((card) => (
 							<SocialItem
+								onClick={() => openModal(card.id, card.name)}
 								key={card.id}
 								name={card.image}
 								teamName={card.teamName}
@@ -228,6 +273,16 @@ const DashboardPage = () => {
 						))
 					)}
 				</div>
+
+				{isModalOpen ? (
+					<MarketingAssetForms
+						idOfBussiness={elementId}
+						nameOfBussiness={elementName}
+						isModalOpen={isModalOpen}
+						setIsModalOpen={setIsModalOpen}
+						getFormValue={getFormValue}
+					/>
+				) : null}
 			</Page>
 		</PageWrapper>
 	);

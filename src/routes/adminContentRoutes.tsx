@@ -1,10 +1,15 @@
 import React, { lazy } from 'react';
 import { RouteProps } from 'react-router-dom';
-import { demoPagesMenu, adminDashboardPagesMenu } from '../menu';
+import { pagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu';
 import Login from '../pages/presentation/auth/Login';
-import TaskManagement from '../pages/superAdmin/task/TaskManagement';
 import Profile from '../pages/presentation/profile/Profile';
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
+import Tasks from '../pages/presentation/dashboard/Tasks';
+import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
+import ProductPage from '../pages/presentation/products/ProductPage';
+import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
+import Goals from '../pages/presentation/goal/Goals';
+import GoalDescription from '../pages/presentation/goal/GoalDescription';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -32,9 +37,8 @@ const APP = {
 	},
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
-		PRODUCTS: lazy(() => import('../pages/presentation/sales/SalesListPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
-		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/sales/ProductViewPage')),
+		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/products/productDetails/ProductDetailsPage')),
 	},
 	APPOINTMENT: {
 		CALENDAR: lazy(() => import('../pages/presentation/appointment/CalendarPage')),
@@ -58,11 +62,11 @@ const presentation: RouteProps[] = [
 	 * Landing
 	 */
 	{
-		path: demoPagesMenu.login.path,
+		path: pagesMenu.login.path,
 		element: <Login />,
 	},
 	{
-		path: demoPagesMenu.signUp.path,
+		path: pagesMenu.signUp.path,
 		element: <Login isSignUp />,
 	},
 	{
@@ -70,16 +74,16 @@ const presentation: RouteProps[] = [
 		element: <DASHBOARD.DashboardAdmin />,
 	},
 	{
-		path: demoPagesMenu.page404.path,
+		path: pagesMenu.page404.path,
 		element: <AUTH.PAGE_404 />,
 	},
 
 	{
-		path: `${demoPagesMenu.appointment.subMenu.employeeID.path}/:id`,
+		path: `${pagesMenu.appointment.subMenu.employeeID.path}/:id`,
 		element: <APP.APPOINTMENT.EMPLOYEE_VIEW />,
 	},
 	{
-		path: `${demoPagesMenu.profile.path}/:id`,
+		path: `${pagesMenu.profile.path}/:id`,
 		element: <Profile />,
 	},
 ];
@@ -90,11 +94,31 @@ const documentation: RouteProps[] = [
 	},
 	{
 		path: `${adminDashboardPagesMenu.task.path}`,
-		element: <TaskManagement />,
+		element: <Tasks />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.marketing_assets.path}`,
 		element: <MarketingAssets />,
+	},
+	{
+		path: `${pagesMenu.goalId.path}/:id`,
+		element: <GoalDescription />,
+	},
+	{
+		path: `${pagesMenu.productId.path}/:id`,
+		element: <ProductDetailsPage />,
+	},
+	{
+		path: dashboardPagesMenu.goals.path,
+		element: <Goals />,
+	},
+	{
+		path: dashboardPagesMenu.tasks.path,
+		element: <Tasks />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.product.path}`,
+		element: <ProductPage />,
 	},
 ];
 const adminContents = [...presentation, ...documentation];

@@ -275,9 +275,6 @@ const Profile = () => {
 									<CardTitle tag='div' className='h5'>
 										Password
 									</CardTitle>
-									<CardSubTitle tag='div' className='h6'>
-										Password change operations
-									</CardSubTitle>
 								</CardLabel>
 								<CardActions>
 									{passwordChangeCTA ? (

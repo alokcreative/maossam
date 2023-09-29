@@ -5,14 +5,14 @@ import Icon from '../../../components/icon/Icon';
 import Page from '../../../layout/Page/Page';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import Button from '../../../components/bootstrap/Button';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import CommonUpcomingEvents from '../../_common/CommonUpcomingEvents';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 const AppointmentList = () => {
 	const { themeStatus } = useDarkMode();
 	return (
-		<PageWrapper title={demoPagesMenu.appointment.subMenu.appointmentList.text}>
+		<PageWrapper title={pagesMenu.appointment.subMenu.appointmentList.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Icon icon='Info' className='me-2' size='2x' />

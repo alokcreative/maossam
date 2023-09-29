@@ -15,7 +15,7 @@ import Label from '../../../components/bootstrap/forms/Label';
 import Input from '../../../components/bootstrap/forms/Input';
 import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
 import SERVICES from '../../../common/data/serviceDummyData';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useTourStep from '../../../hooks/useTourStep';
 
 const EmployeeList = () => {
@@ -46,7 +46,7 @@ const EmployeeList = () => {
 		)
 		.map((i) => USERS[i]);
 	return (
-		<PageWrapper title={demoPagesMenu.appointment.subMenu.employeeList.text}>
+		<PageWrapper title={pagesMenu.appointment.subMenu.employeeList.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<label
@@ -148,7 +148,7 @@ const EmployeeList = () => {
 						color='info'
 						isLight
 						tag='a'
-						to={`../${demoPagesMenu.editPages.subMenu.editWizard.path}`}>
+						to={`../${pagesMenu.editPages.subMenu.editWizard.path}`}>
 						New Employee
 					</Button>
 				</SubHeaderRight>
@@ -209,7 +209,7 @@ const EmployeeList = () => {
 																hoverShadow='sm'
 																tag='a'
 																to={`../${
-																	demoPagesMenu.appointment
+																	pagesMenu.appointment
 																		.subMenu.employeeID.path
 																}/${user.id || 0}`}
 																data-tour={user.name}

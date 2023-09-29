@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { ApexOptions } from 'apexcharts';
-import Page from '../../../layout/Page/Page';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
+import Page from '../../../../layout/Page/Page';
+import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../layout/SubHeader/SubHeader';
-import Button from '../../../components/bootstrap/Button';
-import { demoPagesMenu } from '../../../menu';
-import tableData from '../../../common/data/dummyProductData';
-import Avatar from '../../../components/Avatar';
-import USERS from '../../../common/data/userDummyData';
+} from '../../../../layout/SubHeader/SubHeader';
+import Button from '../../../../components/bootstrap/Button';
+import { pagesMenu } from '../../../../menu';
+import tableData from '../../../../common/data/dummyProductData';
+import Avatar from '../../../../components/Avatar';
+import USERS from '../../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -23,36 +23,35 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import Icon from '../../../components/icon/Icon';
-import { priceFormat } from '../../../helpers/helpers';
-import Chart from '../../../components/extras/Chart';
-import Accordion, { AccordionItem } from '../../../components/bootstrap/Accordion';
-import PlaceholderImage from '../../../components/extras/PlaceholderImage';
-import Input from '../../../components/bootstrap/forms/Input';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import showNotification from '../../../components/extras/showNotification';
-import useDarkMode from '../../../hooks/useDarkMode';
-import Select from '../../../components/bootstrap/forms/Select';
-import Alert from '../../../components/bootstrap/Alert';
+} from '../../../../components/bootstrap/Card';
+import Icon from '../../../../components/icon/Icon';
+import { priceFormat } from '../../../../helpers/helpers';
+import Chart from '../../../../components/extras/Chart';
+import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
+import PlaceholderImage from '../../../../components/extras/PlaceholderImage';
+import Input from '../../../../components/bootstrap/forms/Input';
+import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
+import showNotification from '../../../../components/extras/showNotification';
+import useDarkMode from '../../../../hooks/useDarkMode';
+import Select from '../../../../components/bootstrap/forms/Select';
+import Alert from '../../../../components/bootstrap/Alert';
 
 interface IValues {
 	name: string;
-	price: number;
-	stock: number;
+	image: string;
+	description: string;
 	category: string;
-	image?: string;
-	desc?: '';
-	productRange?: '';
+	price: number;
+	sales: number;
 }
 const validate = (values: IValues) => {
 	const errors = {
 		name: '',
-		price: '',
-		stock: '',
+		image: '',
+		description: '',
 		category: '',
-		desc: '',
-		productRange: '',
+		price: 0,
+		sales: 0,
 	};
 
 	if (!values.name) {
@@ -61,16 +60,6 @@ const validate = (values: IValues) => {
 		errors.name = 'Must be 3 characters or more';
 	} else if (values.name.length > 20) {
 		errors.name = 'Must be 20 characters or less';
-	}
-
-	if (!values.price) {
-		errors.price = 'Required';
-	} else if (values.price < 0) {
-		errors.price = 'Price should not be 0';
-	}
-
-	if (!values.stock) {
-		errors.stock = 'Required';
 	}
 
 	if (!values.category) {
@@ -89,7 +78,7 @@ interface ITabs {
 	[key: string]: TTabs;
 }
 
-const ProductViewPage = () => {
+const ProductDetailsPage = () => {
 	const { darkModeStatus } = useDarkMode();
 
 	const { id } = useParams();
@@ -156,10 +145,10 @@ const ProductViewPage = () => {
 		initialValues: {
 			name: '',
 			price: 0,
-			stock: 0,
 			category: '',
-			desc: '',
-			productRange: '',
+			image: '',
+			description: '',
+			sales: 0,
 		},
 		validate,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -176,46 +165,35 @@ const ProductViewPage = () => {
 	useEffect(() => {
 		if (editItem) {
 			formik.setValues({
-				name: editItem.name,
-				price: editItem.price,
-				stock: editItem.stock,
-				category: editItem.category,
+				name: data.name,
+				image: data.image,
+				description: data.description,
+				category: data.category,
+				price: data.price,
+				sales: data.sales,
 			});
 		}
 		return () => {
 			formik.setValues({
 				name: '',
-				price: 0,
-				stock: 0,
+				image: '',
+				description: '',
 				category: '',
+				price: 0,
+				sales: 0,
 			});
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.sales.subMenu.product.text}>
+		<PageWrapper title={pagesMenu.sales.subMenu.product.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>
 						Back to List
 					</Button>
-					<SubheaderSeparator />
-					{/* <Avatar
-						srcSet={USERS.RYAN.srcSet}
-						src={USERS.RYAN.src}
-						size={32}
-						color='info'
-					/> */}
-					<span>
-						<strong>{`${USERS.RYAN.name} ${USERS.RYAN.lastname}`}</strong>
-					</span>
-					{/* <span className='text-muted'>Owner</span> */}
 				</SubHeaderLeft>
-				<SubHeaderRight>
-					<span className='text-muted fst-italic me-2'>Last update:</span>
-					<span className='fw-bold'>13 hours ago</span>
-				</SubHeaderRight>
 			</SubHeader>
 			<Page>
 				<div className='display-4 fw-bold py-3'>{data.name}</div>
@@ -319,7 +297,7 @@ const ProductViewPage = () => {
 																	{priceFormat(data.price)}
 																</div>
 																<div className='text-muted'>
-																	<b>Quantity: </b> {data.stock}
+																	<b>Quantity: </b> {data.sales}
 																</div>
 															</div>
 														</div>
@@ -342,7 +320,7 @@ const ProductViewPage = () => {
 															</CardTitle>
 														</CardLabel>
 													</CardHeader>
-													<CardBody className='py-0'>
+													{/* <CardBody className='py-0'>
 														<Chart
 															className='mx-n4'
 															series={data.series}
@@ -351,7 +329,7 @@ const ProductViewPage = () => {
 															height={chartOptions.chart?.height}
 															width={chartOptions.chart?.width}
 														/>
-													</CardBody>
+													</CardBody> */}
 												</Card>
 											</div>
 											<div className='col-lg-6'>
@@ -396,7 +374,7 @@ const ProductViewPage = () => {
 															<CardTitle>Compatible</CardTitle>
 														</CardLabel>
 													</CardHeader>
-													<CardBody>
+													{/* <CardBody>
 														<div className='d-flex align-items-center pb-3'>
 															<div className='flex-shrink-0'>
 																<Icon
@@ -411,10 +389,10 @@ const ProductViewPage = () => {
 																</div>
 															</div>
 														</div>
-													</CardBody>
+													</CardBody> */}
 												</Card>
 											</div>
-											<div className='col-12 shadow-3d-container'>
+											{/* <div className='col-12 shadow-3d-container'>
 												<Accordion id='faq' shadow='sm'>
 													<AccordionItem
 														id='faq1'
@@ -483,7 +461,7 @@ const ProductViewPage = () => {
 														sapien imperdiet.
 													</AccordionItem>
 												</Accordion>
-											</div>
+											</div> */}
 										</div>
 									</CardBody>
 								</>
@@ -503,14 +481,6 @@ const ProductViewPage = () => {
 									<CardBody isScrollable>
 										<div className='row g-4'>
 											<div className='col-12 d-flex align-items-center'>
-												<div className='flex-shrink-0'>
-													{/* <Avatar
-														src={USERS.GRACE.src}
-														srcSet={USERS.GRACE.srcSet}
-														color='info'
-														size={64}
-													/> */}
-												</div>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>
@@ -528,14 +498,6 @@ const ProductViewPage = () => {
 												</div>
 											</div>
 											<div className='col-12 d-flex align-items-center'>
-												<div className='flex-shrink-0'>
-													{/* <Avatar
-														src={USERS.SAM.src}
-														srcSet={USERS.SAM.srcSet}
-														color='info'
-														size={64}
-													/> */}
-												</div>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>
@@ -553,14 +515,6 @@ const ProductViewPage = () => {
 												</div>
 											</div>
 											<div className='col-12 d-flex align-items-center'>
-												{/* <div className='flex-shrink-0'>
-													<Avatar
-														src={USERS.CHLOE.src}
-														srcSet={USERS.CHLOE.srcSet}
-														color='info'
-														size={64}
-													/>
-												</div> */}
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
 													<figure className='mb-0'>
 														<blockquote className='blockquote'>
@@ -634,7 +588,7 @@ const ProductViewPage = () => {
 																	onClick={() => {
 																		setEditItem({
 																			...editItem,
-																			image: undefined,
+																			image: '',
 																		});
 																	}}>
 																	Delete Image
@@ -709,13 +663,13 @@ const ProductViewPage = () => {
 																			formik.handleChange
 																		}
 																		onBlur={formik.handleBlur}
-																		value={formik.values.desc}
+																		value={formik.values.description}
 																		isValid={formik.isValid}
 																		isTouched={
-																			formik.touched.desc
+																			formik.touched.description
 																		}
 																		invalidFeedback={
-																			formik.errors.desc
+																			formik.errors.description
 																		}
 																		validFeedback='Looks good!'
 																	/>
@@ -830,13 +784,13 @@ const ProductViewPage = () => {
 																			formik.handleChange
 																		}
 																		onBlur={formik.handleBlur}
-																		value={formik.values.desc}
+																		value={formik.values.description}
 																		isValid={formik.isValid}
 																		isTouched={
-																			formik.touched.desc
+																			formik.touched.description
 																		}
 																		invalidFeedback={
-																			formik.errors.desc
+																			formik.errors.description
 																		}
 																		validFeedback='Looks good!'
 																	/>
@@ -898,7 +852,7 @@ const ProductViewPage = () => {
 																	/>
 																</FormGroup>
 															</div>
-															{formikSelect.values
+															{/* {formikSelect.values
 																.isSellInOtherCoun === 'no' ? (
 																<Alert
 																	color='warning'
@@ -928,37 +882,7 @@ const ProductViewPage = () => {
 																	update it for promotion in the
 																	new country
 																</Alert>
-															)}
-
-															<div className='col-12'>
-																<FormGroup
-																	id='productRange'
-																	label=' In which range of products would you include it?'
-																	isFloating>
-																	<Input
-																		placeholder='In which range of products would you include it?'
-																		type='text'
-																		onChange={
-																			formik.handleChange
-																		}
-																		onBlur={formik.handleBlur}
-																		value={
-																			formik.values
-																				.productRange
-																		}
-																		isValid={formik.isValid}
-																		isTouched={
-																			formik.touched
-																				.productRange
-																		}
-																		invalidFeedback={
-																			formik.errors
-																				.productRange
-																		}
-																		validFeedback='Looks good!'
-																	/>
-																</FormGroup>
-															</div>
+															)} */}
 															<div className='col-12'>
 																<FormGroup
 																	id='isSellInOtherCoun'
@@ -1014,40 +938,7 @@ products?'>
 																	/>
 																</FormGroup>
 															</div>
-															<div className='col-12'>
-																<FormGroup
-																	id='customerValue'
-																	label='What value does the customer get from your product'
-																	isFloating>
-																	<Input
-																		placeholder='In which range of products would you include it?'
-																		type='text'
-																		onChange={
-																			formikSelect.handleChange
-																		}
-																		onBlur={
-																			formikSelect.handleBlur
-																		}
-																		value={
-																			formikSelect.values
-																				.customerValue
-																		}
-																		isValid={
-																			formikSelect.isValid
-																		}
-																		isTouched={
-																			formikSelect.touched
-																				.customerValue
-																		}
-																		invalidFeedback={
-																			formikSelect.errors
-																				.customerValue
-																		}
-																		validFeedback='Looks good!'
-																	/>
-																</FormGroup>
-															</div>
-															<div className='col-12'>
+															{/* <div className='col-12'>
 																<FormGroup
 																	id='competitorsList'
 																	label='Please name direct competitors (make sure to write 
@@ -1081,7 +972,7 @@ products?'>
 																		validFeedback='Looks good!'
 																	/>
 																</FormGroup>
-															</div>
+															</div> */}
 															<div className='col-12'>
 																<FormGroup
 																	id='averageSelling'
@@ -1115,7 +1006,7 @@ products?'>
 																	/>
 																</FormGroup>
 															</div>
-															<div className='col-12'>
+															{/* <div className='col-12'>
 																<FormGroup
 																	id='averageSellingMarket'
 																	label=' What is the average selling price on the market? '
@@ -1147,7 +1038,7 @@ products?'>
 																		validFeedback='Looks good!'
 																	/>
 																</FormGroup>
-															</div>
+															</div> */}
 														</>
 													)}
 												</div>
@@ -1178,4 +1069,4 @@ products?'>
 	);
 };
 
-export default ProductViewPage;
+export default ProductDetailsPage;

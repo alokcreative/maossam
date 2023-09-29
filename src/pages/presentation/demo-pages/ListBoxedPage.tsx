@@ -39,7 +39,7 @@ import data from '../../../common/data/dummyProductData';
 
 // import data from '../../../common/data/dummyProductData';
 // import data from '../../../common/data/dummyProductData';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
@@ -84,12 +84,12 @@ const ListBoxedPage = () => {
 			f.category === formik.values.categoryName &&
 			// Price
 			(formik.values.minPrice === '' || f.price > Number(formik.values.minPrice)) &&
-			(formik.values.maxPrice === '' || f.price < Number(formik.values.maxPrice)) &&
+			(formik.values.maxPrice === '' || f.price < Number(formik.values.maxPrice)) 
 			//	Company
-			((formik.values.companyA ? f.store === 'Company A' : false) ||
-				(formik.values.companyB ? f.store === 'Company B' : false) ||
-				(formik.values.companyC ? f.store === 'Company C' : false) ||
-				(formik.values.companyD ? f.store === 'Company D' : false)),
+			// ((formik.values.companyA ? f.store === 'Company A' : false) ||
+			// 	(formik.values.companyB ? f.store === 'Company B' : false) ||
+			// 	(formik.values.companyC ? f.store === 'Company C' : false) ||
+			// 	(formik.values.companyD ? f.store === 'Company D' : false)),
 	);
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -100,7 +100,7 @@ const ListBoxedPage = () => {
 	const { selectTable, SelectAllCheck } = useSelectTable(onCurrentPageItems);
 
 	return (
-		<PageWrapper title={demoPagesMenu.listPages.subMenu.listBoxed.text}>
+		<PageWrapper title={pagesMenu.listPages.subMenu.listBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Avatar srcSet={UserImageWebp} src={UserImage} size={32} />

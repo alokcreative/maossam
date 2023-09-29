@@ -31,7 +31,7 @@ import CommonMyWallet from '../../_common/CommonMyWallet';
 import editPasswordValidate from './helper/editPasswordValidate';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 
 interface IPreviewItemProps {
 	title: string;
@@ -209,7 +209,7 @@ const EditWizardPage = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.editPages.subMenu.editWizard.text}>
+		<PageWrapper title={pagesMenu.editPages.subMenu.editWizard.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>

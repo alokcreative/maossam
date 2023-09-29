@@ -20,7 +20,7 @@ import Input from '../../../components/bootstrap/forms/Input';
 import Select from '../../../components/bootstrap/forms/Select';
 import Label from '../../../components/bootstrap/forms/Label';
 import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IPreviewItemProps {
@@ -74,7 +74,7 @@ const TransActionsPage = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.sales.subMenu.transactions.text}>
+		<PageWrapper title={pagesMenu.sales.subMenu.transactions.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<strong>Last Transfer</strong>

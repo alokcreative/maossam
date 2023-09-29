@@ -21,7 +21,7 @@ import Card, {
 import Select from '../../../components/bootstrap/forms/Select';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IPreviewItemProps {
@@ -77,7 +77,7 @@ const SingleBoxedPage = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.singlePages.subMenu.boxedSingle.text}>
+		<PageWrapper title={pagesMenu.singlePages.subMenu.boxedSingle.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<strong>Last Transfer</strong>

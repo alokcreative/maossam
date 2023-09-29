@@ -53,9 +53,9 @@ export const dashboardPagesMenu = {
 		subMenu: null,
 	},
 	tasks: {
-		id: 'Tasks',
+		id: 'tasks',
 		text: 'Tasks',
-		path: '/Tasks',
+		path: '/tasks',
 		icon: 'flag',
 		subMenu: null,
 	},
@@ -134,7 +134,7 @@ export const modalPages = {
 		icon: 'ReportGmailerrorred',
 	},
 };
-export const demoPagesMenu = {
+export const pagesMenu = {
 	pages: {
 		id: 'pages',
 		text: 'Pages',
@@ -284,6 +284,20 @@ export const demoPagesMenu = {
 		id: 'app',
 		text: 'Apps',
 		icon: 'Extension',
+	},
+	goalId: {
+		id: 'goal',
+		text: 'Goal',
+		path: '/goal',
+		icon: 'AdsClick',
+		subMenu: null,
+	},
+	productId: {
+		id: 'product',
+		text: 'Product',
+		path: '/product',
+		icon: 'inventory',
+		subMenu: null,
 	},
 	projectManagement: {
 		id: 'projectManagement',

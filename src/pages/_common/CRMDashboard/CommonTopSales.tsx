@@ -11,7 +11,7 @@ import Button from '../../../components/bootstrap/Button';
 import topSalesData from '../../../common/data/dummySalesData';
 import { getFirstLetter, priceFormat } from '../../../helpers/helpers';
 import useDarkMode from '../../../hooks/useDarkMode';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 
 interface ITopSalesItemProps {
 	name: string;
@@ -76,7 +76,7 @@ const CommonTopSales = () => {
 						isLink
 						icon='Summarize'
 						tag='a'
-						to={`../${demoPagesMenu.sales.subMenu.salesList.path}`}>
+						to={`../${pagesMenu.sales.subMenu.salesList.path}`}>
 						Detailed Report
 					</Button>
 				</CardActions>

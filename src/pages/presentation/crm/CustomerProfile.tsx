@@ -29,7 +29,7 @@ import User1Webp from '../../../assets/img/wanna/wanna2.webp';
 import User1Img from '../../../assets/img/wanna/wanna2.png';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import editPasswordValidate from '../demo-pages/helper/editPasswordValidate';
 import Accordion, { AccordionItem } from '../../../components/bootstrap/Accordion';
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
@@ -224,7 +224,7 @@ const CustomerProfile = () => {
 	});
 
 	return (
-		<PageWrapper title={demoPagesMenu.crm.subMenu.customersList.text}>
+		<PageWrapper title={pagesMenu.crm.subMenu.customersList.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>

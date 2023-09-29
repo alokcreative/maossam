@@ -11,7 +11,7 @@ import Card, {
 import Button from '../../../../components/bootstrap/Button';
 import Avatar, { AvatarGroup } from '../../../../components/Avatar';
 import USERS from '../../../../common/data/userDummyData';
-import { demoPagesMenu } from '../../../../menu';
+import { pagesMenu } from '../../../../menu';
 import useDarkMode from '../../../../hooks/useDarkMode';
 
 const CommonDashboardDesignTeam = () => {
@@ -19,7 +19,7 @@ const CommonDashboardDesignTeam = () => {
 
 	const navigate = useNavigate();
 	const handleOnClickToEmployeeListPage = useCallback(
-		() => navigate(`../${demoPagesMenu.appointment.subMenu.employeeList.path}`),
+		() => navigate(`../${pagesMenu.appointment.subMenu.employeeList.path}`),
 		[navigate],
 	);
 

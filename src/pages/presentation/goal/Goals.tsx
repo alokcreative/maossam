@@ -1,18 +1,18 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useFormik } from 'formik';
-import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
-import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../../layout/SubHeader/SubHeader';
-import Button from '../../../../components/bootstrap/Button';
-import Icon from '../../../../components/icon/Icon';
-import Input from '../../../../components/bootstrap/forms/Input';
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
+import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
+import Button from '../../../components/bootstrap/Button';
+import Icon from '../../../components/icon/Icon';
+import Input from '../../../components/bootstrap/forms/Input';
+import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 // import useSortableData from '../../../../hooks/useSortableData';
 // import useDarkMode from '../../../../hooks/useDarkMode';
-import PAYMENTS from '../../../../common/data/enumPaymentMethod';
-import USERS from '../../../../common/data/userDummyData';
+import PAYMENTS from '../../../common/data/enumPaymentMethod';
+import USERS, { Role } from '../../../common/data/userDummyData';
 // import { PER_COUNT } from '../../../../components/PaginationButtons';
 // import data from '../../../../common/data/dummyCustomerData';
-import CustomerEditModal from '../../crm/CustomerEditModal';
+import CustomerEditModal from '../crm/CustomerEditModal';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -21,25 +21,29 @@ import Card, {
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import Page from '../../../../layout/Page/Page';
-import showNotification from '../../../../components/extras/showNotification';
-import validate from '../../demo-pages/helper/editPagesValidate';
-import Avatar from '../../../../components/Avatar';
-import Select from '../../../../components/bootstrap/forms/Select';
-import Breadcrumb from '../../../../components/bootstrap/Breadcrumb';
-import data from '../../../../common/data/dummyGoals';
+} from '../../../components/bootstrap/Card';
+import Page from '../../../layout/Page/Page';
+import showNotification from '../../../components/extras/showNotification';
+import validate from '../demo-pages/helper/editPagesValidate';
+import Avatar from '../../../components/Avatar';
+import Select from '../../../components/bootstrap/forms/Select';
+import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
+import data from '../../../common/data/dummyGoals';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
-} from '../../../../components/PaginationButtons';
+} from '../../../components/PaginationButtons';
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../../components/bootstrap/Modal';
-import Badge from '../../../../components/bootstrap/Badge';
+} from '../../../components/bootstrap/Modal';
+import Badge from '../../../components/bootstrap/Badge';
+import { pagesMenu } from '../../../menu';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -53,12 +57,17 @@ export const SELECT_OPTIONS = [
 interface IValues {
 	id: number;
 	name: string;
-	attributes: string;
+	description: string;
 }
 const Goals: FC = () => {
-	// const { darkModeStatus } = useDarkMode();
 	const [goalList, setGoalList] = useState<IValues[]>(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
+	const navigate = useNavigate();
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	const formikOneWay = useFormik({
 		initialValues: {
 			exampleSelectOneWay: '',
@@ -108,7 +117,7 @@ const Goals: FC = () => {
 	const formiknewGoal = useFormik({
 		initialValues: {
 			name: '',
-			attribute: '',
+			description: '',
 			timeline: '',
 			photo: '',
 		},
@@ -117,7 +126,7 @@ const Goals: FC = () => {
 			const newGoal = {
 				id: goalList.length + 1,
 				name: values.name,
-				attributes: values.attribute,
+				description: values.description,
 				timeline: values.timeline,
 				status: 'New',
 			};
@@ -141,6 +150,19 @@ const Goals: FC = () => {
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
+	const handleDelete = (id: number) => {
+		const newGoals = goalList.filter((i) => i.id !== id);
+		setGoalList(newGoals);
+	};
+	const handleEdit = (id: number) => {
+		setModalHeader('Edit Goal');
+		setIsOpen(true);
+	};
+	const handleView = (id: number) => {
+		console.log('id', id);
+		navigate(`../${pagesMenu.goalId.path}/${id}`);
+	};
+
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -153,13 +175,22 @@ const Goals: FC = () => {
 					/>
 				</SubHeaderLeft>
 				<SubHeaderRight>
-					<Button color='success' isLight icon='Add' onClick={() => setIsOpen(true)}>
-						Add Goal
-					</Button>
+					{role === Role.admin && (
+						<Button
+							color='success'
+							isLight
+							icon='Add'
+							onClick={() => {
+								setIsOpen(true);
+								setModalHeader('Add Goal');
+							}}>
+							Add Goal
+						</Button>
+					)}
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
-				<div className='display-4 fw-bold py-3'>Product Goals</div>
+				<div className='display-4 fw-bold py-3'> Goals</div>
 				<div className='row h-100'>
 					<div className='col-12'>
 						<Card stretch>
@@ -178,44 +209,73 @@ const Goals: FC = () => {
 												<tr>
 													<th scope='col'>#</th>
 													<th scope='col'>Name</th>
-													<th scope='col'>Attributes</th>
-													<th scope='col'>TImeline</th>
+													<th scope='col'>Description</th>
+													<th scope='col'>Date</th>
 													<th scope='col'>Status</th>
-													<th scope='col'>Edit</th>
+													<th scope='col'>Action</th>
 												</tr>
 											</thead>
 											<tbody>
 												{dataPagination(goalList, currentPage, perPage).map(
-													(i) => (
-														<tr>
-															<th scope='row'>{i.id}</th>
-															<th>{i.name}</th>
-															<td>{i.attributes}</td>
-															<td>{i.timeline}</td>
-															<td className='h5'>
-																<Badge
-																	color={
-																		(i.status === 'Progress' &&
-																			'danger') ||
-																		(i.status === 'New' &&
-																			'warning') ||
-																		(i.status === 'Done' &&
-																			'success') ||
-																		'info'
-																	}>
-																	{i.status}
-																</Badge>
-															</td>
-															<td>
-																<Button
-																	icon='Edit'
-																	color='primary'
-																	isLight>
-																	Edit
-																</Button>
-															</td>
-														</tr>
-													),
+													(i) => {
+														return (
+															<tr>
+																<th scope='row'>{i.id}</th>
+																<th>{i.name}</th>
+																<td>{i.attributes}</td>
+																<td>{i.timeline}</td>
+																<td className='h5'>
+																	<Badge
+																		color={
+																			(i.status ===
+																				'Progress' &&
+																				'danger') ||
+																			(i.status === 'New' &&
+																				'warning') ||
+																			(i.status === 'Done' &&
+																				'success') ||
+																			'info'
+																		}>
+																		{i.status}
+																	</Badge>
+																</td>
+																<td>
+																	<Button
+																		icon='Visibility'
+																		color='primary'
+																		isLight
+																		onClick={() =>
+																			handleView(i.id)
+																		}
+																		className='me-1'
+																	/>
+																	{role === Role.admin ? (
+																		<>
+																			<Button
+																				icon='Edit'
+																				color='success'
+																				isLight
+																				onClick={() =>
+																					handleEdit(i.id)
+																				}
+																				className='me-1'
+																			/>
+																			<Button
+																				icon='Delete'
+																				color='danger'
+																				isLight
+																				onClick={() =>
+																					handleDelete(
+																						i.id,
+																					)
+																				}
+																			/>
+																		</>
+																	) : null}
+																</td>
+															</tr>
+														);
+													},
 												)}
 											</tbody>
 										</table>
@@ -238,11 +298,10 @@ const Goals: FC = () => {
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='goal'> New Goal</ModalTitle>
+					<ModalTitle id='goal'>{modalHeader}</ModalTitle>
 				</ModalHeader>
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
-						
 						<div className='col-12 border-bottom' />
 						<div className='col-12'>
 							<FormGroup id='services' label='Select Product/Services'>
@@ -266,7 +325,7 @@ const Goals: FC = () => {
 							<Input
 								type='text'
 								onChange={formiknewGoal.handleChange}
-								value={formiknewGoal.values.attribute}
+								value={formiknewGoal.values.description}
 							/>
 						</FormGroup>
 						<FormGroup id='timeline' label='Timeline' className='col-lg-6'>

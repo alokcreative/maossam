@@ -10,7 +10,7 @@ import SubHeader, {
 } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
 import Company1 from '../../../assets/logos/company1.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
@@ -27,7 +27,7 @@ import Badge from '../../../components/bootstrap/Badge';
 import Input from '../../../components/bootstrap/forms/Input';
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IValues {
@@ -88,7 +88,7 @@ const GridBoxedPage = () => {
 
 	function handleEdit(id: number) {
 		const newData = data.filter((item) => item.id === id);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 
 	const formik = useFormik({
@@ -126,7 +126,7 @@ const GridBoxedPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={demoPagesMenu.gridPages.subMenu.gridBoxed.text}>
+		<PageWrapper title={pagesMenu.gridPages.subMenu.gridBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<img src={Company1} alt='Company' height={24} />
@@ -157,8 +157,6 @@ const GridBoxedPage = () => {
 								name={item.name}
 								category={item.category}
 								img={item.image}
-								color={item.color}
-								series={item.series}
 								price={item.price}
 								editAction={() => {
 									setEditPanel(true);

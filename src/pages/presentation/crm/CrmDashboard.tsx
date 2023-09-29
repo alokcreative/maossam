@@ -5,7 +5,7 @@ import { useTour } from '@reactour/tour';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
 import Page from '../../../layout/Page/Page';
-import { demoPagesMenu } from '../../../menu';
+import { pagesMenu } from '../../../menu';
 import Button from '../../../components/bootstrap/Button';
 import Popovers from '../../../components/bootstrap/Popovers';
 import Icon from '../../../components/icon/Icon';
@@ -60,7 +60,7 @@ const CrmDashboard = () => {
 	);
 
 	return (
-		<PageWrapper title={demoPagesMenu.crm.subMenu.dashboard.text}>
+		<PageWrapper title={pagesMenu.crm.subMenu.dashboard.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Icon icon='Info' className='me-2' size='2x' />

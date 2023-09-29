@@ -12,14 +12,14 @@ import Button from '../../../../components/bootstrap/Button';
 import Avatar, { AvatarGroup } from '../../../../components/Avatar';
 import USERS from '../../../../common/data/userDummyData';
 import useDarkMode from '../../../../hooks/useDarkMode';
-import { demoPagesMenu } from '../../../../menu';
+import { pagesMenu } from '../../../../menu';
 
 const CommonDashboardMarketingTeam = () => {
 	const { darkModeStatus } = useDarkMode();
 
 	const navigate = useNavigate();
 	const handleOnClickToEmployeeListPage = useCallback(
-		() => navigate(`../${demoPagesMenu.appointment.subMenu.employeeList.path}`),
+		() => navigate(`../${pagesMenu.appointment.subMenu.employeeList.path}`),
 		[navigate],
 	);
 

@@ -1,7 +1,9 @@
 import React, { FC, useState } from 'react';
 import Badge from '../components/bootstrap/Badge';
 import Button from '../components/bootstrap/Button';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { Role } from '../common/data/userDummyData';
 
 interface ITableRowProps {
 	id: number;
@@ -10,7 +12,9 @@ interface ITableRowProps {
 	category: string;
 	expectedTime: string;
 	status: string;
-	edit: string;
+	edit(...args: unknown[]): unknown;
+	view(...args: unknown[]): unknown;
+	deleteAction(...args: unknown[]): unknown;
 }
 
 const TableRow: FC<ITableRowProps> = ({
@@ -21,11 +25,16 @@ const TableRow: FC<ITableRowProps> = ({
 	expectedTime,
 	status,
 	edit,
+	view,
+	deleteAction,
 }) => {
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
-			<td>{dueDate}</td>
 			<td>
 				<div>
 					{name}
@@ -34,6 +43,7 @@ const TableRow: FC<ITableRowProps> = ({
 					</div>
 				</div>
 			</td>
+			<td>{dueDate}</td>
 			<td>{expectedTime}</td>
 			<td className='h5'>
 				<Badge
@@ -47,9 +57,13 @@ const TableRow: FC<ITableRowProps> = ({
 				</Badge>
 			</td>
 			<td>
-				<Button icon='Edit' color='primary' isLight>
-					{edit}
-				</Button>
+				<Button icon='Visibility' color='primary' isLight className='me-1' />
+				{role === Role.admin && (
+					<>
+						<Button icon='Edit' color='success' isLight className='me-1'onClick={edit} />
+						<Button icon='Delete' color='danger' isLight />
+					</>
+				)}
 			</td>
 		</tr>
 	);
