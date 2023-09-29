@@ -234,7 +234,7 @@ const DashboardPage = () => {
 							key={i.id}
 							id={i.id}
 							name={i.name}
-							attributes={i.attributes}
+							attributes={i.description}
 							timeline={i.timeline}
 							status={i.status}
 						/>

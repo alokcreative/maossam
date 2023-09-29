@@ -23,7 +23,30 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+
+		// Login
+		login: builder.mutation({
+			query: (payload: IPayload) => ({
+				url: apiEndpoints.login,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}),
+		}),
+		// Signup
+		signup: builder.mutation({
+			query: (payload: IPayload) => ({
+				url: apiEndpoints.signup,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}),
+		}),
 	}),
 });
 
-export const { useGetUserMutation } = productsApiSlice;
+export const { useGetUserMutation, useLoginMutation, useSignupMutation } = productsApiSlice;

@@ -1,6 +1,6 @@
 const apiEndpoints = {
 	login: 'login',
-	signuo: 'signup',
+	signup: 'signup',
 	getUser: 'getuser',
 };
 

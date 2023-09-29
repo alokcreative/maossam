@@ -1,13 +1,10 @@
 import React, { FC, useState } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
+import SubHeader, { SubHeaderLeft } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
-import Icon from '../../../components/icon/Icon';
 import Input from '../../../components/bootstrap/forms/Input';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import PAYMENTS from '../../../common/data/enumPaymentMethod';
-import CustomerEditModal from '../crm/CustomerEditModal';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -18,11 +15,8 @@ import Card, {
 	CardTitle,
 } from '../../../components/bootstrap/Card';
 import Page from '../../../layout/Page/Page';
-// import showNotification from '../../../components/extras/showNotification';
-// import validate from '../demo-pages/helper/editPagesValidate';
-// import Avatar from '../../../components/Avatar';
 import Select from '../../../components/bootstrap/forms/Select';
-import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
+// eslint-disable-next-line import/no-named-as-default
 import data from '../../../common/data/dummyGoals';
 import PaginationButtons, {
 	dataPagination,
@@ -34,71 +28,94 @@ import Modal, {
 	ModalHeader,
 	ModalTitle,
 } from '../../../components/bootstrap/Modal';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const SELECT_OPTIONS = [
-	{ value: 1, text: 'Product One' },
-	{ value: 2, text: 'Product Two' },
-	{ value: 3, text: 'Product Three' },
-	{ value: 4, text: 'Product Four' },
-	{ value: 5, text: 'Product Five' },
-	{ value: 6, text: 'Product Six' },
+	{ value: 1, text: 'Backlog' },
+	{ value: 2, text: 'To Do' },
+	{ value: 3, text: 'Progress' },
+	{ value: 4, text: 'Done' },
+	{ value: 5, text: 'Hold' },
 ];
 
+interface ITask {
+	id: number;
+	taskName: string;
+	Description: string;
+	Status: string;
+	DueDate?: string | undefined;
+}
 interface IValues {
 	id: number;
 	name: string;
-	attributes: string;
+	description: string;
+	timeline: string;
+	status: string;
+	task?: ITask[] | undefined;
 }
+
 const GoalDescription: FC = () => {
-	const [goalList, setGoalList] = useState<IValues[]>(data);
+	const { id } = useParams();
+	const [goal, setGoal] = useState<IValues | undefined>(data.find((i) => i.id === Number(id)));
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [tasks, setTasks] = useState<ITask[] | undefined>(goal?.task);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
-	const handleDelete = (id: number) => {
-		const newGoals = goalList.filter((i) => i.id !== id);
-		setGoalList(newGoals);
-	};
-	const handleEdit = (id: number) => {
-		setIsOpen(true);
-	};
-	const handleView = (id: number) => {
-		console.log('id', id);
-	};
+	const navigate = useNavigate();
+	// const handleDelete = (id: number) => {
+	// 	const newGoals = goalList.filter((i) => i.id !== id);
+	// 	setGoalList(newGoals);
+	// };
+	// const handleEdit = (id: number) => {
+	// 	setIsOpen(true);
+	// };
+	// const handleView = (id: number) => {
+	// 	console.log('id', id);
+	// };
+	console.log('goal>>', goal);
 	return (
 		<PageWrapper>
 			<SubHeader>
 				<SubHeaderLeft>
-					<Breadcrumb
-						list={[
-							{ title: 'Goals', to: '/' },
-							// { title: 'Edit User', to: '/' },
-						]}
-					/>
-				</SubHeaderLeft>
-				<SubHeaderRight>
-					<Button
-						color='success'
-						isLight
-						icon='Add'
-						onClick={() => {
-							setIsOpen(true);
-						}}>
-						Add Goal
+					<Button color='info' isLink icon='ArrowBack' onClick={() => navigate(-1)}>
+						Back to Goals
 					</Button>
-				</SubHeaderRight>
+				</SubHeaderLeft>
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='display-4 fw-bold py-3'> Goal Description</div>
 				<div className='row h-100'>
 					<div className='col-12'>
-						<Card stretch>
+						<Card>
+							<CardBody>
+								<div className='display-6 fw-bold py-3'>{goal?.name}</div>
+								<div className='display-7 fw-bold py-3'>{goal?.description}</div>
+								<div className='display-7 fw-bold py-3'>Status: {goal?.status}</div>
+							</CardBody>
+						</Card>
+						<Card>
 							<CardHeader>
-								<CardLabel icon='TrackChanges' iconColor='success'>
-									<CardTitle tag='div' className='h5'>
-										List Of Goals
-									</CardTitle>
-								</CardLabel>
+								<div className='row col-12 d-flex'>
+									<CardLabel icon='Task' iconColor='success'>
+										<CardTitle tag='div' className='h5'>
+											List Of Tasks
+										</CardTitle>
+									</CardLabel>
+									<div>
+										<Button
+											className='float-end justify-content-end'
+											color='success'
+											isLight
+											icon='Add'
+											onClick={() => {
+												setIsOpen(true);
+											}}>
+											Add Task
+										</Button>
+									</div>
+								</div>
 							</CardHeader>
+
 							<CardBody className='table-responsive'>
 								<div className='row g-4'>
 									<div className='col-12'>
@@ -108,12 +125,48 @@ const GoalDescription: FC = () => {
 													<th scope='col'>#</th>
 													<th scope='col'>Name</th>
 													<th scope='col'>Description</th>
-													<th scope='col'>Date</th>
 													<th scope='col'>Status</th>
+													<th scope='col'>Due Date</th>
 													<th scope='col'>Action</th>
 												</tr>
 											</thead>
-											<tbody />
+											<tbody>
+												{tasks ? (
+													dataPagination(tasks, currentPage, perPage).map(
+														(i) => (
+															<tr>
+																<td>{i.id}</td>
+																<td>{i.taskName}</td>
+																<td>{i.Description}</td>
+																<td>{i.Status}</td>
+																<td>{i.DueDate}</td>
+																<td>
+																	<Button
+																		icon='Visibility'
+																		color='primary'
+																		isLight
+																		className='me-1'
+																	/>
+																	<Button
+																		icon='Edit'
+																		color='success'
+																		isLight
+																		className='me-1'
+																	/>
+																	<Button
+																		icon='Delete'
+																		color='danger'
+																		isLight
+																		className='me-1'
+																	/>
+																</td>
+															</tr>
+														),
+													)
+												) : (
+													<th scope='col'>No Data</th>
+												)}
+											</tbody>
 										</table>
 									</div>
 								</div>
@@ -140,7 +193,39 @@ const GoalDescription: FC = () => {
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
 						<div className='col-12'>
-							<FormGroup id='services' label='Select Product/Services'>
+							<div className='mb-3'>
+								<FormGroup id='taskname' label='Enter Task Name'>
+									<Input
+										placeholder=''
+										// onChange={formik.handleChange}
+										// onBlur={formik.handleBlur}
+										// value=''
+										// isValid={formik.isValid}
+										// isTouched={formik.touched.taskName}
+										// invalidFeedback={formik.errors.taskname}
+										validFeedback='Looks good!'
+									/>
+								</FormGroup>
+							</div>
+						</div>
+						<div className='col-12'>
+							<div className='mb-3'>
+								<FormGroup id='description' label='Enter Description'>
+									<Input
+										placeholder=''
+										// onChange={formik.handleChange}
+										// onBlur={formik.handleBlur}
+										// value=''
+										// isValid={formik.isValid}
+										// isTouched={formik.touched.taskName}
+										// invalidFeedback={formik.errors.taskname}
+										validFeedback='Looks good!'
+									/>
+								</FormGroup>
+							</div>
+						</div>
+						<div className='col-12'>
+							<FormGroup id='status' label='Select Status'>
 								<Select
 									ariaLabel='Default select example'
 									placeholder=''
@@ -150,26 +235,8 @@ const GoalDescription: FC = () => {
 								/>
 							</FormGroup>
 						</div>
+
 						{/* <div className='col-12 col-md-6'>
-							<div className='mb-3'>
-								<FormGroup
-									id='customer'
-									label='Confirm that this goal is achievable'>
-									<Input
-										placeholder=''
-										autoComplete='additional-name'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-						<div className='col-12 col-md-6'>
 							<div className='mb-3'>
 								<FormGroup id='customer' label='Confirm that this goal is relevant'>
 									<Input

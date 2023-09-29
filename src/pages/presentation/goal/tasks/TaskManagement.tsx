@@ -37,21 +37,21 @@ const TaskManagement = () => {
 		},
 		column3: {
 			id: 'column3',
-			title: 'Pending',
+			title: 'Progress',
 			color: COLORS.INFO.name,
 			icon: 'PendingActions',
 		},
 		column4: {
 			id: 'column4',
-			title: 'Run',
-			color: darkModeStatus ? 'info' : 'warning',
-			icon: 'DirectionsRun',
-		},
-		column5: {
-			id: 'column5',
 			title: 'Done',
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'Verified',
+		},
+		column5: {
+			id: 'column5',
+			title: 'Hold',
+			color: darkModeStatus ? 'info' : 'warning',
+			icon: 'DirectionsRun',
 		},
 	};
 

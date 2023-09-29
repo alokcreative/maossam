@@ -237,7 +237,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 						className='w-100'
 						type='submit'
 						onClick={formik.handleSubmit}>
-						Save
+						Save1
 					</Button>
 				</ModalFooter>
 			</Modal>

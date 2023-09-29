@@ -9,7 +9,7 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 // import useSortableData from '../../../../hooks/useSortableData';
 // import useDarkMode from '../../../../hooks/useDarkMode';
 import PAYMENTS from '../../../common/data/enumPaymentMethod';
-import USERS from '../../../common/data/userDummyData';
+import USERS, { Role } from '../../../common/data/userDummyData';
 // import { PER_COUNT } from '../../../../components/PaginationButtons';
 // import data from '../../../../common/data/dummyCustomerData';
 import CustomerEditModal from '../crm/CustomerEditModal';
@@ -42,6 +42,8 @@ import Modal, {
 import Badge from '../../../components/bootstrap/Badge';
 import { pagesMenu } from '../../../menu';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -55,13 +57,17 @@ export const SELECT_OPTIONS = [
 interface IValues {
 	id: number;
 	name: string;
-	attributes: string;
+	description: string;
 }
 const Goals: FC = () => {
 	const [goalList, setGoalList] = useState<IValues[]>(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
-	const navigate = useNavigate()
+	const navigate = useNavigate();
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	const formikOneWay = useFormik({
 		initialValues: {
 			exampleSelectOneWay: '',
@@ -111,7 +117,7 @@ const Goals: FC = () => {
 	const formiknewGoal = useFormik({
 		initialValues: {
 			name: '',
-			attribute: '',
+			description: '',
 			timeline: '',
 			photo: '',
 		},
@@ -120,7 +126,7 @@ const Goals: FC = () => {
 			const newGoal = {
 				id: goalList.length + 1,
 				name: values.name,
-				attributes: values.attribute,
+				description: values.description,
 				timeline: values.timeline,
 				status: 'New',
 			};
@@ -154,7 +160,7 @@ const Goals: FC = () => {
 	};
 	const handleView = (id: number) => {
 		console.log('id', id);
-		navigate(`../${pagesMenu.goalId.path}/${id}`)
+		navigate(`../${pagesMenu.goalId.path}/${id}`);
 	};
 
 	return (
@@ -169,16 +175,18 @@ const Goals: FC = () => {
 					/>
 				</SubHeaderLeft>
 				<SubHeaderRight>
-					<Button
-						color='success'
-						isLight
-						icon='Add'
-						onClick={() => {
-							setIsOpen(true);
-							setModalHeader('Add Goal');
-						}}>
-						Add Goal
-					</Button>
+					{role === Role.admin && (
+						<Button
+							color='success'
+							isLight
+							icon='Add'
+							onClick={() => {
+								setIsOpen(true);
+								setModalHeader('Add Goal');
+							}}>
+							Add Goal
+						</Button>
+					)}
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
@@ -241,26 +249,29 @@ const Goals: FC = () => {
 																		}
 																		className='me-1'
 																	/>
-
-																	<Button
-																		icon='Edit'
-																		color='success'
-																		isLight
-																		onClick={() =>
-																			handleEdit(i.id)
-																		}
-																		className='me-1'
-																	/>
-																	<Button
-																		icon='Delete'
-																		color='danger'
-																		isLight
-																		onClick={() =>
-																			handleDelete(i.id)
-																		}
-																	/>
-
-																	{/* </Button> */}
+																	{role === Role.admin ? (
+																		<>
+																			<Button
+																				icon='Edit'
+																				color='success'
+																				isLight
+																				onClick={() =>
+																					handleEdit(i.id)
+																				}
+																				className='me-1'
+																			/>
+																			<Button
+																				icon='Delete'
+																				color='danger'
+																				isLight
+																				onClick={() =>
+																					handleDelete(
+																						i.id,
+																					)
+																				}
+																			/>
+																		</>
+																	) : null}
 																</td>
 															</tr>
 														);
@@ -314,7 +325,7 @@ const Goals: FC = () => {
 							<Input
 								type='text'
 								onChange={formiknewGoal.handleChange}
-								value={formiknewGoal.values.attribute}
+								value={formiknewGoal.values.description}
 							/>
 						</FormGroup>
 						<FormGroup id='timeline' label='Timeline' className='col-lg-6'>
