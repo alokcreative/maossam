@@ -5,7 +5,7 @@ const apiEndpoints = {
 	forgotPassword: 'password/forgot/',
 	createUser: 'create/',
 	getUser: 'list/',
-	updateUser: 'update/',
+	profile: 'update/',
 };
 
 export default apiEndpoints;
