@@ -1,12 +1,12 @@
 import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import contents from '../../routes/mainRoutes';
+import adminContents from '../../routes/adminContentRoutes';
 
 const PAGE_404 = lazy(() => import('../../pages/presentation/auth/Page404'));
-const ContentRoutes = () => {
+const AdminContentRoutes = () => {
 	return (
 		<Routes>
-			{contents.map((page) => (
+			{adminContents.map((page) => (
 				// eslint-disable-next-line react/jsx-props-no-spreading
 				<Route key={page.path} {...page} />
 			))}
@@ -15,4 +15,4 @@ const ContentRoutes = () => {
 	);
 };
 
-export default ContentRoutes;
+export default AdminContentRoutes;

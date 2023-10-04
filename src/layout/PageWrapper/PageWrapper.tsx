@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, forwardRef, ReactElement } from 'react';
+import React, { useLayoutEffect, forwardRef, ReactElement, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { IPageProps } from '../Page/Page';
 import { pagesMenu } from '../../menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { useGetUsersMutation } from '../../features/auth/authApiSlice';
+import { useEffectOnce } from 'react-use';
 
 interface IPageWrapperProps {
 	isProtected?: boolean;
@@ -31,18 +33,23 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 				.setAttribute('content', description || process.env.REACT_APP_META_DESC || '');
 		});
 
-		const { user } = useSelector((state: RootState) => state.auth);
-		const savedValue = localStorage?.getItem('user');
-		const localUser = savedValue ? JSON.parse(savedValue) : null;
-
+		const token = localStorage?.getItem('access_token');
+		const [GetUsersMutation] = useGetUsersMutation();
 		const navigate = useNavigate();
-		useLayoutEffect(() => {
-			if (isProtected && (user === null || localUser === null)) {
-				navigate(`../${pagesMenu.login.path}`);
+
+		useEffect(() => {
+			if (token) {
+				GetUsersMutation(token)
+					.unwrap()
+					.then((data) => {
+						console.log('data>>>', data);
+						if (isProtected && (data === '' || token === '')) {
+							navigate(`../${pagesMenu.login.path}`);
+						}
+					});
 			}
-			return () => {};
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, [token, GetUsersMutation]);
 
 		return (
 			<div ref={ref} className={classNames('page-wrapper', 'container-fluid', className)}>

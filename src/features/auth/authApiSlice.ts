@@ -1,29 +1,53 @@
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
-interface IPayload {
+interface IRegisterPayload {
+	first_name: string;
+	last_name: string;
 	email: string;
-	loginPassword: string;
+	password: string;
+	confirm_password: string;
 }
+interface ILoginPayload {
+	email: string;
+	password: string;
+}
+export const getTokenFromLocalStorage = () => {
+	return localStorage.getItem('access_token');
+};
 export const productsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		// getPosts: builder.query({
-		//     query: () => '/posts',
-		//     providesTags: ['Post'],
-		//   }),
-		getUser: builder.mutation({
-			query: (payload: IPayload) => ({
+		registerUser: builder.mutation({
+			query: (payload: IRegisterPayload) => ({
+				url: apiEndpoints.register,
+				method: 'POST',
+				body: payload,
+				header: 'Content-Type: application/json',
+			}),
+			invalidatesTags: [`Register`],
+		}),
+		loginUser: builder.mutation({
+			query: (payload: ILoginPayload) => ({
 				url: apiEndpoints.login,
 				method: 'POST',
 				body: payload,
 				headers: {
-					'X-RapidAPI-Key': '5d8641db9fmsh04c1a1beb6e16e6p157d76jsn553e9f6dbc5a',
 					'Content-Type': 'application/json',
-					'X-RapidAPI-Host': 'logintesting.p.rapidapi.com',
+				},
+			}),
+			invalidatesTags: [`Login`],
+		}),
+		getUsers: builder.mutation({
+			query: (payload: string) => ({
+				url: apiEndpoints.profile,
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${payload}`,
 				},
 			}),
 		}),
 	}),
 });
 
-export const { useGetUserMutation } = productsApiSlice;
+export const { useRegisterUserMutation, useLoginUserMutation, useGetUsersMutation } =
+	productsApiSlice;

@@ -53,6 +53,8 @@ const authSlice = createSlice({
 		logout: (state) => {
 			state.user = initialState.user;
 			localStorage.removeItem('user');
+			localStorage.removeItem('refresh_token');
+			localStorage.removeItem('access_token');
 			googleLogout();
 		},
 		update: (state, action: PayloadAction<AuthState>) => {

@@ -1,6 +1,7 @@
 const apiEndpoints = {
-	login: 'login',
-	signuo: 'signup',
+	register: 'register/',
+	login: 'login/',
+	profile: 'profile/',
 	getUser: 'getuser',
 };
 
