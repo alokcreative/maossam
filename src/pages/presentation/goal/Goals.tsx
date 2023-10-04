@@ -207,7 +207,7 @@ const Goals: FC = () => {
 										<table className='table table-modern table-hover'>
 											<thead>
 												<tr>
-													<th scope='col'>#</th>
+													<th scope='col'>Sr No</th>
 													<th scope='col'>Name</th>
 													<th scope='col'>Description</th>
 													<th scope='col'>Date</th>

@@ -52,7 +52,7 @@ const CommonTaskTable: FC = () => {
 					<thead>
 						<tr>
 							<th scope='col' className='cursor-pointer'>
-								#
+							Sr No
 							</th>
 							<th scope='col'>Due Date</th>
 							<th scope='col' className='cursor-pointer'>

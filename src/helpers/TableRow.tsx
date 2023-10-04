@@ -38,9 +38,9 @@ const TableRow: FC<ITableRowProps> = ({
 			<td>
 				<div>
 					{name}
-					<div className='text-muted'>
+					{/* <div className='text-muted'>
 						<small>{category}</small>
-					</div>
+					</div> */}
 				</div>
 			</td>
 			<td>{dueDate}</td>
@@ -48,17 +48,16 @@ const TableRow: FC<ITableRowProps> = ({
 			<td className='h5'>
 				<Badge
 					color={
-						(status === 'Rejected' && 'danger') ||
-						(status === 'Cancelled' && 'warning') ||
-						(status === 'Approved' && 'success') ||
+						(status === 'Hold' && 'danger') ||
+						(status === 'Todo' && 'secondary') ||
+						(status === 'InProgress' && 'warning') ||
+						(status === 'Done' && 'success') ||
 						'info'
 					}>
 					{status}
 				</Badge>
 			</td>
 			<td>
-
-
 				<Button
 					icon='Visibility'
 					color='primary'
@@ -74,8 +73,6 @@ const TableRow: FC<ITableRowProps> = ({
 							color='success'
 							isLight
 							className='me-1'
-
-
 							onClick={() => edit(id)}
 						/>
 						<Button
@@ -84,7 +81,6 @@ const TableRow: FC<ITableRowProps> = ({
 							isLight
 							onClick={() => deleteAction(id)}
 						/>
-
 					</>
 				)}
 			</td>

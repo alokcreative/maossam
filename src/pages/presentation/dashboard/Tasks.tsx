@@ -145,7 +145,7 @@ const Tasks: FC = () => {
 							<thead>
 								<tr>
 									<th scope='col' className='cursor-pointer'>
-										#
+										Sr No
 									</th>
 									<th scope='col' className='cursor-pointer'>
 										Name
@@ -193,10 +193,19 @@ const Tasks: FC = () => {
 						<ModalBody className='px-4'>
 							<div className='row g-4'>
 								<div className='col-12 border-bottom' />
-								<div>{currTask.name}</div>
-								<div>{currTask.category}</div>
-								<div>{currTask.dueDate}</div>
-								<div>{currTask.status}</div>
+								<div>
+									<span>Name :</span> <span>{currTask.name}</span>
+								</div>
+								<div>
+									<span>DueDate :</span> <span>{currTask.dueDate}</span>
+								</div>
+								<div>
+									<span>Status :</span> <span>{currTask.status}</span>
+								</div>
+								<div>
+									<span>Expected Time :</span>
+									<span>{currTask.expectedTime}</span>
+								</div>
 							</div>
 						</ModalBody>
 						<ModalFooter>
@@ -216,7 +225,7 @@ const Tasks: FC = () => {
 						<ModalBody className='px-4'>
 							<div className='row g-4'>
 								<div className='col-12 border-bottom' />
-								<FormGroup id='name' label='Name of Task' className='col-lg-6'>
+								<FormGroup id='name' label='Name' className='col-lg-6'>
 									<Input
 										type='text'
 										onChange={formiknewTask.handleChange}
@@ -230,13 +239,13 @@ const Tasks: FC = () => {
 										value={formiknewTask.values.dueDate}
 									/>
 								</FormGroup>
-								<FormGroup id='category' label='Enter Category'>
+								{/* <FormGroup id='category' label='Enter Category'>
 									<Input
 										type='text'
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.category}
 									/>
-								</FormGroup>
+								</FormGroup> */}
 
 								<FormGroup
 									id='expectedTime'
@@ -255,9 +264,11 @@ const Tasks: FC = () => {
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.status}
 										list={[
-											{ value: 'Approved', text: 'Approved' },
-											{ value: 'Rejected', text: 'Rejected' },
-											{ value: 'Cancelled', text: 'Cancelled' },
+											{ value: 'Backlog', text: 'Backlog' },
+											{ value: 'Todo', text: 'Todo' },
+											{ value: 'InProgress', text: 'InProgress' },
+											{ value: 'Done', text: 'Done' },
+											{ value: 'Hold', text: 'Hold' },
 										]}
 									/>
 								</FormGroup>

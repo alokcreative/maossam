@@ -5,6 +5,10 @@ import Badge from '../../components/bootstrap/Badge';
 import Button from '../../components/bootstrap/Button';
 import { pagesMenu } from '../../menu';
 import useDarkMode from '../../hooks/useDarkMode';
+import { RootState } from '../../store/store';
+import { Role } from '../../common/data/userDummyData';
+import { useSelector } from 'react-redux';
+import { ca } from 'date-fns/locale';
 
 interface ICommonTableRowProps {
 	id: string | number;
@@ -17,6 +21,10 @@ interface ICommonTableRowProps {
 // to={`../${pagesMenu.productId.path}/${id}`}
 const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, price, store }) => {
 	const { darkModeStatus } = useDarkMode();
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
@@ -27,17 +35,26 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 			</td>
 			<td>
 				<div>
-					<Link
+					{/* <Link
 						to={`../${pagesMenu.productId.path}/${id}`}
 						className={classNames('fw-bold', {
 							'link-dark': !darkModeStatus,
 							'link-light': darkModeStatus,
 						})}>
 						{name}
+					</Link> */}
+					<Link
+						to={`../${pagesMenu.productId.path}/${id}`}
+						className={classNames({
+							'link-dark': !darkModeStatus,
+							'link-light': darkModeStatus,
+						})}
+						style={{ textDecoration: 'none' }}>
+						{name}
 					</Link>
-					<div className='text-muted'>
+					{/* <div className='text-muted'>
 						<small>{category}</small>
-					</div>
+					</div> */}
 				</div>
 			</td>
 			{/* <td>
@@ -60,7 +77,8 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 					})}
 				</span>
 			</td>
-			<td className='h5'>
+			<td>{category}</td>
+			{/* <td className='h5'>
 				<Badge
 					color={
 						(store === 'Company A' && 'danger') ||
@@ -70,18 +88,34 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 					}>
 					{store}
 				</Badge>
-			</td>
-			<td>{name}</td>
+			</td> */}
 			<td>{name}</td>
 			<td className='text-end'>
 				<Button
-					color='dark'
+					icon='Visibility'
+					color='primary'
 					isLight
-					icon='info'
 					tag='a'
 					to={`../${pagesMenu.productId.path}/${id}`}
 					aria-label='Detail'
 				/>
+				{role !== Role.admin && (
+					<>
+						<Button
+							icon='Edit'
+							color='success'
+							isLight
+							className='me-1'
+							// onClick={() => edit(id)}
+						/>
+						<Button
+							icon='Delete'
+							color='danger'
+							isLight
+							// onClick={() => deleteAction(id)}
+						/>
+					</>
+				)}
 			</td>
 		</tr>
 	);
