@@ -36,7 +36,7 @@ import BusinessLogo from '../../../assets/logos/business.png';
 // import FacebookImg from '../../../assets/logos/facebook.png';
 import InstagramImg from '../../../assets/logos/instagram.png';
 import LinkedinImg from '../../../assets/logos/linkedin.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import { success } from '../../../stories/components/bootstrap/Alert/AlertUseColor.stories';
 import OffCanvas, {
 	OffCanvasBody,
@@ -178,7 +178,7 @@ const Customer = () => {
 
 	function handleEdit(uid: number) {
 		const newData = data.filter((it) => it.id === uid);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 	const [showAllItem, setShowAllItem] = useState(false);
 
@@ -482,8 +482,6 @@ const Customer = () => {
 										name={it.name}
 										category={it.category}
 										img={it.image}
-										color={it.color}
-										series={it.series}
 										price={it.price}
 										editAction={() => {
 											setEditPanel(true);
@@ -500,8 +498,6 @@ const Customer = () => {
 										name={it.name}
 										category={it.category}
 										img={it.image}
-										color={it.color}
-										series={it.series}
 										price={it.price}
 										editAction={() => {
 											setEditPanel(true);

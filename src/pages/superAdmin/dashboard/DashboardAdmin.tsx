@@ -22,6 +22,8 @@ import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
 import SocialItem from '../../_common/dashboardHelper/SocialItem';
+import MarketingAssetForms from '../../presentation/dashboard/Marketing/MarketingAssetForms/MarketingAssetForms';
+import { toast } from 'react-toastify';
 
 interface CardProp {
 	id: number;
@@ -38,7 +40,30 @@ const DashboardAdmin = () => {
 	const { darkModeStatus } = useDarkMode();
 	const { t } = useTranslation('menu');
 	const navigate = useNavigate();
-	const [cards] = useState<CardProp[]>([
+	const [elementId, setElementId] = useState<number>();
+	const [elementName, setElementName] = useState<string>();
+	const [maybeCards, setMaybeCards] = useState<CardProp[]>([]);
+	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
+	const openModal = (id: number, nameOfBussiness: string) => {
+		setElementId(id)
+;
+		setElementName(nameOfBussiness);
+		setIsModalOpen(true);
+	};
+
+
+	// Function to handle closing the modal
+	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !');
+	const notifyOnNoAndNotSure = () =>
+		toast(
+			'I guess we’ll need to check that out – will send you more info on this media and add it to media to check!',
+		);
+	const notifyOnNoAndNope = () =>
+		toast('– Ok, Good to know, no need to spend time and energy when not necessary ');
+
+	const [cards, setCards] = useState<CardProp[]>([
 		{
 			id: 1,
 			name: 'googleBusiness',
@@ -73,6 +98,26 @@ const DashboardAdmin = () => {
 			percent: 78,
 		},
 	]);
+
+	const getFormValue = (isSocialMedia: string, isSocialMediaimportant: string) => {
+		const element: CardProp[] = cards.filter((card) => card.id === elementId);
+		if (isSocialMedia === 'yes' && isSocialMediaimportant === 'yes') {
+			notifyOnYes();
+			setExistingCards((elements) => [...elements, element[0]]);
+			const updatedCards = cards.filter((card) => card.id !== elementId);
+			setCards(updatedCards);
+		} else if (isSocialMedia === 'no' && isSocialMediaimportant === 'maybe') {
+			notifyOnNoAndNotSure();
+			setMaybeCards((elements) => [...elements, element[0]]);
+			const updatedCards = cards.filter((card) => card.id !== elementId);
+			setCards(updatedCards);
+		} else if (isSocialMedia === 'no' && isSocialMediaimportant === 'nope') {
+			notifyOnNoAndNope();
+			setNotInUseCards((elements) => [...elements, element[0]]);
+			const updatedCards = cards.filter((card) => card.id !== elementId);
+			setCards(updatedCards);
+		}
+	};
 
 	return (
 		<PageWrapper isProtected>
@@ -169,7 +214,7 @@ const DashboardAdmin = () => {
 							id={i.id}
 							key={i.id}
 							name={i.name}
-							attributes={i.attributes}
+							attributes={i.description}
 							timeline={i.timeline}
 							status={i.status}
 						/>
@@ -180,7 +225,6 @@ const DashboardAdmin = () => {
 						</Button>
 					</div>
 				</div>
-				<TaskOnHold />
 				<div className='col-12'>
 					<div className='display-5 fw-bold py-3'>Display by media/marketing support</div>
 				</div>
@@ -190,6 +234,7 @@ const DashboardAdmin = () => {
 					) : (
 						cards.map((card) => (
 							<SocialItem
+								onClick={() => openModal(card.id, card.name)}
 								key={card.id}
 								name={card.image}
 								teamName={card.teamName}
@@ -202,6 +247,15 @@ const DashboardAdmin = () => {
 						))
 					)}
 				</div>
+				{isModalOpen ? (
+					<MarketingAssetForms
+						idOfBussiness={elementId}
+						nameOfBussiness={elementName}
+						isModalOpen={isModalOpen}
+						setIsModalOpen={setIsModalOpen}
+						getFormValue={getFormValue}
+					/>
+				) : null}
 			</Page>
 		</PageWrapper>
 	);

@@ -248,7 +248,7 @@ const ColumnCard: FC<IColumnCard> = ({
 									</CardHeader>
 									<CardBody>
 										<ChecksGroup>
-											{/* @ts-ignore */}
+										
 											{card.tasks.map((t) => (
 												<Checks
 													key={t.id}
@@ -312,23 +312,7 @@ const ColumnCard: FC<IColumnCard> = ({
 										))}
 									</Select>
 								</FormGroup>
-								<FormGroup className='col-12' id='assignee' label='Assignee'>
-									<Select
-										ariaLabel='Board select'
-										placeholder='Select group'
-										onChange={formik.handleChange}
-										value={formik.values.assignee}>
-										{Object.keys(USERS).map((u) => (
-											// @ts-ignore
-											<Option key={USERS[u].id} value={USERS[u].username}>
-												{
-													// @ts-ignore
-													`${USERS[u].name} ${USERS[u].surname}`
-												}
-											</Option>
-										))}
-									</Select>
-								</FormGroup>
+						
 								<FormGroup className='col-12' id='tags' label='Tags'>
 									<Select
 										multiple

@@ -10,7 +10,7 @@ import SubHeader, {
 import Button from '../../../components/bootstrap/Button';
 
 import Company2 from '../../../assets/logos/company2.png';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from '../products/ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
@@ -87,7 +87,7 @@ const GridFluidPage = () => {
 
 	function handleEdit(id: number) {
 		const newData = data.filter((item) => item.id === id);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 
 	const formik = useFormik({
@@ -156,8 +156,6 @@ const GridFluidPage = () => {
 								name={item.name}
 								category={item.category}
 								img={item.image}
-								color={item.color}
-								series={item.series}
 								price={item.price}
 								editAction={() => {
 									setEditPanel(true);

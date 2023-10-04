@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import UserImage from '../../../assets/img/wanna/wanna1.png';
@@ -21,24 +21,53 @@ import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
 import Avatar from '../../../components/Avatar';
 import CommonDesc from '../../../common/other/CommonDesc';
 import { useFormik } from 'formik';
-import { update } from '../../../features/auth/authSlice';
+import { update, AuthState } from '../../../features/auth/authSlice';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../../features/auth/authApiSlice';
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
-	useTourStep(19);
-
 	// const { id } = useParams();
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	const userdata = JSON.parse(localStorage.getItem('user')!);
-	const [src, setSrc] = useState(userdata ? userdata.src : UserImage);
+	const id = 101;
+	const {
+		data: profileData,
+		error,
+		isLoading,
+		isSuccess,
+		isFetching,
+		refetch,
+	} = useGetProfileQuery(id);
 
+
+	// let profileData: any;
+	// if (data) {
+	// 	profileData = data.id === id ? data : null;
+	// }
+	useTourStep(19);
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	// const userdata = JSON.parse(localStorage.getItem('user')!);
+	const [src, setSrc] = useState(profileData ? profileData.avatar : UserImage);
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
 	const dispatch = useDispatch();
+	const [UpdateProfileMutation] = useUpdateProfileMutation();
+
 	const formik = useFormik({
+		// initialValues: {
+		// 	firstName: userdata.name,
+		// 	lastName: userdata.surname,
+		// 	emailAddress: userdata.email,
+		// 	phone: userdata.phoneNo,
+		// 	currentPassword: '',
+		// 	confirmPassword: '',
+		// 	newPassword: '',
+		// 	image: src,
+		// },
+
 		initialValues: {
-			firstName: userdata.name,
-			lastName: userdata.surname,
-			emailAddress: userdata.email,
-			phone: userdata.phoneNo,
+			firstName: profileData ? profileData?.first_name : ' ',
+			lastName: profileData ? profileData?.last_name : '',
+			emailAddress: profileData ? profileData?.email : '',
+			phone: profileData ? profileData?.phone_number : '',
+			gender: profileData ? profileData?.gender : '',
 			currentPassword: '',
 			confirmPassword: '',
 			newPassword: '',
@@ -54,28 +83,43 @@ const Profile = () => {
 
 			return errors;
 		},
-		onSubmit: (values) => {
+		onSubmit: async (values) => {
 			// console.log(values);
 			const userdetails = {
-				id: userdata.id,
-				name: values.firstName,
-				lastname: values.lastName,
+				id: profileData.id,
+				first_name: values.firstName,
+				last_name: values.lastName,
 				email: values.emailAddress,
 				src,
-				role: userdata.role,
-				teamMember: userdata.teamMember,
-				country: userdata.country,
-				company: userdata.company,
-				state: userdata.state,
-				contact: values.phone,
+				role: profileData.role,
+				// teamMember: profileData.teamMember,
+				country: profileData.country,
+				company: profileData.company,
+				state: profileData.state,
+				phone_number: values.phone,
+				gender: profileData.gender,
 			};
 			// console.log(values);
 			const value = JSON.stringify(userdetails);
 			localStorage.setItem('user', value);
-			const user = { user: userdetails };
-			dispatch(update(user));
+			// const user = { user: userdetails };
+			// dispatch(update(user));
+			await UpdateProfileMutation(userdetails);
+			refetch();
 		},
 	});
+
+	if (isLoading) {
+		return <h2>Loading ...</h2>;
+	}
+	if (isFetching) {
+		return <h2>...isFetching</h2>;
+	}
+
+	if (error) {
+		return <h2>Something went wrong</h2>;
+	}
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
 		const file = event.target.files[0];
@@ -90,7 +134,10 @@ const Profile = () => {
 	};
 
 	return (
-		<PageWrapper title={`${userdata.name} ${userdata.surname}`}>
+		<PageWrapper
+			title={`${profileData && profileData?.first_name} ${
+				profileData && profileData?.last_name
+			}`}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
@@ -100,11 +147,8 @@ const Profile = () => {
 						]}
 					/>
 				</SubHeaderLeft>
-				<SubHeaderRight>
-					<span className='text-muted fst-italic me-2'>Last update:</span>
-					<span className='fw-bold'>13 hours ago</span>
-				</SubHeaderRight>
 			</SubHeader>
+
 			<Page container='fluid'>
 				<div className='row'>
 					<div className='col-12'>
@@ -166,6 +210,7 @@ const Profile = () => {
 									<div className='col-md-6'>
 										<FormGroup id='firstName' label='First Name' isFloating>
 											<Input
+												name='firstName'
 												placeholder='First Name'
 												autoComplete='additional-name'
 												onChange={formik.handleChange}
@@ -181,6 +226,7 @@ const Profile = () => {
 									<div className='col-md-6'>
 										<FormGroup id='lastName' label='Last Name' isFloating>
 											<Input
+												name='lastName'
 												placeholder='Last Name'
 												autoComplete='family-name'
 												onChange={formik.handleChange}
@@ -218,6 +264,7 @@ const Profile = () => {
 										<FormGroup id='phone' label='Phone Number' isFloating>
 											<Input
 												type='tel'
+												name='phone'
 												placeholder='Phone Number'
 												autoComplete='tel'
 												onChange={formik.handleChange}
@@ -233,17 +280,15 @@ const Profile = () => {
 								</div>
 								<div className='row g-4 mt-2'>
 									<div className='col-md-6'>
-										<FormGroup
-											id='gender'
-											label='Gender'
-											isFloating>
+										<FormGroup id='gender' label='Gender' isFloating>
 											<Input
-												type='email'
-												placeholder='Email address'
-												autoComplete='email'
+												type='text'
+												name='gender'
+												placeholder='Gender'
+												autoComplete='gender'
 												onChange={formik.handleChange}
 												onBlur={formik.handleBlur}
-												value={formik.values.emailAddress}
+												value={formik.values.gender}
 												isValid={formik.isValid}
 												// isTouched={formik.touched.emailAddress}
 												// invalidFeedback={formik.errors.emailAddress}
@@ -251,21 +296,22 @@ const Profile = () => {
 											/>
 										</FormGroup>
 									</div>
-									<div className='col-md-6'>
+									{/* <div className='col-md-6'>
 										<FormGroup id='dob' label='Date of Birth' isFloating>
 											<Input
 												type='date'
+												name='phone'
 												placeholder='Date of Birth'
 												onChange={formik.handleChange}
 												onBlur={formik.handleBlur}
-												value={formik.values.phone}
+												value={formik.values.date}
 												isValid={formik.isValid}
 												// isTouched={formik.touched.phone}
 												// invalidFeedback={formik.errors.phone}
 												validFeedback='Looks good!'
 											/>
 										</FormGroup>
-									</div>
+									</div> */}
 								</div>
 							</CardBody>
 						</Card>
@@ -275,9 +321,6 @@ const Profile = () => {
 									<CardTitle tag='div' className='h5'>
 										Password
 									</CardTitle>
-									<CardSubTitle tag='div' className='h6'>
-										Password change operations
-									</CardSubTitle>
 								</CardLabel>
 								<CardActions>
 									{passwordChangeCTA ? (

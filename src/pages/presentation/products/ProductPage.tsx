@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import Page from '../../../layout/Page/Page';
+import classNames from 'classnames';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, {
 	SubHeaderLeft,
@@ -8,7 +9,7 @@ import SubHeader, {
 	SubheaderSeparator,
 } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
-import CommonGridProductItem from '../../_common/CommonGridProductItem';
+import CommonGridProductItem from './ProductGridView';
 import tableData from '../../../common/data/dummyProductData';
 import OffCanvas, {
 	OffCanvasBody,
@@ -30,6 +31,10 @@ import useDarkMode from '../../../hooks/useDarkMode';
 import ProductListView from './ProductListView';
 import Select from '../../../components/bootstrap/forms/Select';
 import { useNavigate } from 'react-router-dom';
+import { string } from 'yargs';
+import { Role } from '../../../common/data/userDummyData';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 interface IValues {
 	name: string;
@@ -76,12 +81,24 @@ const validate = (values: IValues) => {
 };
 
 const ProductPage = () => {
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	const { darkModeStatus } = useDarkMode();
 	const [data, setData] = useState(tableData);
 	const [editItem, setEditItem] = useState<IValues | null>(null);
 	const [editPanel, setEditPanel] = useState<boolean>(false);
 	const [productView, setproductView] = useState<boolean>(false);
-	const countryName = 'India';
+	const [filterableData, setFilterableData] = useState(data);
+
+	const searchAndFilterData = (searchValue: string) => {
+		const tempData = data;
+
+		return tempData.filter((item) => {
+			return item.name.toLowerCase().includes(searchValue);
+		});
+	};
 	function handleRemove(id: number) {
 		const newData = data.filter((item) => item.id !== id);
 		setData(newData);
@@ -90,10 +107,10 @@ const ProductPage = () => {
 	const setProductView = (status: boolean) => {
 		setproductView(status);
 	};
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	function handleEdit(id: number) {
 		const newData = data.filter((item) => item.id === id);
-		setEditItem(newData[0]);
+		// setEditItem(newData[0]);
 	}
 
 	const formik = useFormik({
@@ -140,22 +157,76 @@ const ProductPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editItem]);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const debounce = (func: any, wait: number | undefined) => {
+		let timeout: string | number | NodeJS.Timeout | undefined;
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return function executedFunction(...args: any[]) {
+			const later = () => {
+				clearTimeout(timeout);
+				func(...args);
+			};
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+		};
+	};
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const onFormSubmit = (values: { search: any }) => {
+		const searchValue = values.search.toString().toLowerCase();
+		const newData = searchAndFilterData(searchValue);
+		if (!values.search) {
+			setFilterableData(data);
+		} else {
+			setFilterableData(newData);
+		}
+	};
+	const formikSearch = useFormik({
+		initialValues: {
+			search: '',
+		},
+
+		onSubmit: onFormSubmit,
+		onReset: () => setFilterableData(data),
+	});
 	return (
 		<PageWrapper title={pagesMenu.gridPages.subMenu.gridBoxed.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					{/* <img src={countryName} alt='Company' height={24} /> */}
-					<span>{countryName}</span>
-					<span>Products</span>
-					<SubheaderSeparator />
-					<span className='text-muted'>{data.length} items</span>
+					<div className='col-md-4'>
+						<Input
+							id='search'
+							size='lg'
+							placeholder='Search...'
+							className={classNames('rounded-1', {
+								'bg-white': !darkModeStatus,
+							})}
+							onChange={(e: { target: { value: string | any[] } }) => {
+								formikSearch.handleChange(e);
+								if (e.target.value.length > 2)
+									debounce(
+										() =>
+											onFormSubmit({
+												...formikSearch.values,
+												search: e.target.value,
+											}),
+										1000,
+									)();
+
+								if (e.target.value.length === 0) formikSearch.resetForm();
+							}}
+							value={formikSearch.values.search}
+						/>
+					</div>
 				</SubHeaderLeft>
 				<SubHeaderRight className='d-flex gap-3'>
 					<Button
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView == false ? 'me-0 active' : 'me-0'}`}
+						className={`${productView === false ? 'me-0 active' : 'me-0'}`}
 						onClick={() => setProductView(false)}>
 						Grid View
 					</Button>
@@ -163,44 +234,45 @@ const ProductPage = () => {
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView == true ? 'active' : ''}`}
+						className={`${productView === true ? 'active' : ''}`}
 						onClick={() => setProductView(true)}>
 						List View
 					</Button>
-					<Button
-						color={darkModeStatus ? 'light' : 'dark'}
-						isLight
-						icon='Add'
-						onClick={() => {
-							setEditItem(null);
-							setEditPanel(true);
-						}}>
-						Add New
-					</Button>
+
+					{role !== Role.admin && (
+						<Button
+							color={darkModeStatus ? 'light' : 'dark'}
+							isLight
+							icon='Add'
+							onClick={() => {
+								setEditItem(null);
+								setEditPanel(true);
+							}}>
+							Add New
+						</Button>
+					)}
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
-				<div className='display-4 fw-bold py-3'>Our Services</div>
+				<div className='display-4 fw-bold py-3'>Products</div>
 				{productView === false ? (
 					<div className='row'>
-						{data.map((item) => (
+						{filterableData.map((item) => (
 							<div key={item.id} className='col-xxl-3 col-xl-4 col-md-6'>
 								<CommonGridProductItem
 									id={item.id}
 									name={item.name}
 									category={item.category}
 									img={item.image}
-									color={item.color}
-									series={item.series}
 									price={item.price}
-									editAction={`../${pagesMenu.sales.subMenu.productID.path}/${item.id}`}
+									editAction={`../${pagesMenu.productId.path}/${item.id}`}
 									deleteAction={() => handleRemove(item.id)}
 								/>
 							</div>
 						))}
 					</div>
 				) : (
-					<ProductListView />
+					<ProductListView listData={filterableData} />
 				)}
 			</Page>
 
@@ -285,7 +357,7 @@ const ProductPage = () => {
 						<CardBody>
 							<div className='row g-4'>
 								<div className='col-12'>
-								<FormGroup id='itemCat' label='Item Category'>
+									<FormGroup id='itemCat' label='Item Category'>
 										<Select
 											ariaLabel='Item Category'
 											placeholder='Choose...'

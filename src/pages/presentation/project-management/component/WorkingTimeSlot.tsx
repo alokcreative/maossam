@@ -67,7 +67,7 @@ const WorkingTimeSlot: FC = () => {
 	const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday'];
 	return (
 		<PageWrapper title={dashboardPagesMenu.workingslot.text}>
-			<SubHeader>
+			{/* <SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
 						list={[
@@ -83,11 +83,11 @@ const WorkingTimeSlot: FC = () => {
 						<strong>MA-OSSIM</strong> Team
 					</CommonAvatarTeam>
 				</SubHeaderRight>
-			</SubHeader>
+			</SubHeader> */}
 			<Page container='fluid'>
 				<div className='display-4 fw-bold py-3'>Timeslot</div>
 				<Card>
-					<CardHeader>
+					{/* <CardHeader>
 						<div className='row'>
 							<div className='col-lg-12'>
 								<h5>
@@ -102,7 +102,7 @@ const WorkingTimeSlot: FC = () => {
 								<h5>No worries, you can always change it later.</h5>
 							</div>
 						</div>
-					</CardHeader>
+					</CardHeader> */}
 					<CardBody>
 						<div className='row mb-4 mb-lg-5'>
 							<div className='col-12'>
@@ -150,7 +150,7 @@ const WorkingTimeSlot: FC = () => {
 					</CardBody>
 					<CardFooter>
 						<CardFooterLeft>
-							<FormGroup label='' className='col-12'>
+							{/* <FormGroup label='' className='col-12'>
 								<ChecksGroup>
 									<Checks
 										key='d-none'
@@ -162,14 +162,14 @@ const WorkingTimeSlot: FC = () => {
 										checked={formikdisplay.values.display.includes('d-none')}
 									/>
 								</ChecksGroup>
-							</FormGroup>
+							</FormGroup> */}
 						</CardFooterLeft>
 						<CardFooterRight>
 							<button
 								type='button'
 								className='btn btn-info'
 								disabled={formikdisplay.values.display[0] === 'd-none'}>
-								Update
+								Save
 							</button>
 							<button
 								type='button'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC,useState } from 'react';
 import { useFormik } from 'formik';
 import Card, {
 	CardActions,
@@ -19,69 +19,31 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Label from '../../../components/bootstrap/forms/Label';
 import CommonFilterTag from '../../_common/CommonFilterTag';
 import CommonTableRow from '../../_common/CommonTableRow';
-import Select from '../../../components/bootstrap/forms/Select';
-import Popovers from '../../../components/bootstrap/Popovers';
-
-import data from '../../../common/data/dummyProductData';
-import { pagesMenu } from '../../../menu';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../components/PaginationButtons';
 import useSortableData from '../../../hooks/useSortableData';
 import Icon from '../../../components/icon/Icon';
-import useSelectTable from '../../../hooks/useSelectTable';
-import useDarkMode from '../../../hooks/useDarkMode';
 import useTourStep from '../../../hooks/useTourStep';
 
-const ProductListView = () => {
-	/**
-	 * For Tour
-	 */
+interface IListDataProps {
+	listData: {
+		id: number;
+		name: string;
+		image: string;
+		description: string;
+		category: string;
+		price: number;
+		sales: number;
+	}[];
+}
+const ProductListView: FC<IListDataProps> = ({ listData }) => {
 	useTourStep(6);
-
-	const { themeStatus, darkModeStatus } = useDarkMode();
-
-	const [date, setDate] = useState<Date>(new Date());
-
-	const [filterMenu, setFilterMenu] = useState<boolean>(false);
-	const formik = useFormik({
-		initialValues: {
-			minPrice: '',
-			maxPrice: '',
-			categoryName: '3D Shapes',
-			companyA: true,
-			companyB: true,
-			companyC: true,
-			companyD: true,
-		},
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		onSubmit: (values) => {
-			setFilterMenu(false);
-			// alert(JSON.stringify(values, null, 2));
-		},
-	});
-
-	const filteredData = data.filter(
-		(f) =>
-			// Category
-			f.category === formik.values.categoryName &&
-			// Price
-			(formik.values.minPrice === '' || f.price > Number(formik.values.minPrice)) &&
-			(formik.values.maxPrice === '' || f.price < Number(formik.values.maxPrice)) &&
-			//	Company
-			((formik.values.companyA ? f.store === 'Company A' : false) ||
-				(formik.values.companyB ? f.store === 'Company B' : false) ||
-				(formik.values.companyC ? f.store === 'Company C' : false) ||
-				(formik.values.companyD ? f.store === 'Company D' : false)),
-	);
-
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [perPage, setPerPage] = useState<number>(PER_COUNT['10']);
-
-	const { items, requestSort, getClassNamesFor } = useSortableData(filteredData);
+	const { items, requestSort, getClassNamesFor } = useSortableData(listData);
 	const onCurrentPageItems = dataPagination(items, currentPage, perPage);
-	const { selectTable, SelectAllCheck } = useSelectTable(onCurrentPageItems);
 
 	return (
 		<Card stretch data-tour='list'>
@@ -102,7 +64,6 @@ const ProductListView = () => {
 							</th>
 							<th scope='col'>Image</th>
 							<th scope='col'>Name</th>
-							
 							<th
 								scope='col'
 								onClick={() => requestSort('price')}
@@ -128,7 +89,6 @@ const ProductListView = () => {
 								key={i.id}
 								// eslint-disable-next-line react/jsx-props-no-spreading
 								{...i}
-								
 							/>
 						))}
 					</tbody>
