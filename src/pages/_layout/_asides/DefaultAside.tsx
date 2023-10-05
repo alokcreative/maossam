@@ -1,16 +1,12 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+import React, { useContext, useEffect, useState } from 'react';
 import Brand from '../../../layout/Brand/Brand';
 import Navigation from '../../../layout/Navigation/Navigation';
 import User from '../../../layout/User/User';
 import { adminDashboardPagesMenu, dashboardPagesMenu } from '../../../menu';
 import ThemeContext from '../../../contexts/themeContext';
-// import AuthContext from '../../../contexts/authContext';
 import Aside, { AsideBody, AsideHead } from '../../../layout/Aside/Aside';
-import { Role } from '../../../common/data/userDummyData';
-import { useNavigate } from 'react-router-dom';
 import { useGetUsersMutation } from '../../../features/auth/authApiSlice';
+import Spinner from '../../../components/bootstrap/Spinner';
 
 interface IUserData {
 	id: number;
@@ -51,7 +47,7 @@ const DefaultAside = () => {
 			</AsideHead>
 			<AsideBody>
 				{isLoading ? (
-					<div>Loading... </div>
+					<Spinner />
 				) : userData && userData?.role === 'superadmin' ? (
 					<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
 				) : (

@@ -8,6 +8,7 @@ import AdminContentRoutes from './AdminContentRoutes';
 import { useGetUsersMutation } from '../../features/auth/authApiSlice';
 import { useNavigate } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
+import Loading from '../../common/other/Loading';
 
 const LOADING = (
 	<PageWrapper>
@@ -39,36 +40,7 @@ const LOADING = (
 		</Page>
 	</PageWrapper>
 );
-const Loading = () => (
-	<PageWrapper>
-		<SubHeader>
-			<div />
-		</SubHeader>
-		<Page>
-			<div className='row h-100'>
-				<div className='col-lg-6'>
-					<Card stretch>
-						<CardBody>
-							<div />
-						</CardBody>
-					</Card>
-				</div>
-				<div className='col-lg-6'>
-					<Card stretch='semi'>
-						<CardBody>
-							<div />
-						</CardBody>
-					</Card>
-					<Card stretch='semi'>
-						<CardBody>
-							<div />
-						</CardBody>
-					</Card>
-				</div>
-			</div>
-		</Page>
-	</PageWrapper>
-);
+
 interface IUserData {
 	id: number;
 	avatar: string | unknown;
@@ -97,7 +69,6 @@ const Content = () => {
 			GetUsersMutation(token)
 				.unwrap()
 				.then((data) => {
-					console.log('data>>>', data);
 					setUserData(data);
 				});
 		}

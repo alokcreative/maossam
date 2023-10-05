@@ -10,10 +10,8 @@ import { useRegisterUserMutation } from '../../../features/auth/authApiSlice';
 import { toast } from 'react-toastify';
 
 const Signup: FC = () => {
-	const [RegisterUserMutation,{isLoading}] = useRegisterUserMutation();
+	const [RegisterUserMutation, { isLoading }] = useRegisterUserMutation();
 	const navigate = useNavigate();
-	// const handleOnClick = useCallback(() => navigate('/modals-step-form'), [navigate]);
-	// const [isLoading, setIsLoading] = useState<boolean>(false);
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 	const validateEmail = (value: string) => {
 		let error;
@@ -79,8 +77,8 @@ const Signup: FC = () => {
 							navigate('/modals-step-form');
 						})
 						.catch((rejected) => {
-							toast(rejected.data.email[0]);
-							// console.error('rejected>>>', rejected.data.email[0]);
+							console.error('rejected>>>', rejected);
+							toast(rejected.data?.email[0]);
 							navigate('/auth-pages/login');
 							formik.setFieldValue('first_name', '');
 							formik.setFieldValue('last_name', '');
@@ -88,12 +86,6 @@ const Signup: FC = () => {
 							formik.setFieldValue('password', '');
 							formik.setFieldValue('confirm_password', '');
 						});
-
-					// const value = JSON.stringify(userdetails);
-
-					// const user = { user: userdetails };
-					// dispatch(signup(user));
-					// console.log('data>>', data.tokens);
 				});
 				// setIsLoading(false);
 			}

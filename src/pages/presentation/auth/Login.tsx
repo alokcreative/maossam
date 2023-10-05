@@ -10,7 +10,6 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
 import Button from '../../../components/bootstrap/Button';
 import useDarkMode from '../../../hooks/useDarkMode';
-import USERS from '../../../common/data/userDummyData';
 import Spinner from '../../../components/bootstrap/Spinner';
 import { useGoogleLogin } from '@react-oauth/google';
 import {  useLoginUserMutation } from '../../../features/auth/authApiSlice';
@@ -50,10 +49,8 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 
 	const { darkModeStatus } = useDarkMode();
 
-	const [signInPassword, setSignInPassword] = useState<boolean>(false);
 	const [singUpStatus, setSingUpStatus] = useState<boolean>(!!isSignUp);
-	const [LoginUserMutation,{isLoading}] = useLoginUserMutation();
-	// const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [LoginUserMutation, { isLoading }] = useLoginUserMutation();
 
 	const navigate = useNavigate();
 
@@ -78,7 +75,6 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 		},
 		validateOnChange: false,
 		onSubmit: async (values) => {
-			console.log('values>>', values);
 			if (values.email) {
 				startTransition(() => {
 					LoginUserMutation(values)
@@ -86,18 +82,14 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 						.then((data1: { access: string; refresh: string }) => {
 							localStorage.setItem('access_token', data1.access);
 							localStorage.setItem('refresh_token', data1.refresh);
-							// setIsLoading(false);
 							navigate('/');
 						})
 						.catch((rejected) => {
 							toast(rejected.data?.detail);
-							console.error('rejected>>>', rejected.data?.detail);
-							// setIsLoading(false);
 							formik.setFieldValue('email', '');
 							formik.setFieldValue('password', '');
 						});
 				});
-				// setIsLoading(false);
 			}
 		},
 	});
@@ -120,7 +112,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 
 	const handleLoginWithGoogle = useGoogleLogin({
 		// onSuccess: (tokenResponse) => setToken(tokenResponse.access_token),
-		onError: (error) => console.log('Login Failed:', error),
+		// onError: (error) => console.log('Login Failed:', error),
 	});
 	// useEffect(() => {
 	// 	if (token) {

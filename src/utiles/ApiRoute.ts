@@ -3,13 +3,10 @@ const apiEndpoints = {
 	login: 'login/',
 	profile: 'profile/',
 	getUser: 'getuser',
-
 	signup: 'register/',
 	logout: 'logout/',
 	forgotPassword: 'password/forgot/',
 	createUser: 'create/',
-
-	// profile: 'update/',
+	update: 'update/',
 };
-
 export default apiEndpoints;

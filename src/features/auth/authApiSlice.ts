@@ -12,27 +12,27 @@ interface ILoginPayload {
 	email: string;
 	password: string;
 }
-interface Payload{
-	id: number;
-	avatar: string | unknown;
-	first_name: string;
-	last_name: string;
-	email: string;
-	phone_number: number;
-	country: string;
-	state: string;
-	gender: string;
-	is_active: boolean;
-	role: string;
-	date_of_birth: string;
-	created_at: string;
-	updated_at: string;
+interface IProfilePayload {
+	id: string;
+	first_name?: string;
+	last_name?: string;
+	email?: string;
+	src?: string;
+	country?: string;
+	state?: string;
+	phone_number?: string;
+	gender?: string;
 }
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
 };
+interface ILogoutProps {
+	accessToken: string;
+	refresh: { refresh: string };
+}
 export const productsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
+		// Register user
 		registerUser: builder.mutation({
 			query: (payload: IRegisterPayload) => ({
 				url: apiEndpoints.register,
@@ -42,6 +42,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: [`Register`],
 		}),
+		// Login User
 		loginUser: builder.mutation({
 			query: (payload: ILoginPayload) => ({
 				url: apiEndpoints.login,
@@ -53,6 +54,18 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: [`Login`],
 		}),
+		// Logout
+		logout: builder.mutation({
+			query: (payload: ILogoutProps) => ({
+				url: apiEndpoints.logout,
+				method: 'POST',
+				body: payload.refresh,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${payload.accessToken}`,
+				},
+			}),
+		}),
 		getUsers: builder.mutation({
 			query: (payload: string) => ({
 				url: apiEndpoints.profile,
@@ -63,23 +76,22 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 
-		// Profile
+		// Get  Profile
 		getProfile: builder.query({
 			query: (id) => ({
-				url: apiEndpoints.profile + id,
+				url: apiEndpoints.update + id,
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					// Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzQ4OTUxLCJpYXQiOjE2OTYzMjczNTEsImp0aSI6Ijk4YzU3OGQxMzc0ZjQ1ZTdiNTA2YmEwNGIwYWM1OTZmIiwidXNlcl9pZCI6MTAxfQ.vK8AvI3GHQOQN0LRCoNahaFBB7JYsl-sztNAjMEQJKM`,
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
 		}),
 
 		// Create Profile
 		createProfile: builder.mutation({
-			query: (payload: Payload) => ({
-				url: apiEndpoints.profile,
+			query: (payload: IProfilePayload) => ({
+				url: apiEndpoints.update,
 				method: 'POST',
 				body: payload,
 				headers: {
@@ -91,29 +103,27 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 
 		// Profile Update
 		updateProfile: builder.mutation({
-			query: (payload: Payload) => ({
-				url: `${apiEndpoints.profile}${payload.id}/`,
+			query: (payload: IProfilePayload) => ({
+				url: `${apiEndpoints.update}${payload.id}/`,
 				method: 'PATCH',
 				body: payload,
 				headers: {
-					'Content-Type': 'application/json',
-					// Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzQ4OTUxLCJpYXQiOjE2OTYzMjczNTEsImp0aSI6Ijk4YzU3OGQxMzc0ZjQ1ZTdiNTA2YmEwNGIwYWM1OTZmIiwidXNlcl9pZCI6MTAxfQ.vK8AvI3GHQOQN0LRCoNahaFBB7JYsl-sztNAjMEQJKM`,
+					'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
 			invalidatesTags: [`Profile`],
 		}),
 
-		// Get Profile
+		// Delete Profile
 		deleteProfile: builder.mutation({
-			query: ({ id, ...rest }: Payload) => ({
-				url: apiEndpoints.profile + id,
+			query: ({ id, ...rest }: IProfilePayload) => ({
+				url: apiEndpoints.update + id,
 				method: 'DELETE',
 				body: rest,
 				headers: {
 					'Content-Type': 'application/json',
-					// Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzQ4OTUxLCJpYXQiOjE2OTYzMjczNTEsImp0aSI6Ijk4YzU3OGQxMzc0ZjQ1ZTdiNTA2YmEwNGIwYWM1OTZmIiwidXNlcl9pZCI6MTAxfQ.vK8AvI3GHQOQN0LRCoNahaFBB7JYsl-sztNAjMEQJKM`,
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
 			invalidatesTags: [`Profile`],
@@ -122,7 +132,10 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-	useRegisterUserMutation, useLoginUserMutation, useGetUsersMutation,
+	useRegisterUserMutation,
+	useLoginUserMutation,
+	useLogoutMutation,
+	useGetUsersMutation,
 	useGetProfileQuery,
 	useCreateProfileMutation,
 	useUpdateProfileMutation,
