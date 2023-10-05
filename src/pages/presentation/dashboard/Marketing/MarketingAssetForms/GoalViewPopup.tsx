@@ -56,7 +56,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		props.getFormValue(isSocialMedia, isSocialMediaimportant);
 		setIsModalOpen(false);
 		navigate(`../${pagesMenu.goalId.path}/${id}`);
-
 	};
 
 	const formikAddTask = useFormik({
