@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { pagesMenu } from '../../../../../menu';
 
 type IAssetNameProps = {
+	id: number | undefined;
 	idOfBussiness: number | undefined;
 	nameOfBussiness: string | undefined;
 	isModalOpen: boolean;
@@ -30,8 +31,8 @@ type IAssetNameProps = {
 	getFormValue(...args: unknown[]): unknown;
 };
 
-const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
-	const { idOfBussiness = 0, nameOfBussiness = '', isModalOpen, setIsModalOpen } = props;
+const GoalViewPopup: FC<IAssetNameProps> = (props) => {
+	const { idOfBussiness = 0, nameOfBussiness = '', isModalOpen, setIsModalOpen, id } = props;
 	const navigate = useNavigate();
 	// User data
 	const { userData } = useContext(AuthContext);
@@ -54,6 +55,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 		// eslint-disable-next-line react/destructuring-assignment
 		props.getFormValue(isSocialMedia, isSocialMediaimportant);
 		setIsModalOpen(false);
+		navigate(`../${pagesMenu.goalId.path}/${id}`);
 	};
 
 	const formikAddTask = useFormik({
@@ -62,7 +64,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 		},
 		onSubmit(values, formikHelpers) {
 			console.log(values.clickVal);
-			navigate('/add-task');
+			// navigate('/add-task');
 		},
 	});
 	return (
@@ -672,4 +674,4 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 	);
 };
 
-export default MarketingAssetForms;
+export default GoalViewPopup;

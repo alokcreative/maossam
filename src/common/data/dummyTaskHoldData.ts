@@ -41,7 +41,7 @@ const data: {
 		description: 'description3',
 		category: 'Client',
 		expectedTime: '45min',
-		status: 'InProgress',
+		status: 'Hold',
 		assigned: 'Mayc',
 		edit: 'Edit',
 		goalId: 3,
