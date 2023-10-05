@@ -47,12 +47,10 @@ const DashboardAdmin = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const openModal = (id: number, nameOfBussiness: string) => {
-		setElementId(id)
-;
+		setElementId(id);
 		setElementName(nameOfBussiness);
 		setIsModalOpen(true);
 	};
-
 
 	// Function to handle closing the modal
 	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !');
@@ -70,10 +68,10 @@ const DashboardAdmin = () => {
 			image: googleBusiness,
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
-			dueDate: '3 days left',
-			attachCount: 6,
-			taskCount: 24,
-			percent: 65,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 2,
@@ -82,9 +80,9 @@ const DashboardAdmin = () => {
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
-			attachCount: 1,
-			taskCount: 4,
-			percent: 70,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 3,
@@ -93,9 +91,9 @@ const DashboardAdmin = () => {
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
 			dueDate: '14 days left',
-			attachCount: 12,
-			taskCount: 34,
-			percent: 78,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 	]);
 
@@ -162,7 +160,7 @@ const DashboardAdmin = () => {
 									</div>
 									<div className='flex-grow-1 ms-3'>
 										<div className='fw-bold fs-3 mb-0'>0</div>
-										<div className='text-muted mt-n2'>Number Product</div>
+										<div className='text-muted mt-n2'>Number of Products</div>
 									</div>
 								</div>
 							</div>

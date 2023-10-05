@@ -38,6 +38,13 @@ export const dashboardPagesMenu = {
 		icon: 'Dashboard',
 		subMenu: null,
 	},
+	workingslot: {
+		id: 'workingslot',
+		text: 'Working Time Slot',
+		path: '/timeslot',
+		icon: 'schedule',
+		subMenu: null,
+	},
 	product_services: {
 		id: 'product_services',
 		text: 'Product-Services',
@@ -59,13 +66,7 @@ export const dashboardPagesMenu = {
 		icon: 'flag',
 		subMenu: null,
 	},
-	workingslot: {
-		id: 'workingslot',
-		text: 'Working Time Slot',
-		path: '/timeslot',
-		icon: 'schedule',
-		subMenu: null,
-	},
+	
 	marketingassets: {
 		id: 'marketingassets',
 		text: 'Marketing Assets',

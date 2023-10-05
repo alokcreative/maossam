@@ -37,6 +37,7 @@ interface ITaskProps {
 	dueDate: string;
 	name: string;
 	category: string;
+	description: string;
 	expectedTime: string;
 	status: string;
 	assigned?: string | undefined;
@@ -58,6 +59,7 @@ const Tasks: FC = () => {
 	const formiknewTask = useFormik({
 		initialValues: {
 			name: '',
+			description: '',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
@@ -70,6 +72,7 @@ const Tasks: FC = () => {
 				id: taskList.length + 1,
 				dueDate: values.dueDate,
 				name: values.name,
+				description: values.description,
 				category: values.category,
 				expectedTime: values.expectedTime,
 				status: values.status,
@@ -88,6 +91,7 @@ const Tasks: FC = () => {
 		setModalState(`Edit Task`);
 		const task = taskList.filter((i) => i.id === id);
 		formiknewTask.setFieldValue('name', task[0]?.name);
+		formiknewTask.setFieldValue('description', task[0]?.description);
 		formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
 		formiknewTask.setFieldValue('category', task[0]?.category);
 		formiknewTask.setFieldValue('status', task[0]?.status);
@@ -103,6 +107,7 @@ const Tasks: FC = () => {
 	const handleAddTask = () => {
 		setCurrTask(undefined);
 		formiknewTask.setFieldValue('name', '');
+		formiknewTask.setFieldValue('description', '');
 		formiknewTask.setFieldValue('dueDate', '');
 		formiknewTask.setFieldValue('category', '');
 		formiknewTask.setFieldValue('status', '');
@@ -145,11 +150,12 @@ const Tasks: FC = () => {
 							<thead>
 								<tr>
 									<th scope='col' className='cursor-pointer'>
-										#
+										Sr No
 									</th>
 									<th scope='col' className='cursor-pointer'>
 										Name
 									</th>
+									<th scope='col'>Description</th>
 									<th scope='col'>Due Date</th>
 									<th scope='col'>Expected Time</th>
 									<th scope='col' className='cursor-pointer'>
@@ -193,10 +199,22 @@ const Tasks: FC = () => {
 						<ModalBody className='px-4'>
 							<div className='row g-4'>
 								<div className='col-12 border-bottom' />
-								<div>{currTask.name}</div>
-								<div>{currTask.category}</div>
-								<div>{currTask.dueDate}</div>
-								<div>{currTask.status}</div>
+								<div>
+									<span>Name :</span> <span>{currTask.name}</span>
+								</div>
+								<div>
+									<span>Description :</span> <span>{currTask.description}</span>
+								</div>
+								<div>
+									<span>DueDate :</span> <span>{currTask.dueDate}</span>
+								</div>
+								<div>
+									<span>Status :</span> <span>{currTask.status}</span>
+								</div>
+								<div>
+									<span>Expected Time :</span>
+									<span>{currTask.expectedTime}</span>
+								</div>
 							</div>
 						</ModalBody>
 						<ModalFooter>
@@ -216,11 +234,18 @@ const Tasks: FC = () => {
 						<ModalBody className='px-4'>
 							<div className='row g-4'>
 								<div className='col-12 border-bottom' />
-								<FormGroup id='name' label='Name of Task' className='col-lg-6'>
+								<FormGroup id='name' label='Name' className='col-lg-6'>
 									<Input
 										type='text'
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.name}
+									/>
+								</FormGroup>
+								<FormGroup id='name' label='Description' className='col-lg-6'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.description}
 									/>
 								</FormGroup>
 								<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
@@ -230,13 +255,13 @@ const Tasks: FC = () => {
 										value={formiknewTask.values.dueDate}
 									/>
 								</FormGroup>
-								<FormGroup id='category' label='Enter Category'>
+								{/* <FormGroup id='category' label='Enter Category'>
 									<Input
 										type='text'
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.category}
 									/>
-								</FormGroup>
+								</FormGroup> */}
 
 								<FormGroup
 									id='expectedTime'
@@ -255,9 +280,11 @@ const Tasks: FC = () => {
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.status}
 										list={[
-											{ value: 'Approved', text: 'Approved' },
-											{ value: 'Rejected', text: 'Rejected' },
-											{ value: 'Cancelled', text: 'Cancelled' },
+											{ value: 'Backlog', text: 'Backlog' },
+											{ value: 'Todo', text: 'Todo' },
+											{ value: 'InProgress', text: 'InProgress' },
+											{ value: 'Done', text: 'Done' },
+											{ value: 'Hold', text: 'Hold' },
 										]}
 									/>
 								</FormGroup>

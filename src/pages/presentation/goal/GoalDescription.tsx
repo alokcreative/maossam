@@ -40,28 +40,52 @@ export const SELECT_OPTIONS = [
 
 interface ITask {
 	id: number;
-	taskName: string;
-	Description: string;
-	Status: string;
-	DueDate?: string | undefined;
+	name?: string;
+	description?: string;
+	status?: string;
+	dueDate?: string | undefined;
+	category?: string;
+	expectedTime?: string;
 }
-interface IValues {
+
+interface IGoalValues {
+	id?: number;
+	name?: string;
+	description?: string;
+	timeline?: string;
+	status?: string;
+	task?: ITask[];
+}
+
+interface ITaskProps {
 	id: number;
+	dueDate: string;
 	name: string;
 	description: string;
-	timeline: string;
+	category: string;
+	expectedTime: string;
 	status: string;
-	task?: ITask[] | undefined;
+	assigned?: string | undefined;
+	edit: string;
+	goalId: number;
 }
 
 const GoalDescription: FC = () => {
 	const { id } = useParams();
-	const [goal, setGoal] = useState<IValues | undefined>(data.find((i) => i.id === Number(id)));
+	const [goal, setGoal] = useState<IGoalValues | undefined>(() => {
+		const foundGoal = data.find((i) => i.id === Number(id));
+		return foundGoal;
+	});
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [tasks, setTasks] = useState<ITask[] | undefined>(goal?.task);
+	// const [tasks, setTasks] = useState<ITask[] | undefined>(goal?.task);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const navigate = useNavigate();
+	const [modalState, setModalState] = useState('Add Task');
+	const [taskList, setTaskList] = useState<ITask[]>(goal?.task || []);
+	const [currTask, setCurrTask] = useState<ITask>();
+	console.log('goal', goal);
+
 	// const handleDelete = (id: number) => {
 	// 	const newGoals = goalList.filter((i) => i.id !== id);
 	// 	setGoalList(newGoals);
@@ -72,7 +96,71 @@ const GoalDescription: FC = () => {
 	// const handleView = (id: number) => {
 	// 	console.log('id', id);
 	// };
-	console.log('goal>>', goal);
+
+	const formiknewTask = useFormik({
+		initialValues: {
+			name: '',
+			description: '',
+			dueDate: '',
+			category: '',
+			expectedTime: '',
+			status: '',
+			goalId: 0,
+		},
+		enableReinitialize: true,
+		onSubmit: (values) => {
+			const newTask = {
+				id: taskList ? taskList.length + 1 : 1,
+				dueDate: values.dueDate,
+				name: values.name,
+				description: values.description,
+				category: values.category,
+				expectedTime: values.expectedTime,
+				status: values.status,
+				edit: 'Edit',
+				goalId: values.goalId,
+			};
+			setTaskList([...taskList, newTask]);
+			setIsOpen(false);
+		},
+	});
+
+	const handleDeleteAction = (taskId: number) => {
+		setTaskList(taskList.filter((i) => i.id !== taskId));
+	};
+	const handleEdit = (taskId: number) => {
+		setCurrTask(undefined);
+		setModalState(`Edit Task`);
+		const task = taskList.filter((i) => i.id === taskId);
+		formiknewTask.setFieldValue('name', task[0]?.name);
+		formiknewTask.setFieldValue('description', task[0]?.description);
+		formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
+		formiknewTask.setFieldValue('category', task[0]?.category);
+		formiknewTask.setFieldValue('status', task[0]?.status);
+		formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
+		setIsOpen(true);
+	};
+	const handleView = (taskId: number) => {
+		setModalState(`Task Details`);
+		const task = taskList.filter((i) => i.id === taskId);
+
+		console.log('taskId>>>', taskId);
+		setCurrTask(task[0]);
+		console.log('task>>>', task[0]);
+		setIsOpen(true);
+	};
+	const handleAddTask = () => {
+		setCurrTask(undefined);
+		formiknewTask.setFieldValue('name', '');
+		formiknewTask.setFieldValue('description', '');
+		formiknewTask.setFieldValue('dueDate', '');
+		formiknewTask.setFieldValue('category', '');
+		formiknewTask.setFieldValue('status', '');
+		formiknewTask.setFieldValue('expectedTime', '');
+		setModalState('Add Task');
+		setIsOpen(true);
+	};
+	console.log('taskList', taskList);
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -88,9 +176,18 @@ const GoalDescription: FC = () => {
 					<div className='col-12'>
 						<Card>
 							<CardBody>
-								<div className='display-6 fw-bold py-3'>{goal?.name}</div>
-								<div className='display-7 fw-bold py-3'>{goal?.description}</div>
-								<div className='display-7 fw-bold py-3'>Status: {goal?.status}</div>
+								<div>
+									<span className='display-7 fw-bold p-3'>Name :</span>
+									<span>{goal?.name}</span>
+								</div>
+								<div>
+									<span className='display-7 fw-bold p-3'>Description :</span>
+									<span>{goal?.description}</span>
+								</div>
+								<div>
+									<span className='display-7 fw-bold p-3'>Status: </span>
+									<span>{goal?.status}</span>
+								</div>
 							</CardBody>
 						</Card>
 						<Card>
@@ -108,7 +205,7 @@ const GoalDescription: FC = () => {
 											isLight
 											icon='Add'
 											onClick={() => {
-												setIsOpen(true);
+												handleAddTask();
 											}}>
 											Add Task
 										</Button>
@@ -122,47 +219,56 @@ const GoalDescription: FC = () => {
 										<table className='table table-modern table-hover'>
 											<thead>
 												<tr>
-													<th scope='col'>#</th>
+													<th scope='col'>Sr No</th>
 													<th scope='col'>Name</th>
 													<th scope='col'>Description</th>
 													<th scope='col'>Status</th>
+													<th scope='col'>ExpectedTime</th>
 													<th scope='col'>Due Date</th>
 													<th scope='col'>Action</th>
 												</tr>
 											</thead>
 											<tbody>
-												{tasks ? (
-													dataPagination(tasks, currentPage, perPage).map(
-														(i) => (
-															<tr>
-																<td>{i.id}</td>
-																<td>{i.taskName}</td>
-																<td>{i.Description}</td>
-																<td>{i.Status}</td>
-																<td>{i.DueDate}</td>
-																<td>
-																	<Button
-																		icon='Visibility'
-																		color='primary'
-																		isLight
-																		className='me-1'
-																	/>
-																	<Button
-																		icon='Edit'
-																		color='success'
-																		isLight
-																		className='me-1'
-																	/>
-																	<Button
-																		icon='Delete'
-																		color='danger'
-																		isLight
-																		className='me-1'
-																	/>
-																</td>
-															</tr>
-														),
-													)
+												{taskList ? (
+													dataPagination(
+														taskList,
+														currentPage,
+														perPage,
+													).map((i) => (
+														<tr>
+															<td>{i.id}</td>
+															<td>{i.name}</td>
+															<td>{i.description}</td>
+															<td>{i.status}</td>
+															<td>{i.expectedTime}</td>
+															<td>{i.dueDate}</td>
+															<td>
+																<Button
+																	icon='Visibility'
+																	color='primary'
+																	isLight
+																	className='me-1'
+																	onClick={() => handleView(i.id)}
+																/>
+																<Button
+																	icon='Edit'
+																	color='success'
+																	isLight
+																	className='me-1'
+																	onClick={() => handleEdit(i.id)}
+																/>
+																<Button
+																	icon='Delete'
+																	color='danger'
+																	isLight
+																	className='me-1'
+																	onClick={() =>
+																		handleDeleteAction(i.id)
+																	}
+																/>
+															</td>
+														</tr>
+													))
 												) : (
 													<th scope='col'>No Data</th>
 												)}
@@ -187,88 +293,123 @@ const GoalDescription: FC = () => {
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='goal'>Add Task</ModalTitle>
+					<ModalTitle id='new_task'>{modalState}</ModalTitle>
 				</ModalHeader>
-				<ModalBody className='px-4'>
-					<div className='row g-4'>
-						<div className='col-12 border-bottom' />
-						<div className='col-12'>
-							<div className='mb-3'>
-								<FormGroup id='taskname' label='Enter Task Name'>
-									<Input
-										placeholder=''
-										// onChange={formik.handleChange}
-										// onBlur={formik.handleBlur}
-										// value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-						<div className='col-12'>
-							<div className='mb-3'>
-								<FormGroup id='description' label='Enter Description'>
-									<Input
-										placeholder=''
-										// onChange={formik.handleChange}
-										// onBlur={formik.handleBlur}
-										// value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-						<div className='col-12'>
-							<FormGroup id='status' label='Select Status'>
-								<Select
-									ariaLabel='Default select example'
-									placeholder=''
-									// onChange={formikOneWay.handleChange}
-									// value={formikOneWay.values.exampleSelectOneWay}
-									list={SELECT_OPTIONS}
-								/>
-							</FormGroup>
-						</div>
+				{currTask ? (
+					<>
+						<ModalBody className='px-4'>
+							<div className='row g-4'>
+								<div className='col-12 border-bottom' />
+								<div>
+									<span>Name :</span> <span>{currTask?.name}</span>
+								</div>
 
-						{/* <div className='col-12 col-md-6'>
-							<div className='mb-3'>
-								<FormGroup id='customer' label='Confirm that this goal is relevant'>
+								<div>
+									<span>Description :</span> <span>{currTask?.description}</span>
+								</div>
+								<div>
+									<span>Expected Time :</span>
+									<span>{currTask?.expectedTime}</span>
+								</div>
+								<div>
+									<span>DueDate :</span> <span>{currTask?.dueDate}</span>
+								</div>
+								<div>
+									<span>Status :</span> <span>{currTask?.status}</span>
+								</div>
+							</div>
+						</ModalBody>
+						<ModalFooter>
+							<CardFooterRight>
+								<Button
+									color='danger'
+									onClick={() => {
+										setIsOpen(false);
+									}}>
+									Cancel
+								</Button>
+							</CardFooterRight>
+						</ModalFooter>
+					</>
+				) : (
+					<>
+						<ModalBody className='px-4'>
+							<div className='row g-4'>
+								<div className='col-12 border-bottom' />
+								<FormGroup id='name' label='Name' className='col-lg-6'>
 									<Input
-										placeholder=''
-										autoComplete='additional-name'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.name}
+									/>
+								</FormGroup>
+								<FormGroup id='name' label='Description' className='col-lg-6'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.description}
+									/>
+								</FormGroup>
+								<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
+									<Input
+										type='date'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.dueDate}
+									/>
+								</FormGroup>
+								{/* <FormGroup id='category' label='Enter Category'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.category}
+									/>
+								</FormGroup> */}
+
+								<FormGroup
+									id='expectedTime'
+									label='Expected Time'
+									className='col-lg-6'>
+									<Input
+										type='date'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.expectedTime}
+									/>
+								</FormGroup>
+								<FormGroup id='status' label='Status' className='col-lg-6'>
+									<Select
+										ariaLabel='Default select example'
+										placeholder='Select One...'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.status}
+										list={[
+											{ value: 'Backlog', text: 'Backlog' },
+											{ value: 'Todo', text: 'Todo' },
+											{ value: 'InProgress', text: 'InProgress' },
+											{ value: 'Done', text: 'Done' },
+											{ value: 'Hold', text: 'Hold' },
+										]}
 									/>
 								</FormGroup>
 							</div>
-						</div> */}
-					</div>
-				</ModalBody>
-				<ModalFooter>
-					<CardFooterLeft>
-						<Button
-							color='danger'
-							onClick={() => {
-								setIsOpen(false);
-							}}>
-							Cancel
-						</Button>
-					</CardFooterLeft>
-					<CardFooterRight>
-						<Button color='info'>Save</Button>
-					</CardFooterRight>
-				</ModalFooter>
+						</ModalBody>
+						<ModalFooter>
+							<CardFooterLeft>
+								<Button
+									color='danger'
+									onClick={() => {
+										setIsOpen(false);
+									}}>
+									Cancel
+								</Button>
+							</CardFooterLeft>
+							<CardFooterRight>
+								<Button color='info' onClick={formiknewTask.handleSubmit}>
+									Save
+								</Button>
+							</CardFooterRight>
+						</ModalFooter>
+					</>
+				)}
 			</Modal>
 		</PageWrapper>
 	);

@@ -45,8 +45,8 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
 					</div>
 					<div className='row'>
 						<div className='col-md-12'>
-							{60}%
-							<Progress isAutoColor value={60} height={10} />
+							{0}%
+							<Progress isAutoColor value={0} height={10} />
 						</div>
 					</div>
 				</CardBody>

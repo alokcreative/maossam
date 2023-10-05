@@ -11,7 +11,7 @@ const DefaultFooter = () => {
 			<div className='container-fluid'>
 				<div className='row'>
 					<div className='col'>
-						<span className='fw-light'>Copyright © 2023 </span>
+						{/* <span className='fw-light'>Copyright © 2023 </span> */}
 					</div>
 					<div className='col-auto'>
 						<a
