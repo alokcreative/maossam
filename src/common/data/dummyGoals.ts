@@ -1,9 +1,24 @@
+import dayjs from 'dayjs';
+
 export const dateFormat = new Intl.DateTimeFormat('en-US', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
 });
-
+export interface IMiniTask {
+	id?: string | number;
+	title?: string | number;
+	description: string;
+}
+interface ISubTask {
+	id: number;
+	name: string;
+	description: string;
+	status: string;
+	expectedTime: string;
+	secheduledate: dayjs.ConfigType;
+	miniTasks?: IMiniTask[] | undefined;
+}
 interface ITask {
 	id: number;
 	name: string;
@@ -11,6 +26,8 @@ interface ITask {
 	status: string;
 	expectedTime: string;
 	dueDate?: string | undefined;
+	subtaskIntro: string;
+	subTask?: ISubTask[] | undefined;
 }
 
 export const data: {
@@ -31,11 +48,82 @@ export const data: {
 		task: [
 			{
 				id: 1,
-				name: 'Complete report on market research findings	',
+				name: "Task 1 Google My Business: Establish and/or configure your profile to improve your business's visibility and engagement on Google",
+				description:
+					'Creating and setting up a Google Business Account, also known as a Google My Business (GMB) account, is essential for businesses looking to improve their online visibility and manage their information on Google Maps and Search',
+				status: 'Todo',
+				expectedTime: '45min',
+				dueDate: '23-Oct-2023',
+				subtaskIntro: 'Task 1 Intro',
+				subTask: [
+					{
+						id: 1,
+						name: 'Sub Task1 of Task 1',
+						description: '',
+						status: 'Todo',
+						expectedTime: '45min',
+						secheduledate: dayjs().add(0.5, 'day'),
+						miniTasks: [
+							{
+								id: 1,
+								title: 'New Products will be added',
+								description: 'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+							},
+							{
+								id: 2,
+								title: 'Cover images will be edited',
+								description: 'Explore the company',
+							},
+						],
+					},
+					{
+						id: 2,
+						name: 'Sub Task2 of Task 1',
+						description: '',
+						status: 'Todo',
+						expectedTime: '45min',
+						secheduledate: dayjs().add(0.5, 'day'),
+						miniTasks: [
+							{
+								id: 1,
+								title: 'Mini Task1 of Task 1',
+								description: 'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+							},
+							{
+								id: 2,
+								title: 'Cover images will be edited',
+								description: 'Explore the company',
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 2,
+				name: 'Task 2 Complete report on market research findings	',
 				description: 'description 1',
 				status: 'Pending',
 				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
+				subtaskIntro: 'Sub Task2 intro',
+				subTask: [
+					{
+						id: 1,
+						name: 'Sub Task1 of Task 2',
+						description: '',
+						status: 'Todo',
+						expectedTime: '45min',
+						secheduledate: dayjs().add(0.5, 'day'),
+					},
+					{
+						id: 2,
+						name: 'Sub Task2 of Task 2',
+						description: '',
+						status: 'Todo',
+						expectedTime: '45min',
+						secheduledate: dayjs().add(0.5, 'day'),
+					},
+				],
 			},
 		],
 	},
