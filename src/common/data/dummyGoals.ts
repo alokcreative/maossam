@@ -9,6 +9,7 @@ interface ITask {
 	name: string;
 	description: string;
 	status: string;
+	expectedTime: string;
 	dueDate?: string | undefined;
 }
 
@@ -31,8 +32,9 @@ export const data: {
 			{
 				id: 1,
 				name: 'Complete report on market research findings	',
-				description: 'Market research findings',
+				description: 'description 1',
 				status: 'Pending',
+				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
 			},
 		],
@@ -48,15 +50,17 @@ export const data: {
 			{
 				id: 1,
 				name: "Review and provide feedback on colleague's presentation	",
-				description: 'Market research findings',
+				description: 'description 1',
 				status: 'Backlog',
+				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
 			},
 			{
 				id: 2,
 				name: 'Review and provide 2',
-				description: 'Market research findings',
+				description: 'description 1',
 				status: 'Backlog',
+				expectedTime: '45min',
 				dueDate: '28-Oct-2023',
 			},
 		],
@@ -72,15 +76,17 @@ export const data: {
 			{
 				id: 1,
 				name: "Review and provide feedback on colleague's presentation	",
-				description: 'Market research findings',
+				description: 'description 1',
 				status: 'Backlog',
+				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
 			},
 			{
 				id: 2,
 				name: 'Review and provide 2',
-				description: 'Market research findings',
+				description: 'description 2',
 				status: 'Backlog',
+				expectedTime: '45min',
 				dueDate: '28-Oct-2023',
 			},
 		],

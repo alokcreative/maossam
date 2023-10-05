@@ -37,6 +37,7 @@ interface ITaskProps {
 	dueDate: string;
 	name: string;
 	category: string;
+	description: string;
 	expectedTime: string;
 	status: string;
 	assigned?: string | undefined;
@@ -58,6 +59,7 @@ const Tasks: FC = () => {
 	const formiknewTask = useFormik({
 		initialValues: {
 			name: '',
+			description: '',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
@@ -70,6 +72,7 @@ const Tasks: FC = () => {
 				id: taskList.length + 1,
 				dueDate: values.dueDate,
 				name: values.name,
+				description: values.description,
 				category: values.category,
 				expectedTime: values.expectedTime,
 				status: values.status,
@@ -88,6 +91,7 @@ const Tasks: FC = () => {
 		setModalState(`Edit Task`);
 		const task = taskList.filter((i) => i.id === id);
 		formiknewTask.setFieldValue('name', task[0]?.name);
+		formiknewTask.setFieldValue('description', task[0]?.description);
 		formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
 		formiknewTask.setFieldValue('category', task[0]?.category);
 		formiknewTask.setFieldValue('status', task[0]?.status);
@@ -103,6 +107,7 @@ const Tasks: FC = () => {
 	const handleAddTask = () => {
 		setCurrTask(undefined);
 		formiknewTask.setFieldValue('name', '');
+		formiknewTask.setFieldValue('description', '');
 		formiknewTask.setFieldValue('dueDate', '');
 		formiknewTask.setFieldValue('category', '');
 		formiknewTask.setFieldValue('status', '');
@@ -150,6 +155,7 @@ const Tasks: FC = () => {
 									<th scope='col' className='cursor-pointer'>
 										Name
 									</th>
+									<th scope='col'>Description</th>
 									<th scope='col'>Due Date</th>
 									<th scope='col'>Expected Time</th>
 									<th scope='col' className='cursor-pointer'>
@@ -197,6 +203,9 @@ const Tasks: FC = () => {
 									<span>Name :</span> <span>{currTask.name}</span>
 								</div>
 								<div>
+									<span>Description :</span> <span>{currTask.description}</span>
+								</div>
+								<div>
 									<span>DueDate :</span> <span>{currTask.dueDate}</span>
 								</div>
 								<div>
@@ -230,6 +239,13 @@ const Tasks: FC = () => {
 										type='text'
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.name}
+									/>
+								</FormGroup>
+								<FormGroup id='name' label='Description' className='col-lg-6'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.description}
 									/>
 								</FormGroup>
 								<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>

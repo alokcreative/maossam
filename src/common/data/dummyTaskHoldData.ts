@@ -2,6 +2,7 @@ const data: {
 	id: number;
 	dueDate: string;
 	name: string;
+	description: string;
 	category: string;
 	expectedTime: string;
 	status: string;
@@ -13,6 +14,7 @@ const data: {
 		id: 1,
 		dueDate: 'Dec 28th 2022 ',
 		name: 'Complete report on market research findings',
+		description: 'description1',
 		category: 'Marketing Asset',
 		expectedTime: '45min',
 		status: 'Backlog',
@@ -24,6 +26,7 @@ const data: {
 		id: 2,
 		dueDate: 'Dec 28th 2022',
 		name: 'Schedule a meeting with the team to discuss project updates',
+		description: 'description2',
 		category: 'Product',
 		expectedTime: '45min',
 		status: 'Todo',
@@ -34,7 +37,8 @@ const data: {
 	{
 		id: 3,
 		dueDate: 'Dec 28th 2022',
-		name: 'Review and provide feedback on colleague\'s presentation',
+		name: "Review and provide feedback on colleague's presentation",
+		description: 'description3',
 		category: 'Client',
 		expectedTime: '45min',
 		status: 'InProgress',
@@ -46,6 +50,7 @@ const data: {
 		id: 4,
 		dueDate: 'Dec 28th 2022',
 		name: 'Collaboration',
+		description: 'description4',
 		category: 'Marketing Asset',
 		expectedTime: '45min',
 		status: 'Hold',
@@ -56,6 +61,7 @@ const data: {
 	// {
 	// 	id: 5,
 	// 	dueDate: 'Dec 28th 2022',
+	// description: "description1",
 	// 	name: 'Create a detailed budget proposal for the next quarter',
 	// 	category: 'Client',
 	// 	expectedTime: '45min',
@@ -67,6 +73,7 @@ const data: {
 	// {
 	// 	id: 6,
 	// 	dueDate: 'July 04th 2023',
+	// description: "description1",
 	// 	name: 'Create a detailed budget proposal for the next quarter',
 	// 	category: 'Client',
 	// 	expectedTime: '4days',
@@ -78,6 +85,7 @@ const data: {
 	// {
 	// 	id: 7,
 	// 	dueDate: 'July 6th 2023',
+	// description: "description1",
 	// 	name: 'Create a detailed budget proposal for the next quarter',
 	// 	category: 'Client',
 	// 	expectedTime: '24Hours',
@@ -89,6 +97,7 @@ const data: {
 	// {
 	// 	id: 8,
 	// 	dueDate: 'July 8th 2023',
+	// description: "description1",
 	// 	name: 'Create a detailed budget proposal for the next quarter',
 	// 	category: 'Marketing Asset',
 	// 	expectedTime: '24Hours',

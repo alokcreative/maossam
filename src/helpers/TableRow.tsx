@@ -9,6 +9,7 @@ interface ITableRowProps {
 	id: number;
 	dueDate: string;
 	name: string;
+	description: string;
 	category: string;
 	expectedTime: string;
 	status: string;
@@ -21,6 +22,7 @@ const TableRow: FC<ITableRowProps> = ({
 	id,
 	dueDate,
 	name,
+	description,
 	category,
 	expectedTime,
 	status,
@@ -43,6 +45,8 @@ const TableRow: FC<ITableRowProps> = ({
 					</div> */}
 				</div>
 			</td>
+			<td>{description}</td>
+			{/* <td>{category}</td> */}
 			<td>{dueDate}</td>
 			<td>{expectedTime}</td>
 			<td className='h5'>

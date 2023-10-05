@@ -77,7 +77,7 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 					})}
 				</span>
 			</td>
-			<td>{category}</td>
+			{/* <td>{category}</td> */}
 			{/* <td className='h5'>
 				<Badge
 					color={

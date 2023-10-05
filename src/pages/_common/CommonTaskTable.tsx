@@ -17,6 +17,7 @@ const CommonTaskTable: FC = () => {
 	const formiknewTask = useFormik({
 		initialValues: {
 			name: '',
+			description:' ',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
@@ -28,6 +29,7 @@ const CommonTaskTable: FC = () => {
 				id: taskList.length + 1,
 				dueDate: values.dueDate,
 				name: values.name,
+				description: values.description,
 				category: values.category,
 				expectedTime: values.expectedTime,
 				status: values.status,
@@ -57,6 +59,9 @@ const CommonTaskTable: FC = () => {
 							<th scope='col'>Due Date</th>
 							<th scope='col' className='cursor-pointer'>
 								Name
+							</th>
+							<th scope='col' className='cursor-pointer'>
+								Description
 							</th>
 							<th scope='col'>Expected Time</th>
 							<th scope='col' className='cursor-pointer'>

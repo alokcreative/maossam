@@ -130,6 +130,7 @@ const TaskOnHold = () => {
 								<th scope='col' className='cursor-pointer'>
 									Name
 								</th>
+								<th scope='col'>Descripton</th>
 								<th scope='col'>Due Date</th>
 								<th scope='col'>Expected Time</th>
 								<th scope='col' className='cursor-pointer'>

@@ -61,6 +61,7 @@ interface ITaskProps {
 	id: number;
 	dueDate: string;
 	name: string;
+	description: string;
 	category: string;
 	expectedTime: string;
 	status: string;
@@ -99,6 +100,7 @@ const GoalDescription: FC = () => {
 	const formiknewTask = useFormik({
 		initialValues: {
 			name: '',
+			description: '',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
@@ -111,6 +113,7 @@ const GoalDescription: FC = () => {
 				id: taskList ? taskList.length + 1 : 1,
 				dueDate: values.dueDate,
 				name: values.name,
+				description: values.description,
 				category: values.category,
 				expectedTime: values.expectedTime,
 				status: values.status,
@@ -130,6 +133,7 @@ const GoalDescription: FC = () => {
 		setModalState(`Edit Task`);
 		const task = taskList.filter((i) => i.id === taskId);
 		formiknewTask.setFieldValue('name', task[0]?.name);
+		formiknewTask.setFieldValue('description', task[0]?.description);
 		formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
 		formiknewTask.setFieldValue('category', task[0]?.category);
 		formiknewTask.setFieldValue('status', task[0]?.status);
@@ -148,6 +152,7 @@ const GoalDescription: FC = () => {
 	const handleAddTask = () => {
 		setCurrTask(undefined);
 		formiknewTask.setFieldValue('name', '');
+		formiknewTask.setFieldValue('description', '');
 		formiknewTask.setFieldValue('dueDate', '');
 		formiknewTask.setFieldValue('category', '');
 		formiknewTask.setFieldValue('status', '');
@@ -155,6 +160,7 @@ const GoalDescription: FC = () => {
 		setModalState('Add Task');
 		setIsOpen(true);
 	};
+	console.log('taskList', taskList);
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -170,9 +176,18 @@ const GoalDescription: FC = () => {
 					<div className='col-12'>
 						<Card>
 							<CardBody>
-								<div className='display-6 fw-bold py-3'>{goal?.name}</div>
-								<div className='display-7 fw-bold py-3'>{goal?.description}</div>
-								<div className='display-7 fw-bold py-3'>Status: {goal?.status}</div>
+								<div>
+									<span className='display-7 fw-bold p-3'>Name :</span>
+									<span>{goal?.name}</span>
+								</div>
+								<div>
+									<span className='display-7 fw-bold p-3'>Description :</span>
+									<span>{goal?.description}</span>
+								</div>
+								<div>
+									<span className='display-7 fw-bold p-3'>Status: </span>
+									<span>{goal?.status}</span>
+								</div>
 							</CardBody>
 						</Card>
 						<Card>
@@ -208,6 +223,7 @@ const GoalDescription: FC = () => {
 													<th scope='col'>Name</th>
 													<th scope='col'>Description</th>
 													<th scope='col'>Status</th>
+													<th scope='col'>ExpectedTime</th>
 													<th scope='col'>Due Date</th>
 													<th scope='col'>Action</th>
 												</tr>
@@ -224,6 +240,7 @@ const GoalDescription: FC = () => {
 															<td>{i.name}</td>
 															<td>{i.description}</td>
 															<td>{i.status}</td>
+															<td>{i.expectedTime}</td>
 															<td>{i.dueDate}</td>
 															<td>
 																<Button
@@ -291,6 +308,10 @@ const GoalDescription: FC = () => {
 									<span>Description :</span> <span>{currTask?.description}</span>
 								</div>
 								<div>
+									<span>Expected Time :</span>
+									<span>{currTask?.expectedTime}</span>
+								</div>
+								<div>
 									<span>DueDate :</span> <span>{currTask?.dueDate}</span>
 								</div>
 								<div>
@@ -320,6 +341,13 @@ const GoalDescription: FC = () => {
 										type='text'
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.name}
+									/>
+								</FormGroup>
+								<FormGroup id='name' label='Description' className='col-lg-6'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.description}
 									/>
 								</FormGroup>
 								<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
