@@ -222,7 +222,7 @@ const Goals: FC = () => {
 															<tr>
 																<th scope='row'>{i.id}</th>
 																<th>{i.name}</th>
-																<td>{i.attributes}</td>
+																<td>{i.description}</td>
 																<td>{i.timeline}</td>
 																<td className='h5'>
 																	<Badge
@@ -315,13 +315,13 @@ const Goals: FC = () => {
 							</FormGroup>
 						</div>
 
-						<FormGroup id='name' label='Name of goal' className='col-lg-6'>
+						<FormGroup id='name' label='Name' className='col-lg-6'>
 							<Input
 								onChange={formiknewGoal.handleChange}
 								value={formiknewGoal.values.name}
 							/>
 						</FormGroup>
-						<FormGroup id='attribute' label='Attributes' className='col-lg-6'>
+						<FormGroup id='attribute' label='Description' className='col-lg-6'>
 							<Input
 								type='text'
 								onChange={formiknewGoal.handleChange}
