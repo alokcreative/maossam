@@ -35,6 +35,7 @@ import USERS from '../../../../common/data/userDummyData';
 import TAGS from '../../../../common/data/boardTagsData';
 import { TCards, TColumnData, TColumnsData } from '../type/types';
 import ColumnCardWrapper from './ColumnCardWrapper';
+import CommonDashboardUserIssue from '../../dashboard/common/CommonDashboardUserIssue';
 
 interface IColumns {
 	cardsData: TCards;
@@ -192,7 +193,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 										))}
 									</Select>
 								</FormGroup>
-								{/* <FormGroup className='col-12' id='assignee' label='Assignee'>
+								<FormGroup className='col-12' id='assignee' label='Assignee'>
 									<Select
 										ariaLabel='Board select'
 										placeholder='Select group'
@@ -208,7 +209,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 											</Option>
 										))}
 									</Select>
-								</FormGroup> */}
+								</FormGroup>
 								<FormGroup className='col-12' id='tags' label='Tags'>
 									<Select
 										multiple
@@ -241,6 +242,7 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 					</Button>
 				</ModalFooter>
 			</Modal>
+
 		</>
 	);
 };

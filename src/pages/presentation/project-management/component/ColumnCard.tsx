@@ -35,6 +35,7 @@ import USERS from '../../../../common/data/userDummyData';
 import TAGS from '../../../../common/data/boardTagsData';
 import { TCard, TCards, TColumnsData } from '../type/types';
 import { move } from '../helper/helper';
+import CommonDashboardUserIssue from '../../dashboard/common/CommonDashboardUserIssue';
 
 interface IColumnCard {
 	columnKey: string;
@@ -170,7 +171,7 @@ const ColumnCard: FC<IColumnCard> = ({
 				<ModalHeader className='px-4' setIsOpen={setEditModalStatus}>
 					<ModalTitle id='project-edit'>{card.title}</ModalTitle>
 				</ModalHeader>
-				<ModalBody className='px-4'>
+				{/* <ModalBody className='px-4'>
 					<div className='row'>
 						<div className='col-md-8'>
 							<Card shadow='sm'>
@@ -334,6 +335,173 @@ const ColumnCard: FC<IColumnCard> = ({
 							</div>
 						</div>
 					</div>
+				</ModalBody> */}
+
+				<ModalBody className='px-4'>
+					{/* <div className='row'>
+						<div className='col-md-8'>
+							<Card shadow='sm'>
+								<CardHeader>
+									<CardLabel icon='Info' iconColor='success'>
+										<CardTitle>Task Information</CardTitle>
+									</CardLabel>
+								</CardHeader>
+								<CardBody>
+									<div className='row g-4'>
+										<FormGroup
+											className='col-12'
+											id='cardName'
+											label='Task Name'>
+											<Input
+												onChange={formik.handleChange}
+												value={formik.values.cardName}
+											/>
+										</FormGroup>
+										<FormGroup
+											className='col-12'
+											id='description'
+											label='Description'>
+											<Textarea
+												onChange={formik.handleChange}
+												value={formik.values.description}
+											/>
+										</FormGroup>
+									</div>
+								</CardBody>
+							</Card>
+							{card.attachments && (
+								<Card shadow='sm'>
+									<CardHeader>
+										<CardLabel icon='AttachFile' iconColor='danger'>
+											<CardTitle>Attachment</CardTitle>
+											<CardSubTitle>
+												{card.attachments.length} files
+											</CardSubTitle>
+										</CardLabel>
+										<CardActions>
+											<Button color='danger' isOutline>
+												New
+											</Button>
+										</CardActions>
+									</CardHeader>
+									<CardBody>
+										<div className='row g-3'>
+											{card.attachments.map((a) => (
+												<div key={a.id} className='col-auto'>
+													<Button
+														color='danger'
+														isLight
+														icon='CloudDownload'>
+														{a.file}
+													</Button>
+												</div>
+											))}
+										</div>
+									</CardBody>
+								</Card>
+							)}
+							{card.tasks && (
+								<Card shadow='sm'>
+									<CardHeader>
+										<CardLabel icon='Task Alt' iconColor='primary'>
+											<CardTitle>Tasks</CardTitle>
+											<CardSubTitle>{card.tasks.length} tasks</CardSubTitle>
+										</CardLabel>
+										<CardActions>
+											<Button color='primary' isOutline>
+												New
+											</Button>
+										</CardActions>
+									</CardHeader>
+									<CardBody>
+										<ChecksGroup>
+										
+											{card.tasks.map((t) => (
+												<Checks
+													key={t.id}
+													id={t.id.toString()}
+													name='task'
+													label={t.text}
+													value={t.id}
+													onChange={formik.handleChange}
+													checked={formik.values.task.includes(
+														t.id.toString(),
+													)}
+												/>
+											))}
+										</ChecksGroup>
+									</CardBody>
+								</Card>
+							)}
+							<Card shadow='sm'>
+								<CardHeader>
+									<CardLabel icon='QuestionAnswer' iconColor='info'>
+										<CardTitle>Comments</CardTitle>
+									</CardLabel>
+								</CardHeader>
+								<CardBody>
+									<Chat>
+										{CHATS.CHLOE_VS_JOHN.map((msg) => (
+											<ChatGroup
+												key={msg.id}
+												messages={msg.messages}
+												// @ts-ignore
+												user={msg.user}
+												isReply={msg.isReply}
+											/>
+										))}
+									</Chat>
+								</CardBody>
+								<CardFooter className='d-block'>
+									<InputGroup>
+										<Textarea />
+										<Button color='info' icon='Send'>
+											SEND
+										</Button>
+									</InputGroup>
+								</CardFooter>
+							</Card>
+						</div>
+						<div className='col-md-4'>
+							<div className='row g-4 sticky-top'>
+								<FormGroup className='col-12' id='groupId' label='Status'>
+									<Select
+										ariaLabel='Board select'
+										placeholder='Select group'
+										onChange={formik.handleChange}
+										value={formik.values.groupId}>
+										{Object.keys(columnsData).map((columnItemKey) => (
+											<Option
+												key={columnsData[columnItemKey].id}
+												value={columnsData[columnItemKey].id}>
+												{columnsData[columnItemKey].title}
+											</Option>
+										))}
+									</Select>
+								</FormGroup>
+						
+								<FormGroup className='col-12' id='tags' label='Tags'>
+									<Select
+										multiple
+										ariaLabel='Board select'
+										placeholder='Select group'
+										onChange={formik.handleChange}
+										value={formik.values.tags}>
+										{Object.keys(TAGS).map((t) => (
+											// @ts-ignore
+											<Option key={TAGS[t].id} value={TAGS[t].id}>
+												{
+													// @ts-ignore
+													TAGS[t].title
+												}
+											</Option>
+										))}
+									</Select>
+								</FormGroup>
+							</div>
+						</div>
+					</div> */}
+					<CommonDashboardUserIssue />
 				</ModalBody>
 				<ModalFooter className='px-4 pb-4'>
 					<Button

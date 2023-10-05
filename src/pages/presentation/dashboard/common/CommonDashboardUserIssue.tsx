@@ -133,18 +133,18 @@ const CommonDashboardUserIssue = () => {
 	 */
 	const [date, setDate] = useState(new Date());
 
-	const validate = (values: { 
-		todoTitle: string; 
-		todoBadges: string; 
-		productSelect: string; 
+	const validate = (values: {
+		todoTitle: string;
+		todoBadges: string;
+		productSelect: string;
 		taskTime: string;
-		marketingChannel: string 
+		marketingChannel: string;
 	}) => {
-		const errors: { 
-			todoTitle: string 
-			productSelect: string 
-			taskTime: string
-			marketingChannel: string
+		const errors: {
+			todoTitle: string;
+			productSelect: string;
+			taskTime: string;
+			marketingChannel: string;
 		} = {
 			todoTitle: '',
 			productSelect: '',
@@ -174,7 +174,7 @@ const CommonDashboardUserIssue = () => {
 			todoBadges: '',
 			productSelect: '',
 			taskTime: '',
-			marketingChannel: ''
+			marketingChannel: '',
 		},
 		validate,
 		onSubmit: (values, { resetForm }) => {
@@ -344,7 +344,7 @@ const CommonDashboardUserIssue = () => {
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody isScrollable>
+			<CardBody >
 				<Todo list={list} setList={setList} />
 			</CardBody>
 		</Card>
