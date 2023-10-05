@@ -23,9 +23,9 @@ export const data: {
 }[] = [
 	{
 		id: 1,
-		name: 'Increase brand awareness',
+		name: 'Enhance your presence on Google',
 		description:
-			'Target audience, marketing channels, brand positioning, brand messaging, advertising budget',
+			'Improve Your Online Presence and Stand Out on Google with simple but imperative tasks to complete ASAP- 100 % free',
 		timeline: new Date(2023, 8, 2).toISOString().split('T')[0],
 		status: 'Done',
 		task: [
@@ -39,66 +39,66 @@ export const data: {
 			},
 		],
 	},
-	{
-		id: 2,
-		name: 'Generate leads',
-		description:
-			'Lead generation tactics, lead capture forms, lead nurturing workflows, conversion tracking, lead scoring',
-		timeline: new Date(2023, 8, 5).toISOString().split('T')[0],
-		status: 'New',
-		task: [
-			{
-				id: 1,
-				name: "Review and provide feedback on colleague's presentation	",
-				description: 'description 1',
-				status: 'Backlog',
-				expectedTime: '45min',
-				dueDate: '23-Oct-2023',
-			},
-			{
-				id: 2,
-				name: 'Review and provide 2',
-				description: 'description 1',
-				status: 'Backlog',
-				expectedTime: '45min',
-				dueDate: '28-Oct-2023',
-			},
-		],
-	},
-	{
-		id: 3,
-		name: 'Drive website traffic',
-		description:
-			'Search engine optimization (SEO), content marketing, social media marketing, paid advertising, referral programs',
-		timeline: new Date(2023, 8, 14).toISOString().split('T')[0],
-		status: 'Progress',
-		task: [
-			{
-				id: 1,
-				name: "Review and provide feedback on colleague's presentation	",
-				description: 'description 1',
-				status: 'Backlog',
-				expectedTime: '45min',
-				dueDate: '23-Oct-2023',
-			},
-			{
-				id: 2,
-				name: 'Review and provide 2',
-				description: 'description 2',
-				status: 'Backlog',
-				expectedTime: '45min',
-				dueDate: '28-Oct-2023',
-			},
-		],
-	},
-	{
-		id: 4,
-		name: 'Enhance customer engagement',
-		description:
-			'Email marketing campaigns, social media engagement, customer feedback surveys, loyalty programs, interactive content',
-		timeline: new Date(2023, 7, 23).toISOString().split('T')[0],
-		status: 'Done',
-	},
+	// {
+	// 	id: 2,
+	// 	name: 'Generate leads',
+	// 	description:
+	// 		'Lead generation tactics, lead capture forms, lead nurturing workflows, conversion tracking, lead scoring',
+	// 	timeline: new Date(2023, 8, 5).toISOString().split('T')[0],
+	// 	status: 'New',
+	// 	task: [
+	// 		{
+	// 			id: 1,
+	// 			name: "Review and provide feedback on colleague's presentation	",
+	// 			description: 'description 1',
+	// 			status: 'Backlog',
+	// 			expectedTime: '45min',
+	// 			dueDate: '23-Oct-2023',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Review and provide 2',
+	// 			description: 'description 1',
+	// 			status: 'Backlog',
+	// 			expectedTime: '45min',
+	// 			dueDate: '28-Oct-2023',
+	// 		},
+	// 	],
+	// },
+	// {
+	// 	id: 3,
+	// 	name: 'Drive website traffic',
+	// 	description:
+	// 		'Search engine optimization (SEO), content marketing, social media marketing, paid advertising, referral programs',
+	// 	timeline: new Date(2023, 8, 14).toISOString().split('T')[0],
+	// 	status: 'Progress',
+	// 	task: [
+	// 		{
+	// 			id: 1,
+	// 			name: "Review and provide feedback on colleague's presentation	",
+	// 			description: 'description 1',
+	// 			status: 'Backlog',
+	// 			expectedTime: '45min',
+	// 			dueDate: '23-Oct-2023',
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			name: 'Review and provide 2',
+	// 			description: 'description 2',
+	// 			status: 'Backlog',
+	// 			expectedTime: '45min',
+	// 			dueDate: '28-Oct-2023',
+	// 		},
+	// 	],
+	// },
+	// {
+	// 	id: 4,
+	// 	name: 'Enhance customer engagement',
+	// 	description:
+	// 		'Email marketing campaigns, social media engagement, customer feedback surveys, loyalty programs, interactive content',
+	// 	timeline: new Date(2023, 7, 23).toISOString().split('T')[0],
+	// 	status: 'Done',
+	// },
 	// {
 	// 	id: 5,
 	// 	name: 'Improve conversion rate',
