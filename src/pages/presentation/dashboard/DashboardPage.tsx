@@ -29,6 +29,7 @@ import Item from '../../_common/dashboardHelper/GoalItems';
 import TaskOnHold from '../../_common/dashboardHelper/TaskOnHold';
 import MarketingAssetForms from './Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
+import GoalViewPopup from '../goal/goalHelpher/GoalViewPopup';
 
 interface ITableRowProps {
 	id: number;
@@ -106,9 +107,16 @@ const DashboardPage = () => {
 	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
+	const [goalId, setGoalId] = useState<number>();
 	const openModal = (id: number, nameOfBussiness: string) => {
 		setElementId(id);
 		setElementName(nameOfBussiness);
+		setIsModalOpen(true);
+	};
+	const openGoalModal = (id: number, nameOfBussiness: string) => {
+		// setElementId(id);
+		// setElementName(nameOfBussiness);
+		setGoalId(id);
 		setIsModalOpen(true);
 	};
 
@@ -231,6 +239,7 @@ const DashboardPage = () => {
 					</div>
 					{goalData.slice(0, 6).map((i) => (
 						<Item
+							// onClick={() => openGoalModal(i.id, i.name)}
 							key={i.id}
 							id={i.id}
 							name={i.name}
@@ -275,6 +284,15 @@ const DashboardPage = () => {
 				</div>
 
 				{isModalOpen ? (
+					<GoalViewPopup
+						isModalOpen={isModalOpen}
+						setIsModalOpen={setIsModalOpen}
+						getFormValue={getFormValue}
+						id={goalId}
+					/>
+				) : null}
+
+				{/* {isModalOpen ? (
 					<MarketingAssetForms
 						idOfBussiness={elementId}
 						nameOfBussiness={elementName}
@@ -282,7 +300,7 @@ const DashboardPage = () => {
 						setIsModalOpen={setIsModalOpen}
 						getFormValue={getFormValue}
 					/>
-				) : null}
+				) : null} */}
 			</Page>
 		</PageWrapper>
 	);

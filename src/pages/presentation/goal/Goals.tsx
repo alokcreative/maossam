@@ -372,8 +372,6 @@ const Goals: FC = () => {
 
 				{isModalOpen ? (
 					<GoalViewPopup
-						idOfBussiness={1}
-						nameOfBussiness='Task'
 						isModalOpen={isModalOpen}
 						setIsModalOpen={setIsModalOpen}
 						getFormValue={getFormValue}

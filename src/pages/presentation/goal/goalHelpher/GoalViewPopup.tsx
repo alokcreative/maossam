@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../../components/bootstrap/Modal';
-import { Formik, Field, Form, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import Button from '../../../../components/bootstrap/Button';
 import AuthContext from '../../../../contexts/authContext';
 import Card, {
@@ -10,25 +10,22 @@ import Card, {
 	CardLabel,
 	CardTitle,
 } from '../../../../components/bootstrap/Card';
-import User1Webp from '../../../../assets/img/wanna/wanna2.webp';
-import User1Img from '../../../../assets/img/wanna/wanna2.png';
-import Avatar from '../../../../components/Avatar';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
 import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
 import { pagesMenu } from '../../../../menu';
+// eslint-disable-next-line import/no-named-as-default
 import data from '../../../../common/data/dummyGoals';
 import dayjs from 'dayjs';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../../components/PaginationButtons';
+// import questions from '../../../../common/data/dummyTaskQuestions';
 
 type IAssetNameProps = {
 	id: number | undefined;
-	idOfBussiness: number | undefined;
-	nameOfBussiness: string | undefined;
 	isModalOpen: boolean;
 	setIsModalOpen: (item: boolean) => void;
 	getFormValue(...args: unknown[]): unknown;
@@ -67,7 +64,7 @@ interface IGoal {
 	task?: ITask[] | undefined;
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
-	const { idOfBussiness = 0, nameOfBussiness = '', isModalOpen, setIsModalOpen, id } = props;
+	const { isModalOpen, setIsModalOpen, id } = props;
 	const navigate = useNavigate();
 	// User data
 	const { userData } = useContext(AuthContext);
@@ -75,7 +72,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
 	const newUserName = parsedValue?.newUserName || parsedValue?.name;
 	const name = userData?.name || newUserName;
-	const [taskData, setTaskData] = useState<any>([]);
+	const [taskData, setTaskData] = useState<ITask[]>();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
@@ -83,11 +80,34 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	useEffect(() => {
 		const tasks = data.filter((goal) => goal.id === id);
 		setTaskData(tasks[0].task);
-		console.log('tasks>>', tasks[0].task);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
+	const formik = useFormik({
+		initialValues: {
+			secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+		},
+		onSubmit: (values) => {
+			console.log(values.secheduledate);
+		},
+	});
+	// const handleSubmit = (isSocialMedia: string, isSocialMediaimportant: string) => {
+	// 	// console.log(
+	// 	// 	'handle submit>>> ',
+	// 	// 	isSocialMedia,
+	// 	// 	' ',
+	// 	// 	isSocialMediaimportant,
+	// 	// 	' ',
+	// 	// 	idOfBussiness,
+	// 	// 	' ',
+	// 	// 	nameOfBussiness,
+	// 	// );
+	// 	// eslint-disable-next-line react/destructuring-assignment
+	// 	props.getFormValue(isSocialMedia, isSocialMediaimportant);
+	// 	setIsModalOpen(false);
+	// 	navigate(`../${pagesMenu.goalId.path}/${id}`);
+	// };
 
-	const handleSubmit = (isSocialMedia: string, isSocialMediaimportant: string) => {
+	const handleSubmit = () => {
 		// console.log(
 		// 	'handle submit>>> ',
 		// 	isSocialMedia,
@@ -99,7 +119,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		// 	nameOfBussiness,
 		// );
 		// eslint-disable-next-line react/destructuring-assignment
-		props.getFormValue(isSocialMedia, isSocialMediaimportant);
+		// props.getFormValue(isSocialMedia, isSocialMediaimportant);
 		setIsModalOpen(false);
 		navigate(`../${pagesMenu.goalId.path}/${id}`);
 	};
@@ -125,10 +145,13 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 									(i) => (
 										// eslint-disable-next-line react/jsx-props-no-spreading
 										<div>
-											<p className='fw-bold h4'><span className='fw-bold  h5'>Task {i.id}:</span> {i.name}</p>
+											<p className='fw-bold h4'>
+												<span className='fw-bold  h4'>Task {i.id}:</span>{' '}
+												{i.name}
+											</p>
 											<p className='fw-bold'>{i.title}</p>
 											<p>{i.description}</p>
-											
+
 											<div className='row'>
 												<div className='col-12'>
 													<Card stretch>
@@ -136,15 +159,22 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 															<CardLabel
 																icon='TrackChanges'
 																iconColor='success'>
-																<CardTitle tag='div' className='h5'>
-																	List Of Subtask
+																<CardTitle
+																	tag='div'
+																	className='h5 pb-0'>
+																	Subtask
 																</CardTitle>
 															</CardLabel>
 														</CardHeader>
 														<CardBody className='table-responsive'>
 															<div className='row g-4'>
 																<div className='col-12'>
-																<p><span className='fw-bold'>Subtask Intro: </span>{i.subtaskIntro}</p>
+																	<p>
+																		<span className='fw-bold'>
+																			Subtask Intro :{' '}
+																		</span>
+																		{i.subtaskIntro}
+																	</p>
 																	<table className='table table-modern table-hover'>
 																		<tbody>
 																			{i.subTask &&
@@ -152,19 +182,90 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																					i.subTask,
 																					currentPageSubtask,
 																					perPageSubtask,
-																				).map((is) => (
+																				).map((item) => (
 																					// eslint-disable-next-line react/jsx-props-no-spreading
 																					<div>
-																						<p>
+																						<span
+																							className='fw-bold'
+																							style={{
+																								paddingRight:
+																									'0px',
+																							}}>
+																							Sub Task
+																							Name :
+																						</span>
+																						<span
+																							style={{
+																								paddingLeft:
+																									'1px',
+																							}}>
 																							{
-																								is.name
+																								item.name
 																							}
-																						</p>
-																						<p>
-																							{
-																								is.description
-																							}
-																						</p>
+																						</span>
+																						<div className='row'>
+																							<div className='col-8'>
+																								<span>
+																									{
+																										item.description
+																									}
+																								</span>
+																							</div>
+																							<div className='col-12 d-flex justify-content-between'>
+																							
+																								<Button
+																									color='primary'
+																									className='mb-3'
+																									onClick={
+																										handleSubmit
+																									}>
+																									START
+																									NOW
+																								</Button>
+																								<FormGroup id='secheduledate'>
+																									<Input
+																										onChange={
+																											formik.handleChange
+																										}
+																										value={
+																											formik
+																												.values
+																												.secheduledate
+																										}
+																										type='date'
+																									/>
+																								</FormGroup>
+																							</div>
+																						</div>
+
+																						<div className='row g-3'>
+																							<div className='col-12'>
+																								<Accordion
+																									id='logofaq'
+																									shadow='sm'>
+																									{item.questions &&
+																										item.questions.map(
+																											(
+																												q: any,
+																											) => {
+																												return (
+																													<AccordionItem
+																														id={
+																															q.id
+																														}
+																														title={
+																															q.name
+																														}>
+																														{
+																															q.answer
+																														}
+																													</AccordionItem>
+																												);
+																											},
+																										)}
+																								</Accordion>
+																							</div>
+																						</div>
 																					</div>
 																				))}
 																		</tbody>
@@ -185,7 +286,9 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																			currentPageSubtask
 																		}
 																		perPage={perPageSubtask}
-																		setPerPage={setPerPage}
+																		setPerPage={
+																			setPerPageSubtask
+																		}
 																	/>
 																)}
 															</div>

@@ -209,6 +209,7 @@ const DashboardAdmin = () => {
 					</div>
 					{goalData.slice(0, 6).map((i) => (
 						<Item
+							// onClick={() => openModal(i.id, i.name)}
 							id={i.id}
 							key={i.id}
 							name={i.name}
