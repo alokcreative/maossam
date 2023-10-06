@@ -6,6 +6,7 @@ import Select from './bootstrap/forms/Select';
 import Option from './bootstrap/Option';
 
 export const PER_COUNT = {
+	1: 1,
 	3: 3,
 	5: 5,
 	10: 10,
@@ -95,11 +96,13 @@ const PaginationButtons: FC<IPaginationButtonsProps> = ({
 				{totalPage > 1 && (
 					// @ts-ignore
 					<Pagination ariaLabel={label}>
-						<PaginationItem
-							isFirst
-							isDisabled={!(currentPage - 1 > 0)}
-							onClick={() => setCurrentPage(1)}
-						/>
+						{perPage !== PER_COUNT[1] && (
+							<PaginationItem
+								isFirst
+								isDisabled={!(currentPage - 1 > 0)}
+								onClick={() => setCurrentPage(1)}
+							/>
+						)}
 						<PaginationItem
 							isPrev
 							isDisabled={!(currentPage - 1 > 0)}
@@ -111,7 +114,7 @@ const PaginationButtons: FC<IPaginationButtonsProps> = ({
 							</PaginationItem>
 						)}
 						{pagination()}
-						{currentPage + 1 < totalPage && (
+						{perPage !== PER_COUNT[1] && currentPage + 1 < totalPage && (
 							<PaginationItem onClick={() => setCurrentPage(currentPage + 2)}>
 								...
 							</PaginationItem>
@@ -121,28 +124,32 @@ const PaginationButtons: FC<IPaginationButtonsProps> = ({
 							isDisabled={!(currentPage + 1 <= totalPage)}
 							onClick={() => setCurrentPage(currentPage + 1)}
 						/>
-						<PaginationItem
-							isLast
-							isDisabled={!(currentPage + 1 <= totalPage)}
-							onClick={() => setCurrentPage(totalPage)}
-						/>
+						{perPage !== PER_COUNT[1] && (
+							<PaginationItem
+								isLast
+								isDisabled={!(currentPage + 1 <= totalPage)}
+								onClick={() => setCurrentPage(totalPage)}
+							/>
+						)}
 					</Pagination>
 				)}
 
-				<Select
-					size='sm'
-					ariaLabel='Per'
-					onChange={(e: { target: { value: string } }) => {
-						setPerPage(parseInt(e.target.value, 10));
-						setCurrentPage(1);
-					}}
-					value={perPage.toString()}>
-					{Object.keys(PER_COUNT).map((i) => (
-						<Option key={i} value={i}>
-							{i}
-						</Option>
-					))}
-				</Select>
+				{perPage !== PER_COUNT[1] && (
+					<Select
+						size='sm'
+						ariaLabel='Per'
+						onChange={(e: { target: { value: string } }) => {
+							setPerPage(parseInt(e.target.value, 10));
+							setCurrentPage(1);
+						}}
+						value={perPage.toString()}>
+						{Object.keys(PER_COUNT).map((i) => (
+							<Option key={i} value={i}>
+								{i}
+							</Option>
+						))}
+					</Select>
+				)}
 			</CardFooterRight>
 		</CardFooter>
 	);
