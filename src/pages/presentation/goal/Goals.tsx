@@ -46,7 +46,7 @@ import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
 import MarketingAssetForms from '../dashboard/Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
-import GoalViewPopup from '../dashboard/Marketing/MarketingAssetForms/GoalViewPopup';
+import GoalViewPopup from './goalHelpher/GoalViewPopup';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
