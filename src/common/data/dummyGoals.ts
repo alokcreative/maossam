@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { TColor } from '../../type/color-type';
 
 export const dateFormat = new Intl.DateTimeFormat('en-US', {
 	year: 'numeric',
@@ -8,7 +9,12 @@ export const dateFormat = new Intl.DateTimeFormat('en-US', {
 export interface IMiniTask {
 	id?: string | number;
 	title?: string | number;
-	description: string;
+	status?: boolean;
+	date?: dayjs.ConfigType;
+	badge?: {
+		text?: string;
+		color?: TColor;
+	};
 }
 export interface ISubTask {
 	id: number;
@@ -37,7 +43,20 @@ export interface ITask {
 	subtaskIntro: string;
 	subTask?: ISubTask[] | undefined;
 }
-
+const TODO_BADGES: {
+	[key: string]: {
+		text: string;
+		color?: TColor;
+	};
+} = {
+	NEW: { text: 'New', color: 'success' },
+	UPDATE: { text: 'Update', color: 'info' },
+	TEST: { text: 'Test', color: 'warning' },
+	REPORT: { text: 'Report', color: 'info' },
+	PRINT: { text: 'Print', color: 'danger' },
+	CONTROL: { text: 'Control', color: 'primary' },
+	MEETING: { text: 'Meeting', color: 'secondary' },
+};
 export const data: {
 	id: number;
 	name: string;
@@ -78,14 +97,16 @@ export const data: {
 							{
 								id: 1,
 								title: 'Sign in to Google',
-								description:
-									"Access your Google services and applications by signing in to your Google account. Use your registered email address and password to securely log in and gain access to a wide range of features, including email, cloud storage, productivity tools, and more. Stay connected and utilize Google's integrated ecosystem to enhance your online experience and streamline your tasks and communication.",
+								status: true,
+								date: dayjs().add(0.5, 'day'),
+								badge: TODO_BADGES.NEW,
 							},
 							{
 								id: 2,
-								title: "If you don't have google account then",
-								description:
-									"If you don't have a Google account, you can easily create one by following a simple registration process. Visit the Google account creation page, provide the necessary information such as your name, desired email address, password, and other details. After completing the registration, you'll have access to a Google account, enabling you to use various Google services, including Gmail, Google Drive, Google Calendar, YouTube, and more. Having a Google account allows you to personalize your online experience, collaborate with others, and enjoy the benefits of Google's integrated platform.",
+								status: true,
+								title: 'Cover images will be edited',
+								date: dayjs().add(2, 'day'),
+								badge: TODO_BADGES.UPDATE,
 							},
 						],
 						questions: [
@@ -112,22 +133,33 @@ export const data: {
 						miniTasks: [
 							{
 								id: 1,
-								title: 'Accurate Name',
-								description:
-									'Enter the exact, accurate name of your business. It should reflect the name you commonly use in your business operations and marketing materials.',
+								title: 'Preparing for A/B testing',
+								status: false,
+								date: dayjs().add(2, 'day'),
+								badge: TODO_BADGES.TEST,
 							},
 							{
 								id: 2,
 								title: 'Trademark Compliance',
-								description:
-									"Ensure your business name is compliant with trademark laws and doesn't infringe on any existing trademarks.",
+								status: false,
+								date: dayjs().add(4, 'day'),
+								badge: TODO_BADGES.REPORT,
 							},
 
 							{
 								id: 3,
 								title: 'Legal Name vs. Doing Business As (DBA) Name',
-								description:
-									"If your business operates under a DBA or trade name different from the legal entity's name, you can use the DBA name, provided it's registered and legally recognized.",
+								status: false,
+
+								date: dayjs().add(4, 'day'),
+								badge: TODO_BADGES.REPORT,
+							},
+							{
+								id: 4,
+								status: false,
+								title: 'Google Analytics data will be examined',
+								date: dayjs().add(4, 'day'),
+								badge: TODO_BADGES.REPORT,
 							},
 						],
 						questions: [
@@ -146,7 +178,8 @@ export const data: {
 					{
 						id: 3,
 						name: 'Add Your Business Location',
-						description: "Input the location of your business. If you have a physical storefront or office, you can add the address. If your business operates without a physical location, you can choose to hide your address.",
+						description:
+							'Input the location of your business. If you have a physical storefront or office, you can add the address. If your business operates without a physical location, you can choose to hide your address.',
 						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -154,20 +187,34 @@ export const data: {
 							{
 								id: 1,
 								title: 'Access Google My Business',
-								description:
-									"Go to the Google My Business website and sign in with your Google Account.",
+								status: false,
+
+								date: dayjs().add(9, 'day'),
+								badge: TODO_BADGES.PRINT,
 							},
 							{
 								id: 2,
 								title: 'Business Dashboard',
-								description: "Once logged in, you'll be directed to your business dashboard.",
+								status: false,
+
+								date: dayjs().add(9, 'day'),
+								badge: TODO_BADGES.PRINT,
+							},
+							{
+								id: 3,
+								title: 'Invoices will be issued',
+								status: false,
+
+								date: dayjs().add(9, 'day'),
+								badge: TODO_BADGES.PRINT,
 							},
 						],
 					},
 					{
 						id: 4,
 						name: 'Verify Your Business',
-						description: "Google will need to verify that your business is legitimate. You can choose to verify your business through a postcard sent to your physical address, a phone call, or email, depending on your location and business type.",
+						description:
+							'Google will need to verify that your business is legitimate. You can choose to verify your business through a postcard sent to your physical address, a phone call, or email, depending on your location and business type.',
 						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -175,13 +222,26 @@ export const data: {
 							{
 								id: 1,
 								title: 'Access Verification Section',
-								description:
-									"Log in to your Google My Business account, locate the business you want to verify, and navigate to the Verify now or Verify your business section.",
+								status: false,
+
+								date: dayjs().add(15, 'day'),
+								badge: TODO_BADGES.CONTROL,
 							},
 							{
 								id: 2,
 								title: 'Enter Verification Code',
-								description: "Once you receive the verification code (either via postcard, phone call, or email), log in to your Google My Business account and enter the code where prompted.",
+								status: false,
+
+								date: dayjs().add(15, 'day'),
+								badge: TODO_BADGES.CONTROL,
+							},
+							{
+								id: 3,
+								title: 'Dependencies check and update',
+								status: false,
+
+								date: dayjs().add(15, 'day'),
+								badge: TODO_BADGES.CONTROL,
 							},
 						],
 					},
@@ -191,7 +251,8 @@ export const data: {
 				id: 2,
 				name: 'Google my business profile ',
 				title: 'Get more visibility on Google with my Google Business - 100% Free ',
-				description: 'Briefly describe your business, its unique selling proposition, and what customers can expect when they visit or engage with your business. Include keywords related to your services, location, and value proposition.',
+				description:
+					'Briefly describe your business, its unique selling proposition, and what customers can expect when they visit or engage with your business. Include keywords related to your services, location, and value proposition.',
 				status: 'Backlog',
 				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
@@ -200,7 +261,8 @@ export const data: {
 					{
 						id: 1,
 						name: 'Optimize Your Business Profile:',
-						description: "Once your business is verified, you can access your Google My Business dashboard. Here, you can optimize your profile by adding high-quality photos, business hours, a detailed description, and other relevant information. This helps your business stand out in search results.Add Photos :- Add high-quality photos of your business, including:- A clear profile photo (typically your business logo).- A cover photo that showcases your business.- Additional photos of your interior, exterior, products, and services.Add Videos : Accepted formats include MP4 and MOV, and the maximum video file size is 75 MB. Videos should be between 30 seconds and 2 minutes in length.Add your Business Description: Write a concise and informative business description. You have up to 750 characters to describe your products/services and what makes your business unique. Attributes : Add any relevant attributes to your business, such as wheelchair accessibility, outdoor seating, or Wi-Fi availability.Add Products and Services (if applicable): If your business offers specific products or services, you can add them to your GMB profile to provide more information to potential customers.See Explanation#4 on how to write a compelling product/servcice description on GMB.Add to My Google Business Products/Services in ""My Marketing Material""Set Up Messaging (if desired): Enable messaging through GMB to communicate with customers directly. Make sure you will check your messages on GMB on a daily basis.Engage with Customers: Use GMB features like FAQ to interact with potential customers and address their inquiries.Enable Google Booking (if applicable):  If your business accepts appointments or reservations, set up Google Booking to allow customers to book directly from your GMB listing.Create Posts: Use GMB posts to promote events, offers, and updates to your audience. If you are active on Social Media such as Facebook - You can copy a post published on this media and copy its content on GMB.",
+						description:
+							"Once your business is verified, you can access your Google My Business dashboard. Here, you can optimize your profile by adding high-quality photos, business hours, a detailed description, and other relevant information. This helps your business stand out in search results.Add Photos :- Add high-quality photos of your business, including:- A clear profile photo (typically your business logo).- A cover photo that showcases your business.- Additional photos of your interior, exterior, products, and services.Add Videos : Accepted formats include MP4 and MOV, and the maximum video file size is 75 MB. Videos should be between 30 seconds and 2 minutes in length.Add your Business Description: Write a concise and informative business description. You have up to 750 characters to describe your products/services and what makes your business unique. Attributes : Add any relevant attributes to your business, such as wheelchair accessibility, outdoor seating, or Wi-Fi availability.Add Products and Services (if applicable): If your business offers specific products or services, you can add them to your GMB profile to provide more information to potential customers.See Explanation#4 on how to write a compelling product/servcice description on GMB.Add to My Google Business Products/Services in 'My Marketing Material'Set Up Messaging (if desired): Enable messaging through GMB to communicate with customers directly. Make sure you will check your messages on GMB on a daily basis.Engage with Customers: Use GMB features like FAQ to interact with potential customers and address their inquiries.Enable Google Booking (if applicable):  If your business accepts appointments or reservations, set up Google Booking to allow customers to book directly from your GMB listing.Create Posts: Use GMB posts to promote events, offers, and updates to your audience. If you are active on Social Media such as Facebook - You can copy a post published on this media and copy its content on GMB.",
 						status: 'Hold',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -225,7 +287,6 @@ export const data: {
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						questions: [
-						
 							{
 								id: 1,
 								name: 'How long does it take to verify my business on Google My Business',
@@ -272,13 +333,24 @@ export const data: {
 							{
 								id: 1,
 								title: 'New Products will be added',
-								description:
-									'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+								status: false,
+
+								date: dayjs().add(32, 'day'),
+								badge: TODO_BADGES.MEETING,
 							},
 							{
 								id: 2,
 								title: 'Cover images will be edited',
-								description: 'Explore the company',
+								status: false,
+								date: dayjs().add(32, 'day'),
+								badge: TODO_BADGES.MEETING,
+							},
+							{
+								id: 3,
+								title: 'End of month meeting',
+								status: false,
+								date: dayjs().add(32, 'day'),
+								badge: TODO_BADGES.MEETING,
 							},
 						],
 						questions: [
@@ -305,13 +377,10 @@ export const data: {
 							{
 								id: 1,
 								title: 'Mini Task1 of Task 1',
-								description:
-									'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
 							},
 							{
 								id: 2,
 								title: 'Cover images will be edited',
-								description: 'Explore the company',
 							},
 						],
 						questions: [

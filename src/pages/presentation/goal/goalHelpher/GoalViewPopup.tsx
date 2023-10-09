@@ -22,6 +22,7 @@ import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../../components/PaginationButtons';
+import { TColor } from '../../../../type/color-type';
 // import questions from '../../../../common/data/dummyTaskQuestions';
 
 type IAssetNameProps = {
@@ -32,7 +33,12 @@ type IAssetNameProps = {
 interface IMiniTask {
 	id?: string | number;
 	title?: string | number;
-	description: string;
+	status?: boolean;
+	date?: dayjs.ConfigType;
+	badge?: {
+		text?: string;
+		color?: TColor;
+	};
 }
 interface ISubTask {
 	id: number;
@@ -71,7 +77,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
 	const newUserName = parsedValue?.newUserName || parsedValue?.name;
 	const name = userData?.name || newUserName;
-	const [taskData, setTaskData] = useState<ITask[]>();
+	const [taskData, setTaskData] = useState<ITask[]| undefined>();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
