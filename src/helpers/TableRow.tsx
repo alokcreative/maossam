@@ -67,7 +67,7 @@ const TableRow: FC<ITableRowProps> = ({
 					color='primary'
 					isLight
 					className='me-1'
-					onClick={() => view(id)}
+					// onClick={() => view(id)}
 				/>
 
 				{role === Role.admin && (

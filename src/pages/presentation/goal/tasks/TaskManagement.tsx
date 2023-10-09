@@ -129,7 +129,6 @@ const TaskManagement = () => {
 		}
 
 		if (source.droppableId === destination.droppableId) {
-
 			const sourceList = source.droppableId;
 		} else {
 			const taskToMove = taskStatusToColumnMapping[source.droppableId].find(
