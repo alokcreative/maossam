@@ -5,12 +5,12 @@ export const dateFormat = new Intl.DateTimeFormat('en-US', {
 	month: 'long',
 	day: 'numeric',
 });
-interface IMiniTask {
+export interface IMiniTask {
 	id?: string | number;
 	title?: string | number;
 	description: string;
 }
-interface ISubTask {
+export interface ISubTask {
 	id: number;
 	name: string;
 	description: string;
@@ -19,7 +19,7 @@ interface ISubTask {
 	secheduledate: dayjs.ConfigType;
 	miniTasks?: IMiniTask[] | undefined;
 }
-interface ITask {
+export interface ITask {
 	id: number;
 	name: string;
 	title: string;
@@ -104,7 +104,7 @@ export const data: {
 						id: 3,
 						name: 'Sub Task3 of Task 1',
 						description: '',
-						status: 'Todo',
+						status: 'Done',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(0.5, 'day'),
 						miniTasks: [
@@ -123,9 +123,9 @@ export const data: {
 					},
 					{
 						id: 4,
-						name: 'Sub Task3 of Task 1',
+						name: 'Sub Task4 of Task 1',
 						description: '',
-						status: 'Todo',
+						status: 'Pending',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(0.5, 'day'),
 						miniTasks: [
@@ -158,7 +158,7 @@ export const data: {
 						id: 1,
 						name: 'Sub Task1 of Task 2',
 						description: '',
-						status: 'Todo',
+						status: 'Pending',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(0.5, 'day'),
 					},
@@ -166,7 +166,7 @@ export const data: {
 						id: 2,
 						name: 'Sub Task2 of Task 2',
 						description: '',
-						status: 'Todo',
+						status: 'Progress',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(0.5, 'day'),
 					},
@@ -197,7 +197,7 @@ export const data: {
 						id: 1,
 						name: 'Sub Task1 of Task 1',
 						description: 'internet and use our Best Practice',
-						status: 'Todo',
+						status: 'Done',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(0.5, 'day'),
 						miniTasks: [
@@ -218,7 +218,7 @@ export const data: {
 						id: 2,
 						name: 'Sub Task2 of Task 1',
 						description: 'find the relevant web sites and directories for your company',
-						status: 'Todo',
+						status: 'Pending',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(0.5, 'day'),
 						miniTasks: [
