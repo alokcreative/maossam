@@ -68,22 +68,24 @@ export const data: {
 				subTask: [
 					{
 						id: 1,
-						name: 'Basic Set up of Google My Business (Sub Task2 of Task 1)',
-						description: '',
-						status: 'Todo',
+						name: 'Basic Set up of Google My Business (Sub Task1 of Task 1)',
+						description:
+							"Sign in to Google: If you don't have a Google account, create one at https://accounts.google.com/signup .Access Google My Business: Go to https://www.google.com/business/.Click 'Manage Now': On the Google My Business homepage, click the 'Manage Now' button. Click on it to start the process of creating your business account.Enter your business name in the provided field. Make sure the name you enter is accurate and matches your business's real-world name and social media account names . Google may verify this information later. Choose Your Business Category: Select the most appropriate category that describes your business. Google will use this information to help users find your business when searching for related services.Add a Location: You'll be prompted to enter your business location. If you have a physical storefront or office that customers can visit, enter your address. Make sure to write the complete and accurate address, in case Google sends a verification postcard.If your business operates solely online or you don't have a physical location, you can select the option to hide your address.Specify Your Service Area (if applicable): If your business serves customers within a specific geographic area and you don't want to display your address, define your service area by city, region, or postal code.Provide Contact Information: Ensure that this information is accurate and up to date.Enter your business phone number and website URL.Complete the Verification Process: Google will need to verify your business to ensure its legitimacy. You'll typically have a few verification options. Follow the instructions provided for your chosen verification method.Postcard: Google will send you a postcard with a verification code to the address you provided. Enter the code to verify.Phone: If eligible, you can verify your business by phone.Email: Some businesses may have the option to verify via email.",
+						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						miniTasks: [
 							{
 								id: 1,
-								title: 'New Products will be added',
+								title: 'Sign in to Google',
 								description:
-									'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+									"Access your Google services and applications by signing in to your Google account. Use your registered email address and password to securely log in and gain access to a wide range of features, including email, cloud storage, productivity tools, and more. Stay connected and utilize Google's integrated ecosystem to enhance your online experience and streamline your tasks and communication.",
 							},
 							{
 								id: 2,
-								title: 'Cover images will be edited',
-								description: 'Explore the company',
+								title: "If you don't have google account then",
+								description:
+									"If you don't have a Google account, you can easily create one by following a simple registration process. Visit the Google account creation page, provide the necessary information such as your name, desired email address, password, and other details. After completing the registration, you'll have access to a Google account, enabling you to use various Google services, including Gmail, Google Drive, Google Calendar, YouTube, and more. Having a Google account allows you to personalize your online experience, collaborate with others, and enjoy the benefits of Google's integrated platform.",
 							},
 						],
 						questions: [
@@ -101,76 +103,85 @@ export const data: {
 					},
 					{
 						id: 2,
-						name: 'Sub Task2 of Task 1',
-						description: '',
-						status: 'Todo',
+						name: 'Enter Your Business Name',
+						description:
+							"Provide the name of your business. Make sure it's accurate and matches the name of your business as it appears in the real world.",
+						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						miniTasks: [
 							{
 								id: 1,
-								title: 'Mini Task1 of Task 1',
+								title: 'Accurate Name',
 								description:
-									'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+									'Enter the exact, accurate name of your business. It should reflect the name you commonly use in your business operations and marketing materials.',
 							},
 							{
 								id: 2,
-								title: 'Cover images will be edited',
-								description: 'Explore the company',
+								title: 'Trademark Compliance',
+								description:
+									"Ensure your business name is compliant with trademark laws and doesn't infringe on any existing trademarks.",
+							},
+
+							{
+								id: 3,
+								title: 'Legal Name vs. Doing Business As (DBA) Name',
+								description:
+									"If your business operates under a DBA or trade name different from the legal entity's name, you can use the DBA name, provided it's registered and legally recognized.",
 							},
 						],
 						questions: [
 							{
 								id: 1,
-								name: 'Task 1 SubTask 2 Question 1',
-								answer: 'Task 1 SubTask 2 Answer 1.',
+								name: 'When entering my business name on Google My Business, can I include additional keywords to improve visibility?',
+								answer: "It's important to enter your business name on Google My Business exactly as it is in real-world usage. Google My Business guidelines discourage adding extraneous keywords to the business name field for the purpose of improving visibility. The business name should accurately reflect your business's actual name as it appears on signage, official documents, and marketing materials. Keyword stuffing or adding unnecessary terms may violate Google's policies and could lead to a suspension of your listing. Focus on representing your business authentically and providing accurate information to users. If you need to include additional keywords for optimization, it's best to do so in the appropriate description or category sections within the Google My Business profile.",
 							},
 							{
 								id: 2,
-								name: 'Task 1 SubTask 2 Question 2',
-								answer: 'Task 1 SubTask 2 Answer 2',
+								name: 'Quick way to setup business account',
+								answer: 'Visit to www.google.com/account/',
 							},
 						],
 					},
 					{
 						id: 3,
-						name: 'Sub Task3 of Task 1',
-						description: '',
-						status: 'Done',
+						name: 'Add Your Business Location',
+						description: "Input the location of your business. If you have a physical storefront or office, you can add the address. If your business operates without a physical location, you can choose to hide your address.",
+						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						miniTasks: [
 							{
 								id: 1,
-								title: 'Mini Task1 of Task 1',
+								title: 'Access Google My Business',
 								description:
-									'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+									"Go to the Google My Business website and sign in with your Google Account.",
 							},
 							{
 								id: 2,
-								title: 'Cover images will be edited',
-								description: 'Explore the company',
+								title: 'Business Dashboard',
+								description: "Once logged in, you'll be directed to your business dashboard.",
 							},
 						],
 					},
 					{
 						id: 4,
-						name: 'Sub Task4 of Task 1',
-						description: '',
-						status: 'Pending',
+						name: 'Verify Your Business',
+						description: "Google will need to verify that your business is legitimate. You can choose to verify your business through a postcard sent to your physical address, a phone call, or email, depending on your location and business type.",
+						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						miniTasks: [
 							{
 								id: 1,
-								title: 'Mini Task1 of Task 1',
+								title: 'Access Verification Section',
 								description:
-									'Explore the internet and use our Best Practice step by step guide to find the relevant web sites and directories for your company',
+									"Log in to your Google My Business account, locate the business you want to verify, and navigate to the Verify now or Verify your business section.",
 							},
 							{
 								id: 2,
-								title: 'Cover images will be edited',
-								description: 'Explore the company',
+								title: 'Enter Verification Code',
+								description: "Once you receive the verification code (either via postcard, phone call, or email), log in to your Google My Business account and enter the code where prompted.",
 							},
 						],
 					},
@@ -178,51 +189,52 @@ export const data: {
 			},
 			{
 				id: 2,
-				name: 'Task 2 Complete report on market research findings',
-				title: 'Market research findings',
-				description: 'description 1',
-				status: 'Pending',
+				name: 'Google my business profile ',
+				title: 'Get more visibility on Google with my Google Business - 100% Free ',
+				description: 'Briefly describe your business, its unique selling proposition, and what customers can expect when they visit or engage with your business. Include keywords related to your services, location, and value proposition.',
+				status: 'Backlog',
 				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
 				subtaskIntro: 'Sub Task2 intro',
 				subTask: [
 					{
 						id: 1,
-						name: 'Sub Task1 of Task 2',
-						description: '',
-						status: 'Pending',
+						name: 'Optimize Your Business Profile:',
+						description: "Once your business is verified, you can access your Google My Business dashboard. Here, you can optimize your profile by adding high-quality photos, business hours, a detailed description, and other relevant information. This helps your business stand out in search results.Add Photos :- Add high-quality photos of your business, including:- A clear profile photo (typically your business logo).- A cover photo that showcases your business.- Additional photos of your interior, exterior, products, and services.Add Videos : Accepted formats include MP4 and MOV, and the maximum video file size is 75 MB. Videos should be between 30 seconds and 2 minutes in length.Add your Business Description: Write a concise and informative business description. You have up to 750 characters to describe your products/services and what makes your business unique. Attributes : Add any relevant attributes to your business, such as wheelchair accessibility, outdoor seating, or Wi-Fi availability.Add Products and Services (if applicable): If your business offers specific products or services, you can add them to your GMB profile to provide more information to potential customers.See Explanation#4 on how to write a compelling product/servcice description on GMB.Add to My Google Business Products/Services in ""My Marketing Material""Set Up Messaging (if desired): Enable messaging through GMB to communicate with customers directly. Make sure you will check your messages on GMB on a daily basis.Engage with Customers: Use GMB features like FAQ to interact with potential customers and address their inquiries.Enable Google Booking (if applicable):  If your business accepts appointments or reservations, set up Google Booking to allow customers to book directly from your GMB listing.Create Posts: Use GMB posts to promote events, offers, and updates to your audience. If you are active on Social Media such as Facebook - You can copy a post published on this media and copy its content on GMB.",
+						status: 'Hold',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						questions: [
 							{
 								id: 1,
-								name: 'Task 2 SubTask 1 Question 1',
-								answer: 'Task 2 SubTask 1 Answer 1.',
+								name: 'How can I optimize my Google My Business profile',
+								answer: 'Complete your profile: Fill out all sections, including business name, address, phone number, hours of operation, website, categories, and services offered.',
 							},
 							{
 								id: 2,
-								name: 'Task 2 SubTask 1 Question 2',
-								answer: 'Task 2 SubTask 1 Answer 2',
+								name: 'How important are customer reviews for my Google My Business profile ',
+								answer: 'Positive reviews build trust and credibility among potential customers.',
 							},
 						],
 					},
 					{
 						id: 2,
-						name: 'Sub Task2 of Task 2',
-						description: '',
+						name: 'Add or Claim Your Business',
+						description: ' Claim Your Business ',
 						status: 'Progress',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						questions: [
+						
 							{
 								id: 1,
-								name: 'Task 2 SubTask 2 Question 1',
-								answer: 'Task 2 SubTask  2 Answer 1',
+								name: 'How long does it take to verify my business on Google My Business',
+								answer: ' The verification process can take a few days to a couple of weeks, depending on the verification method you choose. The most common method is via mail, where Google sends a postcard with a verification code to your business address. ',
 							},
 							{
 								id: 2,
-								name: 'Task 2 SubTask 2 Question2',
-								answer: 'Task 2 SubTask 2 Answer 2  ',
+								name: 'What kind of information should I include in my Google My Business profile',
+								answer: ' Include essential business information such as business name, category, address, phone number, website, business hours, and a detailed business description. High-quality photos and regular updates are also recommended.',
 							},
 						],
 					},
