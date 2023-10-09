@@ -17,7 +17,7 @@ interface IProfilePayload {
 	first_name?: string;
 	last_name?: string;
 	email?: string;
-	src?: string;
+	avatar?: string;
 	country?: string;
 	state?: string;
 	phone_number?: string;
@@ -30,7 +30,7 @@ interface ILogoutProps {
 	accessToken: string;
 	refresh: { refresh: string };
 }
-export const productsApiSlice = apiSlice.injectEndpoints({
+export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		// Register user
 		registerUser: builder.mutation({
@@ -108,7 +108,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 				method: 'PATCH',
 				body: payload,
 				headers: {
-					'Content-Type': 'multipart/form-data',
+					// 'Content-Type': 'multipart/form-data',
 					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
@@ -140,4 +140,4 @@ export const {
 	useCreateProfileMutation,
 	useUpdateProfileMutation,
 	useDeleteProfileMutation,
-} = productsApiSlice;
+} = authApiSlice;

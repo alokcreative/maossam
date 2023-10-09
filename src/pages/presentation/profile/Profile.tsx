@@ -69,6 +69,7 @@ const Profile = () => {
 				phone_number: values.phone,
 				gender: values.gender,
 			};
+			console.log('userdetails>>', userdetails.avatar);
 			await UpdateProfileMutation(userdetails);
 			refetch();
 		},
@@ -109,19 +110,21 @@ const Profile = () => {
 	// 	}
 	// };
 	const handleImageChange = (event: any) => {
-		event.preventDefault();
-		const formData = new FormData();
-		formData.append('avatar', event.target.files[0], event.target.value);
-		console.log('formdata>>', formData);
-		const userdetails = {
-			id: data.id,
-			avatar: formData,
-		};
-		console.log("userdetails",userdetails);
-		UpdateProfileMutation(userdetails);
-		// form_data.append('title', this.state.title);
-		// form_data.append('content', this.state.content);
-		// formik.setFieldValue('avatar', formdata);
+		const file = event.target.files[0];
+		console.log('file >>', file);
+		const formdata = new FormData();
+		formdata.append('avatar', file, file.name);
+		formik.setFieldValue('avatar', formdata);
+		console.log('formdata>>', formdata.get('avatar'));
+
+		// UpdateProfileMutation(formdata);
+		// if (file) {
+		// 	const imageURL = URL.createObjectURL(file);
+		// 	console.log(imageURL);
+
+		// 	setSrc(imageURL);
+		//
+		// }
 	};
 
 	return (
