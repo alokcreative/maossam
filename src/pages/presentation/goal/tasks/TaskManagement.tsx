@@ -20,7 +20,7 @@ interface ICardsInColumn {
 }
 const TaskManagement = () => {
 	const { darkModeStatus } = useDarkMode();
-	const { id } = useParams();
+	const { id, taskId } = useParams();
 	const navigate = useNavigate();
 
 	const [cardsData, setCardsData] = useState<ISubTask[]>();
@@ -57,8 +57,7 @@ const TaskManagement = () => {
 			icon: 'DirectionsRun',
 		},
 	};
-
-	function getSubtasksByGoalAndTaskId(goalId: number, taskId: number) {
+	function getSubtasksByGoalAndTaskId(goalId: number, task_Id: number) {
 		// Find the goal with the specified id
 		const goal = data.find((item) => item.id === goalId);
 
@@ -68,7 +67,7 @@ const TaskManagement = () => {
 		}
 
 		// Find the task with the specified id within the goal
-		const task = goal.task.find((tempTask) => tempTask.id === taskId);
+		const task = goal.task.find((tempTask) => tempTask.id === task_Id);
 
 		if (!task || !task.subTask) {
 			console.log('Task not found or no subtasks for this task.');
@@ -80,12 +79,10 @@ const TaskManagement = () => {
 		return task.subTask;
 	}
 
-	const goalId = 1;
-	const taskId = 1;
 	useEffect(() => {
-		const subtasks = getSubtasksByGoalAndTaskId(goalId, taskId);
+		const subtasks = getSubtasksByGoalAndTaskId(Number(id), Number(taskId));
 		// console.log('Subtasks:', subtasks);
-	}, [goalId, taskId]);
+	}, [id, taskId]);
 
 	const [taskStatusToColumnMapping, setTaskStatusToColumnMapping] = useState<ICardsInColumn>();
 

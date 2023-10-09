@@ -239,7 +239,6 @@ const DashboardPage = () => {
 					</div>
 					{goalData.slice(0, 6).map((i) => (
 						<Item
-							// onClick={() => openGoalModal(i.id, i.name)}
 							key={i.id}
 							id={i.id}
 							name={i.name}
@@ -282,16 +281,6 @@ const DashboardPage = () => {
 						))
 					)}
 				</div>
-
-				{isModalOpen ? (
-					<GoalViewPopup
-						isModalOpen={isModalOpen}
-						setIsModalOpen={setIsModalOpen}
-						getFormValue={getFormValue}
-						id={goalId}
-					/>
-				) : null}
-
 				{/* {isModalOpen ? (
 					<MarketingAssetForms
 						idOfBussiness={elementId}

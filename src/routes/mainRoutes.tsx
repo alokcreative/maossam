@@ -487,7 +487,7 @@ const documentation: RouteProps[] = [
 	 * Content
 	 */
 	{
-		path: `${pagesMenu.goalId.path}/:id`,
+		path: `${pagesMenu.taskId.path}/:id/:taskId`,
 		element: <TaskManagement />,
 	},
 	{
@@ -860,7 +860,7 @@ const documentation: RouteProps[] = [
 		element: <ProductPage />,
 	},
 	{
-		path: `${pagesMenu.goalId.path}/:id`,
+		path: `${pagesMenu.taskId.path}/:id/:id`,
 		element: <TaskManagement />,
 	},
 	{

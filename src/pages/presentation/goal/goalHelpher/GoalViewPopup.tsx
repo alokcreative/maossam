@@ -28,7 +28,6 @@ type IAssetNameProps = {
 	id: number | undefined;
 	isModalOpen: boolean;
 	setIsModalOpen: (item: boolean) => void;
-	getFormValue(...args: unknown[]): unknown;
 };
 interface IMiniTask {
 	id?: string | number;
@@ -90,38 +89,11 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 			console.log(values.secheduledate);
 		},
 	});
-	// const handleSubmit = (isSocialMedia: string, isSocialMediaimportant: string) => {
-	// 	// console.log(
-	// 	// 	'handle submit>>> ',
-	// 	// 	isSocialMedia,
-	// 	// 	' ',
-	// 	// 	isSocialMediaimportant,
-	// 	// 	' ',
-	// 	// 	idOfBussiness,
-	// 	// 	' ',
-	// 	// 	nameOfBussiness,
-	// 	// );
-	// 	// eslint-disable-next-line react/destructuring-assignment
-	// 	props.getFormValue(isSocialMedia, isSocialMediaimportant);
-	// 	setIsModalOpen(false);
-	// 	navigate(`../${pagesMenu.goalId.path}/${id}`);
-	// };
 
-	const handleSubmit = () => {
-		// console.log(
-		// 	'handle submit>>> ',
-		// 	isSocialMedia,
-		// 	' ',
-		// 	isSocialMediaimportant,
-		// 	' ',
-		// 	idOfBussiness,
-		// 	' ',
-		// 	nameOfBussiness,
-		// );
-		// eslint-disable-next-line react/destructuring-assignment
-		// props.getFormValue(isSocialMedia, isSocialMediaimportant);
+
+	const handleSubmit = (taskId:number) => {
 		setIsModalOpen(false);
-		navigate(`../${pagesMenu.goalId.path}/${id}`);
+		navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
 	};
 
 	return (
@@ -228,8 +200,8 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																								<Button
 																									color='primary'
 																									className='mb-3'
-																									onClick={
-																										handleSubmit
+																									onClick={()=>
+																										handleSubmit(i.id)
 																									}>
 																									START
 																									NOW

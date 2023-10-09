@@ -286,10 +286,10 @@ export const pagesMenu = {
 		text: 'Apps',
 		icon: 'Extension',
 	},
-	goalId: {
-		id: 'goal',
-		text: 'Goal',
-		path: '/goal',
+	taskId: {
+		id: 'subtasks',
+		text: 'Subtasks',
+		path: '/task',
 		icon: 'AdsClick',
 		subMenu: null,
 	},
