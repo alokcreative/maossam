@@ -149,26 +149,39 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 												<span className='fw-bold  h4'>Task {i.id}:</span>{' '}
 												{i.name}
 											</p>
-											<p className='fw-bold'>{i.title}</p>
-											<p>{i.description}</p>
+											<p className='fw-bold' style={{ marginBottom: '8px' }}>
+												{i.title}
+											</p>
+											<p
+												style={{
+													height: '100px',
+													overflow: 'scroll',
+													msOverflowStyle: 'none',
+												}}>
+												{i.description}
+											</p>
 
 											<div className='row'>
 												<div className='col-12'>
 													<Card stretch>
-														<CardHeader>
+														<CardHeader
+														// style={{ paddingBottom: '0px' }}
+														>
 															<CardLabel
 																icon='TrackChanges'
 																iconColor='success'>
 																<CardTitle
 																	tag='div'
-																	className='h5 pb-0'>
+																	className='h5 pb-0 no-gutters'>
 																	Subtask
 																</CardTitle>
 															</CardLabel>
 														</CardHeader>
-														<CardBody className='table-responsive'>
+														<CardBody
+															className='table-responsive'
+															style={{ paddingTop: '0px' }}>
 															<div className='row g-4'>
-																<div className='col-12'>
+																<div className='col-12 pt-0'>
 																	<p>
 																		<span className='fw-bold'>
 																			Subtask Intro :{' '}
@@ -211,8 +224,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																									}
 																								</span>
 																							</div>
-																							<div className='col-12 d-flex justify-content-between'>
-																							
+																							<div className='col-12 d-flex justify-content-between mt-3'>
 																								<Button
 																									color='primary'
 																									className='mb-3'
