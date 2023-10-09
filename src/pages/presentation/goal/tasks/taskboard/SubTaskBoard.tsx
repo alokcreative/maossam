@@ -40,7 +40,6 @@ import { ISubTask } from '../../../../../common/data/dummyGoals';
 import SubTaskBoardData from './SubTaskBoardData';
 import { title } from 'process';
 
-
 interface ICardsInColumn {
 	[key: string]: ISubTask[];
 }
@@ -69,7 +68,6 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) =>
 			setEditModalStatus(false);
 		},
 	});
-	
 
 	// console.log("cardsInTheColumn",cardsInTheColumn)
 	return (
@@ -85,8 +83,7 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) =>
 									<CardTitle tag='div' className='h5'>
 										<>{columnData.title} </>
 										<Badge color={columnData.color} isLight>
-											{cardsData &&
-												cardsData[columnKey]?.length}
+											{cardsData && cardsData[columnKey]?.length}
 										</Badge>
 									</CardTitle>
 								</CardLabel>

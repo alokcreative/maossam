@@ -218,11 +218,11 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																						</span>
 																						<div className='row'>
 																							<div className='col-8'>
-																								<span>
+																								{/* <span>
 																									{
 																										item.description
 																									}
-																								</span>
+																								</span> */}
 																							</div>
 																							<div className='col-12 d-flex justify-content-between mt-3'>
 																								<Button

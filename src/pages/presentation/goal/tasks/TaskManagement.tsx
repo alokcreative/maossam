@@ -52,7 +52,7 @@ const TaskManagement = () => {
 		},
 		column5: {
 			id: 'column5',
-			title: 'Pending',
+			title: 'Hold',
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'DirectionsRun',
 		},

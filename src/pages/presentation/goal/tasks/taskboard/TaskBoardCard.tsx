@@ -33,7 +33,7 @@ import Select from '../../../../../components/bootstrap/forms/Select';
 import Option from '../../../../../components/bootstrap/Option';
 import USERS from '../../../../../common/data/userDummyData';
 import TAGS from '../../../../../common/data/boardTagsData';
-import {  TCard, TCards, TColumnsData  } from '../../../project-management/type/types';
+import { TCard, TCards, TColumnsData } from '../../../project-management/type/types';
 import { move } from '../../../project-management/helper/helper';
 import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
 import { ISubTask } from '../../../../../common/data/dummyGoals';
@@ -56,7 +56,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 }) => {
 	const { darkModeStatus } = useDarkMode();
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
-	// console.log("cardsData>",cardsData)
+	console.log('cardsData>', cardsData);
 	const formik = useFormik({
 		initialValues: {
 			cardName: card.name || '',
@@ -64,7 +64,8 @@ const TaskBoardCard: FC<IColumnCard> = ({
 			description: card.description || '',
 			// assignee: card.user.email || '',
 			task:
-				(card.miniTasks && card.miniTasks.filter((f:any) => f.status).map((m:any) => m.id.toString())) ||
+				(card.miniTasks &&
+					card.miniTasks.filter((f: any) => f.status).map((m: any) => m.id.toString())) ||
 				[],
 		},
 		onSubmit: (values) => {
@@ -81,7 +82,6 @@ const TaskBoardCard: FC<IColumnCard> = ({
 			setEditModalStatus(false);
 		},
 	});
-	
 
 	return (
 		<>
@@ -97,9 +97,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 						data-tour={card.name}>
 						{card.name}
 					</CardTitle>
-					{card.name && (
-						<CardSubTitle className='text-muted'>{card.name}</CardSubTitle>
-					)}
+					{card.name && <CardSubTitle className='text-muted'>{card.name}</CardSubTitle>}
 				</CardLabel>
 			</CardHeader>
 			<CardBody className='pt-0'>
@@ -139,7 +137,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 					/>
 				)} */}
 				{card.description}
-				{card.expectedTime}
+				<p className='p-1'>{card.expectedTime}</p>
 			</CardBody>
 			{/* {card.tags && (
 				<CardFooter className='pt-0' size='sm'>
