@@ -63,59 +63,11 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 				.map((task) => task?.subTask?.filter((subtask) => subtask.id === subTaskId)),
 		)
 		.flat(2);
-	const [list, setList] = useState<ITodoListItem[]>([
-		{
-			id: 1,
-			status: true,
-			title: 'New Products will be added',
-			date: dayjs().add(0.5, 'day'),
-			badge: TODO_BADGES.NEW,
-		},
-		{
-			id: 2,
-			status: true,
-			title: 'Cover images will be edited',
-			date: dayjs().add(2, 'day'),
-			badge: TODO_BADGES.UPDATE,
-		},
-		{
-			id: 3,
-			status: false,
-			title: 'Preparing for A/B testing',
-			date: dayjs().add(2, 'day'),
-			badge: TODO_BADGES.TEST,
-		},
-		{
-			id: 4,
-			status: false,
-			title: 'Google Analytics data will be examined',
-			date: dayjs().add(4, 'day'),
-			badge: TODO_BADGES.REPORT,
-		},
-		{
-			id: 5,
-			status: false,
-			title: 'Invoices will be issued',
-			date: dayjs().add(9, 'day'),
-			badge: TODO_BADGES.PRINT,
-		},
-		{
-			id: 6,
-			status: false,
-			title: 'Dependencies check and update',
-			date: dayjs().add(15, 'day'),
-			badge: TODO_BADGES.CONTROL,
-		},
-		{
-			id: 7,
-			status: false,
-			title: 'End of month meeting',
-			date: dayjs().add(32, 'day'),
-			badge: TODO_BADGES.MEETING,
-		},
-	]);
-	const listLength = list.length;
-	const completeTaskLength = list.filter((i) => i.status).length;
+		console.log("filteredData>>",filteredData);
+		console.log("filteredData miniTasks>>",filteredData[0]?.miniTasks);
+	const [list, setList] = useState<ITodoListItem[] | undefined>(filteredData[0]?.miniTasks);
+	const listLength = list?.length;
+	const completeTaskLength = list?.filter((i) => i.status).length;
 
 	/**
 	 * Add New Modal Status
@@ -130,6 +82,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
+		if(list){
 		const newTodos: {
 			id?: string | number;
 			status?: boolean;
@@ -141,6 +94,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 			};
 		}[] = [{ title, date, badge }, ...list];
 		setList(newTodos);
+	}
 	};
 
 	/**
@@ -360,7 +314,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 				</CardActions>
 			</CardHeader>
 			<CardBody>
-				<Todo list={list} setList={setList} />
+				{list&& <Todo list={list} setList={setList} />}
 			</CardBody>
 		</Card>
 	);
