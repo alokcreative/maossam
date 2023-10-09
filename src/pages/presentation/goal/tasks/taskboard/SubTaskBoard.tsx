@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import classNames from 'classnames';
 import { Droppable, DroppableProvided, DroppableStateSnapshot } from '@hello-pangea/dnd';
-import useDarkMode from '../../../../hooks/useDarkMode';
+import useDarkMode from '../../../../../hooks/useDarkMode';
 import Card, {
 	CardActions,
 	CardBody,
@@ -11,38 +11,46 @@ import Card, {
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import Badge from '../../../../components/bootstrap/Badge';
+} from '../../../../../components/bootstrap/Card';
+import Badge from '../../../../../components/bootstrap/Badge';
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../../../components/bootstrap/Dropdown';
-import Button from '../../../../components/bootstrap/Button';
-import { getListStyle } from '../helper/style';
+} from '../../../../../components/bootstrap/Dropdown';
+import Button from '../../../../../components/bootstrap/Button';
+import { getListStyle } from '../../../project-management/helper/style';
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../../components/bootstrap/Modal';
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../components/bootstrap/forms/Input';
-import Textarea from '../../../../components/bootstrap/forms/Textarea';
-import Select from '../../../../components/bootstrap/forms/Select';
-import Option from '../../../../components/bootstrap/Option';
-import USERS from '../../../../common/data/userDummyData';
-import TAGS from '../../../../common/data/boardTagsData';
-import { TCards, TColumnData, TColumnsData } from '../type/types';
-import ColumnCardWrapper from './ColumnCardWrapper';
-import CommonDashboardUserIssue from '../../dashboard/common/CommonDashboardUserIssue';
+} from '../../../../../components/bootstrap/Modal';
+import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
+import Input from '../../../../../components/bootstrap/forms/Input';
+import Textarea from '../../../../../components/bootstrap/forms/Textarea';
+import Select from '../../../../../components/bootstrap/forms/Select';
+import Option from '../../../../../components/bootstrap/Option';
+import USERS from '../../../../../common/data/userDummyData';
+import TAGS from '../../../../../common/data/boardTagsData';
+import { TCards, TColumnData, TColumnsData } from '../../../project-management/type/types';
+import ColumnCardWrapper from '../../../project-management/component/ColumnCardWrapper';
+import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
+import { ISubTask } from '../../../../../common/data/dummyGoals';
+import SubTaskBoardData from './SubTaskBoardData';
+import { title } from 'process';
 
+
+interface ICardsInColumn {
+	[key: string]: ISubTask[];
+}
 interface IColumns {
-	cardsData: TCards;
+	cardsData: ICardsInColumn;
 	columnsData: TColumnsData;
 	setCardsData(...args: unknown[]): unknown;
 }
-const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
+
+const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 	const { darkModeStatus } = useDarkMode();
 
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
@@ -61,10 +69,14 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 			setEditModalStatus(false);
 		},
 	});
+	
+
+	// console.log("cardsInTheColumn",cardsInTheColumn)
 	return (
 		<>
 			{Object.keys(columnsData).map((columnKey) => {
 				const columnData: TColumnData = columnsData[columnKey];
+				// console.log("taskStatusToColumnMapping",taskStatusToColumnMapping)
 				return (
 					<div key={columnKey} className='col-auto'>
 						<Card className={classNames(`board-group shadow-3d-${columnData.color}`)}>
@@ -73,7 +85,8 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 									<CardTitle tag='div' className='h5'>
 										<>{columnData.title} </>
 										<Badge color={columnData.color} isLight>
-											{cardsData[columnKey].length}
+											{cardsData &&
+												cardsData[columnKey]?.length}
 										</Badge>
 									</CardTitle>
 								</CardLabel>
@@ -114,10 +127,10 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 										{...providedDroppable.droppableProps}
 										ref={providedDroppable.innerRef}
 										style={getListStyle(snapshotDroppable.isDraggingOver)}>
-										<ColumnCardWrapper
+										<SubTaskBoardData
 											columnKey={columnKey}
 											columnsData={columnsData}
-											cardsData={cardsData}
+											cardsInTheColumn={cardsData}
 											setCardsData={setCardsData}
 										/>
 										{providedDroppable.placeholder}
@@ -242,9 +255,8 @@ const Columns: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
 					</Button>
 				</ModalFooter>
 			</Modal>
-
 		</>
 	);
 };
 
-export default Columns;
+export default SubTaskBoard;
