@@ -27,6 +27,9 @@ import { TColor } from '../../../../../type/color-type';
 import Select from '../../../../../components/bootstrap/forms/Select';
 import data from '../../../../../common/data/dummyGoals';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../store/store';
+import { Role } from '../../../../../common/data/userDummyData';
 
 interface IPropsValue {
 	subTaskId: number;
@@ -59,12 +62,14 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 	 */
 	const filteredData = data
 		.filter((i) => i.id === Number(id))
-		.map((i) =>i?.task?.filter((task) => task?.id === Number(taskId))
+		.map((i) =>
+			i?.task
+				?.filter((task) => task?.id === Number(taskId))
 				.map((task) => task?.subTask?.filter((subtask) => subtask.id === subTaskId)),
 		)
 		.flat(2);
-		console.log("filteredData>>",filteredData);
-		console.log("filteredData miniTasks>>",filteredData[0]?.miniTasks);
+	// console.log('filteredData>>', filteredData);
+	// console.log('filteredData miniTasks>>', filteredData[0]?.miniTasks);
 	const [list, setList] = useState<ITodoListItem[] | undefined>(filteredData[0]?.miniTasks);
 	const listLength = list?.length;
 	const completeTaskLength = list?.filter((i) => i.status).length;
@@ -82,19 +87,19 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
-		if(list){
-		const newTodos: {
-			id?: string | number;
-			status?: boolean;
-			title?: string | number;
-			date?: dayjs.ConfigType;
-			badge?: {
-				text?: string;
-				color?: TColor;
-			};
-		}[] = [{ title, date, badge }, ...list];
-		setList(newTodos);
-	}
+		if (list) {
+			const newTodos: {
+				id?: string | number;
+				status?: boolean;
+				title?: string | number;
+				date?: dayjs.ConfigType;
+				badge?: {
+					text?: string;
+					color?: TColor;
+				};
+			}[] = [{ title, date, badge }, ...list];
+			setList(newTodos);
+		}
 	};
 
 	/**
@@ -161,6 +166,10 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 		},
 	});
 
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	return (
 		<Card stretch>
 			<CardHeader>
@@ -178,13 +187,15 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 					</CardSubTitle>
 				</CardLabel>
 				<CardActions>
-					<Button
-						color='info'
-						icon='Add'
-						isLight
-						onClick={() => setModalStatus(!modalStatus)}>
-						New
-					</Button>
+					{role === Role.admin ? (
+						<Button
+							color='info'
+							icon='Add'
+							isLight
+							onClick={() => setModalStatus(!modalStatus)}>
+							New
+						</Button>
+					) : null}
 					<Modal setIsOpen={setModalStatus} isOpen={modalStatus} titleId='new-todo-modal'>
 						<ModalHeader setIsOpen={setModalStatus}>
 							<ModalTitle id='new-todo-modal'>New Task</ModalTitle>
@@ -300,22 +311,22 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 								</div>
 								<div className='col' />
 								<div className='col-auto'>
-									<Button
-										type='submit'
-										color='info'
-										isLight
-										isDisable={!formik.isValid && !!formik.submitCount}>
-										Add Task
-									</Button>
+									{role === Role.admin ? (
+										<Button
+											type='submit'
+											color='info'
+											isLight
+											isDisable={!formik.isValid && !!formik.submitCount}>
+											Add Task
+										</Button>
+									) : null}
 								</div>
 							</form>
 						</ModalBody>
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody>
-				{list&& <Todo list={list} setList={setList} />}
-			</CardBody>
+			<CardBody>{list && <Todo list={list} setList={setList} />}</CardBody>
 		</Card>
 	);
 };

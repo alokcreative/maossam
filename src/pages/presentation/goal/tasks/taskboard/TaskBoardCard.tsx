@@ -176,7 +176,10 @@ const TaskBoardCard: FC<IColumnCard> = ({
 						color='primary'
 						className='w-100'
 						type='submit'
-						onClick={formik.handleSubmit}>
+						onClick={() => {
+							formik.handleSubmit();
+							setEditModalStatus(false);
+						}}>
 						Save
 					</Button>
 				</ModalFooter>
