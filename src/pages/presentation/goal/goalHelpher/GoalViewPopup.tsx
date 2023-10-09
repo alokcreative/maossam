@@ -77,7 +77,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
 	const newUserName = parsedValue?.newUserName || parsedValue?.name;
 	const name = userData?.name || newUserName;
-	const [taskData, setTaskData] = useState<ITask[]| undefined>();
+	const [taskData, setTaskData] = useState<ITask[] | undefined>();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
@@ -231,8 +231,32 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 
 																						<div className='row g-3'>
 																							<div className='col-12'>
-																								<Accordion
-																									id='logofaq'
+																								{item.questions &&
+																									item.questions.map(
+																										(
+																											q: any,
+																										) => {
+																											return (
+																												<Accordion id='logofaq1'>
+																													<AccordionItem
+																														id={
+																															q.id
+																														}
+																														title={
+																															q.name
+																														}>
+																														{' '}
+																														{
+																															q.answer
+																														}
+																													</AccordionItem>
+																												</Accordion>
+																											);
+																										},
+																									)}
+
+																								{/* <Accordion
+																									id='logofaq1'
 																									shadow='sm'>
 																									{item.questions &&
 																										item.questions.map(
@@ -241,6 +265,9 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																											) => {
 																												return (
 																													<AccordionItem
+																														key={
+																															q.id
+																														}
 																														id={
 																															q.id
 																														}
@@ -254,7 +281,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																												);
 																											},
 																										)}
-																								</Accordion>
+																								</Accordion> */}
 																							</div>
 																						</div>
 																					</div>

@@ -34,6 +34,9 @@ export const AccordionItem = forwardRef<HTMLDivElement, IAccordionItemProps>(
 	({ id, icon, title, children, tag, headerTag, overWriteColor, ...props }, ref) => {
 		// eslint-disable-next-line react/prop-types
 		const ACTIVE = props.activeItem === id;
+		console.log('props.activeItem>>', props.activeItem);
+		console.log('id>>>', id);
+		console.log('props>>>', props);
 
 		return (
 			<TagWrapper tag={tag} ref={ref} className={classNames('accordion-item')}>

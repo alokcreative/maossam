@@ -103,8 +103,8 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				</CardLabel>
 			</CardHeader>
 			<CardBody className='pt-0'>
-				<div className='row g-2 mb-3'>
-					{/* {!!card?.attachments?.length && (
+				{/* <div className='row g-2 mb-3'> */}
+				{/* {!!card?.attachments?.length && (
 						<div className='col-auto'>
 							<small className='border border-info border-2 text-info fw-bold px-2 py-1 rounded-1'>
 								<Icon icon='AttachFile' className='me-1' />
@@ -112,7 +112,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 							</small>
 						</div>
 					)} */}
-					{/* {!!card?.tasks?.length && (
+				{/* {!!card?.tasks?.length && (
 						<div className='col-auto'>
 							<small className='border border-info border-2 text-info fw-bold px-2 py-1 rounded-1'>
 								<Icon icon='TaskAlt' className='me-1' />
@@ -120,14 +120,14 @@ const TaskBoardCard: FC<IColumnCard> = ({
 							</small>
 						</div>
 					)} */}
-					{/* {card.label && (
+				{/* {card.label && (
 						<div className='col-auto'>
 							<small className='border border-success border-2 text-success fw-bold px-2 py-1 rounded-1'>
 								{card.label}
 							</small>
 						</div>
 					)} */}
-				</div>
+				{/* </div> */}
 				{/* {card.img && (
 					<img
 						src={card.img}
@@ -139,11 +139,9 @@ const TaskBoardCard: FC<IColumnCard> = ({
 					/>
 				)} */}
 				{/* {card.description} */}
-				<p>{card.expectedTime}</p>
-				<p className='p-1'>
-					{showMore ? `${card.description}` : `${card.description.substring(0, 100)}`}
-				</p>
-				<Button onClick={() => setShowMore(!showMore)}>
+				<p className='mb-1'>{card.expectedTime}</p>
+				<p>{showMore ? `${card.description}` : `${card.description.substring(0, 100)}`}</p>
+				<Button className='p-0' onClick={() => setShowMore(!showMore)}>
 					{showMore ? 'Show less' : 'Show more'}
 				</Button>
 			</CardBody>
