@@ -57,6 +57,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 }) => {
 	const { darkModeStatus } = useDarkMode();
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
+	const [showMore, setShowMore] = useState<boolean>(false);
 	console.log('cardsData>', cardsData);
 	const formik = useFormik({
 		initialValues: {
@@ -137,8 +138,14 @@ const TaskBoardCard: FC<IColumnCard> = ({
 						alt={card.title}
 					/>
 				)} */}
-				{card.description}
-				<p className='p-1'>{card.expectedTime}</p>
+				{/* {card.description} */}
+				<p>{card.expectedTime}</p>
+				<p className='p-1'>
+					{showMore ? `${card.description}` : `${card.description.substring(0, 100)}`}
+				</p>
+				<Button onClick={() => setShowMore(!showMore)}>
+					{showMore ? 'Show less' : 'Show more'}
+				</Button>
 			</CardBody>
 			{/* {card.tags && (
 				<CardFooter className='pt-0' size='sm'>
@@ -162,7 +169,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 					<ModalTitle id='project-edit'>{card.name}</ModalTitle>
 				</ModalHeader>
 				<ModalBody className='px-4'>
-					<MiniTasks subTaskId={card.id}/>
+					<MiniTasks subTaskId={card.id} />
 				</ModalBody>
 				<ModalFooter className='px-4 pb-4'>
 					<Button

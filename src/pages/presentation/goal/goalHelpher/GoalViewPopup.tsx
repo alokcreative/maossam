@@ -96,8 +96,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
-
-	const handleSubmit = (taskId:number) => {
+	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
 	};
@@ -206,8 +205,10 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																								<Button
 																									color='primary'
 																									className='mb-3'
-																									onClick={()=>
-																										handleSubmit(i.id)
+																									onClick={() =>
+																										handleSubmit(
+																											i.id,
+																										)
 																									}>
 																									START
 																									NOW
