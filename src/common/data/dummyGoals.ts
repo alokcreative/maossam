@@ -87,7 +87,7 @@ export const data: {
 				subTask: [
 					{
 						id: 1,
-						name: 'Basic Set up of Google My Business (Sub Task1 of Task 1)',
+						name: 'Basic Set up of Google My Business',
 						description:
 							"Sign in to Google: If you don't have a Google account, create one at https://accounts.google.com/signup .Access Google My Business: Go to https://www.google.com/business/.Click 'Manage Now': On the Google My Business homepage, click the 'Manage Now' button. Click on it to start the process of creating your business account.Enter your business name in the provided field. Make sure the name you enter is accurate and matches your business's real-world name and social media account names . Google may verify this information later. Choose Your Business Category: Select the most appropriate category that describes your business. Google will use this information to help users find your business when searching for related services.Add a Location: You'll be prompted to enter your business location. If you have a physical storefront or office that customers can visit, enter your address. Make sure to write the complete and accurate address, in case Google sends a verification postcard.If your business operates solely online or you don't have a physical location, you can select the option to hide your address.Specify Your Service Area (if applicable): If your business serves customers within a specific geographic area and you don't want to display your address, define your service area by city, region, or postal code.Provide Contact Information: Ensure that this information is accurate and up to date.Enter your business phone number and website URL.Complete the Verification Process: Google will need to verify your business to ensure its legitimacy. You'll typically have a few verification options. Follow the instructions provided for your chosen verification method.Postcard: Google will send you a postcard with a verification code to the address you provided. Enter the code to verify.Phone: If eligible, you can verify your business by phone.Email: Some businesses may have the option to verify via email.",
 						status: 'Backlog',
@@ -327,7 +327,7 @@ export const data: {
 						id: 1,
 						name: 'Sub Task1 of Task 1',
 						description: 'internet and use our Best Practice',
-						status: 'Done',
+						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 						miniTasks: [
