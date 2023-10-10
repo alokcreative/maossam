@@ -178,12 +178,12 @@ const Profile = () => {
 															Delete Avatar
 														</Button>
 													</div>
-													<div className='col-12'>
+													{/* <div className='col-12'>
 														<p className='lead text-muted'>
 															Avatar helps your teammates get to know
 															you.
 														</p>
-													</div>
+													</div> */}
 												</div>
 											</div>
 										</div>

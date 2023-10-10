@@ -35,6 +35,7 @@ interface IUserData {
 	created_at: string;
 	updated_at: string;
 }
+
 const ModalsStepForm: React.FC = () => {
 	const [countryList, setcountryList] = useState<IOptionsProps[]>();
 	const [stateList, setstateList] = useState<IOptionsProps[]>();
@@ -42,7 +43,7 @@ const ModalsStepForm: React.FC = () => {
 	const [data, setData] = useState<any>();
 	const [selectedValue, setSelectedValue] = useState('');
 	const [UpdateProfileMutation] = useUpdateProfileMutation();
-	const [GetUsersMutation,{isLoading,isSuccess}] = useGetUsersMutation();
+	const [GetUsersMutation, { isLoading, isSuccess }] = useGetUsersMutation();
 	const token = localStorage.getItem('access_token');
 
 	useEffect(() => {
@@ -86,16 +87,30 @@ const ModalsStepForm: React.FC = () => {
 		},
 		validate: (values) => {
 			const errors: {
-				country?: string;
 				phone_number?: string;
+				country?: string;
+				state?: string;
+				companyName?: string;
 			} = {};
+			if (values.phone_number.length !== 10) {
+				errors.phone_number = 'Characters must be 10';
+			}
+			if (values.companyName === '') {
+				errors.companyName = 'Field Required';
+			}
+			if (values.country === '') {
+				errors.country = 'Field Required';
+			}
+			if (values.state === '') {
+				errors.state = 'Field Required';
+			}
 
 			return errors;
 		},
+		validateOnChange: false,
 		onSubmit: (values) => {
+			console.log('Validated');
 			nextStep();
-			console.log(values);
-			console.log('data>>>>', data);
 			const updateUser = {
 				id: data.id,
 				country: values.country,
@@ -168,13 +183,14 @@ const ModalsStepForm: React.FC = () => {
 												name='phone_number'
 												onChange={formik.handleChange}
 												value={formik.values.phone_number}
-												isValid={formik.isValid}
-												isTouched={formik.touched.phone_number}
-												invalidFeedback={formik.errors.phone_number}
 												onBlur={formik.handleBlur}
 												onFocus={() => {
 													formik.setErrors({});
 												}}
+												isValid={formik.isValid}
+												isTouched={formik.touched.phone_number}
+												invalidFeedback={formik.errors.phone_number}
+												validFeedback='Looks good!'
 											/>
 										</FormGroup>
 									</div>
@@ -197,6 +213,13 @@ const ModalsStepForm: React.FC = () => {
 												name='companyName'
 												onChange={formik.handleChange}
 												value={formik.values.companyName}
+												isValid={formik.isValid}
+												isTouched={formik.touched.companyName}
+												invalidFeedback={formik.errors.companyName}
+												validFeedback='Looks good!'
+												onFocus={() => {
+													formik.setErrors({});
+												}}
 											/>
 										</FormGroup>
 									</div>
@@ -224,6 +247,10 @@ const ModalsStepForm: React.FC = () => {
 												list={countryList}
 												onChange={formik.handleChange}
 												value={formik.values.country}
+												isValid={formik.isValid}
+												isTouched={formik.touched.country}
+												invalidFeedback={formik.errors.country}
+												validFeedback='Looks good!'
 											/>
 										</FormGroup>
 									</div>
@@ -240,6 +267,10 @@ const ModalsStepForm: React.FC = () => {
 												list={stateList}
 												onChange={formik.handleChange}
 												value={formik.values.state}
+												isValid={formik.isValid}
+												isTouched={formik.touched.state}
+												invalidFeedback={formik.errors.state}
+												validFeedback='Looks good!'
 											/>
 										</FormGroup>
 									</div>
@@ -286,6 +317,7 @@ const ModalsStepForm: React.FC = () => {
 							<button
 								type='button'
 								onClick={nextStep}
+								disabled={!!formik.errors.phone_number}
 								className='btn btn-info px-4 mx-1'>
 								Next
 							</button>
@@ -296,6 +328,7 @@ const ModalsStepForm: React.FC = () => {
 								icon='save'
 								isLight
 								className='btn btn-info px-4 mx-1'
+								isDisable={!!formik.errors.companyName && !!formik.errors.country && !!formik.errors.state}
 								onClick={formik.handleSubmit}>
 								Submit
 							</Button>
