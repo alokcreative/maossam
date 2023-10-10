@@ -17,9 +17,9 @@ import ProductPage from '../pages/presentation/products/ProductPage';
 import Goals from '../pages/presentation/goal/Goals';
 import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusiness';
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
-import Tasks from '../pages/presentation/dashboard/Tasks';
+import Tasks from '../pages/presentation/goal/tasks/Tasks';
 import Profile from '../pages/presentation/profile/Profile';
-import TaskManagement from '../pages/presentation/goal/tasks/TaskManagement';
+import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManagement';
 
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 

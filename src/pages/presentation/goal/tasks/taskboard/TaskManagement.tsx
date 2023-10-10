@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
-import { pagesMenu } from '../../../../menu';
-import SubHeader, { SubHeaderLeft } from '../../../../layout/SubHeader/SubHeader';
-import Page from '../../../../layout/Page/Page';
-import COLORS from '../../../../common/data/enumColors';
-import useDarkMode from '../../../../hooks/useDarkMode';
-import { TColumnsData } from '../../project-management/type/types';
-import { move, reorder } from '../../project-management/helper/helper';
-import Board from '../../project-management/component/Board';
-import Columns from '../../project-management/component/Columns';
-import Button from '../../../../components/bootstrap/Button';
-import { data, ITask, ISubTask } from '../../../../common/data/dummyGoals';
-import SubTaskBoard from './taskboard/SubTaskBoard';
+import PageWrapper from '../../../../../layout/PageWrapper/PageWrapper';
+import { pagesMenu } from '../../../../../menu';
+import SubHeader, { SubHeaderLeft } from '../../../../../layout/SubHeader/SubHeader';
+import Page from '../../../../../layout/Page/Page';
+import COLORS from '../../../../../common/data/enumColors';
+import useDarkMode from '../../../../../hooks/useDarkMode';
+import { TColumnsData } from '../../../project-management/type/types';
+import Board from '../../../project-management/component/Board';
+import Button from '../../../../../components/bootstrap/Button';
+import { data, ISubTask } from '../../../../../common/data/dummyGoals';
+import SubTaskBoard from './SubTaskBoard';
 
 interface ICardsInColumn {
 	[key: string]: ISubTask[];
@@ -62,7 +60,7 @@ const TaskManagement = () => {
 		const goal = data.find((item) => item.id === goalId);
 
 		if (!goal || !goal.task) {
-			console.log('Goal not found or no tasks for this goal.');
+			// console.log('Goal not found or no tasks for this goal.');
 			return [];
 		}
 
@@ -70,7 +68,7 @@ const TaskManagement = () => {
 		const task = goal.task.find((tempTask) => tempTask.id === task_Id);
 
 		if (!task || !task.subTask) {
-			console.log('Task not found or no subtasks for this task.');
+			// console.log('Task not found or no subtasks for this task.');
 			return [];
 		}
 
@@ -107,7 +105,7 @@ const TaskManagement = () => {
 				if (columnKey && statusMapping[columnKey]) {
 					statusMapping[columnKey].push(task);
 				} else {
-					console.log('Invalid status:', status);
+					// console.log('Invalid status:', status);
 				}
 			});
 

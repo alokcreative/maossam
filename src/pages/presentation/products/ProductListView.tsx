@@ -46,53 +46,52 @@ const ProductListView: FC<IListDataProps> = ({ listData }) => {
 	const onCurrentPageItems = dataPagination(items, currentPage, perPage);
 
 	return (
-		<Card stretch data-tour='list'>
+		<Card stretch data-tour='list' className='col-12'>
 			<CardBody className='table-responsive' isScrollable>
-				<table className='table table-modern table-hover'>
-					<thead>
-						<tr>
-							<th
-								scope='col'
-								onClick={() => requestSort('id')}
-								className='cursor-pointer text-decoration-underline'>
-								 Sr No
-								<Icon
-									size='lg'
-									className={getClassNamesFor('id')}
-									icon='FilterList'
-								/>
-							</th>
-							<th scope='col'>Image</th>
-							<th scope='col'>Name</th>
-							<th
-								scope='col'
-								onClick={() => requestSort('price')}
-								className='cursor-pointer text-decoration-underline'>
-								Price
-								<Icon
-									size='lg'
-									className={getClassNamesFor('price')}
-									icon='FilterList'
-								/>
-							</th>
-							<th scope='col'>CATEGORY</th>
-							{/* <th scope='col'>AVATAR NAME</th> */}
-							<th scope='col'>GOAL</th>
-							<th scope='col' className='text-end'>
-								Actions
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{onCurrentPageItems.map((i) => (
-							<CommonTableRow
-								key={i.id}
-								// eslint-disable-next-line react/jsx-props-no-spreading
-								{...i}
-							/>
-						))}
-					</tbody>
-				</table>
+				<div className='row g-4 '>
+					<div className='col-12'>
+						<table className='table table-modern table-hover justify-content-between'>
+							<thead>
+								<tr className='justify-content-between'>
+									<th
+										scope='col'
+										onClick={() => requestSort('id')}
+										className='cursor-pointer'>
+										Sr No
+										<Icon
+											size='lg'
+											className={getClassNamesFor('id')}
+											icon='FilterList'
+										/>
+									</th>
+									<th scope='col'>Name</th>
+									<th
+										scope='col'
+										onClick={() => requestSort('price')}
+										className='cursor-pointer'>
+										Price
+										<Icon
+											size='lg'
+											className={getClassNamesFor('price')}
+											icon='FilterList'
+										/>
+									</th>
+									<th scope='col'>CATEGORY</th>
+									<th scope='col'>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{onCurrentPageItems.map((i) => (
+									<CommonTableRow
+										key={i.id}
+										// eslint-disable-next-line react/jsx-props-no-spreading
+										{...i}
+									/>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</CardBody>
 			<PaginationButtons
 				data={items}

@@ -218,6 +218,7 @@ const Goals: FC = () => {
 				<div className='display-4 fw-bold py-3'> Goals</div>
 				<div className='row h-100'>
 					<div className='col-12'>
+
 						{productView === false ? (
 							<div className='row'>
 								{goalList.map((item) => (
@@ -260,12 +261,13 @@ const Goals: FC = () => {
 														currentPage,
 														perPage,
 													).map((i) => {
+
 														return (
 															<tr>
 																<th scope='row'>{i.id}</th>
 																<th>{i.name}</th>
 																<td>{i.description}</td>
-																<td>{i.timeline}</td>
+																<td><span style={{whiteSpace:'nowrap'}}>{i.timeline}</span></td>
 																<td className='h5'>
 																	<Badge
 																		color={
@@ -282,6 +284,7 @@ const Goals: FC = () => {
 																	</Badge>
 																</td>
 																<td>
+																	<div className='d-flex flex-nowrap'>
 																	<Button
 																		icon='Visibility'
 																		color='primary'
@@ -314,6 +317,7 @@ const Goals: FC = () => {
 																			/>
 																		</>
 																	) : null}
+																	</div>
 																</td>
 															</tr>
 														);

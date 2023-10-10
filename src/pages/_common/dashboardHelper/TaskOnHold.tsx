@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import Page from '../../../layout/Page/Page';
 import Card, {
@@ -8,31 +8,50 @@ import Card, {
 	CardLabel,
 	CardTitle,
 } from '../../../components/bootstrap/Card';
-import Dropdown, { DropdownMenu, DropdownToggle } from '../../../components/bootstrap/Dropdown';
-import Button from '../../../components/bootstrap/Button';
-import Popovers from '../../../components/bootstrap/Popovers';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../components/PaginationButtons';
-import data from '../../../common/data/dummyTaskHoldData';
+import data, { ITask } from '../../../common/data/dummyGoals';
 import { useFormik } from 'formik';
 import TableRow from '../../../helpers/TableRow';
 
+interface ITaskValue {
+	goalId: number;
+	ITask: ITask;
+}
 const TaskOnHold = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['5']);
+	const [taskList, setTaskList] = useState<ITaskValue[] | undefined>();
 	const formik = useFormik({
 		initialValues: {
 			taskHoldFil: ['Marketing Asset', 'Product', 'Client'],
 		},
 		onSubmit: (values) => {},
 	});
+	useEffect(() => {
+		const allTasks: ITaskValue[] = [];
+		data.forEach((goal) => {
+			if (goal.task)
+				goal?.task.forEach((task) => {
+					allTasks.push({
+						goalId: goal.id,ITask: task,});
+					// if (task.subTask) {
+					// 	task.subTask.forEach((subTask) => {
+					// 		allTasks.push(subTask);
+					// 	});
+					// }
+				});
+		});
 
-	const filteredData = data.filter((f) => formik.values.taskHoldFil.includes(f.category));
+		setTaskList(allTasks.filter((f) => f.ITask.status === 'Hold'));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data]);
 
+	const deleteAction = () => {};
+	const view = () => {};
+	const edit = () => {};
 	return (
 		<div className='col-xxl-12 mt-10'>
 			<Card stretch>
@@ -143,10 +162,18 @@ const TaskOnHold = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{dataPagination(filteredData, currentPage, perPage).map((i) => (
-								// eslint-disable-next-line react/jsx-props-no-spreading
-								<TableRow key={i.id} {...i} />
-							))}
+							{taskList &&
+								dataPagination(taskList, currentPage, perPage).map((i,index) => (
+									// eslint-disable-next-line react/jsx-props-no-spreading
+									<TableRow
+										key={i.id}
+										id={index+1}
+										task={i}
+										edit={edit}
+										view={view}
+										deleteAction={deleteAction}
+									/>
+								))}
 						</tbody>
 					</table>
 				</CardBody>

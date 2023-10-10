@@ -84,7 +84,6 @@ const GoalDescription: FC = () => {
 	const [modalState, setModalState] = useState('Add Task');
 	const [taskList, setTaskList] = useState<ITask[]>(goal?.task || []);
 	const [currTask, setCurrTask] = useState<ITask>();
-	console.log('goal', goal);
 
 	// const handleDelete = (id: number) => {
 	// 	const newGoals = goalList.filter((i) => i.id !== id);
