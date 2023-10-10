@@ -206,7 +206,7 @@ const ProductDetailsPage = () => {
 				<div className='row h-100'>
 					<div className='col-lg-4'>
 						<Card stretch>
-							<CardBody isScrollable>
+							<CardBody >
 								<div className='row g-3'>
 									<div className='col-12'>
 										<img src={data.image} alt='' width='100%' className='p-5' />
@@ -281,7 +281,7 @@ const ProductDetailsPage = () => {
 											</CardSubTitle> */}
 										</CardLabel>
 									</CardHeader>
-									<CardBody isScrollable>
+									<CardBody >
 										<div className='row'>
 											<div className='col-lg-6'>
 												<Card
@@ -520,7 +520,7 @@ const ProductDetailsPage = () => {
 											</CardSubTitle>
 										</CardLabel>
 									</CardHeader>
-									<CardBody isScrollable>
+									<CardBody>
 										<div className='row g-4'>
 											<div className='col-12 d-flex align-items-center'>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
@@ -588,7 +588,7 @@ const ProductDetailsPage = () => {
 											</CardSubTitle>
 										</CardLabel>
 									</CardHeader>
-									<CardBody isScrollable>
+									<CardBody >
 										<Card>
 											<CardHeader>
 												<CardLabel icon='Photo' iconColor='info'>

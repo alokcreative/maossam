@@ -465,16 +465,7 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
-						<Button
-							color='danger'
-							onClick={() => {
-								setIsOpen(false);
-							}}>
-							Cancel
-						</Button>
-					</CardFooterLeft>
-					<CardFooterRight>
-						<Button
+					<Button
 							color='info'
 							onClick={
 								modalTitle === 'New User'
@@ -482,6 +473,16 @@ const UserList = () => {
 									: updateUserForm.handleSubmit
 							}>
 							{modalTitle === 'New User' ? 'Save' : 'Update'}
+						</Button>
+					</CardFooterLeft>
+					<CardFooterRight>
+						
+						<Button
+							color='danger'
+							onClick={() => {
+								setIsOpen(false);
+							}}>
+							Cancel
 						</Button>
 					</CardFooterRight>
 				</ModalFooter>

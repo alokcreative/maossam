@@ -293,7 +293,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																</div>
 															</div>
 														</CardBody>
-														<CardFooter>
+														<CardFooter className='p-0'>
 															<div className='col-12'>
 																{i.subTask && (
 																	<PaginationButtons

@@ -27,7 +27,7 @@ export interface ISubTask {
 	questions?: IQuestion[] | undefined;
 }
 
-interface IQuestion {
+export interface IQuestion {
 	id: number;
 	name: string;
 	answer: string;

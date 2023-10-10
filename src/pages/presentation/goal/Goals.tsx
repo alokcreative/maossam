@@ -206,7 +206,7 @@ const Goals: FC = () => {
 										<table className='table table-modern table-hover'>
 											<thead>
 												<tr>
-													<th scope='col'>Sr No</th>
+													<th scope='col'><span style={{whiteSpace:'nowrap'}}>Sr No</span></th>
 													<th scope='col'>Name</th>
 													<th scope='col'>Description</th>
 													<th scope='col'>Date</th>
@@ -222,7 +222,7 @@ const Goals: FC = () => {
 																<th scope='row'>{i.id}</th>
 																<th>{i.name}</th>
 																<td>{i.description}</td>
-																<td>{i.timeline}</td>
+																<td><span style={{whiteSpace:'nowrap'}}>{i.timeline}</span></td>
 																<td className='h5'>
 																	<Badge
 																		color={
@@ -239,6 +239,7 @@ const Goals: FC = () => {
 																	</Badge>
 																</td>
 																<td>
+																	<div className='d-flex flex-nowrap'>
 																	<Button
 																		icon='Visibility'
 																		color='primary'
@@ -271,6 +272,7 @@ const Goals: FC = () => {
 																			/>
 																		</>
 																	) : null}
+																	</div>
 																</td>
 															</tr>
 														);

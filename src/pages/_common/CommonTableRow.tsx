@@ -28,11 +28,11 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
-			<td>
+			{/* <td>
 				<Link to={`../${pagesMenu.productId.path}/${id}`}>
 					<img src={image} alt={name} width={54} height={54} />
 				</Link>
-			</td>
+			</td> */}
 			<td>
 				<div>
 					{/* <Link
@@ -90,7 +90,7 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 				</Badge>
 			</td> */}
 			<td>{name}</td>
-			<td className='text-end'>
+			<td>
 				<Button
 					icon='Visibility'
 					color='primary'
