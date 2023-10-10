@@ -256,7 +256,7 @@ export const data: {
 				status: 'Backlog',
 				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
-				subtaskIntro: 'Sub Task2 intro',
+				subtaskIntro: 'Get Optimize Your Business ',
 				subTask: [
 					{
 						id: 1,
@@ -321,12 +321,12 @@ export const data: {
 				status: 'Todo',
 				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
-				subtaskIntro: 'Task 1 Intro',
+				subtaskIntro: 'Verify your Account ',
 				subTask: [
 					{
 						id: 1,
-						name: 'Sub Task1 of Task 1',
-						description: 'internet and use our Best Practice',
+						name: 'Learn step to verify your Account',
+						description: 'Internet and use our Best Practice',
 						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -369,7 +369,7 @@ export const data: {
 					},
 					{
 						id: 2,
-						name: 'Sub Task2 of Task 1',
+						name: 'Web sites and directories for your company  ',
 						description: 'find the relevant web sites and directories for your company',
 						status: 'Backlog',
 						expectedTime: '45min',
@@ -401,18 +401,18 @@ export const data: {
 			},
 			{
 				id: 2,
-				name: 'Task 2 Complete report on market research findings	',
+				name: 'Complete report on market research findings	',
 				title: 'Research findings',
 				description: 'description 1',
-				status: 'Pending',
+				status: 'Hold',
 				expectedTime: '45min',
 				dueDate: '23-Oct-2023',
 				subtaskIntro: 'Sub Task2 intro',
 				subTask: [
 					{
 						id: 1,
-						name: 'Sub Task1 of Task 2',
-						description: '',
+						name: 'Market Research',
+						description: ' Learn About Market Sesearch',
 						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -431,8 +431,8 @@ export const data: {
 					},
 					{
 						id: 2,
-						name: 'Sub Task2 of Task 2',
-						description: '',
+						name: 'Report on Market',
+						description: 'Genrate Report',
 						status: 'Backlog',
 						expectedTime: '45min',
 						secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),

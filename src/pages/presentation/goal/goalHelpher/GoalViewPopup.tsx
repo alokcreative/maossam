@@ -237,7 +237,9 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																											q: any,
 																										) => {
 																											return (
-																												<Accordion id='logofaq1'>
+																												<Accordion
+																													id='logofaq1'
+																													className='mb-1'>
 																													<AccordionItem
 																														id={
 																															q.id
