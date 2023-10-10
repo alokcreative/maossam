@@ -35,7 +35,7 @@ interface IListDataProps {
 		description: string;
 		category: string;
 		price: number;
-		sales: number;
+		stock: number;
 	}[];
 }
 const ProductListView: FC<IListDataProps> = ({ listData }) => {
@@ -76,7 +76,8 @@ const ProductListView: FC<IListDataProps> = ({ listData }) => {
 											icon='FilterList'
 										/>
 									</th>
-									<th scope='col'>CATEGORY</th>
+									<th scope='col'>Stock</th>
+									<th scope='col'>Category</th>
 									<th scope='col'>Actions</th>
 								</tr>
 							</thead>

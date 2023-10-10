@@ -44,7 +44,7 @@ interface IValues {
 	description: string;
 	category: string;
 	price: number;
-	sales: number;
+	stock: number;
 }
 const validate = (values: IValues) => {
 	const errors = {
@@ -53,7 +53,7 @@ const validate = (values: IValues) => {
 		description: '',
 		category: '',
 		price: 0,
-		sales: 0,
+		stock: 0,
 	};
 
 	if (!values.name) {
@@ -82,9 +82,10 @@ interface ITabs {
 
 const ProductDetailsPage = () => {
 	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
+	const role = localStorage?.getItem('role');
 	const { darkModeStatus } = useDarkMode();
 
 	const { id } = useParams();
@@ -154,7 +155,7 @@ const ProductDetailsPage = () => {
 			category: '',
 			image: '',
 			description: '',
-			sales: 0,
+			stock: 0,
 		},
 		validate,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -176,7 +177,7 @@ const ProductDetailsPage = () => {
 				description: data.description,
 				category: data.category,
 				price: data.price,
-				sales: data.sales,
+				stock: data.stock,
 			});
 		}
 		return () => {
@@ -186,7 +187,7 @@ const ProductDetailsPage = () => {
 				description: '',
 				category: '',
 				price: 0,
-				sales: 0,
+				stock: 0,
 			});
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -206,7 +207,7 @@ const ProductDetailsPage = () => {
 				<div className='row h-100'>
 					<div className='col-lg-4'>
 						<Card stretch>
-							<CardBody >
+							<CardBody>
 								<div className='row g-3'>
 									<div className='col-12'>
 										<img src={data.image} alt='' width='100%' className='p-5' />
@@ -233,7 +234,7 @@ const ProductDetailsPage = () => {
 											{TABS.COMMENTS}
 										</Button>
 									</div>
-									{role !== Role.admin && (
+									{role === 'user' && (
 										<div className='col-12'>
 											<Button
 												icon='Edit'
@@ -247,7 +248,7 @@ const ProductDetailsPage = () => {
 									)}
 								</div>
 							</CardBody>
-							{role !== Role.admin && (
+							{role === 'user' && (
 								<CardFooter>
 									<CardFooterLeft className='w-100'>
 										<Button
@@ -281,7 +282,7 @@ const ProductDetailsPage = () => {
 											</CardSubTitle> */}
 										</CardLabel>
 									</CardHeader>
-									<CardBody >
+									<CardBody>
 										<div className='row'>
 											<div className='col-lg-6'>
 												<Card
@@ -367,7 +368,7 @@ const ProductDetailsPage = () => {
 															</div>
 															<div className='flex-grow-1 ms-3'>
 																<div className='fw-bold fs-3 mb-0'>
-																	{data.sales}
+																	{data.stock}
 																</div>
 															</div>
 														</div>
@@ -520,7 +521,7 @@ const ProductDetailsPage = () => {
 											</CardSubTitle>
 										</CardLabel>
 									</CardHeader>
-									<CardBody>
+									<CardBody isScrollable>
 										<div className='row g-4'>
 											<div className='col-12 d-flex align-items-center'>
 												<div className='flex-grow-1 ms-3 d-flex justify-content-between align-items-center'>
@@ -529,7 +530,47 @@ const ProductDetailsPage = () => {
 															<p>
 																We made a very logical decision to
 																use it in our project. Design
-																quality is very nice.
+																quality is very nice. We made a very
+																logical decision to use it in our
+																project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice. We made
+																a very logical decision to use it in
+																our project. Design quality is very
+																nice. We made a very logical
+																decision to use it in our project.
+																Design quality is very nice.
 															</p>
 														</blockquote>
 														<figcaption className='blockquote-footer mb-0'>
@@ -588,7 +629,7 @@ const ProductDetailsPage = () => {
 											</CardSubTitle>
 										</CardLabel>
 									</CardHeader>
-									<CardBody >
+									<CardBody>
 										<Card>
 											<CardHeader>
 												<CardLabel icon='Photo' iconColor='info'>

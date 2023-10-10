@@ -18,7 +18,7 @@ const data: {
 	description: string;
 	category: string;
 	price: number;
-	sales: number;
+	stock: number;
 }[] = [
 	{
 		id: 1,
@@ -26,7 +26,7 @@ const data: {
 		image: BeveledCone,
 		description: 'This is product des',
 		category: '1',
-		sales: 0,
+		stock: 0,
 		price: 0,
 	},
 	{
@@ -35,7 +35,7 @@ const data: {
 		image: CloudBall,
 		description: 'This is product des',
 		category: '2',
-		sales: 0,
+		stock: 0,
 		price: 0,
 	},
 	{
@@ -44,7 +44,7 @@ const data: {
 		image: Quadrilateral,
 		description: 'This is product des',
 		category: '3',
-		sales: 0,
+		stock: 0,
 		price: 0,
 	},
 	{
@@ -53,7 +53,7 @@ const data: {
 		image: HardSharpDonut,
 		description: 'This is product des',
 		category: '4',
-		sales: 0,
+		stock: 0,
 		price: 0,
 	},
 	{
@@ -62,7 +62,7 @@ const data: {
 		image: BendyRectangle,
 		description: 'This is product des',
 		category: '5',
-		sales: 0,
+		stock: 0,
 		price: 0,
 	},
 	// {

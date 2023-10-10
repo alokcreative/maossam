@@ -13,7 +13,7 @@ const data: {
 	{
 		id: 1,
 		dueDate: 'Dec 28th 2022 ',
-		name: 'Complete report on market research findings',
+		name: 'Complete report on Business Profile',
 		description: 'description1',
 		category: 'Marketing Asset',
 		expectedTime: '45min',

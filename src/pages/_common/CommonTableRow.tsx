@@ -16,10 +16,10 @@ interface ICommonTableRowProps {
 	name: string;
 	category: string;
 	price: number;
-	store: string;
+	stock: string;
 }
 // to={`../${pagesMenu.productId.path}/${id}`}
-const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, price, store }) => {
+const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, price, stock }) => {
 	const { darkModeStatus } = useDarkMode();
 	const { user } = useSelector((state: RootState) => state.auth);
 	const savedValue = localStorage?.getItem('user');
@@ -89,7 +89,8 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 					{store}
 				</Badge>
 			</td> */}
-			<td>{name}</td>
+			<td>{stock}</td>
+			<td>{category}</td>
 			<td>
 				<Button
 					icon='Visibility'
