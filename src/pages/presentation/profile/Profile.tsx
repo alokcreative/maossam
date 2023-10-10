@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import UserImage from '../../../assets/img/wanna/wanna1.png';
 import useTourStep from '../../../hooks/useTourStep';
@@ -34,7 +33,6 @@ const Profile = () => {
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
 	const [UpdateProfileMutation] = useUpdateProfileMutation();
-	const [image, setImage] = useState('');
 
 	const formik = useFormik({
 		initialValues: {
@@ -46,7 +44,6 @@ const Profile = () => {
 			currentPassword: '',
 			confirmPassword: '',
 			newPassword: '',
-			avatar: data ? data.avatar : UserImage,
 		},
 		validate: (values) => {
 			const errors: {
@@ -59,18 +56,15 @@ const Profile = () => {
 		},
 		onSubmit: async (values) => {
 			const userdetails = {
-				id: data.id,
 				first_name: values.firstName,
 				last_name: values.lastName,
 				email: values.emailAddress,
-				avatar: values.avatar,
 				// country: data.country,
 				// state: data.state,
 				phone_number: values.phone,
 				gender: values.gender,
 			};
-			console.log('userdetails>>', userdetails.avatar);
-			await UpdateProfileMutation(userdetails);
+			await UpdateProfileMutation({ id: data.id, userdetails });
 			refetch();
 		},
 	});
@@ -85,47 +79,18 @@ const Profile = () => {
 		formik.setFieldValue('currentPassword', '');
 		formik.setFieldValue('confirmPassword', '');
 		formik.setFieldValue('newPassword', '');
-		formik.setFieldValue('image', data ? data?.avatar : '');
+		setSrc(data ? data?.avatar : '');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id, isSuccess]);
+	}, [id, isSuccess, data]);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	// const handleImageChange = async (event: any) => {
-	// 	const file = event.target.files[0];
-	// 	// const userdetails = {
-	// 	// 	id: data.id,
-	// 	// 	src: file,
-	// 	// };
-	// 	// await UpdateProfileMutation(userdetails);
-	// 	// console.log('file >>', file);
-	// 	if (file) {
-	// 		// 			const imageURL = URL.createObjectURL(file);
-	// 		console.log('file>>', file);
-	// 		// 			const filed = new File([imageURL], "image");
-	// 		// 			const myBlob = new Blob();
-
-	// 		// const myFile = blobToFile(myBlob, "my-image.png");
-	// 		// 			setSrc(filed);
-	// 		formik.setFieldValue('image', file);
-	// 	}
-	// };
 	const handleImageChange = (event: any) => {
+		event.preventDefault();
 		const file = event.target.files[0];
 		console.log('file >>', file);
-		const formdata = new FormData();
-		formdata.append('avatar', file, file.name);
-		formik.setFieldValue('avatar', formdata);
-		UpdateProfileMutation({id:data.id,avatar:formdata})
-		console.log('formdata>>', formdata.get('avatar'));
-
-		// UpdateProfileMutation(formdata);
-		// if (file) {
-		// 	const imageURL = URL.createObjectURL(file);
-		// 	console.log(imageURL);
-
-		// 	setSrc(imageURL);
-		//
-		// }
+		const avatar = new FormData();
+		avatar.append('avatar', file, file.name);
+		UpdateProfileMutation({ id: data.id, avatar });
+		refetch();
 	};
 
 	return (
@@ -171,7 +136,7 @@ const Profile = () => {
 															name='avatar'
 															aria-label='Upload image file'
 															onChange={handleImageChange}
-															onBlur={formik.handleBlur}
+															// onBlur={formik.handleBlur}
 														/>
 													</div>
 													<div className='col-auto'>

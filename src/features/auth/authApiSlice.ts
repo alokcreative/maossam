@@ -12,16 +12,19 @@ interface ILoginPayload {
 	email: string;
 	password: string;
 }
-interface IProfilePayload {
-	id: string;
+interface IUserDetails{
 	first_name?: string;
 	last_name?: string;
 	email?: string;
-	avatar?: FormData;
 	country?: string;
 	state?: string;
 	phone_number?: string;
 	gender?: string;
+}
+interface IProfilePayload {
+	id: string;
+	userdetails?: IUserDetails;
+	avatar?: FormData;
 }
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
@@ -106,7 +109,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			query: (payload: IProfilePayload) => ({
 				url: `${apiEndpoints.update}${payload.id}/`,
 				method: 'PATCH',
-				body: payload,
+				body: payload.userdetails || payload.avatar,
 				headers: {
 					// 'Content-Type': 'multipart/form-data',
 					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
