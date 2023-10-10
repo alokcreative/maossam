@@ -115,6 +115,7 @@ const Profile = () => {
 		const formdata = new FormData();
 		formdata.append('avatar', file, file.name);
 		formik.setFieldValue('avatar', formdata);
+		UpdateProfileMutation({id:data.id,avatar:formdata})
 		console.log('formdata>>', formdata.get('avatar'));
 
 		// UpdateProfileMutation(formdata);
