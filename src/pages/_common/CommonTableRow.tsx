@@ -91,7 +91,7 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 			</td> */}
 			<td>{stock}</td>
 			<td>{category}</td>
-			<td>
+			<td className=' d-flex gap-1'>
 				<Button
 					icon='Visibility'
 					color='primary'
