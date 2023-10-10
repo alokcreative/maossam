@@ -401,7 +401,7 @@ export const data: {
 			},
 			{
 				id: 2,
-				name: 'Complete report on market research findings	',
+				name: 'Complete report on Business Profile',
 				title: 'Research findings',
 				description: 'description 1',
 				status: 'Hold',
