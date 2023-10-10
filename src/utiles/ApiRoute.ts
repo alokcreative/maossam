@@ -1,11 +1,12 @@
 const apiEndpoints = {
+	register: 'register/',
 	login: 'login/',
+	profile: 'profile/',
+	getUser: 'getuser',
 	signup: 'register/',
 	logout: 'logout/',
 	forgotPassword: 'password/forgot/',
 	createUser: 'create/',
-	getUser: 'list/',
-	updateUser: 'update/',
+	update: 'update/',
 };
-
 export default apiEndpoints;

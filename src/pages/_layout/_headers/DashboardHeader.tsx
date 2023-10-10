@@ -5,10 +5,10 @@ import CommonHeaderRight from './CommonHeaderRight';
 const DashboardHeader = () => {
 	return (
 		<Header>
-			<HeaderLeft>
+			{/* <HeaderLeft> */}
 				{/* <Search /> */}
-				<div />
-			</HeaderLeft>
+				{/* <div /> */}
+			{/* </HeaderLeft> */}
 			<CommonHeaderRight />
 			{/* afterChildren={<CommonHeaderChat />}  this is chat page attribute of CommonHeaderRight */}
 		</Header>

@@ -1,7 +1,5 @@
-import React, { FC, useCallback, useState, lazy, startTransition, useEffect } from 'react';
+import React, { FC, useState, lazy, startTransition, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useFormik } from 'formik';
@@ -12,12 +10,10 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
 import Button from '../../../components/bootstrap/Button';
 import useDarkMode from '../../../hooks/useDarkMode';
-import USERS, { Role, getUserDataWithUsername } from '../../../common/data/userDummyData';
 import Spinner from '../../../components/bootstrap/Spinner';
-import Alert from '../../../components/bootstrap/Alert';
-import { login } from '../../../features/auth/authSlice';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useGetUserMutation } from '../../../features/auth/authApiSlice';
+import {  useLoginUserMutation } from '../../../features/auth/authApiSlice';
+import { toast } from 'react-toastify';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -53,138 +49,105 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 
 	const { darkModeStatus } = useDarkMode();
 
-	const [signInPassword, setSignInPassword] = useState<boolean>(false);
 	const [singUpStatus, setSingUpStatus] = useState<boolean>(!!isSignUp);
-	const [getUserMutation] = useGetUserMutation();
+	const [LoginUserMutation, { isLoading }] = useLoginUserMutation();
 
 	const navigate = useNavigate();
-
-	const handleOnClick = useCallback(() => navigate('/'), [navigate]);
-
-	const usernameCheck = (username: string) => {
-		return !!getUserDataWithUsername(username);
-	};
-
-	const passwordCheck = (username: string, password: string) => {
-		return getUserDataWithUsername(username).password === password;
-	};
-
-	const dispatch = useDispatch();
 
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
 			email: '',
-			loginPassword: '',
+			password: '',
 		},
 		validate: (values) => {
-			const errors: { email?: string; loginPassword?: string } = {};
+			const errors: { email?: string; password?: string } = {};
 
 			if (!values.email) {
 				errors.email = 'Required';
 			}
 
-			if (!values.loginPassword) {
-				errors.loginPassword = 'Required';
+			if (!values.password) {
+				errors.password = 'Required';
 			}
 
 			return errors;
 		},
 		validateOnChange: false,
 		onSubmit: async (values) => {
-			setIsLoading(true);
-			if (usernameCheck(values.email)) {
-				if (passwordCheck(values.email, values.loginPassword)) {
-					const userdata = getUserDataWithUsername(values.email);
-					const userdetails = {
-						id: userdata.id,
-						name: userdata.name,
-						lastname: userdata.lastname,
-						email: userdata.email,
-						role: userdata.role,
-						src: userdata.src,
-					};
-					const user = { user: userdetails };
-					dispatch(login(user));
-					const value = JSON.stringify(userdetails);
-
-					try {
-						const  data  = await getUserMutation(values);
-						console.log(data);
-					} catch (error) {
-						console.log(error);
-					}
-					localStorage.setItem('user', value);
-					setIsLoading(true);
-					startTransition(() => {
-						navigate('/');
-					});
-					setIsLoading(false);
-				} else {
-					formik.setFieldError('loginPassword', 'Username and password do not match.');
-					setIsLoading(false);
-				}
+			if (values.email) {
+				startTransition(() => {
+					LoginUserMutation(values)
+						.unwrap()
+						.then((data1: { access: string; refresh: string }) => {
+							localStorage.setItem('access_token', data1.access);
+							localStorage.setItem('refresh_token', data1.refresh);
+							navigate('/');
+						})
+						.catch((rejected) => {
+							toast(rejected.data?.detail);
+							formik.setFieldValue('email', '');
+							formik.setFieldValue('password', '');
+						});
+				});
 			}
 		},
 	});
 
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const handleContinue = () => {
-		setIsLoading(true);
-		setTimeout(() => {
-			if (
-				!Object.keys(USERS).find((f) => USERS[f].email.toString() === formik.values.email)
-			) {
-				formik.setFieldError('email', 'User not found');
-			} else {
-				setSignInPassword(true);
+	// const handleContinue = () => {
+	// 	setIsLoading(true);
+	// 	setTimeout(() => {
+	// 		if (
+	// 			!Object.keys(USERS).find((f) => USERS[f].email.toString() === formik.values.email)
+	// 		) {
+	// 			formik.setFieldError('email', 'User not found');
+	// 		} else {
+	// 			setSignInPassword(true);
 
-				// dispatch(login(user))
-			}
-			setIsLoading(false);
-		}, 1000);
-	};
-	const [token, setToken] = useState('');
-	const [profile, setProfile] = useState([]);
+	// 			// dispatch(login(user))
+	// 		}
+	// 		setIsLoading(false);
+	// 	}, 1000);
+	// };
 
 	const handleLoginWithGoogle = useGoogleLogin({
-		onSuccess: (tokenResponse) => setToken(tokenResponse.access_token),
-		onError: (error) => console.log('Login Failed:', error),
+		// onSuccess: (tokenResponse) => setToken(tokenResponse.access_token),
+		// onError: (error) => console.log('Login Failed:', error),
 	});
-	useEffect(() => {
-		if (token) {
-			axios
-				.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-						Accept: 'application/json',
-					},
-				})
-				.then((res) => {
-					setProfile(res.data);
-					// console.log(res.data);
-					const userdetails = {
-						id: res.data.id,
-						name: res.data.given_name,
-						lastname: res.data.family_name,
-						role: Role.user,
-						email: res.data.email,
-						src: res.data.picture,
-					};
-					const user = { user: userdetails };
-					dispatch(login(user));
-					const value = JSON.stringify(userdetails);
-					localStorage.setItem('user', value);
-					setIsLoading(true);
-					startTransition(() => {
-						navigate('/');
-					});
-					setIsLoading(false);
-					// console.log(res.data)
-				})
-				.catch((err) => setProfile(err));
-		}
-	}, [token, navigate, dispatch]);
+	// useEffect(() => {
+	// 	if (token) {
+	// 		axios
+	// 			.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
+	// 				headers: {
+	// 					Authorization: `Bearer ${token}`,
+	// 					Accept: 'application/json',
+	// 				},
+	// 			})
+	// 			.then((res) => {
+	// 				setProfile(res.data);
+	// 				// console.log(res.data);
+	// 				const userdetails = {
+	// 					id: res.data.id,
+	// 					name: res.data.given_name,
+	// 					lastname: res.data.family_name,
+	// 					role: Role.user,
+	// 					email: res.data.email,
+	// 					src: res.data.picture,
+	// 				};
+	// 				const user = { user: userdetails };
+	// 				dispatch(login(user));
+	// 				const value = JSON.stringify(userdetails);
+	// 				localStorage.setItem('user', value);
+	// 				setIsLoading(true);
+	// 				startTransition(() => {
+	// 					navigate('/');
+	// 				});
+	// 				setIsLoading(false);
+	// 				// console.log(res.data)
+	// 			})
+	// 			.catch((err) => setProfile(err));
+	// 	}
+	// }, [token, navigate, dispatch]);
 
 	const handleLinkClick = (e: React.FormEvent) => {
 		e.preventDefault(); // Prevent the default browser behavior
@@ -227,7 +190,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												className='rounded-1 w-100'
 												size='lg'
 												onClick={() => {
-													setSignInPassword(false);
+													setSingUpStatus(false);
 													setSingUpStatus(!singUpStatus);
 												}}>
 												Login
@@ -240,7 +203,6 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												className='rounded-1 w-100'
 												size='lg'
 												onClick={() => {
-													setSignInPassword(false);
 													setSingUpStatus(!singUpStatus);
 												}}>
 												Sign Up
@@ -250,17 +212,6 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 								</div>
 
 								<LoginHeader isNewUser={singUpStatus} />
-
-								<Alert isLight icon='Lock' isDismissible>
-									<div className='row'>
-										<div className='col-12'>
-											<strong>Username:</strong> {USERS.JOHN.email}
-										</div>
-										<div className='col-12'>
-											<strong>Password:</strong> {USERS.JOHN.password}
-										</div>
-									</div>
-								</Alert>
 								<form className='row g-4'>
 									{singUpStatus ? (
 										<Signup />
@@ -270,10 +221,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												<FormGroup
 													id='email'
 													isFloating
-													label='Your email or username'
-													className={classNames({
-														'd-none': signInPassword,
-													})}>
+													label='Your email...'>
 													<Input
 														autoComplete='username'
 														value={formik.values.email}
@@ -287,26 +235,19 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 														}}
 													/>
 												</FormGroup>
-												{signInPassword && (
-													<div className='text-center h4 mb-3 fw-bold'>
-														Hi, {formik.values.email}.
-													</div>
-												)}
+											</div>
+											<div className='col-12'>
 												<FormGroup
-													id='loginPassword'
+													id='password'
 													isFloating
-													label='Password'
-													className={classNames({
-														'd-none': !signInPassword,
-													})}>
+													label='Password'>
 													<Input
 														type='password'
+														name='password'
 														autoComplete='current-password'
-														value={formik.values.loginPassword}
-														isTouched={formik.touched.loginPassword}
-														invalidFeedback={
-															formik.errors.loginPassword
-														}
+														value={formik.values.password}
+														isTouched={formik.touched.password}
+														invalidFeedback={formik.errors.password}
 														validFeedback='Looks good!'
 														isValid={formik.isValid}
 														onChange={formik.handleChange}
@@ -315,66 +256,36 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												</FormGroup>
 											</div>
 											<div className='col-12'>
-												{!signInPassword ? (
-													<Button
-														color='warning'
-														className='w-100 py-3'
-														isDisable={!formik.values.email}
-														onClick={handleContinue}>
-														{isLoading && (
-															<Spinner isSmall inButton isGrow />
-														)}
-														Continue
-													</Button>
-												) : (
-													<Button
-														color='warning'
-														className='w-100 py-3'
-														onClick={formik.handleSubmit}>
-														{isLoading && (
-															<Spinner isSmall inButton isGrow />
-														)}
-														Login
-													</Button>
-												)}
+												<Button
+													color='warning'
+													className='w-100 py-3'
+													onClick={formik.handleSubmit}>
+													{isLoading && (
+														<Spinner isSmall inButton isGrow />
+													)}
+													Login
+												</Button>
 											</div>
 										</>
 									)}
 
 									{/* BEGIN :: Social Login */}
-									{!signInPassword && (
-										<>
-											<div className='col-12 mt-3 text-center text-muted'>
-												OR
-											</div>
-											{/* <div className='col-12 mt-3'>
-												<Button
-													isOutline
-													color={darkModeStatus ? 'light' : 'dark'}
-													className={classNames('w-100 py-3', {
-														'border-light': !darkModeStatus,
-														'border-dark': darkModeStatus,
-													})}
-													icon='CustomApple'
-													onClick={handleOnClick}>
-													Sign in with Apple
-												</Button>
-											</div> */}
-											<div className='col-12 mt-3'>
-												<Button
-													isOutline
-													color={darkModeStatus ? 'light' : 'dark'}
-													className={classNames('w-100 py-3', {
-														'border-light': !darkModeStatus,
-														'border-dark': darkModeStatus,
-													})}
-													icon='CustomGoogle'
-													onClick={() => handleLoginWithGoogle()}>
-													Continue with Google
-												</Button>
-											</div>
-										</>
-									)}
+
+									<div className='col-12 mt-3 text-center text-muted'>OR</div>
+									<div className='col-12 mt-3'>
+										<Button
+											isOutline
+											color={darkModeStatus ? 'light' : 'dark'}
+											className={classNames('w-100 py-3', {
+												'border-light': !darkModeStatus,
+												'border-dark': darkModeStatus,
+											})}
+											icon='CustomGoogle'
+											onClick={() => handleLoginWithGoogle()}>
+											Continue with Google
+										</Button>
+									</div>
+
 									{/* END :: Social Login */}
 								</form>
 							</CardBody>
@@ -413,4 +324,3 @@ Login.defaultProps = {
 };
 
 export default Login;
- 

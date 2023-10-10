@@ -1,24 +1,18 @@
 import React, { FC, startTransition, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signup } from '../../../features/auth/authSlice';
 import { useFormik } from 'formik';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
 import Button from '../../../components/bootstrap/Button';
-import useDarkMode from '../../../hooks/useDarkMode';
 import Spinner from '../../../components/bootstrap/Spinner';
 import * as Yup from 'yup';
-import { Role } from '../../../common/data/userDummyData';
+import { useRegisterUserMutation } from '../../../features/auth/authApiSlice';
+import { toast } from 'react-toastify';
 
 const Signup: FC = () => {
-	const { darkModeStatus } = useDarkMode();
-
+	const [RegisterUserMutation, { isLoading }] = useRegisterUserMutation();
 	const navigate = useNavigate();
-	// const handleOnClick = useCallback(() => navigate('/modals-step-form'), [navigate]);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	const dispatch = useDispatch();
 	const validateEmail = (value: string) => {
 		let error;
 		if (!emailRegex.test(value)) {
@@ -36,62 +30,64 @@ const Signup: FC = () => {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
+			first_name: '',
+			last_name: '',
 			email: '',
-			username: '',
-			surname: '',
 			password: '',
+			confirm_password: '',
 		},
 		validationSchema,
 		validate: (values) => {
 			const errors: {
+				first_name?: string;
+				last_name?: string;
 				email?: string;
-				username?: string;
-				surname?: string;
 				password?: string;
+				confirm_password?: string;
 			} = {};
 			if (!values.email) {
 				errors.email = 'Required';
 			}
 
-			if (!values.username) {
-				errors.username = 'Required';
+			if (!values.first_name) {
+				errors.first_name = 'Required';
 			}
-			if (!values.surname) {
-				errors.surname = 'Required';
+			if (!values.last_name) {
+				errors.last_name = 'Required';
 			}
 			if (!values.password) {
 				errors.password = 'Required';
+			}
+			if (!values.confirm_password) {
+				errors.confirm_password = 'Required';
 			}
 
 			return errors;
 		},
 		validateOnChange: false,
-
 		onSubmit: (values) => {
-			setIsLoading(true);
+			// setIsLoading(true);
 			if (values.email) {
 				startTransition(() => {
-					const userdetails = {
-						id: '0',
-						name: values.username,
-						lastname: values.surname,
-						email: values.email,
-						src: '',
-						role: Role.user,
-						teamMember: '',
-						country: '',
-						company: '',
-						state: '',
-						contact: 0,
-						about: { type: '', exp: '', FeieldActivity: '' },
-					};
-					const value = JSON.stringify(userdetails);
-					localStorage.setItem('user', value);
-					const user = { user: userdetails };
-					dispatch(signup(user));
-					navigate('/modals-step-form');
+					RegisterUserMutation(values)
+						.unwrap()
+						.then((data) => {
+							localStorage.setItem('access_token', data.tokens.access_token);
+							localStorage.setItem('refresh_token', data.tokens.refresh_token);
+							navigate('/modals-step-form');
+						})
+						.catch((rejected) => {
+							console.error('rejected>>>', rejected);
+							toast(rejected.data?.email[0]);
+							navigate('/auth-pages/login');
+							formik.setFieldValue('first_name', '');
+							formik.setFieldValue('last_name', '');
+							formik.setFieldValue('email', '');
+							formik.setFieldValue('password', '');
+							formik.setFieldValue('confirm_password', '');
+						});
 				});
-				setIsLoading(false);
+				// setIsLoading(false);
 			}
 		},
 	});
@@ -101,14 +97,14 @@ const Signup: FC = () => {
 			<div className='col-12'>
 				<FormGroup id='signup-name' isFloating label='FirstName'>
 					<Input
-						autoComplete='username'
+						autoComplete='first_name'
 						type='text'
-						name='username'
+						name='first_name'
 						onChange={formik.handleChange}
-						value={formik.values.username}
+						value={formik.values.first_name}
 						isValid={formik.isValid}
-						isTouched={formik.touched.username}
-						invalidFeedback={formik.errors.username}
+						isTouched={formik.touched.first_name}
+						invalidFeedback={formik.errors.first_name}
 						onBlur={formik.handleBlur}
 						onFocus={() => {
 							formik.setErrors({});
@@ -118,16 +114,16 @@ const Signup: FC = () => {
 			</div>
 
 			<div className='col-12'>
-				<FormGroup id='signup-surname' isFloating label='LastName'>
+				<FormGroup id='signup-lastname' isFloating label='Your lastname'>
 					<Input
-						autoComplete='surname'
+						autoComplete='last_name'
 						type='text'
-						name='surname'
+						name='last_name'
 						onChange={formik.handleChange}
-						value={formik.values.surname}
+						value={formik.values.last_name}
 						isValid={formik.isValid}
-						isTouched={formik.touched.surname}
-						invalidFeedback={formik.errors.surname}
+						isTouched={formik.touched.last_name}
+						invalidFeedback={formik.errors.last_name}
 						onBlur={formik.handleBlur}
 						onFocus={() => {
 							formik.setErrors({});
@@ -165,6 +161,24 @@ const Signup: FC = () => {
 						isValid={formik.isValid}
 						isTouched={formik.touched.password}
 						invalidFeedback={formik.errors.password}
+						onBlur={formik.handleBlur}
+						onFocus={() => {
+							formik.setErrors({});
+						}}
+					/>
+				</FormGroup>
+			</div>
+			<div className='col-12'>
+				<FormGroup id='confirm-password' isFloating label='confirm password'>
+					<Input
+						autoComplete='confirm password'
+						type='password'
+						name='confirm_password'
+						onChange={formik.handleChange}
+						value={formik.values.confirm_password}
+						isValid={formik.isValid}
+						isTouched={formik.touched.confirm_password}
+						invalidFeedback={formik.errors.confirm_password}
 						onBlur={formik.handleBlur}
 						onFocus={() => {
 							formik.setErrors({});

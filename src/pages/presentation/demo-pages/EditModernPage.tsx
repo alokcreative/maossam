@@ -116,9 +116,7 @@ const EditModernPage = () => {
 							<CardBody>
 								<div className='col-12'>
 									<div className='row g-4 align-items-center'>
-										<div className='col-lg-auto'>
-											Avatar removed
-										</div>
+										<div className='col-lg-auto'>Avatar removed</div>
 										<div className='col-lg'>
 											<div className='row g-4'>
 												<div className='col-auto'>
@@ -133,11 +131,11 @@ const EditModernPage = () => {
 														Delete Avatar
 													</Button>
 												</div>
-												<div className='col-12'>
+												{/* <div className='col-12'>
 													<p className='lead text-muted'>
 														Avatar helps your teammates get to know you.
 													</p>
-												</div>
+												</div> */}
 											</div>
 										</div>
 									</div>

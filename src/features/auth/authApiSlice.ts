@@ -1,52 +1,143 @@
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
-interface IPayload {
+interface IRegisterPayload {
+	first_name: string;
+	last_name: string;
 	email: string;
-	loginPassword: string;
+	password: string;
+	confirm_password: string;
 }
-export const productsApiSlice = apiSlice.injectEndpoints({
+interface ILoginPayload {
+	email: string;
+	password: string;
+}
+interface IProfilePayload {
+	id: string;
+	first_name?: string;
+	last_name?: string;
+	email?: string;
+	avatar?: string;
+	country?: string;
+	state?: string;
+	phone_number?: string;
+	gender?: string;
+}
+export const getTokenFromLocalStorage = () => {
+	return localStorage.getItem('access_token');
+};
+interface ILogoutProps {
+	accessToken: string;
+	refresh: { refresh: string };
+}
+export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		// getPosts: builder.query({
-		//     query: () => '/posts',
-		//     providesTags: ['Post'],
-		//   }),
-		getUser: builder.mutation({
-			query: (payload: IPayload) => ({
+		// Register user
+		registerUser: builder.mutation({
+			query: (payload: IRegisterPayload) => ({
+				url: apiEndpoints.register,
+				method: 'POST',
+				body: payload,
+				header: 'Content-Type: application/json',
+			}),
+			invalidatesTags: [`Register`],
+		}),
+		// Login User
+		loginUser: builder.mutation({
+			query: (payload: ILoginPayload) => ({
 				url: apiEndpoints.login,
 				method: 'POST',
 				body: payload,
 				headers: {
-					'X-RapidAPI-Key': '5d8641db9fmsh04c1a1beb6e16e6p157d76jsn553e9f6dbc5a',
 					'Content-Type': 'application/json',
-					'X-RapidAPI-Host': 'logintesting.p.rapidapi.com',
+				},
+			}),
+			invalidatesTags: [`Login`],
+		}),
+		// Logout
+		logout: builder.mutation({
+			query: (payload: ILogoutProps) => ({
+				url: apiEndpoints.logout,
+				method: 'POST',
+				body: payload.refresh,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${payload.accessToken}`,
+				},
+			}),
+		}),
+		getUsers: builder.mutation({
+			query: (payload: string) => ({
+				url: apiEndpoints.profile,
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${payload}`,
 				},
 			}),
 		}),
 
-		// Login
-		login: builder.mutation({
-			query: (payload: IPayload) => ({
-				url: apiEndpoints.login,
-				method: 'POST',
-				body: payload,
+		// Get  Profile
+		getProfile: builder.query({
+			query: (id) => ({
+				url: apiEndpoints.update + id,
+				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
 		}),
-		// Signup
-		signup: builder.mutation({
-			query: (payload: IPayload) => ({
-				url: apiEndpoints.signup,
+
+		// Create Profile
+		createProfile: builder.mutation({
+			query: (payload: IProfilePayload) => ({
+				url: apiEndpoints.update,
 				method: 'POST',
 				body: payload,
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			}),
+			invalidatesTags: [`Profile`],
+		}),
+
+		// Profile Update
+		updateProfile: builder.mutation({
+			query: (payload: IProfilePayload) => ({
+				url: `${apiEndpoints.update}${payload.id}/`,
+				method: 'PATCH',
+				body: payload,
+				headers: {
+					// 'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+				},
+			}),
+			invalidatesTags: [`Profile`],
+		}),
+
+		// Delete Profile
+		deleteProfile: builder.mutation({
+			query: ({ id, ...rest }: IProfilePayload) => ({
+				url: apiEndpoints.update + id,
+				method: 'DELETE',
+				body: rest,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+				},
+			}),
+			invalidatesTags: [`Profile`],
 		}),
 	}),
 });
 
-export const { useGetUserMutation, useLoginMutation, useSignupMutation } = productsApiSlice;
+export const {
+	useRegisterUserMutation,
+	useLoginUserMutation,
+	useLogoutMutation,
+	useGetUsersMutation,
+	useGetProfileQuery,
+	useCreateProfileMutation,
+	useUpdateProfileMutation,
+	useDeleteProfileMutation,
+} = authApiSlice;

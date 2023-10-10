@@ -9,7 +9,7 @@ const DefaultHeader = () => {
 	const { width } = useDeviceScreen();
 	return (
 		<Header>
-			<HeaderLeft>
+			{/* <HeaderLeft> */}
 				{/* <Navigation
 					menu={{ ...pageLayoutTypesPagesMenu, ...componentPagesMenu }}
 					id='header-top-menu'
@@ -17,7 +17,7 @@ const DefaultHeader = () => {
 						!!width && width >= Number(process.env.REACT_APP_MOBILE_BREAKPOINT_SIZE)
 					}
 				/> */}
-			</HeaderLeft>
+			{/* </HeaderLeft> */}
 			<CommonHeaderRight />
 		</Header>
 	);
