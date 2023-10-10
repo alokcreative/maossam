@@ -17,7 +17,7 @@ interface IProfilePayload {
 	first_name?: string;
 	last_name?: string;
 	email?: string;
-	avatar?: string;
+	avatar?: FormData;
 	country?: string;
 	state?: string;
 	phone_number?: string;
