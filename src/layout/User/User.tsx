@@ -52,8 +52,10 @@ const User = () => {
 				.unwrap()
 				.then((data: IUserData) => {
 					setUserData(data);
+					localStorage.setItem('role', data.role);
 				});
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);
 

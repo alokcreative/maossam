@@ -13,6 +13,7 @@ import Card, {
 	CardLabel,
 	CardTitle,
 } from '../../../components/bootstrap/Card';
+import useDarkMode from '../../../hooks/useDarkMode';
 import Page from '../../../layout/Page/Page';
 import showNotification from '../../../components/extras/showNotification';
 import validate from '../demo-pages/helper/editPagesValidate';
@@ -28,6 +29,7 @@ import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import GoalViewPopup from './goalHelpher/GoalViewPopup';
+import Item from '../../_common/dashboardHelper/GoalItems';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -42,6 +44,8 @@ interface IValues {
 	id: number;
 	name: string;
 	description: string;
+	timeline: string;
+	status: string;
 }
 
 interface CardProp {
@@ -56,14 +60,20 @@ interface CardProp {
 	percent: number;
 }
 const Goals: FC = () => {
+	const { darkModeStatus } = useDarkMode();
+
 	const [goalList, setGoalList] = useState<IValues[]>(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 	const navigate = useNavigate();
 	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
+	const [productView, setProductView] = useState<boolean>(false);
+
+	const role = localStorage?.getItem('role');
+
 	const formikOneWay = useFormik({
 		initialValues: {
 			exampleSelectOneWay: '',
@@ -174,7 +184,23 @@ const Goals: FC = () => {
 					/>
 				</SubHeaderLeft>
 				<SubHeaderRight>
-					{role === Role.admin && (
+					<Button
+						color={darkModeStatus ? 'light' : 'dark'}
+						isLight
+						type='button'
+						className={`${productView === false ? 'me-3 active' : 'me-3'}`}
+						onClick={() => setProductView(false)}>
+						Grid View
+					</Button>
+					<Button
+						color={darkModeStatus ? 'light' : 'dark'}
+						isLight
+						type='button'
+						className={`${productView === true ? 'active' : ''}`}
+						onClick={() => setProductView(true)}>
+						List View
+					</Button>
+					{role !== 'user' && (
 						<Button
 							color='success'
 							isLight
@@ -192,31 +218,48 @@ const Goals: FC = () => {
 				<div className='display-4 fw-bold py-3'> Goals</div>
 				<div className='row h-100'>
 					<div className='col-12'>
-						<Card stretch>
-							<CardHeader>
-								<CardLabel icon='TrackChanges' iconColor='success'>
-									<CardTitle tag='div' className='h5'>
-										List Of Goals
-									</CardTitle>
-								</CardLabel>
-							</CardHeader>
-							<CardBody className='table-responsive'>
-								<div className='row g-4'>
-									<div className='col-12'>
-										<table className='table table-modern table-hover'>
-											<thead>
-												<tr>
-													<th scope='col'>Sr No</th>
-													<th scope='col'>Name</th>
-													<th scope='col'>Description</th>
-													<th scope='col'>Date</th>
-													<th scope='col'>Status</th>
-													<th scope='col'>Action</th>
-												</tr>
-											</thead>
-											<tbody>
-												{dataPagination(goalList, currentPage, perPage).map(
-													(i) => {
+						{productView === false ? (
+							<div className='row'>
+								{goalList.map((item) => (
+									<Item
+										key={item.id}
+										id={item.id}
+										name={item.name}
+										attributes={item.description}
+										timeline={item.timeline}
+										status={item.status}
+									/>
+								))}
+							</div>
+						) : (
+							<Card stretch>
+								<CardHeader>
+									<CardLabel icon='TrackChanges' iconColor='success'>
+										<CardTitle tag='div' className='h5'>
+											List Of Goals
+										</CardTitle>
+									</CardLabel>
+								</CardHeader>
+								<CardBody className='table-responsive'>
+									<div className='row g-4'>
+										<div className='col-12'>
+											<table className='table table-modern table-hover'>
+												<thead>
+													<tr>
+														<th scope='col'>Sr No</th>
+														<th scope='col'>Name</th>
+														<th scope='col'>Description</th>
+														<th scope='col'>Date</th>
+														<th scope='col'>Status</th>
+														<th scope='col'>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													{dataPagination(
+														goalList,
+														currentPage,
+														perPage,
+													).map((i) => {
 														return (
 															<tr>
 																<th scope='row'>{i.id}</th>
@@ -248,7 +291,7 @@ const Goals: FC = () => {
 																		}
 																		className='me-1'
 																	/>
-																	{role === Role.admin ? (
+																	{role !== 'user' ? (
 																		<>
 																			<Button
 																				icon='Edit'
@@ -274,24 +317,24 @@ const Goals: FC = () => {
 																</td>
 															</tr>
 														);
-													},
-												)}
-											</tbody>
-										</table>
+													})}
+												</tbody>
+											</table>
+										</div>
 									</div>
-								</div>
-							</CardBody>
-							<CardFooter>
-								<PaginationButtons
-									data={data}
-									label='items'
-									setCurrentPage={setCurrentPage}
-									currentPage={currentPage}
-									perPage={perPage}
-									setPerPage={setPerPage}
-								/>
-							</CardFooter>
-						</Card>
+								</CardBody>
+								<CardFooter>
+									<PaginationButtons
+										data={data}
+										label='items'
+										setCurrentPage={setCurrentPage}
+										currentPage={currentPage}
+										perPage={perPage}
+										setPerPage={setPerPage}
+									/>
+								</CardFooter>
+							</Card>
+						)}
 					</div>
 				</div>
 

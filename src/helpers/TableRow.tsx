@@ -31,9 +31,11 @@ const TableRow: FC<ITableRowProps> = ({
 	deleteAction,
 }) => {
 	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
+	const role = localStorage?.getItem('role');
+
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
@@ -70,7 +72,7 @@ const TableRow: FC<ITableRowProps> = ({
 					// onClick={() => view(id)}
 				/>
 
-				{role === Role.admin && (
+				{role !== 'user' && (
 					<>
 						<Button
 							icon='Edit'

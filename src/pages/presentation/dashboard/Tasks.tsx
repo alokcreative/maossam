@@ -52,9 +52,11 @@ const Tasks: FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [currTask, setCurrTask] = useState<ITaskProps>();
 	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
+	const role = localStorage?.getItem('role');
+
 
 	const formiknewTask = useFormik({
 		initialValues: {
@@ -122,7 +124,7 @@ const Tasks: FC = () => {
 					<Breadcrumb list={[{ title: 'Tasks', to: '/' }]} />
 				</SubHeaderLeft>
 				<SubHeaderRight>
-					{role === Role.admin && (
+					{role !== 'user' && (
 						<Button
 							color='success'
 							isLight

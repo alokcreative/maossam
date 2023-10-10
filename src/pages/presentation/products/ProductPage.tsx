@@ -82,15 +82,16 @@ const validate = (values: IValues) => {
 
 const ProductPage = () => {
 	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
 	const { darkModeStatus } = useDarkMode();
 	const [data, setData] = useState(tableData);
 	const [editItem, setEditItem] = useState<IValues | null>(null);
 	const [editPanel, setEditPanel] = useState<boolean>(false);
 	const [productView, setproductView] = useState<boolean>(false);
 	const [filterableData, setFilterableData] = useState(data);
+	const role = localStorage?.getItem("role")
 
 	const searchAndFilterData = (searchValue: string) => {
 		const tempData = data;
@@ -239,7 +240,7 @@ const ProductPage = () => {
 						List View
 					</Button>
 
-					{role !== Role.admin && (
+					{role !== 'user' && (
 						<Button
 							color={darkModeStatus ? 'light' : 'dark'}
 							isLight
