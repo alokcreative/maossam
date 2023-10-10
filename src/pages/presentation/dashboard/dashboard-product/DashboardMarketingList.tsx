@@ -20,7 +20,6 @@ import pinterest from '../../../../assets/logos/pinterest.png';
 import linkedin from '../../../../assets/logos/linkedin-svgrepo-com.svg';
 import metaAds from '../../../../assets/logos/Meta_Ads_Manager__1.png';
 
-
 interface IItemPropsSocial extends HTMLAttributes<HTMLDivElement> {
 	name: string;
 	teamName: string;
@@ -141,7 +140,6 @@ interface CardProp {
 }
 
 const DashboardMarketingList = () => {
-
 	const [cards] = useState<CardProp[]>([
 		{
 			id: 1,
@@ -149,10 +147,10 @@ const DashboardMarketingList = () => {
 			image: googleBusiness,
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
-			dueDate: '3 days left',
-			attachCount: 6,
-			taskCount: 24,
-			percent: 65,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 2,
@@ -161,9 +159,9 @@ const DashboardMarketingList = () => {
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
-			attachCount: 1,
-			taskCount: 4,
-			percent: 70,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 3,
@@ -172,9 +170,9 @@ const DashboardMarketingList = () => {
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
 			dueDate: '14 days left',
-			attachCount: 12,
-			taskCount: 34,
-			percent: 78,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 4,
@@ -182,10 +180,10 @@ const DashboardMarketingList = () => {
 			image: metaAds,
 			option: 'yes',
 			teamName: 'Omtanke Taem',
-			dueDate: '21 days left',
-			attachCount: 4,
-			taskCount: 18,
-			percent: 43,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 6,
@@ -193,10 +191,10 @@ const DashboardMarketingList = () => {
 			image: linkedin,
 			option: 'yes',
 			teamName: 'Omtanke Taem',
-			dueDate: '21 days left',
-			attachCount: 4,
-			taskCount: 18,
-			percent: 43,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 7,
@@ -205,12 +203,11 @@ const DashboardMarketingList = () => {
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
-			attachCount: 1,
-			taskCount: 4,
-			percent: 70,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 	]);
-
 
 	return (
 		<PageWrapper className='p-0'>
@@ -218,10 +215,10 @@ const DashboardMarketingList = () => {
 				<div className='col-12'>
 					<div className='display-4 fw-bold py-3'>Marketing Channels</div>
 				</div>
-				
+
 				{cards.length === 0 ? (
-						<p>Not Found</p>
-					) : (
+					<p>Not Found</p>
+				) : (
 					cards.map((card) => (
 						<SocialItem
 							key={card.id}

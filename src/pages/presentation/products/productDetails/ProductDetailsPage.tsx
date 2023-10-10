@@ -211,6 +211,7 @@ const ProductDetailsPage = () => {
 									<div className='col-12'>
 										<img src={data.image} alt='' width='100%' className='p-5' />
 									</div>
+
 									<div className='col-12'>
 										<Button
 											icon='Summarize'
@@ -222,29 +223,27 @@ const ProductDetailsPage = () => {
 										</Button>
 									</div>
 
+									<div className='col-12'>
+										<Button
+											icon='Chat'
+											color='info'
+											className='w-100 p-3'
+											isLight={activeTab !== TABS.COMMENTS}
+											onClick={() => setActiveTab(TABS.COMMENTS)}>
+											{TABS.COMMENTS}
+										</Button>
+									</div>
 									{role !== Role.admin && (
-										<>
-											<div className='col-12'>
-												<Button
-													icon='Chat'
-													color='info'
-													className='w-100 p-3'
-													isLight={activeTab !== TABS.COMMENTS}
-													onClick={() => setActiveTab(TABS.COMMENTS)}>
-													{TABS.COMMENTS}
-												</Button>
-											</div>
-											<div className='col-12'>
-												<Button
-													icon='Edit'
-													color='success'
-													className='w-100 p-3'
-													isLight={activeTab !== TABS.EDIT}
-													onClick={() => setActiveTab(TABS.EDIT)}>
-													{TABS.EDIT}
-												</Button>
-											</div>
-										</>
+										<div className='col-12'>
+											<Button
+												icon='Edit'
+												color='success'
+												className='w-100 p-3'
+												isLight={activeTab !== TABS.EDIT}
+												onClick={() => setActiveTab(TABS.EDIT)}>
+												{TABS.EDIT}
+											</Button>
+										</div>
 									)}
 								</div>
 							</CardBody>
@@ -277,9 +276,9 @@ const ProductDetailsPage = () => {
 											<CardTitle tag='div' className='h5'>
 												Summary
 											</CardTitle>
-											<CardSubTitle tag='div' className='h6'>
+											{/* <CardSubTitle tag='div' className='h6'>
 												Product Information
-											</CardSubTitle>
+											</CardSubTitle> */}
 										</CardLabel>
 									</CardHeader>
 									<CardBody isScrollable>
@@ -309,15 +308,15 @@ const ProductDetailsPage = () => {
 																<div className='fw-bold fs-3 mb-0'>
 																	{priceFormat(data.price)}
 																</div>
-																<div className='text-muted'>
+																{/* <div className='text-muted'>
 																	<b>Quantity: </b> {data.sales}
-																</div>
+																</div> */}
 															</div>
 														</div>
 													</CardBody>
 												</Card>
 											</div>
-											<div className='col-lg-6'>
+											{/* <div className='col-lg-6'>
 												<Card
 													stretch
 													shadow='sm'
@@ -329,11 +328,11 @@ const ProductDetailsPage = () => {
 													<CardHeader className='bg-transparent'>
 														<CardLabel>
 															<CardTitle tag='h4' className='h5'>
-																Sales
+																Stocks
 															</CardTitle>
 														</CardLabel>
 													</CardHeader>
-													{/* <CardBody className='py-0'>
+													<CardBody className='py-0'>
 														<Chart
 															className='mx-n4'
 															series={data.series}
@@ -342,7 +341,37 @@ const ProductDetailsPage = () => {
 															height={chartOptions.chart?.height}
 															width={chartOptions.chart?.width}
 														/>
-													</CardBody> */}
+													</CardBody>
+												</Card>
+											</div> */}
+											<div className='col-lg-6'>
+												<Card
+													stretch
+													shadow='sm'
+													className={`bg-l${
+														darkModeStatus ? 'o25' : '25'
+													}-info rounded-2`}>
+													<CardHeader className='bg-transparent'>
+														<CardLabel>
+															<CardTitle>Stock</CardTitle>
+														</CardLabel>
+													</CardHeader>
+													<CardBody>
+														<div className='d-flex align-items-center pb-3'>
+															<div className='flex-shrink-0'>
+																<Icon
+																	icon='Extension'
+																	size='4x'
+																	color='info'
+																/>
+															</div>
+															<div className='flex-grow-1 ms-3'>
+																<div className='fw-bold fs-3 mb-0'>
+																	{data.sales}
+																</div>
+															</div>
+														</div>
+													</CardBody>
 												</Card>
 											</div>
 											<div className='col-lg-6'>
@@ -375,7 +404,7 @@ const ProductDetailsPage = () => {
 													</CardBody>
 												</Card>
 											</div>
-											<div className='col-lg-6'>
+											{/* <div className='col-lg-6'>
 												<Card
 													stretch
 													shadow='sm'
@@ -384,10 +413,10 @@ const ProductDetailsPage = () => {
 													}-info rounded-2`}>
 													<CardHeader className='bg-transparent'>
 														<CardLabel>
-															<CardTitle>Compatible</CardTitle>
+															<CardTitle>Name</CardTitle>
 														</CardLabel>
 													</CardHeader>
-													{/* <CardBody>
+													<CardBody>
 														<div className='d-flex align-items-center pb-3'>
 															<div className='flex-shrink-0'>
 																<Icon
@@ -398,13 +427,13 @@ const ProductDetailsPage = () => {
 															</div>
 															<div className='flex-grow-1 ms-3'>
 																<div className='fw-bold fs-3 mb-0'>
-																	{data.file}
+																	{data.name}
 																</div>
 															</div>
 														</div>
-													</CardBody> */}
+													</CardBody>
 												</Card>
-											</div>
+											</div> */}
 											{/* <div className='col-12 shadow-3d-container'>
 												<Accordion id='faq' shadow='sm'>
 													<AccordionItem

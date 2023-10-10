@@ -20,6 +20,7 @@ import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
 import Accordion, { AccordionItem } from '../../../../../components/bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
+import { pagesMenu } from '../../../../../menu';
 
 type IAssetNameProps = {
 	idOfBussiness: number | undefined;
@@ -74,7 +75,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 			isStaticBackdrop>
 			<ModalHeader setIsOpen={setIsModalOpen}>
 				<ModalTitle id='mks1' />
-			</ModalHeader>  
+			</ModalHeader>
 			<ModalBody>
 				<div className='row p-auto'>
 					<div className=' mb-4'>

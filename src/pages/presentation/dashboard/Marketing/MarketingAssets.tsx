@@ -213,10 +213,10 @@ const MarketingAssets = () => {
 			image: googleBusiness,
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
-			dueDate: '3 days left',
-			attachCount: 6,
-			taskCount: 24,
-			percent: 65,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 2,
@@ -225,9 +225,9 @@ const MarketingAssets = () => {
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
-			attachCount: 1,
-			taskCount: 4,
-			percent: 70,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 3,
@@ -236,9 +236,9 @@ const MarketingAssets = () => {
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
 			dueDate: '14 days left',
-			attachCount: 12,
-			taskCount: 34,
-			percent: 78,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 4,
@@ -246,10 +246,10 @@ const MarketingAssets = () => {
 			image: metaAds,
 			option: 'yes',
 			teamName: 'Omtanke Taem',
-			dueDate: '21 days left',
-			attachCount: 4,
-			taskCount: 18,
-			percent: 43,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 5,
@@ -257,10 +257,10 @@ const MarketingAssets = () => {
 			image: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg',
 			option: 'yes',
 			teamName: 'MA OSSIM Theme',
-			dueDate: '21 days left',
-			attachCount: 2,
-			taskCount: 12,
-			percent: 30,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 6,
@@ -268,10 +268,10 @@ const MarketingAssets = () => {
 			image: linkedin,
 			option: 'yes',
 			teamName: 'Omtanke Taem',
-			dueDate: '21 days left',
-			attachCount: 4,
-			taskCount: 18,
-			percent: 43,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 7,
@@ -280,9 +280,9 @@ const MarketingAssets = () => {
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
-			attachCount: 1,
-			taskCount: 4,
-			percent: 70,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 	]);
 
@@ -323,11 +323,11 @@ const MarketingAssets = () => {
 						]}
 					/>
 				</SubHeaderLeft>
-				<SubHeaderRight>
+				{/* <SubHeaderRight>
 					<CommonAvatarTeam>
 						<strong>MA OSSIM</strong> Team
 					</CommonAvatarTeam>
-				</SubHeaderRight>
+				</SubHeaderRight> */}
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='row mt-3'>

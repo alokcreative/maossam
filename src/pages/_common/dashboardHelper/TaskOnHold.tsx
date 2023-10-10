@@ -42,7 +42,7 @@ const TaskOnHold = () => {
 							Tasks on hold
 						</CardTitle>
 					</CardLabel>
-					<CardActions>
+					{/* <CardActions>
 						<div className='d-flex gap-4'>
 							<Dropdown>
 								<DropdownToggle hasIcon={false}>
@@ -117,25 +117,26 @@ const TaskOnHold = () => {
 								Export
 							</Button>
 						</div>
-					</CardActions>
+					</CardActions> */}
 				</CardHeader>
 				<CardBody className='table-responsive'>
 					<table className='table table-modern table-hover'>
 						<thead>
 							<tr>
 								<th scope='col' className='cursor-pointer'>
-									#
+									Sr No
 								</th>
-								<th scope='col'>Due Date</th>
+
 								<th scope='col' className='cursor-pointer'>
 									Name
 								</th>
+								<th scope='col'>Descripton</th>
+								<th scope='col'>Due Date</th>
 								<th scope='col'>Expected Time</th>
-								<th scope='col'>Assigned to</th>
-								<th>Associated with</th>
 								<th scope='col' className='cursor-pointer'>
 									Status
 								</th>
+								<th scope='col'>Action</th>
 								{/* <th scope='col' className='cursor-pointer'>
 												Edit
 											</th> */}

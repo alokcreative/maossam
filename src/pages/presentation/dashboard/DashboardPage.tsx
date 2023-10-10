@@ -29,6 +29,7 @@ import Item from '../../_common/dashboardHelper/GoalItems';
 import TaskOnHold from '../../_common/dashboardHelper/TaskOnHold';
 import MarketingAssetForms from './Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
+import GoalViewPopup from '../goal/goalHelpher/GoalViewPopup';
 
 interface ITableRowProps {
 	id: number;
@@ -106,9 +107,16 @@ const DashboardPage = () => {
 	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
+	const [goalId, setGoalId] = useState<number>();
 	const openModal = (id: number, nameOfBussiness: string) => {
 		setElementId(id);
 		setElementName(nameOfBussiness);
+		setIsModalOpen(true);
+	};
+	const openGoalModal = (id: number, nameOfBussiness: string) => {
+		// setElementId(id);
+		// setElementName(nameOfBussiness);
+		setGoalId(id);
 		setIsModalOpen(true);
 	};
 
@@ -128,10 +136,10 @@ const DashboardPage = () => {
 			image: googleBusiness,
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
-			dueDate: '3 days left',
-			attachCount: 6,
-			taskCount: 24,
-			percent: 65,
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 2,
@@ -140,9 +148,9 @@ const DashboardPage = () => {
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
-			attachCount: 1,
-			taskCount: 4,
-			percent: 70,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 		{
 			id: 3,
@@ -151,9 +159,9 @@ const DashboardPage = () => {
 			option: 'yes',
 			teamName: 'MA OSSIM Team',
 			dueDate: '14 days left',
-			attachCount: 12,
-			taskCount: 34,
-			percent: 78,
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
 		},
 	]);
 	useEffect(() => {
@@ -273,8 +281,7 @@ const DashboardPage = () => {
 						))
 					)}
 				</div>
-
-				{isModalOpen ? (
+				{/* {isModalOpen ? (
 					<MarketingAssetForms
 						idOfBussiness={elementId}
 						nameOfBussiness={elementName}
@@ -282,7 +289,7 @@ const DashboardPage = () => {
 						setIsModalOpen={setIsModalOpen}
 						getFormValue={getFormValue}
 					/>
-				) : null}
+				) : null} */}
 			</Page>
 		</PageWrapper>
 	);

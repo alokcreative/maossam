@@ -101,7 +101,7 @@ const documentation: RouteProps[] = [
 		element: <MarketingAssets />,
 	},
 	{
-		path: `${pagesMenu.goalId.path}/:id`,
+		path: `${pagesMenu.taskId.path}/:id`,
 		element: <GoalDescription />,
 	},
 	{

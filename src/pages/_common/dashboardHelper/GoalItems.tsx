@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import useDarkMode from '../../../hooks/useDarkMode';
 import { useNavigate } from 'react-router-dom';
 import { pagesMenu } from '../../../menu';
@@ -11,6 +11,7 @@ import Card, {
 } from '../../../components/bootstrap/Card';
 import Badge from '../../../components/bootstrap/Badge';
 import Progress from '../../../components/bootstrap/Progress';
+import GoalViewPopup from '../../presentation/goal/goalHelpher/GoalViewPopup';
 
 interface IItemProps {
 	id: number;
@@ -21,14 +22,13 @@ interface IItemProps {
 }
 const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
 	const navigate = useNavigate();
-	const handleOnClickToProjectPage = useCallback(
-		() => navigate(`../${pagesMenu.goalId.path}/${id}`),
-		[navigate, id],
-	);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const openModalHandler = () => {
+		setIsModalOpen(true);
+	};
 	return (
-		// eslint-disable-next-line react/jsx-props-no-spreading
 		<div className='col-md-4'>
-			<Card stretch onClick={handleOnClickToProjectPage} className='cursor-pointer'>
+			<Card stretch onClick={openModalHandler} className='cursor-pointer'>
 				<CardHeader>
 					<CardLabel>
 						<CardTitle>{name}</CardTitle>
@@ -45,12 +45,15 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
 					</div>
 					<div className='row'>
 						<div className='col-md-12'>
-							{60}%
-							<Progress isAutoColor value={60} height={10} />
+							{0}%
+							<Progress isAutoColor value={0} height={10} />
 						</div>
 					</div>
 				</CardBody>
 			</Card>
+			{isModalOpen ? (
+				<GoalViewPopup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} id={id} />
+			) : null}
 		</div>
 	);
 };

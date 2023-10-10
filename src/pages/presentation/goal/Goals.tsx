@@ -4,20 +4,11 @@ import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
 import Icon from '../../../components/icon/Icon';
-import Input from '../../../components/bootstrap/forms/Input';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-// import useSortableData from '../../../../hooks/useSortableData';
-// import useDarkMode from '../../../../hooks/useDarkMode';
 import PAYMENTS from '../../../common/data/enumPaymentMethod';
-import USERS, { Role } from '../../../common/data/userDummyData';
-// import { PER_COUNT } from '../../../../components/PaginationButtons';
-// import data from '../../../../common/data/dummyCustomerData';
-import CustomerEditModal from '../crm/CustomerEditModal';
+import { Role } from '../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooter,
-	CardFooterLeft,
-	CardFooterRight,
 	CardHeader,
 	CardLabel,
 	CardTitle,
@@ -25,25 +16,18 @@ import Card, {
 import Page from '../../../layout/Page/Page';
 import showNotification from '../../../components/extras/showNotification';
 import validate from '../demo-pages/helper/editPagesValidate';
-import Avatar from '../../../components/Avatar';
-import Select from '../../../components/bootstrap/forms/Select';
 import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
 import data from '../../../common/data/dummyGoals';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../components/PaginationButtons';
-import Modal, {
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-	ModalTitle,
-} from '../../../components/bootstrap/Modal';
 import Badge from '../../../components/bootstrap/Badge';
-import { pagesMenu } from '../../../menu';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import GoalViewPopup from './goalHelpher/GoalViewPopup';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -58,6 +42,18 @@ interface IValues {
 	id: number;
 	name: string;
 	description: string;
+}
+
+interface CardProp {
+	id: number;
+	name: string;
+	image: string;
+	option: string;
+	teamName: string;
+	dueDate: string;
+	attachCount: number;
+	taskCount: number;
+	percent: number;
 }
 const Goals: FC = () => {
 	const [goalList, setGoalList] = useState<IValues[]>(data);
@@ -78,6 +74,13 @@ const Goals: FC = () => {
 		},
 	});
 	// console.log(`date>>> ${Date.now()}`);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [goalId, setGoalId] = useState<number>();
+
+	const openModal = (id: number) => {
+		setGoalId(id);
+		setIsModalOpen(true);
+	};
 
 	const formik = useFormik({
 		initialValues: {
@@ -158,10 +161,6 @@ const Goals: FC = () => {
 		setModalHeader('Edit Goal');
 		setIsOpen(true);
 	};
-	const handleView = (id: number) => {
-		console.log('id', id);
-		navigate(`../${pagesMenu.goalId.path}/${id}`);
-	};
 
 	return (
 		<PageWrapper>
@@ -207,7 +206,7 @@ const Goals: FC = () => {
 										<table className='table table-modern table-hover'>
 											<thead>
 												<tr>
-													<th scope='col'>#</th>
+													<th scope='col'>Sr No</th>
 													<th scope='col'>Name</th>
 													<th scope='col'>Description</th>
 													<th scope='col'>Date</th>
@@ -222,7 +221,7 @@ const Goals: FC = () => {
 															<tr>
 																<th scope='row'>{i.id}</th>
 																<th>{i.name}</th>
-																<td>{i.attributes}</td>
+																<td>{i.description}</td>
 																<td>{i.timeline}</td>
 																<td className='h5'>
 																	<Badge
@@ -245,7 +244,7 @@ const Goals: FC = () => {
 																		color='primary'
 																		isLight
 																		onClick={() =>
-																			handleView(i.id)
+																			openModal(i.id)
 																		}
 																		className='me-1'
 																	/>
@@ -295,319 +294,15 @@ const Goals: FC = () => {
 						</Card>
 					</div>
 				</div>
+
+				{isModalOpen ? (
+					<GoalViewPopup
+						isModalOpen={isModalOpen}
+						setIsModalOpen={setIsModalOpen}
+						id={goalId}
+					/>
+				) : null}
 			</Page>
-			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
-				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='goal'>{modalHeader}</ModalTitle>
-				</ModalHeader>
-				<ModalBody className='px-4'>
-					<div className='row g-4'>
-						<div className='col-12 border-bottom' />
-						<div className='col-12'>
-							<FormGroup id='services' label='Select Product/Services'>
-								<Select
-									ariaLabel='Default select example'
-									placeholder=''
-									onChange={formikOneWay.handleChange}
-									value={formikOneWay.values.exampleSelectOneWay}
-									list={SELECT_OPTIONS}
-								/>
-							</FormGroup>
-						</div>
-
-						<FormGroup id='name' label='Name of goal' className='col-lg-6'>
-							<Input
-								onChange={formiknewGoal.handleChange}
-								value={formiknewGoal.values.name}
-							/>
-						</FormGroup>
-						<FormGroup id='attribute' label='Attributes' className='col-lg-6'>
-							<Input
-								type='text'
-								onChange={formiknewGoal.handleChange}
-								value={formiknewGoal.values.description}
-							/>
-						</FormGroup>
-						<FormGroup id='timeline' label='Timeline' className='col-lg-6'>
-							<Input
-								type='date'
-								onChange={formiknewGoal.handleChange}
-								value={formiknewGoal.values.timeline}
-							/>
-						</FormGroup>
-						<div className='row g-4'>
-							<div className='col-12 col-md-6'>
-								<div className='mb-3'>
-									<div className='form-check'>
-										<input
-											className='form-check-input'
-											name='goal'
-											type='checkbox'
-											id='example'
-											value='checkbox value'
-											checked
-										/>
-										CAPTURE NEW CUSTOMERS
-										{/* <label className='form-check-label'>
-																</label> */}
-									</div>
-								</div>
-								<div className='mb-3'>
-									<FormGroup
-										id='mCustomer'
-										label='How many customers would you like to reach for this product?'>
-										<Input
-											placeholder=''
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.mCustomer}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-								<div className='mb-3'>
-									<FormGroup
-										id='mrCustomer'
-										label='How many more customers for this product from today?'>
-										<Input
-											placeholder=''
-											autoComplete='additional-name'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.mrCustomer}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-							</div>
-							<div className='col-12 col-md-6'>
-								<div className='mb-3'>
-									<div className='form-check'>
-										<input
-											className='form-check-input'
-											name='goal'
-											type='checkbox'
-											id='example'
-											value='checkbox value'
-										/>
-										INCREASE IN REVENUE
-										{/* <label className='form-check-label'>
-																</label> */}
-									</div>
-								</div>
-								<div className='mb-3'>
-									<FormGroup
-										id='mRevenue'
-										label='How much revenue would you like to reach for this product?'>
-										<Input
-											placeholder=''
-											autoComplete='additional-name'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.mRevenue}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-								<div className='mb-3'>
-									<FormGroup
-										id='mrRevenue'
-										label='How much more revenue from today?'>
-										<Input
-											placeholder=''
-											autoComplete='additional-name'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.mrRevenue}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-							</div>
-							<div className='col-12 col-md-6'>
-								<div className='mb-3'>
-									<div className='form-check'>
-										<input
-											className='form-check-input'
-											name='goal'
-											type='checkbox'
-											id='example'
-											value='checkbox value'
-										/>
-										BUILD PRODUCT AWARENESS
-										{/* <label className='form-check-label'>
-																</label> */}
-									</div>
-								</div>
-
-								<div className='mb-3'>
-									<FormGroup
-										id='maPotential'
-										label='How many potential clients would you like to reach?'>
-										<Input
-											placeholder=''
-											autoComplete='additional-name'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.maPotential}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-							</div>
-							<div className='col-12 col-md-6'>
-								<div className='mb-3'>
-									<div className='form-check'>
-										<input
-											className='form-check-input'
-											name='goal'
-											type='checkbox'
-											id='example'
-											value='checkbox value'
-										/>
-										INCREASE PRICE
-										{/* <label className='form-check-label'>
-																</label> */}
-									</div>
-								</div>
-								<div className='mb-3'>
-									<FormGroup
-										id='nPrice'
-										label='What is the new price you would like to reach?'>
-										<Input
-											placeholder=''
-											autoComplete='additional-name'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.nPrice}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-								<div className='mb-3'>
-									<FormGroup id='pToday' label='What is the price today?'>
-										<Input
-											placeholder='What is the price today?'
-											autoComplete='additional-name'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											value={formik.values.pToday}
-											// isValid={formik.isValid}
-											// isTouched={formik.touched.taskName}
-											// invalidFeedback={formik.errors.taskname}
-											validFeedback='Looks good!'
-										/>
-									</FormGroup>
-								</div>
-							</div>
-						</div>
-						<div className='col-12 col-md-6'>
-							<div className='mb-3'>
-								<FormGroup id='customer' label='How can you measure this goal?'>
-									<Input
-										placeholder=''
-										autoComplete='additional-name'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-						<div className='col-12 col-md-6'>
-							<div className='mb-3'>
-								<FormGroup id='customer' label='What is your present achievement?'>
-									<Input
-										placeholder=''
-										autoComplete='additional-name'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-						<div className='col-12 col-md-6'>
-							<div className='mb-3'>
-								<FormGroup
-									id='customer'
-									label='Confirm that this goal is achievable'>
-									<Input
-										placeholder=''
-										autoComplete='additional-name'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-						<div className='col-12 col-md-6'>
-							<div className='mb-3'>
-								<FormGroup id='customer' label='Confirm that this goal is relevant'>
-									<Input
-										placeholder=''
-										autoComplete='additional-name'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value=''
-										// isValid={formik.isValid}
-										// isTouched={formik.touched.taskName}
-										// invalidFeedback={formik.errors.taskname}
-										validFeedback='Looks good!'
-									/>
-								</FormGroup>
-							</div>
-						</div>
-					</div>
-				</ModalBody>
-				<ModalFooter>
-					<CardFooterLeft>
-						<Button
-							color='danger'
-							onClick={() => {
-								setIsOpen(false);
-							}}>
-							Cancel
-						</Button>
-					</CardFooterLeft>
-					<CardFooterRight>
-						<Button color='info' onClick={formiknewGoal.handleSubmit}>
-							Save
-						</Button>
-					</CardFooterRight>
-				</ModalFooter>
-			</Modal>
 		</PageWrapper>
 	);
 };

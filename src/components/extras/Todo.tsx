@@ -8,6 +8,9 @@ import Button from '../bootstrap/Button';
 import Dropdown, { DropdownItem, DropdownMenu, DropdownToggle } from '../bootstrap/Dropdown';
 import useDarkMode from '../../hooks/useDarkMode';
 import { TColor } from '../../type/color-type';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { Role } from '../../common/data/userDummyData';
 
 /**
  * Prop Types
@@ -71,6 +74,10 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 		};
 
 		const { themeStatus } = useDarkMode();
+		const { user } = useSelector((state: RootState) => state.auth);
+		const savedValue = localStorage?.getItem('user');
+		const localUser = savedValue ? JSON.parse(savedValue) : null;
+		const role = user.role || localUser?.role;
 
 		return (
 			// eslint-disable-next-line react/jsx-props-no-spreading
@@ -103,14 +110,14 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 					)}
 				</div>
 				<div className='todo-extras'>
-					{itemData?.badge && (
+					{/* {itemData?.badge && (
 						<span className='me-2'>
 							<Badge isLight color={itemData.badge.color}>
 								{itemData.badge.text}
 							</Badge>
 						</span>
-					)}
-					<span>
+					)} */}
+					{role === Role.admin ? (<span>
 						<Dropdown>
 							<DropdownToggle hasIcon={false}>
 								<Button
@@ -119,6 +126,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 									aria-label='More options'
 								/>
 							</DropdownToggle>
+
 							<DropdownMenu isAlignmentEnd>
 								<DropdownItem>
 									<Button onClick={() => removeTodo(index)} icon='Delete'>
@@ -127,7 +135,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 								</DropdownItem>
 							</DropdownMenu>
 						</Dropdown>
-					</span>
+					</span>):null}
 				</div>
 			</div>
 		);

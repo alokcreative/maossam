@@ -9,6 +9,7 @@ interface ITableRowProps {
 	id: number;
 	dueDate: string;
 	name: string;
+	description: string;
 	category: string;
 	expectedTime: string;
 	status: string;
@@ -21,6 +22,7 @@ const TableRow: FC<ITableRowProps> = ({
 	id,
 	dueDate,
 	name,
+	description,
 	category,
 	expectedTime,
 	status,
@@ -38,33 +40,34 @@ const TableRow: FC<ITableRowProps> = ({
 			<td>
 				<div>
 					{name}
-					<div className='text-muted'>
+					{/* <div className='text-muted'>
 						<small>{category}</small>
-					</div>
+					</div> */}
 				</div>
 			</td>
+			<td>{description}</td>
+			{/* <td>{category}</td> */}
 			<td>{dueDate}</td>
 			<td>{expectedTime}</td>
 			<td className='h5'>
 				<Badge
 					color={
-						(status === 'Rejected' && 'danger') ||
-						(status === 'Cancelled' && 'warning') ||
-						(status === 'Approved' && 'success') ||
+						(status === 'Hold' && 'danger') ||
+						(status === 'Todo' && 'secondary') ||
+						(status === 'InProgress' && 'warning') ||
+						(status === 'Done' && 'success') ||
 						'info'
 					}>
 					{status}
 				</Badge>
 			</td>
 			<td>
-
-
 				<Button
 					icon='Visibility'
 					color='primary'
 					isLight
 					className='me-1'
-					onClick={() => view(id)}
+					// onClick={() => view(id)}
 				/>
 
 				{role === Role.admin && (
@@ -74,8 +77,6 @@ const TableRow: FC<ITableRowProps> = ({
 							color='success'
 							isLight
 							className='me-1'
-
-
 							onClick={() => edit(id)}
 						/>
 						<Button
@@ -84,7 +85,6 @@ const TableRow: FC<ITableRowProps> = ({
 							isLight
 							onClick={() => deleteAction(id)}
 						/>
-
 					</>
 				)}
 			</td>

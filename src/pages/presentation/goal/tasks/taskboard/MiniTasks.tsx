@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Calendar as DatePicker } from 'react-date-range';
 import dayjs from 'dayjs';
 import { useFormik } from 'formik';
@@ -9,21 +9,33 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import Button from '../../../../components/bootstrap/Button';
-import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../../components/bootstrap/Modal';
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../components/bootstrap/forms/Input';
-import Todo, { ITodoListItem } from '../../../../components/extras/Todo';
-import Label from '../../../../components/bootstrap/forms/Label';
-import Checks, { ChecksGroup } from '../../../../components/bootstrap/forms/Checks';
-import Badge from '../../../../components/bootstrap/Badge';
-import Progress from '../../../../components/bootstrap/Progress';
-import { TColor } from '../../../../type/color-type';
-import Select from '../../../../components/bootstrap/forms/Select';
-// import Select from '../../../../components/bootstrap/forms/Select';
+} from '../../../../../components/bootstrap/Card';
+import Button from '../../../../../components/bootstrap/Button';
+import Modal, {
+	ModalBody,
+	ModalHeader,
+	ModalTitle,
+} from '../../../../../components/bootstrap/Modal';
+import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
+import Input from '../../../../../components/bootstrap/forms/Input';
+import Todo, { ITodoListItem } from '../../../../../components/extras/Todo';
+import Label from '../../../../../components/bootstrap/forms/Label';
+import Checks, { ChecksGroup } from '../../../../../components/bootstrap/forms/Checks';
+import Badge from '../../../../../components/bootstrap/Badge';
+import Progress from '../../../../../components/bootstrap/Progress';
+import { TColor } from '../../../../../type/color-type';
+import Select from '../../../../../components/bootstrap/forms/Select';
+import data from '../../../../../common/data/dummyGoals';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../store/store';
+import { Role } from '../../../../../common/data/userDummyData';
 
-const CommonDashboardUserIssue = () => {
+interface IPropsValue {
+	subTaskId: number;
+}
+const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
+	const { id, taskId } = useParams();
 	const TODO_BADGES: {
 		[key: string]: {
 			text: string;
@@ -48,59 +60,19 @@ const CommonDashboardUserIssue = () => {
 	/**
 	 * To/Do List
 	 */
-	const [list, setList] = useState<ITodoListItem[]>([
-		{
-			id: 1,
-			status: true,
-			title: 'New Products will be added',
-			date: dayjs().add(0.5, 'day'),
-			badge: TODO_BADGES.NEW,
-		},
-		{
-			id: 2,
-			status: true,
-			title: 'Cover images will be edited',
-			date: dayjs().add(2, 'day'),
-			badge: TODO_BADGES.UPDATE,
-		},
-		{
-			id: 3,
-			status: false,
-			title: 'Preparing for A/B testing',
-			date: dayjs().add(2, 'day'),
-			badge: TODO_BADGES.TEST,
-		},
-		{
-			id: 4,
-			status: false,
-			title: 'Google Analytics data will be examined',
-			date: dayjs().add(4, 'day'),
-			badge: TODO_BADGES.REPORT,
-		},
-		{
-			id: 5,
-			status: false,
-			title: 'Invoices will be issued',
-			date: dayjs().add(9, 'day'),
-			badge: TODO_BADGES.PRINT,
-		},
-		{
-			id: 6,
-			status: false,
-			title: 'Dependencies check and update',
-			date: dayjs().add(15, 'day'),
-			badge: TODO_BADGES.CONTROL,
-		},
-		{
-			id: 7,
-			status: false,
-			title: 'End of month meeting',
-			date: dayjs().add(32, 'day'),
-			badge: TODO_BADGES.MEETING,
-		},
-	]);
-	const listLength = list.length;
-	const completeTaskLength = list.filter((i) => i.status).length;
+	const filteredData = data
+		.filter((i) => i.id === Number(id))
+		.map((i) =>
+			i?.task
+				?.filter((task) => task?.id === Number(taskId))
+				.map((task) => task?.subTask?.filter((subtask) => subtask.id === subTaskId)),
+		)
+		.flat(2);
+	// console.log('filteredData>>', filteredData);
+	// console.log('filteredData miniTasks>>', filteredData[0]?.miniTasks);
+	const [list, setList] = useState<ITodoListItem[] | undefined>(filteredData[0]?.miniTasks);
+	const listLength = list?.length;
+	const completeTaskLength = list?.filter((i) => i.status).length;
 
 	/**
 	 * Add New Modal Status
@@ -115,17 +87,19 @@ const CommonDashboardUserIssue = () => {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
-		const newTodos: {
-			id?: string | number;
-			status?: boolean;
-			title?: string | number;
-			date?: dayjs.ConfigType;
-			badge?: {
-				text?: string;
-				color?: TColor;
-			};
-		}[] = [{ title, date, badge }, ...list];
-		setList(newTodos);
+		if (list) {
+			const newTodos: {
+				id?: string | number;
+				status?: boolean;
+				title?: string | number;
+				date?: dayjs.ConfigType;
+				badge?: {
+					text?: string;
+					color?: TColor;
+				};
+			}[] = [{ title, date, badge }, ...list];
+			setList(newTodos);
+		}
 	};
 
 	/**
@@ -192,6 +166,10 @@ const CommonDashboardUserIssue = () => {
 		},
 	});
 
+	const { user } = useSelector((state: RootState) => state.auth);
+	const savedValue = localStorage?.getItem('user');
+	const localUser = savedValue ? JSON.parse(savedValue) : null;
+	const role = user.role || localUser?.role;
 	return (
 		<Card stretch>
 			<CardHeader>
@@ -209,13 +187,15 @@ const CommonDashboardUserIssue = () => {
 					</CardSubTitle>
 				</CardLabel>
 				<CardActions>
-					<Button
-						color='info'
-						icon='Add'
-						isLight
-						onClick={() => setModalStatus(!modalStatus)}>
-						New
-					</Button>
+					{role === Role.admin ? (
+						<Button
+							color='info'
+							icon='Add'
+							isLight
+							onClick={() => setModalStatus(!modalStatus)}>
+							New
+						</Button>
+					) : null}
 					<Modal setIsOpen={setModalStatus} isOpen={modalStatus} titleId='new-todo-modal'>
 						<ModalHeader setIsOpen={setModalStatus}>
 							<ModalTitle id='new-todo-modal'>New Task</ModalTitle>
@@ -331,24 +311,24 @@ const CommonDashboardUserIssue = () => {
 								</div>
 								<div className='col' />
 								<div className='col-auto'>
-									<Button
-										type='submit'
-										color='info'
-										isLight
-										isDisable={!formik.isValid && !!formik.submitCount}>
-										Add Task
-									</Button>
+									{role === Role.admin ? (
+										<Button
+											type='submit'
+											color='info'
+											isLight
+											isDisable={!formik.isValid && !!formik.submitCount}>
+											Add Task
+										</Button>
+									) : null}
 								</div>
 							</form>
 						</ModalBody>
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody >
-				<Todo list={list} setList={setList} />
-			</CardBody>
+			<CardBody>{list && <Todo list={list} setList={setList} />}</CardBody>
 		</Card>
 	);
 };
 
-export default CommonDashboardUserIssue;
+export default MiniTasks;

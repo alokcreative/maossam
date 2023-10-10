@@ -55,7 +55,7 @@ const ProductListView: FC<IListDataProps> = ({ listData }) => {
 								scope='col'
 								onClick={() => requestSort('id')}
 								className='cursor-pointer text-decoration-underline'>
-								#{' '}
+								 Sr No
 								<Icon
 									size='lg'
 									className={getClassNamesFor('id')}
@@ -68,7 +68,7 @@ const ProductListView: FC<IListDataProps> = ({ listData }) => {
 								scope='col'
 								onClick={() => requestSort('price')}
 								className='cursor-pointer text-decoration-underline'>
-								Price{' '}
+								Price
 								<Icon
 									size='lg'
 									className={getClassNamesFor('price')}
@@ -76,7 +76,7 @@ const ProductListView: FC<IListDataProps> = ({ listData }) => {
 								/>
 							</th>
 							<th scope='col'>CATEGORY</th>
-							<th scope='col'>AVATAR NAME</th>
+							{/* <th scope='col'>AVATAR NAME</th> */}
 							<th scope='col'>GOAL</th>
 							<th scope='col' className='text-end'>
 								Actions

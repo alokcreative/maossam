@@ -253,7 +253,7 @@ const UserList = () => {
 							<thead>
 								<tr>
 									<th scope='col' className='cursor-pointer'>
-										#
+									 Sr No
 									</th>
 									<th scope='col'>FirstName</th>
 									<th scope='col' className='cursor-pointer'>

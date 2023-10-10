@@ -101,7 +101,7 @@ const Header: FC<IHeaderProps> = ({ children, hasLeftMobileMenu, hasRightMobileM
 									setRightMenuStatus(false);
 								}}
 							/>
-							{hasLeftMobileMenu && (
+							{/* {hasLeftMobileMenu && (
 								<Button
 									aria-label='Toggle Left Menu'
 									className='mobile-header-toggle'
@@ -115,7 +115,7 @@ const Header: FC<IHeaderProps> = ({ children, hasLeftMobileMenu, hasRightMobileM
 										setRightMenuStatus(false);
 									}}
 								/>
-							)}
+							)} */}
 						</div>
 						{hasRightMobileMenu && (
 							<div className='col-auto'>
