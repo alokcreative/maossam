@@ -77,7 +77,7 @@ const Signup: FC = () => {
 							navigate('/modals-step-form');
 						})
 						.catch((rejected) => {
-							console.error('rejected>>>', rejected);
+							// console.error('rejected>>>', rejected);
 							toast(rejected.data?.email[0]);
 							navigate('/auth-pages/login');
 							formik.setFieldValue('first_name', '');

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import Modal, {
 	ModalBody,
 	ModalHeader,
@@ -6,7 +6,6 @@ import Modal, {
 } from '../../../../../components/bootstrap/Modal';
 import { Formik, Field, Form, useFormik } from 'formik';
 import Button from '../../../../../components/bootstrap/Button';
-import AuthContext from '../../../../../contexts/authContext';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -20,7 +19,8 @@ import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
 import Accordion, { AccordionItem } from '../../../../../components/bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
-import { pagesMenu } from '../../../../../menu';
+import { IUserData } from '../../../../_layout/_asides/DefaultAside';
+import { useGetUsersMutation } from '../../../../../features/auth/authApiSlice';
 
 type IAssetNameProps = {
 	idOfBussiness: number | undefined;
@@ -34,11 +34,29 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 	const { idOfBussiness = 0, nameOfBussiness = '', isModalOpen, setIsModalOpen } = props;
 	const navigate = useNavigate();
 	// User data
-	const { userData } = useContext(AuthContext);
-	const savedValue = localStorage.getItem('user');
-	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
-	const newUserName = parsedValue?.newUserName;
-	const name = userData?.name || newUserName;
+	const token = localStorage?.getItem('access_token');
+	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
+	const [userData, setUserData] = useState<IUserData>();
+	useEffect(() => {
+		if (token) {
+			GetUsersMutation(token)
+				.unwrap()
+				.then((data) => {
+					setUserData(data);
+				})
+				.catch(() => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
+				});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [token]);
 
 	const handleSubmit = (isSocialMedia: string, isSocialMediaimportant: string) => {
 		// console.log(
@@ -79,7 +97,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 			<ModalBody>
 				<div className='row p-auto'>
 					<div className=' mb-4'>
-						<h5 className='mb-3 fw-bold'>Hi {name},</h5>
+						<h5 className='mb-3 fw-bold'>Hi {userData?.first_name},</h5>
 						<p>
 							we're excited to review your marketing assets together. This step will
 							allow us to check with you the existing and future marketing channels to

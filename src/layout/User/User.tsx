@@ -39,10 +39,9 @@ const User = () => {
 	const { darkModeStatus, setDarkModeStatus } = useDarkMode();
 	const [collapseStatus, setCollapseStatus] = useState<boolean>(false);
 	const { t } = useTranslation(['translation', 'menu']);
-	const dispatch: AppDispatch = useDispatch();
 	const token = localStorage?.getItem('access_token');
-	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
-	const [userData, setUserData] = useState<IUserData>();
+	const [GetUsersMutation, { data,isLoading }] = useGetUsersMutation();
+	const [userData, setUserData] = useState<IUserData>(data);
 	const [LogoutMutation] = useLogoutMutation();
 	useEffect(() => {
 		if (!token) {
@@ -50,9 +49,20 @@ const User = () => {
 		} else {
 			GetUsersMutation(token)
 				.unwrap()
-				.then((data: IUserData) => {
-					setUserData(data);
-					localStorage.setItem('role', data.role);
+				.then((res: IUserData) => {
+					setUserData(res);
+					// console.log('data>>>>>>>', data);
+					localStorage.setItem('role', res.role);
+				})
+				.catch((error) => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
 				});
 		}
 
