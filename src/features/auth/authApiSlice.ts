@@ -12,7 +12,7 @@ interface ILoginPayload {
 	email: string;
 	password: string;
 }
-interface IUserDetails{
+interface IUserDetails {
 	first_name?: string;
 	last_name?: string;
 	email?: string;
@@ -26,6 +26,7 @@ interface IProfilePayload {
 	userdetails?: IUserDetails;
 	avatar?: FormData;
 }
+
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
 };
@@ -69,6 +70,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		// Get Login User
 		getUsers: builder.mutation({
 			query: (payload: string) => ({
 				url: apiEndpoints.profile,
@@ -79,7 +81,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 
-		// Get  Profile
+		// Get User
 		getProfile: builder.query({
 			query: (id) => ({
 				url: apiEndpoints.update + id,
@@ -91,7 +93,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 
-		// Create Profile
+		// Create User
 		createProfile: builder.mutation({
 			query: (payload: IProfilePayload) => ({
 				url: apiEndpoints.update,
@@ -104,7 +106,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: [`Profile`],
 		}),
 
-		// Profile Update
+		// Update User
 		updateProfile: builder.mutation({
 			query: (payload: IProfilePayload) => ({
 				url: `${apiEndpoints.update}${payload.id}/`,
@@ -118,18 +120,29 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: [`Profile`],
 		}),
 
-		// Delete Profile
+		// Delete User
 		deleteProfile: builder.mutation({
-			query: ({ id, ...rest }: IProfilePayload) => ({
-				url: apiEndpoints.update + id,
+			query: (id: string) => ({
+				url: `${apiEndpoints.deleteUser}${id}/`,
 				method: 'DELETE',
-				body: rest,
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
 			invalidatesTags: [`Profile`],
+		}),
+
+		// Get All User
+		getAllUser: builder.query({
+			query: () => ({
+				url: apiEndpoints.allUser,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+				},
+			}),
 		}),
 	}),
 });
@@ -143,4 +156,5 @@ export const {
 	useCreateProfileMutation,
 	useUpdateProfileMutation,
 	useDeleteProfileMutation,
+	useGetAllUserQuery,
 } = authApiSlice;

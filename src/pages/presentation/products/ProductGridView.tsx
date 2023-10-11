@@ -52,11 +52,11 @@ const CommonGridProductItem: FC<ICommonGridProductItemProps> = ({
 				<CardLabel onClick={()=>navigate(`../${pagesMenu.productId.path}/${id}`)}>
 					<CardTitle tag='div' className='h5' >
 						{name}{' '}
-						{price && (
+						{/* {price && (
 							<Badge color='success' isLight className='ms-2'>
 								{priceFormat(price)}
 							</Badge>
-						)}
+						)} */}
 					</CardTitle>
 					<CardSubTitle tag='div' className='h6'>
 						{category}

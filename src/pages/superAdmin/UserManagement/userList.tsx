@@ -38,51 +38,58 @@ import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks'
 import { Country, State, City } from 'country-state-city';
 import { useEffectOnce } from 'react-use';
 import { IServiceProps } from '../../../common/data/serviceDummyData';
+import { useGetAllUserQuery, useDeleteProfileMutation } from '../../../features/auth/authApiSlice';
+import Spinner from '../../../components/bootstrap/Spinner';
+import { toast } from 'react-toastify';
 
 interface ITableRowProps {
+	index: number;
 	id: string;
-	name: string;
-	surname: string;
+	first_name: string;
+	last_name: string;
 	position: string;
 	email: string;
+	phone_number: number;
 	color: TColor;
-	services: IServiceProps[];
+	// services: IServiceProps[];
 	handleClick(...args: unknown[]): unknown;
 	handleEditUser(...args: unknown[]): unknown;
 }
 const TableRow: FC<ITableRowProps> = ({
+	index,
 	id,
-	name,
-	surname,
+	first_name,
+	last_name,
 	position,
 	email,
 	color,
-	services,
+	phone_number,
 	handleClick,
 	handleEditUser,
 }) => {
 	return (
 		<tr>
-			<th scope='row'>{id}</th>
-			<td>{name}</td>
-			<td>{surname}</td>
+			<th scope='row'>{index}</th>
+			<td>{first_name}</td>
+			<td>{last_name}</td>
 			<td>{email}</td>
 			<td>{position}</td>
-			<td className='col-auto gap-2'>
+			<td>{phone_number}</td>
+			{/* <td className='col-auto gap-2'>
 				{services &&
 					Object.values(services).map((service) => (
 						<Badge color={color} className='me-2'>
 							{service.name}
 						</Badge>
 					))}
-			</td>
+			</td> */}
 			<td>
 				<Button
 					color='info'
 					icon='Edit'
 					className='me-2'
 					isLight
-					isDisable={Number(id) > 8}
+					// isDisable={Number(id) > 8}
 					onClick={() => handleEditUser(id)}
 				/>
 				<Button
@@ -119,19 +126,24 @@ interface IOptionsProps {
 }
 
 const UserList = () => {
+	const { data, error, isLoading, isSuccess, isFetching, refetch } = useGetAllUserQuery({});
+	const [deleteProfile] = useDeleteProfileMutation();
 	const { themeStatus, darkModeStatus } = useDarkMode();
 	const [currentPage, setCurrentPage] = useState(1);
+	const [userList, setUserList] = useState(data);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [countryList, setcountryList] = useState<IOptionsProps[]>();
 	const [stateList, setstateList] = useState<IOptionsProps[]>();
 	const [modalTitle, setmodalTitle] = useState<string>('');
+	const [isOpen, setIsOpen] = useState(false);
 	// const [userData, setUserData] = useState();
 	const [userData, setUserData] = useState(
 		Object.keys(USERS).map((key) => ({
 			...USERS[key],
 		})),
 	);
-	console.log(userData);
+	// console.log(userData);
+
 	useEffectOnce(() => {
 		const countryListDetails = Country.getAllCountries();
 		const LIST = countryListDetails.map(({ name, isoCode }) => ({
@@ -140,12 +152,19 @@ const UserList = () => {
 		}));
 		setcountryList(LIST);
 	});
-	const handleData = (id: unknown) => {
-		const updatedData = userData.filter((user) => user.id !== id);
-		setUserData(updatedData);
+	const handleData = (id: string) => {
+		console.log('id>>>>', id);
+		// const updatedData = data.filter((user: IUserProps) => user.id !== id);
+		// setUserData(updatedData);
+		deleteProfile(id).then(() => {
+			refetch().then((res) => {
+				console.log('res>>', res.data);
+				setUserList(res.data);
+			});
+			toast('User Deleted Sucessfully');
+		});
 	};
 
-	const [isOpen, setIsOpen] = useState(false);
 	const formik = useFormik({
 		initialValues: {
 			id: userData.length + 1,
@@ -221,13 +240,14 @@ const UserList = () => {
 		},
 	});
 	const handleEditUser = (id: string) => {
+		console.log('id>>>>', id);
 		setIsOpen(true);
-		const user = userData.find((i) => i.id === id);
+		const user = userList.find((i: IUserProps) => i.id === id);
 		updateUserForm.setFieldValue('id', user?.id);
-		updateUserForm.setFieldValue('fastname', user?.name);
-		updateUserForm.setFieldValue('lastname', user?.lastname);
+		updateUserForm.setFieldValue('fastname', user?.first_name);
+		updateUserForm.setFieldValue('lastname', user?.last_name);
 		updateUserForm.setFieldValue('email', user?.email);
-		updateUserForm.setFieldValue('password', user?.password);
+		// updateUserForm.setFieldValue('password', user?.password);
 		// updateUserForm.setFieldValue('phoneNumber', user?.phoneNumber);
 		// updateUserForm.setFieldValue('companyName', user?.companyName);
 		// updateUserForm.setFieldValue('Country', user?.Country);
@@ -235,6 +255,7 @@ const UserList = () => {
 		// updateUserForm.setFieldValue('gender', user?.gender);
 		setmodalTitle(`Update User`);
 	};
+
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text}>
 			<SubHeader>
@@ -253,7 +274,7 @@ const UserList = () => {
 							<thead>
 								<tr>
 									<th scope='col' className='cursor-pointer'>
-									 Sr No
+										Sr No
 									</th>
 									<th scope='col'>FirstName</th>
 									<th scope='col' className='cursor-pointer'>
@@ -272,20 +293,24 @@ const UserList = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{dataPagination(userData, currentPage, perPage).map((i) => (
-									<TableRow
-										key={i.id}
-										// eslint-disable-next-line react/jsx-props-no-spreading
-										{...i}
-										handleClick={handleData}
-										handleEditUser={handleEditUser}
-									/>
-								))}
+								{isSuccess &&
+									dataPagination(userList, currentPage, perPage).map(
+										(i, index) => (
+											<TableRow
+												key={i.id}
+												// eslint-disable-next-line react/jsx-props-no-spreading
+												{...i}
+												index={index + 1}
+												handleClick={handleData}
+												handleEditUser={handleEditUser}
+											/>
+										),
+									)}
 							</tbody>
 						</table>
 					</CardBody>
 					<PaginationButtons
-						data={userData}
+						data={userList}
 						label='items'
 						setCurrentPage={setCurrentPage}
 						currentPage={currentPage}
@@ -465,7 +490,7 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
-					<Button
+						<Button
 							color='info'
 							onClick={
 								modalTitle === 'New User'
@@ -476,7 +501,6 @@ const UserList = () => {
 						</Button>
 					</CardFooterLeft>
 					<CardFooterRight>
-						
 						<Button
 							color='danger'
 							onClick={() => {
