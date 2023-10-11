@@ -10,7 +10,7 @@ import { componentPagesMenu } from '../../../menu';
 
 const ChartBubblePage = () => {
 	return (
-		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsBubble.text}>
+		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsBubble.text} isProtected>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

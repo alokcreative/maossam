@@ -12,8 +12,17 @@ import Button from '../../../components/bootstrap/Button';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Spinner from '../../../components/bootstrap/Spinner';
 import { useGoogleLogin } from '@react-oauth/google';
-import {  useLoginUserMutation } from '../../../features/auth/authApiSlice';
+import {
+	useForgetPasswordMutation,
+	useLoginUserMutation,
+} from '../../../features/auth/authApiSlice';
 import { toast } from 'react-toastify';
+import Modal, {
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+	ModalTitle,
+} from '../../../components/bootstrap/Modal';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -45,12 +54,11 @@ interface ILoginProps {
 }
 
 const Login: FC<ILoginProps> = ({ isSignUp }) => {
-	// const { setUser } = useContext(AuthContext);
-
 	const { darkModeStatus } = useDarkMode();
-
 	const [singUpStatus, setSingUpStatus] = useState<boolean>(!!isSignUp);
 	const [LoginUserMutation, { isLoading }] = useLoginUserMutation();
+	const [ForgetPasswordMutation, { isLoading: loading }] = useForgetPasswordMutation();
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 
@@ -94,65 +102,49 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 		},
 	});
 
-	// const handleContinue = () => {
-	// 	setIsLoading(true);
-	// 	setTimeout(() => {
-	// 		if (
-	// 			!Object.keys(USERS).find((f) => USERS[f].email.toString() === formik.values.email)
-	// 		) {
-	// 			formik.setFieldError('email', 'User not found');
-	// 		} else {
-	// 			setSignInPassword(true);
-
-	// 			// dispatch(login(user))
-	// 		}
-	// 		setIsLoading(false);
-	// 	}, 1000);
-	// };
-
 	const handleLoginWithGoogle = useGoogleLogin({
 		// onSuccess: (tokenResponse) => setToken(tokenResponse.access_token),
 		// onError: (error) => console.log('Login Failed:', error),
 	});
-	// useEffect(() => {
-	// 	if (token) {
-	// 		axios
-	// 			.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
-	// 				headers: {
-	// 					Authorization: `Bearer ${token}`,
-	// 					Accept: 'application/json',
-	// 				},
-	// 			})
-	// 			.then((res) => {
-	// 				setProfile(res.data);
-	// 				// console.log(res.data);
-	// 				const userdetails = {
-	// 					id: res.data.id,
-	// 					name: res.data.given_name,
-	// 					lastname: res.data.family_name,
-	// 					role: Role.user,
-	// 					email: res.data.email,
-	// 					src: res.data.picture,
-	// 				};
-	// 				const user = { user: userdetails };
-	// 				dispatch(login(user));
-	// 				const value = JSON.stringify(userdetails);
-	// 				localStorage.setItem('user', value);
-	// 				setIsLoading(true);
-	// 				startTransition(() => {
-	// 					navigate('/');
-	// 				});
-	// 				setIsLoading(false);
-	// 				// console.log(res.data)
-	// 			})
-	// 			.catch((err) => setProfile(err));
-	// 	}
-	// }, [token, navigate, dispatch]);
-
 	const handleLinkClick = (e: React.FormEvent) => {
 		e.preventDefault(); // Prevent the default browser behavior
-		// You can add additional logic here if needed
 	};
+
+
+	const formikLink = useFormik({
+		enableReinitialize: true,
+		initialValues: {
+			email: '',
+		},
+		validate: (values) => {
+			const errors: { email?: string } = {};
+
+			if (!values.email) {
+				errors.email = 'Required';
+			}
+			return errors;
+		},
+		validateOnChange: false,
+		onSubmit: async (values) => {
+			if (values.email) {
+				startTransition(() => {
+					ForgetPasswordMutation(
+						JSON.stringify({
+							email: values.email,
+						}),
+					)
+						.unwrap()
+						.then((res) => {
+							console.log('res>>>>>', res.message);
+							toast(res.message);
+						})
+						.catch((res) => {
+							toast(res.data?.email[0]);
+						});
+				});
+			}
+		},
+	});
 
 	return (
 		<PageWrapper isProtected={false} title={singUpStatus ? 'Sign Up' : 'Login'}>
@@ -254,6 +246,13 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 														onBlur={formik.handleBlur}
 													/>
 												</FormGroup>
+												<div
+													className='cursor-pointer d-flex align-items-end justify-content-end me-3 mt-2'
+													onClick={() => setIsOpen(true)}
+													onKeyDown={() => setIsOpen(true)}
+													aria-hidden='true'>
+													Forget Password
+												</div>
 											</div>
 											<div className='col-12'>
 												<Button
@@ -313,6 +312,47 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 					</div>
 				</div>
 			</Page>
+			<Modal isOpen={isOpen} setIsOpen={setIsOpen} titleId='resetPassword'>
+				<ModalHeader>
+					<ModalTitle id='resetPassword'>Reset Password</ModalTitle>
+				</ModalHeader>
+				<ModalBody className='d-flex row gap-2'>
+					<div className='col-12'>
+						<FormGroup id='email' isFloating label='Your email...'>
+							<Input
+								autoComplete='username'
+								value={formikLink.values.email}
+								isTouched={formikLink.touched.email}
+								invalidFeedback={formikLink.errors.email}
+								isValid={formikLink.isValid}
+								onChange={formikLink.handleChange}
+								onBlur={formikLink.handleBlur}
+								onFocus={() => {
+									formikLink.setErrors({});
+								}}
+							/>
+						</FormGroup>
+					</div>
+					<div className='col-12'>
+						<Button
+							color='warning'
+							className='w-100 py-3'
+							onClick={formikLink.handleSubmit}>
+							{loading && <Spinner isSmall inButton isGrow />}
+							Send
+						</Button>
+					</div>
+				</ModalBody>
+				<ModalFooter>
+					<Button
+						color='info'
+						isOutline
+						className='border-0'
+						onClick={() => setIsOpen(false)}>
+						Close
+					</Button>
+				</ModalFooter>
+			</Modal>
 		</PageWrapper>
 	);
 };

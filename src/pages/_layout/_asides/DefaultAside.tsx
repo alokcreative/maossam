@@ -39,14 +39,14 @@ const DefaultAside = () => {
 					setUserData(data);
 				})
 				.catch(() => {
-					localStorage.removeItem('refresh_token');
-					localStorage.removeItem('access_token');
-					localStorage.removeItem('tourModalStarted');
-					localStorage.removeItem('role');
-					localStorage.removeItem('i18nextLng');
-					localStorage.removeItem('facit_asideStatus');
-					localStorage.removeItem('user');
-					navigate('/auth-pages/login');
+					// localStorage.removeItem('refresh_token');
+					// localStorage.removeItem('access_token');
+					// localStorage.removeItem('tourModalStarted');
+					// localStorage.removeItem('role');
+					// localStorage.removeItem('i18nextLng');
+					// localStorage.removeItem('facit_asideStatus');
+					// localStorage.removeItem('user');
+					// navigate('/auth-pages/login');
 				});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

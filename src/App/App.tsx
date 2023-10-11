@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'react-jss';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ReactNotifications } from 'react-notifications-component';
@@ -17,6 +18,7 @@ import { getOS } from '../helpers/helpers';
 import steps, { styles } from '../steps';
 import AsideRoutes from '../layout/Aside/AsideRoutes';
 import { ToastCloseButton } from '../components/bootstrap/Toasts';
+import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
 
 const App = () => {
 	getOS();
@@ -28,6 +30,7 @@ const App = () => {
 	 * Dark Mode
 	 */
 	const { themeStatus, darkModeStatus } = useDarkMode();
+	const location = useLocation();
 	const theme = {
 		theme: themeStatus,
 		primary: COLORS.PRIMARY.code,
@@ -70,7 +73,7 @@ const App = () => {
 			document.body.classList.remove('modern-design');
 		}
 	});
-
+	
 	return (
 		<ThemeProvider theme={theme}>
 			<GoogleOAuthProvider clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}>
@@ -87,8 +90,19 @@ const App = () => {
 							zIndex: fullScreenStatus ? 1 : undefined,
 							overflow: fullScreenStatus ? 'scroll' : undefined,
 						}}>
-						<AsideRoutes />
-						<Wrapper />
+						{location.pathname.includes('resetpassword') ? (
+							<Routes>
+								<Route
+									path='resetpassword/:resetCode'
+									element={<ResetPasswordPage />}
+								/>
+							</Routes>
+						) : (
+							<>
+								<AsideRoutes />
+								<Wrapper />
+							</>
+						)}
 					</div>
 					<Portal id='portal-notification'>
 						<ReactNotifications />

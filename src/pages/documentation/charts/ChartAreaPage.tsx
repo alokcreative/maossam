@@ -16,7 +16,7 @@ import { componentPagesMenu } from '../../../menu';
 
 const ChartAreaPage = () => {
 	return (
-		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsArea.text}>
+		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsArea.text} isProtected>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

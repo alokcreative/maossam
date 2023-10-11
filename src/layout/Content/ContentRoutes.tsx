@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import contents from '../../routes/mainRoutes';
+import ResetPasswordPage from '../../pages/presentation/auth/ResetPasswordPage';
 
 const PAGE_404 = lazy(() => import('../../pages/presentation/auth/Page404'));
 const ContentRoutes = () => {

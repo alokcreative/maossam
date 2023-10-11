@@ -22,6 +22,7 @@ import Profile from '../pages/presentation/profile/Profile';
 import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManagement';
 
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
+import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
 
 
 const LANDING = {
@@ -219,6 +220,10 @@ export const presentation: RouteProps[] = [
 	{
 		path: pagesMenu.signUp.path,
 		element: <Login isSignUp />,
+	},
+	{
+		path: pagesMenu.resetpassword.path,
+		element: <ResetPasswordPage />,
 	},
 	{
 		path: `${pagesMenu.profile.path}/:id`,

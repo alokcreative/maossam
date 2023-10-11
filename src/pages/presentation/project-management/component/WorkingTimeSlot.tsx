@@ -66,7 +66,7 @@ const WorkingTimeSlot: FC = () => {
 	const formattedDate: string = currdate.toLocaleDateString();
 	const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday'];
 	return (
-		<PageWrapper title={dashboardPagesMenu.workingslot.text}>
+		<PageWrapper title={dashboardPagesMenu.workingslot.text} isProtected>
 			{/* <SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
@@ -139,8 +139,9 @@ const WorkingTimeSlot: FC = () => {
 									</div>
 								</div>
 								<div>
-									{weekdays.map((i) => (
-										<div className='mb-3'>
+									{weekdays.map((i,index) => (
+										// eslint-disable-next-line react/no-array-index-key
+										<div className='mb-3' key={index}>
 											<OneTimeSlot getdata={getdata} weekdayname={i} />
 										</div>
 									))}

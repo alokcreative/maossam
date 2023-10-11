@@ -280,7 +280,6 @@ export const pagesMenu = {
 		path: 'pricing-table',
 		icon: 'Local Offer',
 	},
-
 	app: {
 		id: 'app',
 		text: 'Apps',
@@ -519,7 +518,6 @@ export const pagesMenu = {
 			},
 		},
 	},
-
 	auth: {
 		id: 'auth',
 		text: 'Auth Pages',
@@ -535,6 +533,12 @@ export const pagesMenu = {
 		id: 'signUp',
 		text: 'Sign Up',
 		path: 'auth-pages/sign-up',
+		icon: 'PersonAdd',
+	},
+	resetpassword: {
+		id: 'resetpassword',
+		text: 'Reset Password',
+		path: 'resetpassword/:resetCode',
 		icon: 'PersonAdd',
 	},
 	page404: {

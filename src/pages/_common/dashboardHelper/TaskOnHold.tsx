@@ -163,10 +163,11 @@ const TaskOnHold = () => {
 						</thead>
 						<tbody>
 							{taskList &&
-								dataPagination(taskList, currentPage, perPage).map((i,index) => (
+								dataPagination(taskList, currentPage, perPage).map((i, index) => (
 									// eslint-disable-next-line react/jsx-props-no-spreading
 									<TableRow
-										key={i.id}
+										// eslint-disable-next-line react/no-array-index-key
+										key={index}
 										id={index+1}
 										task={i}
 										edit={edit}

@@ -54,7 +54,7 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 						localStorage.removeItem('i18nextLng');
 						localStorage.removeItem('facit_asideStatus');
 						localStorage.removeItem('user');
-						navigate('/auth-pages/login');
+						// navigate('/auth-pages/login');
 					});
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps

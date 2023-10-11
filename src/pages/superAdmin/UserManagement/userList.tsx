@@ -257,7 +257,7 @@ const UserList = () => {
 	};
 
 	return (
-		<PageWrapper title={adminDashboardPagesMenu.users.text}>
+		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
 			<SubHeader>
 				<SubHeaderLeft />
 				<SubHeaderRight>

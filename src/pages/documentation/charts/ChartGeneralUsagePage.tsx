@@ -94,7 +94,7 @@ options: PropTypes.shape({
 	const MENU: TMenu = componentPagesMenu.charts.subMenu;
 
 	return (
-		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsUsage.text}>
+		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsUsage.text} isProtected>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

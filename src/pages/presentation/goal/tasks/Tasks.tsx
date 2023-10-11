@@ -45,7 +45,6 @@ const Tasks: FC = () => {
 	const [taskList, setTaskList] = useState<ITaskValue[] | undefined>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [currTask, setCurrTask] = useState<ITask[]>();
-	const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
@@ -58,11 +57,6 @@ const Tasks: FC = () => {
 			if (goal.task) {
 				goal.task.forEach((task) => {
 					allTasks.push({ goalId: goal.id, ITask: task });
-					// if (task.subTask) {
-					//   task.subTask.forEach((subTask) => {
-					//     allTasks.push(subTask);
-					//   });
-					// }
 				});
 			}
 		});
@@ -192,7 +186,8 @@ const Tasks: FC = () => {
 									? dataPagination(taskList, currentPage, perPage).map(
 											(i, index) => (
 												<TableRow
-													key={i.id}
+													// eslint-disable-next-line react/no-array-index-key
+													key={index}
 													id={index + 1}
 													// eslint-disable-next-line react/jsx-props-no-spreading
 													task={i}

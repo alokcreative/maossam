@@ -13,7 +13,7 @@ import { componentPagesMenu } from '../../../menu';
 
 const ChartHeatMapPage = () => {
 	return (
-		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsHeatMap.text}>
+		<PageWrapper title={componentPagesMenu.charts.subMenu.chartsHeatMap.text} isProtected>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

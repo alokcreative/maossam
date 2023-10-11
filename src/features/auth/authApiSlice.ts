@@ -12,6 +12,10 @@ interface ILoginPayload {
 	email: string;
 	password: string;
 }
+interface IResetPayload {
+	resetCode: string | undefined;
+	payload: any;
+}
 interface IUserDetails {
 	first_name?: string;
 	last_name?: string;
@@ -68,6 +72,30 @@ export const authApiSlice = apiSlice.injectEndpoints({
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${payload.accessToken}`,
 				},
+			}),
+		}),
+		// Forget Password
+		forgetPassword: builder.mutation({
+			query: (email: string) => ({
+				url: apiEndpoints.forgotPassword,
+				method: 'POST',
+				body: email,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				// redirect: 'follow',
+			}),
+		}),
+		// Forget Password
+		setPassword: builder.mutation({
+			query: (payload: IResetPayload) => ({
+				url: `${apiEndpoints.setPassword}${payload.resetCode}/`,
+				method: 'POST',
+				body: payload.payload,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				// redirect: 'follow',
 			}),
 		}),
 		// Get Login User
@@ -151,6 +179,8 @@ export const {
 	useRegisterUserMutation,
 	useLoginUserMutation,
 	useLogoutMutation,
+	useForgetPasswordMutation,
+	useSetPasswordMutation,
 	useGetUsersMutation,
 	useGetProfileQuery,
 	useCreateProfileMutation,

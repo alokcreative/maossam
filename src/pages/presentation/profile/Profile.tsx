@@ -41,9 +41,6 @@ const Profile = () => {
 			emailAddress: data ? data?.email : '',
 			phone: data ? data?.phone_number : '',
 			gender: data ? data?.gender : '',
-			currentPassword: '',
-			confirmPassword: '',
-			newPassword: '',
 		},
 		validate: (values) => {
 			const errors: {
@@ -66,6 +63,25 @@ const Profile = () => {
 			};
 			await UpdateProfileMutation({ id: data.id, userdetails });
 			refetch();
+		},
+	});
+	const formikChangepassword = useFormik({
+		initialValues: {
+			currentPassword: '',
+			newPassword: '',
+			confirmNewPassword: '',
+		},
+		validate: (values) => {
+			const errors: {
+				newPassword?:string;
+				confirmPassword?: string;
+				currentPassword?: string;
+			} = {};
+			return errors;
+		},
+		onSubmit: async (values) => {
+			console.log("values>>",values);
+			
 		},
 	});
 	useEffect(() => {
@@ -333,8 +349,8 @@ const Profile = () => {
 														type='password'
 														placeholder='Current password'
 														autoComplete='current-password'
-														onChange={formik.handleChange}
-														value={formik.values.currentPassword}
+														onChange={formikChangepassword.handleChange}
+														value={formikChangepassword.values.currentPassword}
 													/>
 												</FormGroup>
 											</div>
@@ -347,10 +363,10 @@ const Profile = () => {
 														type='password'
 														placeholder='New password'
 														autoComplete='new-password'
-														onChange={formik.handleChange}
-														onBlur={formik.handleBlur}
-														value={formik.values.newPassword}
-														isValid={formik.isValid}
+														onChange={formikChangepassword.handleChange}
+														onBlur={formikChangepassword.handleBlur}
+														value={formikChangepassword.values.newPassword}
+														isValid={formikChangepassword.isValid}
 														// isTouched={formik.touched.newPassword}
 														// invalidFeedback={formik.errors.newPassword}
 														validFeedback='Looks good!'
@@ -359,20 +375,20 @@ const Profile = () => {
 											</div>
 											<div className='col-12'>
 												<FormGroup
-													id='confirmPassword'
+													id='confirmNewPassword'
 													label='Confirm new password'
 													isFloating>
 													<Input
 														type='password'
 														placeholder='Confirm new password'
 														autoComplete='new-password'
-														onChange={formik.handleChange}
-														onBlur={formik.handleBlur}
-														value={formik.values.confirmPassword}
-														isValid={formik.isValid}
-														isTouched={formik.touched.confirmPassword}
+														onChange={formikChangepassword.handleChange}
+														onBlur={formikChangepassword.handleBlur}
+														value={formikChangepassword.values.confirmNewPassword}
+														isValid={formikChangepassword.isValid}
+														isTouched={formikChangepassword.touched.confirmNewPassword}
 														invalidFeedback={
-															formik.errors.confirmPassword
+															formikChangepassword.errors.confirmNewPassword
 														}
 														validFeedback='Looks good!'
 													/>
