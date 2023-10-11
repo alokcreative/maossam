@@ -7,8 +7,9 @@ import ThemeContext from '../../../contexts/themeContext';
 import Aside, { AsideBody, AsideHead } from '../../../layout/Aside/Aside';
 import { useGetUsersMutation } from '../../../features/auth/authApiSlice';
 import Spinner from '../../../components/bootstrap/Spinner';
+import { useNavigate } from 'react-router-dom';
 
-interface IUserData {
+export interface IUserData {
 	id: number;
 	avatar: string | unknown;
 	first_name: string;
@@ -29,33 +30,50 @@ const DefaultAside = () => {
 	const token = localStorage?.getItem('access_token');
 	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
 	const [userData, setUserData] = useState<IUserData>();
-
+	const navigate = useNavigate();
 	useEffect(() => {
 		if (token) {
 			GetUsersMutation(token)
 				.unwrap()
 				.then((data) => {
 					setUserData(data);
+				})
+				.catch(() => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
 				});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);
+
 	return (
-		<Aside>
-			<AsideHead>
-				<Brand asideStatus={asideStatus} setAsideStatus={setAsideStatus} />
-			</AsideHead>
-			<AsideBody>
-				{isLoading ? (
-					<Spinner />
-				) : userData && userData?.role === 'superadmin' ? (
-					<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
-				) : (
-					<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
-				)}
-			</AsideBody>
-			<User />
-		</Aside>
+		<>
+			{isLoading ? (
+				<div/>
+			) : (
+				<Aside>
+					<AsideHead>
+						<Brand asideStatus={asideStatus} setAsideStatus={setAsideStatus} />
+					</AsideHead>
+					<AsideBody>
+						{userData && userData?.role === 'superadmin' ? (
+							<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
+						) : (
+							<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
+						)}
+					</AsideBody>
+					<User />
+				</Aside>
+			)}
+
+			<div />
+		</>
 	);
 };
 

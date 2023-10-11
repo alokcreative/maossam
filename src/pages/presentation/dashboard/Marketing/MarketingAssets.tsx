@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, useCallback, useContext, useState } from 'react';
+import React, { FC, HTMLAttributes, useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
 import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
@@ -27,11 +27,12 @@ import googleBusiness from '../../../../assets/logos/business.png';
 import facebook from '../../../../assets/logos/facebook.png';
 import instagram from '../../../../assets/logos/instagram.png';
 import pinterest from '../../../../assets/logos/pinterest.png';
-import AuthContext from '../../../../contexts/authContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MarketingAssetForms from './MarketingAssetForms/MarketingAssetForms';
 import Breadcrumb from '../../../../components/bootstrap/Breadcrumb';
+import { IUserData } from '../../../_layout/_asides/DefaultAside';
+import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
 
 interface IItemProps extends HTMLAttributes<HTMLDivElement> {
 	name: string;
@@ -179,11 +180,29 @@ const MarketingAssets = () => {
 		[navigate],
 	);
 
-	const { userData } = useContext(AuthContext);
-	const savedValue = localStorage.getItem('user');
-	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
-	const newUserName = parsedValue?.newUserName;
-	const name = userData?.name || newUserName;
+	const token = localStorage?.getItem('access_token');
+	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
+	const [userData, setUserData] = useState<IUserData>();
+	useEffect(() => {
+		if (token) {
+			GetUsersMutation(token)
+				.unwrap()
+				.then((res) => {
+					setUserData(res);
+				})
+				.catch(() => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
+				});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [token]);
 	const [elementId, setElementId] = useState<number>();
 	const [elementName, setElementName] = useState<string>();
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);

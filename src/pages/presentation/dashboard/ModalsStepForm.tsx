@@ -54,7 +54,17 @@ const ModalsStepForm: React.FC = () => {
 				.unwrap()
 				.then((user: IUserData) => {
 					setData(user);
-				});
+				})
+				.catch(()=>{
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
+				})
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);

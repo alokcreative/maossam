@@ -14,7 +14,6 @@ import Susy9 from './assets/img/wanna/susy/susy9.png';
 import Susy10 from './assets/img/wanna/susy/susy10.png';
 import useDarkMode from './hooks/useDarkMode';
 import Button from './components/bootstrap/Button';
-import AuthContext from './contexts/authContext';
 import {useSelector} from 'react-redux'
 import { componentPagesMenu, pagesMenu } from './menu';
 // import FormGroup from './components/bootstrap/forms/FormGroup';

@@ -1,18 +1,38 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import Header, { HeaderLeft, HeaderRight } from '../../../layout/Header/Header';
 import CommonHeaderChat from './CommonHeaderChat';
 import useDarkMode from '../../../hooks/useDarkMode';
-import AuthContext from '../../../contexts/authContext';
+import { useNavigate } from 'react-router-dom';
+import { useGetUsersMutation } from '../../../features/auth/authApiSlice';
+import { IUserData } from '../_asides/DefaultAside';
 
 const DashboardBookingHeader = () => {
- 	const { darkModeStatus } = useDarkMode();
-	// const { userData, setUser } = useContext(AuthContext);
-	const savedValue = localStorage.getItem('user');
-	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
-
-	const newUserName = parsedValue?.newUserName;
-	const name = parsedValue?.name || newUserName;
+	const { darkModeStatus } = useDarkMode();
+	const navigate = useNavigate();
+	const token = localStorage?.getItem('access_token');
+	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
+	const [userData, setUserData] = useState<IUserData>();
+	useEffect(() => {
+		if (token) {
+			GetUsersMutation(token)
+				.unwrap()
+				.then((data) => {
+					setUserData(data);
+				})
+				.catch(() => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
+				});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [token]);
 	return (
 		<Header>
 			<HeaderLeft>
@@ -23,7 +43,7 @@ const DashboardBookingHeader = () => {
 								className={classNames('fs-3', 'fw-bold', {
 									'text-dark': !darkModeStatus,
 								})}>
-								Hi, {name}
+								Hi, {userData?.first_name}
 							</div>
 						</div>
 					</div>

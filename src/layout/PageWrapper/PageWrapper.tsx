@@ -8,7 +8,6 @@ import { pagesMenu } from '../../menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useGetUsersMutation } from '../../features/auth/authApiSlice';
-import { useEffectOnce } from 'react-use';
 
 interface IPageWrapperProps {
 	isProtected?: boolean;
@@ -46,9 +45,19 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 						if (isProtected && (data === '' || token === '')) {
 							navigate(`../${pagesMenu.login.path}`);
 						}
+					})
+					.catch(() => {
+						localStorage.removeItem('refresh_token');
+						localStorage.removeItem('access_token');
+						localStorage.removeItem('tourModalStarted');
+						localStorage.removeItem('role');
+						localStorage.removeItem('i18nextLng');
+						localStorage.removeItem('facit_asideStatus');
+						localStorage.removeItem('user');
+						navigate('/auth-pages/login');
 					});
 			}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [token, GetUsersMutation]);
 
 		return (

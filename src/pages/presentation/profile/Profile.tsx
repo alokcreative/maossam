@@ -86,11 +86,17 @@ const Profile = () => {
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
-		console.log('file >>', file);
+		// console.log('file >>', file);
 		const avatar = new FormData();
 		avatar.append('avatar', file, file.name);
-		UpdateProfileMutation({ id: data.id, avatar });
-		refetch();
+		UpdateProfileMutation({ id: data.id, avatar })
+			.unwrap()
+			.then(() => {
+				refetch();
+			})
+			.catch(() => {
+				// console.log("Invalid");
+			});
 	};
 
 	return (

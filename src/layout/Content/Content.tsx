@@ -7,7 +7,6 @@ import ContentRoutes from './ContentRoutes';
 import AdminContentRoutes from './AdminContentRoutes';
 import { useGetUsersMutation } from '../../features/auth/authApiSlice';
 import { useNavigate } from 'react-router-dom';
-import { useEffectOnce } from 'react-use';
 import Loading from '../../common/other/Loading';
 
 const LOADING = (
@@ -70,6 +69,16 @@ const Content = () => {
 				.unwrap()
 				.then((data) => {
 					setUserData(data);
+				})
+				.catch((error) => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
 				});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

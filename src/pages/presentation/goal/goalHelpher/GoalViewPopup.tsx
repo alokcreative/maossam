@@ -2,7 +2,6 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../../components/bootstrap/Modal';
 import { useFormik } from 'formik';
 import Button from '../../../../components/bootstrap/Button';
-import AuthContext from '../../../../contexts/authContext';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -23,6 +22,8 @@ import PaginationButtons, {
 	PER_COUNT,
 } from '../../../../components/PaginationButtons';
 import { TColor } from '../../../../type/color-type';
+import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
+import { IUserData } from '../../../_layout/_asides/DefaultAside';
 // import questions from '../../../../common/data/dummyTaskQuestions';
 
 type IAssetNameProps = {
@@ -72,11 +73,29 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const { isModalOpen, setIsModalOpen, id } = props;
 	const navigate = useNavigate();
 	// User data
-	const { userData } = useContext(AuthContext);
-	const savedValue = localStorage.getItem('user');
-	const parsedValue = savedValue ? JSON.parse(savedValue) : null;
-	const newUserName = parsedValue?.newUserName || parsedValue?.name;
-	const name = userData?.name || newUserName;
+	const token = localStorage?.getItem('access_token');
+	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
+	const [userData, setUserData] = useState<IUserData>();
+	useEffect(() => {
+		if (token) {
+			GetUsersMutation(token)
+				.unwrap()
+				.then((res) => {
+					setUserData(res);
+				})
+				.catch(() => {
+					localStorage.removeItem('refresh_token');
+					localStorage.removeItem('access_token');
+					localStorage.removeItem('tourModalStarted');
+					localStorage.removeItem('role');
+					localStorage.removeItem('i18nextLng');
+					localStorage.removeItem('facit_asideStatus');
+					localStorage.removeItem('user');
+					navigate('/auth-pages/login');
+				});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [token]);
 	const [taskData, setTaskData] = useState<ITask[] | undefined>();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
@@ -115,7 +134,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 			<ModalBody>
 				<div className='row p-auto'>
 					<div className=' mb-4 '>
-						<h5 className='mb-3 fw-bold'>Hi, {name}</h5>
+						<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
 						<p>
 							{taskData &&
 								dataPagination(taskData && taskData, currentPage, perPage).map(
