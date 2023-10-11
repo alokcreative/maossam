@@ -111,13 +111,12 @@ const ModalsStepForm: React.FC = () => {
 		onSubmit: (values) => {
 			console.log('Validated');
 			nextStep();
-			const updateUser = {
-				id: data.id,
+			const userdetails = {
 				country: values.country,
 				state: values.state,
 				phone_number: values.phone_number,
 			};
-			UpdateProfileMutation(updateUser);
+			UpdateProfileMutation({ id: data.id, userdetails });
 		},
 	});
 	useEffect(() => {
@@ -328,7 +327,11 @@ const ModalsStepForm: React.FC = () => {
 								icon='save'
 								isLight
 								className='btn btn-info px-4 mx-1'
-								isDisable={!!formik.errors.companyName && !!formik.errors.country && !!formik.errors.state}
+								isDisable={
+									!!formik.errors.companyName &&
+									!!formik.errors.country &&
+									!!formik.errors.state
+								}
 								onClick={formik.handleSubmit}>
 								Submit
 							</Button>
