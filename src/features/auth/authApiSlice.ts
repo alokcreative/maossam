@@ -14,7 +14,7 @@ interface ILoginPayload {
 }
 interface IResetPayload {
 	resetCode: string | undefined;
-	payload: any;
+	payload: string;
 }
 interface IUserDetails {
 	first_name?: string;
