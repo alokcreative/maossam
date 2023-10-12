@@ -207,7 +207,7 @@ const UserList = () => {
 			avatar: undefined as File | undefined,
 		},
 		onSubmit: (values, { resetForm }) => {
-			console.log('NewUser>>>>', values);
+			// console.log('NewUser>>>>', values);
 
 			const userData = new FormData();
 			userData.append('first_name', values.first_name);
@@ -320,7 +320,6 @@ const UserList = () => {
 		// // console.log('file >>', file);
 
 		setAvatar(file);
-	
 	};
 	useEffect(() => {
 		const stateListupdated = State.getStatesOfCountry(formik.values.country);

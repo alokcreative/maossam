@@ -1,4 +1,4 @@
-import React, { FC, useState, lazy, startTransition, useEffect } from 'react';
+import React, { FC, useState, lazy, startTransition } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -135,7 +135,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 					)
 						.unwrap()
 						.then((res) => {
-							console.log('res>>>>>', res.message);
+							// console.log('res>>>>>', res.message);
 							toast(res.message);
 						})
 						.catch((res) => {
