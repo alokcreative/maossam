@@ -15,7 +15,7 @@ export const PER_COUNT = {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const dataPagination = (data: any[], currentPage: number, perPage: number) =>
-	data.filter(
+	data?.filter(
 		(i, index) => index + 1 > (currentPage - 1) * perPage && index + 1 <= currentPage * perPage,
 	);
 
@@ -35,7 +35,7 @@ const PaginationButtons: FC<IPaginationButtonsProps> = ({
 	data,
 	label,
 }) => {
-	const totalItems = data.length;
+	const totalItems = data?.length;
 	const totalPage = Math.ceil(totalItems / perPage);
 
 	const pagination = () => {
