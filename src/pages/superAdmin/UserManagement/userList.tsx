@@ -123,7 +123,7 @@ export interface IUserProps {
 	phone_number?: string;
 	gender?: string;
 	avatar?: FormData;
-
+	password?: string;
 	// about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
 
@@ -162,6 +162,7 @@ const UserList = () => {
 	const [stateList, setstateList] = useState<IOptionsProps[]>();
 	const [modalTitle, setmodalTitle] = useState<string>('');
 	const [isOpen, setIsOpen] = useState(false);
+	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
 	// 	Object.keys(USERS).map((key) => ({
@@ -179,7 +180,7 @@ const UserList = () => {
 		setcountryList(LIST);
 	});
 	const handleData = (id: string) => {
-		console.log('id>>>>', id);
+		// console.log('id>>>>', id);
 		// const updatedData = data.filter((user: IUserProps) => user.id !== id);
 		// setUserData(updatedData);
 		deleteProfile(id).then(() => {
@@ -206,20 +207,45 @@ const UserList = () => {
 			avatar: undefined as File | undefined,
 		},
 		onSubmit: (values, { resetForm }) => {
-			// console.log(values.isAdmin);
+			console.log('NewUser>>>>', values);
+
+			const userData = new FormData();
+			userData.append('first_name', values.first_name);
+			userData.append('last_name', values.last_name);
+			userData.append('email', values.email);
+			userData.append('country', values.country);
+			userData.append('state', values.state);
+			userData.append('gender', values.gender);
+			userData.append('phone_number', values.phone_number);
+			userData.append('company_name', values.company_name);
+			userData.append('password', values.password);
+			if (avatar instanceof File) {
+				userData.append('avatar', avatar, avatar.name);
+			}
+			createProfile({ userData }).then((res) => {
+				setIsOpen(false);
+				refetch();
+			});
+			// updateProfile({ id: updateUserForm.values.id, userData }).then((res) => {
+			// 	setIsOpen(false);
+			// 	refetch();
+			// });
+			console.log('userData>>>>>>>>>>>>>>', userData.values);
+
 			setIsOpen(false);
 			resetForm();
-			const user: IUserProps = {
-				// id: (userData.length + 1).toString(),
-				first_name: values.first_name,
-				last_name: values.last_name,
-				email: values.email,
-				phone_number: values.phone_number,
-				company_name: values.company_name,
-				country: values.country,
-				state: values.state,
-				gender: values.gender,
-			};
+			// const user: IUserProps = {
+			// 	// id: (userData.length + 1).toString(),
+			// 	first_name: values.first_name,
+			// 	last_name: values.last_name,
+			// 	email: values.email,
+			// 	phone_number: values.phone_number,
+			// 	company_name: values.company_name,
+			// 	country: values.country,
+			// 	state: values.state,
+			// 	gender: values.gender,
+			// 	password: values.password,
+			// };
 			// setUserData([...userData, user]);
 			// createProfile()
 
@@ -227,13 +253,11 @@ const UserList = () => {
 		},
 	});
 
-
 	const newUser = () => {
 		setIsOpen(true);
 		setmodalTitle('New User');
-		setAvatar(UserImage);
+		// setAvatar(UserImage);
 	};
-	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
 
 	const updateUserForm = useFormik({
 		initialValues: {
@@ -241,7 +265,7 @@ const UserList = () => {
 			first_name: '',
 			last_name: '',
 			email: '',
-			password: '',
+			// password: '',
 			phone_number: '',
 			company_name: '',
 			country: '',
@@ -259,10 +283,10 @@ const UserList = () => {
 			userData.append('state', values.state);
 			userData.append('gender', values.gender);
 			userData.append('phone_number', values.phone_number);
-			if(avatar instanceof File){
+			userData.append('company_name', values.company_name);
+			if (avatar instanceof File) {
 				userData.append('avatar', avatar, avatar.name);
 			}
-			userData.append('company_name', values.company_name);
 			updateProfile({ id: updateUserForm.values.id, userData }).then((res) => {
 				setIsOpen(false);
 				refetch();
@@ -270,7 +294,7 @@ const UserList = () => {
 		},
 	});
 	const handleEditUser = (id: string) => {
-		console.log('id>>>>', id);
+		// console.log('id>>>>', id);
 		setmodalTitle(`Update User`);
 		setIsOpen(true);
 		const user = data.find((i: IUser) => i.id === id);
@@ -285,8 +309,8 @@ const UserList = () => {
 		updateUserForm.setFieldValue('country', user?.country);
 		updateUserForm.setFieldValue('state', user?.state);
 		updateUserForm.setFieldValue('gender', user?.gender);
-		const user1 = data.find((item: any) => item.id === id);
-		setAvatar(user1.avatar);
+		// const user1 = data.find((item: any) => item.id === id);
+		setAvatar(user.avatar);
 	};
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
@@ -296,13 +320,7 @@ const UserList = () => {
 		// // console.log('file >>', file);
 
 		setAvatar(file);
-		// updateUserForm.setFieldValue('avatar', file);
-		// updateProfile({ id: updateUserForm.values.id, avatar:img })
-		// 	.unwrap()
-		// 	.then(() => {})
-		// 	.catch(() => {
-		// 		console.log("Invalid");
-		// 	});
+	
 	};
 	useEffect(() => {
 		const stateListupdated = State.getStatesOfCountry(formik.values.country);
@@ -386,10 +404,10 @@ const UserList = () => {
 						<div className='col-12'>
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
-									{avatar ? (
-										<Avatar src={avatar} color='storybook' />
-									) : (
+									{modalTitle === 'New User' ? (
 										<Avatar src={UserImage} color='storybook' />
+									) : (
+										<Avatar src={avatar} color='storybook' />
 									)}
 								</div>
 								<div className='col-lg'>
@@ -411,7 +429,11 @@ const UserList = () => {
 						<FormGroup id='first_name' label='First Name' className='col-lg-6'>
 							<Input
 								name='first_name'
-								onChange={updateUserForm.handleChange}
+								onChange={
+									modalTitle === 'New User'
+										? formik.handleChange
+										: updateUserForm.handleChange
+								}
 								value={
 									modalTitle === 'New User'
 										? formik.values.first_name
@@ -452,7 +474,7 @@ const UserList = () => {
 							/>
 						</FormGroup>
 						{modalTitle === 'New User' && (
-							<FormGroup id='Password' label='Password' className='col-lg-6'>
+							<FormGroup id='password' label='Password' className='col-lg-6'>
 								<Input
 									type='password'
 									onChange={formik.handleChange}
@@ -557,7 +579,13 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
-						<Button color='info' onClick={updateUserForm.handleSubmit}>
+						<Button
+							color='info'
+							onClick={
+								modalTitle === 'New User'
+									? formik.handleSubmit
+									: updateUserForm.handleSubmit
+							}>
 							{modalTitle === 'New User' ? 'Save' : 'Update'}
 						</Button>
 					</CardFooterLeft>
