@@ -207,7 +207,7 @@ const UserList = () => {
 			avatar: undefined as File | undefined,
 		},
 		onSubmit: (values, { resetForm }) => {
-			console.log('NewUser>>>>', values);
+			// console.log('NewUser>>>>', values);
 
 			const userData = new FormData();
 			userData.append('first_name', values.first_name);
@@ -312,6 +312,7 @@ const UserList = () => {
 		// const user1 = data.find((item: any) => item.id === id);
 		setAvatar(user.avatar);
 	};
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
@@ -320,7 +321,6 @@ const UserList = () => {
 		// // console.log('file >>', file);
 
 		setAvatar(file);
-	
 	};
 	useEffect(() => {
 		const stateListupdated = State.getStatesOfCountry(formik.values.country);

@@ -9,9 +9,8 @@ import Button from '../../../components/bootstrap/Button';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Spinner from '../../../components/bootstrap/Spinner';
 import { useSetPasswordMutation } from '../../../features/auth/authApiSlice';
-import { toast } from 'react-toastify';
 import { pagesMenu } from '../../../menu';
-import Card, { CardBody, CardTitle } from '../../../components/bootstrap/Card';
+import Card, { CardBody } from '../../../components/bootstrap/Card';
 
 const ResetPasswordPage: FC = () => {
 	const { darkModeStatus } = useDarkMode();

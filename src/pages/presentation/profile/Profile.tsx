@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import UserImage from '../../../assets/img/wanna/wanna1.png';
 import useTourStep from '../../../hooks/useTourStep';
-import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
+import SubHeader, { SubHeaderLeft } from '../../../layout/SubHeader/SubHeader';
 import Page from '../../../layout/Page/Page';
 import Card, {
 	CardActions,
@@ -31,19 +31,6 @@ import Page404 from '../auth/Page404';
 import Select from '../../../components/bootstrap/forms/Select';
 import { toast } from 'react-toastify';
 
-interface ResponseData {
-	data: {
-		detail: string[];
-	};
-}
-
-interface ErrorData {
-	error: {
-		data: {
-			detail: string[];
-		};
-	};
-}
 const Profile = () => {
 	const { id } = useParams();
 	useTourStep(19);
@@ -79,10 +66,10 @@ const Profile = () => {
 			userData.append('email', values.emailAddress);
 			userData.append('gender', values.gender);
 			userData.append('phone_number', values.phone);
-			if(avatar instanceof File){
+			if (avatar instanceof File) {
 				userData.append('avatar', avatar, avatar.name);
 			}
-			await UpdateProfileMutation({  id: data.id, userData }).then((res) => {
+			await UpdateProfileMutation({ id: data.id, userData }).then((res) => {
 				refetch();
 			});
 		},
@@ -113,6 +100,12 @@ const Profile = () => {
 			if (values.newPassword !== values.confirmNewPassword) {
 				errors.confirmNewPassword = 'Must be Same';
 			}
+			if (values.newPassword.length < 8) {
+				errors.newPassword = 'Ensure this field has at least 8 characters';
+			}
+			if (values.confirmNewPassword.length < 8) {
+				errors.confirmNewPassword = 'Ensure this field has at least 8 characters';
+			}
 			return errors;
 		},
 		validateOnChange: false,
@@ -129,7 +122,7 @@ const Profile = () => {
 					if (res?.detail[0]) toast(res?.detail[0]);
 				})
 				.catch((res) => {
-					console.log("res>>",res);
+					// console.log("res>>",res);
 					toast(res.data?.detail[0]);
 				});
 			resetForm();
@@ -150,6 +143,7 @@ const Profile = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, isSuccess, data]);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
@@ -396,8 +390,14 @@ const Profile = () => {
 																.currentPassword
 														}
 														isValid={formikChangepassword.isValid}
-														isTouched={formikChangepassword.touched.currentPassword}
-														invalidFeedback={formikChangepassword.errors.currentPassword}
+														isTouched={
+															formikChangepassword.touched
+																.currentPassword
+														}
+														invalidFeedback={
+															formikChangepassword.errors
+																.currentPassword
+														}
 														validFeedback='Looks good!'
 													/>
 												</FormGroup>
@@ -417,8 +417,12 @@ const Profile = () => {
 															formikChangepassword.values.newPassword
 														}
 														isValid={formikChangepassword.isValid}
-														isTouched={formikChangepassword.touched.newPassword}
-														invalidFeedback={formikChangepassword.errors.newPassword}
+														isTouched={
+															formikChangepassword.touched.newPassword
+														}
+														invalidFeedback={
+															formikChangepassword.errors.newPassword
+														}
 														validFeedback='Looks good!'
 													/>
 												</FormGroup>
