@@ -33,6 +33,11 @@ interface IProfilePayload {
 	avatar?: FormData;
 }
 
+interface ICreatePayload {
+	userData?: FormData;
+	avatar?: FormData;
+}
+
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
 };
@@ -138,12 +143,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 		// Create User
 		createProfile: builder.mutation({
-			query: (payload: IProfilePayload) => ({
-				url: apiEndpoints.update,
+			query: (payload: ICreatePayload) => ({
+				url: apiEndpoints.createUser,
 				method: 'POST',
-				body: payload,
+				body: payload.userData,
 				headers: {
-					'Content-Type': 'application/json',
+					// 'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
 			invalidatesTags: [`Profile`],
