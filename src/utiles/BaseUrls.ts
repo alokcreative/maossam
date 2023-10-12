@@ -1,3 +1,2 @@
-const baseUrl = 'http://192.168.1.29:8080/api/users/';
-
+const baseUrl = process.env.BASE_URL || 'http://3.22.65.185:8302/api/users/';
 export default baseUrl;

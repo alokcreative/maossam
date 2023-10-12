@@ -65,9 +65,7 @@ const ResetPasswordPage: FC = () => {
 	return (
 		<PageWrapper isProtected={false} title={pagesMenu.resetpassword.text}>
 			<Page className='p-0 align-items-center justify-content-center'>
-			<div className='text-center display-2 fw-bold mb-5 lh-1'>
-											MA OSSIM
-										</div>
+				<div className='text-center display-2 fw-bold mb-5 lh-1'>MA OSSIM</div>
 				<div className='display-6 fw-bold'>Set Your Password</div>
 				<Card className='col-6 '>
 					<CardBody>
