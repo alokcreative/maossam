@@ -312,6 +312,7 @@ const UserList = () => {
 		// const user1 = data.find((item: any) => item.id === id);
 		setAvatar(user.avatar);
 	};
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
