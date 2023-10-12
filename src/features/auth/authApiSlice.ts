@@ -98,6 +98,19 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				// redirect: 'follow',
 			}),
 		}),
+		// Forget Password
+		changePassword: builder.mutation({
+			query: (payload: string) => ({
+				url: apiEndpoints.changePassword,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+				},
+				// redirect: 'follow',
+			}),
+		}),
 		// Get Login User
 		getUsers: builder.mutation({
 			query: (payload: string) => ({
@@ -181,6 +194,7 @@ export const {
 	useLogoutMutation,
 	useForgetPasswordMutation,
 	useSetPasswordMutation,
+	useChangePasswordMutation,
 	useGetUsersMutation,
 	useGetProfileQuery,
 	useCreateProfileMutation,

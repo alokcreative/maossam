@@ -51,11 +51,11 @@ const ResetPasswordPage: FC = () => {
 					})
 						.unwrap()
 						.then((res) => {
-							console.log('ressss>1', res);
+							// console.log('ressss>1', res);
 							navigate('/');
 						})
 						.catch((res) => {
-							console.log('ressss>reject', res);
+							// console.log('ressss>reject', res);
 							// toast(rejected.data?.detail);
 						});
 				});

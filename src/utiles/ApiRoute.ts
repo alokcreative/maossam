@@ -7,6 +7,7 @@ const apiEndpoints = {
 	logout: 'logout/',
 	forgotPassword: 'password/forgot/',
 	setPassword: 'password/generate/',
+	changePassword: 'password/change/',
 	createUser: 'create/',
 	update: 'update/',
 	allUser: 'list/',

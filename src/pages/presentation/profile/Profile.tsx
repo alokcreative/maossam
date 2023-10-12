@@ -20,12 +20,30 @@ import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
 import Avatar from '../../../components/Avatar';
 import CommonDesc from '../../../common/other/CommonDesc';
 import { useFormik } from 'formik';
-import { useGetProfileQuery, useUpdateProfileMutation } from '../../../features/auth/authApiSlice';
+import {
+	useChangePasswordMutation,
+	useGetProfileQuery,
+	useUpdateProfileMutation,
+} from '../../../features/auth/authApiSlice';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../../components/bootstrap/Spinner';
 import Page404 from '../auth/Page404';
 import Select from '../../../components/bootstrap/forms/Select';
+import { toast } from 'react-toastify';
 
+interface ResponseData {
+	data: {
+		detail: string[];
+	};
+}
+
+interface ErrorData {
+	error: {
+		data: {
+			detail: string[];
+		};
+	};
+}
 const Profile = () => {
 	const { id } = useParams();
 	useTourStep(19);
@@ -33,6 +51,7 @@ const Profile = () => {
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
 	const [UpdateProfileMutation] = useUpdateProfileMutation();
+	const [ChangePasswordMutation] = useChangePasswordMutation();
 
 	const formik = useFormik({
 		initialValues: {
@@ -65,6 +84,7 @@ const Profile = () => {
 			refetch();
 		},
 	});
+
 	const formikChangepassword = useFormik({
 		initialValues: {
 			currentPassword: '',
@@ -73,15 +93,27 @@ const Profile = () => {
 		},
 		validate: (values) => {
 			const errors: {
-				newPassword?:string;
+				newPassword?: string;
 				confirmPassword?: string;
 				currentPassword?: string;
 			} = {};
 			return errors;
 		},
-		onSubmit: async (values) => {
-			console.log("values>>",values);
-			
+		onSubmit: async (values, { resetForm }) => {
+			console.log('values>>', values);
+			const payload = JSON.stringify({
+				current_password: values.currentPassword,
+				new_password: values.newPassword,
+				confirm_password: values.confirmNewPassword,
+			});
+
+			ChangePasswordMutation(payload).then((res) => {
+				const responseData = res as ResponseData;
+				toast(responseData?.data?.detail[0]);
+				const error = res as ErrorData;
+				toast(error.error?.data?.detail[0]);
+			});
+			resetForm();
 		},
 	});
 	useEffect(() => {
@@ -350,7 +382,10 @@ const Profile = () => {
 														placeholder='Current password'
 														autoComplete='current-password'
 														onChange={formikChangepassword.handleChange}
-														value={formikChangepassword.values.currentPassword}
+														value={
+															formikChangepassword.values
+																.currentPassword
+														}
 													/>
 												</FormGroup>
 											</div>
@@ -365,7 +400,9 @@ const Profile = () => {
 														autoComplete='new-password'
 														onChange={formikChangepassword.handleChange}
 														onBlur={formikChangepassword.handleBlur}
-														value={formikChangepassword.values.newPassword}
+														value={
+															formikChangepassword.values.newPassword
+														}
 														isValid={formikChangepassword.isValid}
 														// isTouched={formik.touched.newPassword}
 														// invalidFeedback={formik.errors.newPassword}
@@ -384,11 +421,18 @@ const Profile = () => {
 														autoComplete='new-password'
 														onChange={formikChangepassword.handleChange}
 														onBlur={formikChangepassword.handleBlur}
-														value={formikChangepassword.values.confirmNewPassword}
+														value={
+															formikChangepassword.values
+																.confirmNewPassword
+														}
 														isValid={formikChangepassword.isValid}
-														isTouched={formikChangepassword.touched.confirmNewPassword}
+														isTouched={
+															formikChangepassword.touched
+																.confirmNewPassword
+														}
 														invalidFeedback={
-															formikChangepassword.errors.confirmNewPassword
+															formikChangepassword.errors
+																.confirmNewPassword
 														}
 														validFeedback='Looks good!'
 													/>
@@ -412,7 +456,11 @@ const Profile = () => {
 							color='success'
 							icon='save'
 							isLight
-							onClick={formik.handleSubmit}>
+							onClick={
+								passwordChangeCTA
+									? formikChangepassword.handleSubmit
+									: formik.handleSubmit
+							}>
 							Save
 						</Button>
 					</CardFooter>
