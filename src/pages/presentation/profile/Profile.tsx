@@ -49,6 +49,8 @@ const Profile = () => {
 	useTourStep(19);
 	const { data, isLoading, isSuccess, refetch } = useGetProfileQuery(id);
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
+	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
+
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
 	const [UpdateProfileMutation] = useUpdateProfileMutation();
 	const [ChangePasswordMutation] = useChangePasswordMutation();
@@ -71,17 +73,18 @@ const Profile = () => {
 			return errors;
 		},
 		onSubmit: async (values) => {
-			const userdetails = {
-				first_name: values.firstName,
-				last_name: values.lastName,
-				email: values.emailAddress,
-				// country: data.country,
-				// state: data.state,
-				phone_number: values.phone,
-				gender: values.gender,
-			};
-			await UpdateProfileMutation({ id: data.id, userdetails });
-			refetch();
+			const userData = new FormData();
+			userData.append('first_name', values.firstName);
+			userData.append('last_name', values.lastName);
+			userData.append('email', values.emailAddress);
+			userData.append('gender', values.gender);
+			userData.append('phone_number', values.phone);
+			if(avatar instanceof File){
+				userData.append('avatar', avatar, avatar.name);
+			}
+			await UpdateProfileMutation({  id: data.id, userData }).then((res) => {
+				refetch();
+			});
 		},
 	});
 
@@ -94,25 +97,41 @@ const Profile = () => {
 		validate: (values) => {
 			const errors: {
 				newPassword?: string;
-				confirmPassword?: string;
+				confirmNewPassword?: string;
 				currentPassword?: string;
 			} = {};
+			if (!values.newPassword) {
+				errors.newPassword = 'Required';
+			}
+
+			if (!values.confirmNewPassword) {
+				errors.confirmNewPassword = 'Required';
+			}
+			if (!values.currentPassword) {
+				errors.currentPassword = 'Required';
+			}
+			if (values.newPassword !== values.confirmNewPassword) {
+				errors.confirmNewPassword = 'Must be Same';
+			}
 			return errors;
 		},
+		validateOnChange: false,
 		onSubmit: async (values, { resetForm }) => {
-			console.log('values>>', values);
 			const payload = JSON.stringify({
 				current_password: values.currentPassword,
 				new_password: values.newPassword,
 				confirm_password: values.confirmNewPassword,
 			});
 
-			ChangePasswordMutation(payload).then((res) => {
-				const responseData = res as ResponseData;
-				toast(responseData?.data?.detail[0]);
-				const error = res as ErrorData;
-				toast(error.error?.data?.detail[0]);
-			});
+			ChangePasswordMutation(payload)
+				.unwrap()
+				.then((res) => {
+					if (res?.detail[0]) toast(res?.detail[0]);
+				})
+				.catch((res) => {
+					console.log("res>>",res);
+					toast(res.data?.detail[0]);
+				});
 			resetForm();
 		},
 	});
@@ -134,17 +153,7 @@ const Profile = () => {
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
-		// console.log('file >>', file);
-		const avatar = new FormData();
-		avatar.append('avatar', file, file.name);
-		UpdateProfileMutation({ id: data.id, avatar })
-			.unwrap()
-			.then(() => {
-				refetch();
-			})
-			.catch(() => {
-				// console.log("Invalid");
-			});
+		setAvatar(file);
 	};
 
 	return (
@@ -386,6 +395,10 @@ const Profile = () => {
 															formikChangepassword.values
 																.currentPassword
 														}
+														isValid={formikChangepassword.isValid}
+														isTouched={formikChangepassword.touched.currentPassword}
+														invalidFeedback={formikChangepassword.errors.currentPassword}
+														validFeedback='Looks good!'
 													/>
 												</FormGroup>
 											</div>
@@ -404,8 +417,8 @@ const Profile = () => {
 															formikChangepassword.values.newPassword
 														}
 														isValid={formikChangepassword.isValid}
-														// isTouched={formik.touched.newPassword}
-														// invalidFeedback={formik.errors.newPassword}
+														isTouched={formikChangepassword.touched.newPassword}
+														invalidFeedback={formikChangepassword.errors.newPassword}
 														validFeedback='Looks good!'
 													/>
 												</FormGroup>
