@@ -20,10 +20,12 @@ interface IUserDetails {
 	state?: string;
 	phone_number?: string;
 	gender?: string;
+	avatar?: FormData;
 }
 interface IProfilePayload {
 	id: string;
 	userdetails?: IUserDetails;
+	userData?: FormData;
 	avatar?: FormData;
 }
 
@@ -111,7 +113,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 			query: (payload: IProfilePayload) => ({
 				url: `${apiEndpoints.update}${payload.id}/`,
 				method: 'PATCH',
-				body: payload.userdetails || payload.avatar,
+				body: payload.userdetails || payload.avatar || payload.userData,
 				headers: {
 					// 'Content-Type': 'multipart/form-data',
 					Authorization: `Bearer ${localStorage.getItem('access_token')}`,

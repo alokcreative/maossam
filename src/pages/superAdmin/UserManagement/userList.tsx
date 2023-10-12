@@ -34,13 +34,19 @@ import Input from '../../../components/bootstrap/forms/Input';
 import Avatar from '../../../components/Avatar';
 import Select from '../../../components/bootstrap/forms/Select';
 import Label from '../../../components/bootstrap/forms/Label';
-import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
+import UserImage from '../../../assets/img/wanna/wanna1.png';
 import { Country, State, City } from 'country-state-city';
 import { useEffectOnce } from 'react-use';
 import { IServiceProps } from '../../../common/data/serviceDummyData';
-import { useGetAllUserQuery, useDeleteProfileMutation } from '../../../features/auth/authApiSlice';
+import {
+	useGetAllUserQuery,
+	useDeleteProfileMutation,
+	useUpdateProfileMutation,
+	useCreateProfileMutation,
+} from '../../../features/auth/authApiSlice';
 import Spinner from '../../../components/bootstrap/Spinner';
 import { toast } from 'react-toastify';
+import { Obj } from '@popperjs/core';
 
 interface ITableRowProps {
 	index: number;
@@ -49,6 +55,7 @@ interface ITableRowProps {
 	last_name: string;
 	position: string;
 	email: string;
+	company_name: string;
 	phone_number: number;
 	color: TColor;
 	// services: IServiceProps[];
@@ -62,6 +69,7 @@ const TableRow: FC<ITableRowProps> = ({
 	last_name,
 	position,
 	email,
+	company_name,
 	color,
 	phone_number,
 	handleClick,
@@ -73,7 +81,7 @@ const TableRow: FC<ITableRowProps> = ({
 			<td>{first_name}</td>
 			<td>{last_name}</td>
 			<td>{email}</td>
-			<td>{position}</td>
+			<td>{company_name}</td>
 			<td>{phone_number}</td>
 			{/* <td className='col-auto gap-2'>
 				{services &&
@@ -105,19 +113,35 @@ const TableRow: FC<ITableRowProps> = ({
 };
 
 export interface IUserProps {
+	first_name: string;
+	last_name: string;
+	email: string;
+	// teamMember?: string;
+	country?: string;
+	company_name?: string;
+	state?: string;
+	phone_number?: string;
+	gender?: string;
+	avatar?: FormData;
+
+	// about?: { type?: string; exp?: string; FeieldActivity?: string };
+}
+
+export interface IUser {
 	id: string;
-	name: string;
-	lastname: string;
+	first_name: string;
+	last_name: string;
 	email: string;
 	password: string;
-	src: string;
-	role: Role;
-	teamMember?: string;
+
+	// teamMember?: string;
 	country?: string;
-	company?: string;
+	company_name?: string;
 	state?: string;
-	contact?: number;
-	about?: { type?: string; exp?: string; FeieldActivity?: string };
+	phone_number?: string;
+	gender?: string;
+	avatar?: object;
+	// about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
 
 interface IOptionsProps {
@@ -128,20 +152,22 @@ interface IOptionsProps {
 const UserList = () => {
 	const { data, error, isLoading, isSuccess, isFetching, refetch } = useGetAllUserQuery({});
 	const [deleteProfile] = useDeleteProfileMutation();
+	const [updateProfile] = useUpdateProfileMutation();
+	const [createProfile] = useCreateProfileMutation();
 	const { themeStatus, darkModeStatus } = useDarkMode();
 	const [currentPage, setCurrentPage] = useState(1);
-	const [userList, setUserList] = useState(data);
+	// const [userList, setUserList] = useState(data);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [countryList, setcountryList] = useState<IOptionsProps[]>();
 	const [stateList, setstateList] = useState<IOptionsProps[]>();
 	const [modalTitle, setmodalTitle] = useState<string>('');
 	const [isOpen, setIsOpen] = useState(false);
 	// const [userData, setUserData] = useState();
-	const [userData, setUserData] = useState(
-		Object.keys(USERS).map((key) => ({
-			...USERS[key],
-		})),
-	);
+	// const [userData, setUserData] = useState(
+	// 	Object.keys(USERS).map((key) => ({
+	// 		...USERS[key],
+	// 	})),
+	// );
 	// console.log(userData);
 
 	useEffectOnce(() => {
@@ -159,7 +185,7 @@ const UserList = () => {
 		deleteProfile(id).then(() => {
 			refetch().then((res) => {
 				console.log('res>>', res.data);
-				setUserList(res.data);
+				// setUserList(res.data);
 			});
 			toast('User Deleted Sucessfully');
 		});
@@ -167,94 +193,125 @@ const UserList = () => {
 
 	const formik = useFormik({
 		initialValues: {
-			id: userData.length + 1,
-			fastname: '',
-			lastname: '',
+			// id: userData.length + 1,
+			first_name: '',
+			last_name: '',
 			email: '',
 			password: '',
-			phoneNumber: '',
-			companyName: '',
-			Country: '',
-			State: '',
+			phone_number: '',
+			company_name: '',
+			country: '',
+			state: '',
 			gender: '',
+			avatar: undefined as File | undefined,
 		},
 		onSubmit: (values, { resetForm }) => {
 			// console.log(values.isAdmin);
 			setIsOpen(false);
 			resetForm();
 			const user: IUserProps = {
-				id: (userData.length + 1).toString(),
-				name: values.fastname,
-				lastname: values.lastname,
+				// id: (userData.length + 1).toString(),
+				first_name: values.first_name,
+				last_name: values.last_name,
 				email: values.email,
-				src: '',
-				password: '',
-				role: Role.user,
+				phone_number: values.phone_number,
+				company_name: values.company_name,
+				country: values.country,
+				state: values.state,
+				gender: values.gender,
 			};
-			setUserData([...userData, user]);
+			// setUserData([...userData, user]);
+			// createProfile()
+
 			// console.log(values.id.toString());
 		},
 	});
+
+
+	const newUser = () => {
+		setIsOpen(true);
+		setmodalTitle('New User');
+		setAvatar(UserImage);
+	};
+	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
+
+	const updateUserForm = useFormik({
+		initialValues: {
+			id: '',
+			first_name: '',
+			last_name: '',
+			email: '',
+			password: '',
+			phone_number: '',
+			company_name: '',
+			country: '',
+			state: '',
+			gender: '',
+			// avatar: FormData,
+		},
+		enableReinitialize: true,
+		onSubmit: (values, { resetForm }) => {
+			const userData = new FormData();
+			userData.append('first_name', values.first_name);
+			userData.append('last_name', values.last_name);
+			userData.append('email', values.email);
+			userData.append('country', values.country);
+			userData.append('state', values.state);
+			userData.append('gender', values.gender);
+			userData.append('phone_number', values.phone_number);
+			if(avatar instanceof File){
+				userData.append('avatar', avatar, avatar.name);
+			}
+			userData.append('company_name', values.company_name);
+			updateProfile({ id: updateUserForm.values.id, userData }).then((res) => {
+				setIsOpen(false);
+				refetch();
+			});
+		},
+	});
+	const handleEditUser = (id: string) => {
+		console.log('id>>>>', id);
+		setmodalTitle(`Update User`);
+		setIsOpen(true);
+		const user = data.find((i: IUser) => i.id === id);
+		updateUserForm.setFieldValue('id', user?.id);
+		updateUserForm.setFieldValue('avatar', user?.avatar);
+		updateUserForm.setFieldValue('first_name', user?.first_name);
+		updateUserForm.setFieldValue('last_name', user?.last_name);
+		updateUserForm.setFieldValue('email', user?.email);
+		// updateUserForm.setFieldValue('password', user?.password);
+		updateUserForm.setFieldValue('phone_number', user?.phone_number);
+		updateUserForm.setFieldValue('company_name', user?.company_name);
+		updateUserForm.setFieldValue('country', user?.country);
+		updateUserForm.setFieldValue('state', user?.state);
+		updateUserForm.setFieldValue('gender', user?.gender);
+		const user1 = data.find((item: any) => item.id === id);
+		setAvatar(user1.avatar);
+	};
+	const handleImageChange = (event: any) => {
+		event.preventDefault();
+		const file = event.target.files[0];
+
+		// updateUserForm.setFieldValue('avatar', file);
+		// // console.log('file >>', file);
+
+		setAvatar(file);
+		// updateUserForm.setFieldValue('avatar', file);
+		// updateProfile({ id: updateUserForm.values.id, avatar:img })
+		// 	.unwrap()
+		// 	.then(() => {})
+		// 	.catch(() => {
+		// 		console.log("Invalid");
+		// 	});
+	};
 	useEffect(() => {
-		const stateListupdated = State.getStatesOfCountry(formik.values.Country);
+		const stateListupdated = State.getStatesOfCountry(formik.values.country);
 		const LIST = stateListupdated.map(({ name }) => ({
 			value: name,
 			text: name,
 		}));
 		setstateList(LIST);
-	}, [formik.values.Country]);
-
-	const newUser = () => {
-		setIsOpen(true);
-		setmodalTitle('New User');
-	};
-	const updateUserForm = useFormik({
-		initialValues: {
-			id: '',
-			fastname: '',
-			lastname: '',
-			email: '',
-			password: '',
-			phoneNumber: '',
-			companyName: '',
-			Country: '',
-			State: '',
-			gender: '',
-		},
-		enableReinitialize: true,
-		onSubmit: (values, { resetForm }) => {
-			// console.log(values.isAdmin);
-			setIsOpen(false);
-			resetForm();
-			const user: IUserProps = {
-				id: (userData.length + 1).toString(),
-				name: values.fastname,
-				lastname: values.lastname,
-				email: values.email,
-				src: '',
-				password: '',
-				role: Role.user,
-			};
-			setUserData([...userData, user]);
-			// console.log(values.id.toString());
-		},
-	});
-	const handleEditUser = (id: string) => {
-		console.log('id>>>>', id);
-		setIsOpen(true);
-		const user = userList.find((i: IUserProps) => i.id === id);
-		updateUserForm.setFieldValue('id', user?.id);
-		updateUserForm.setFieldValue('fastname', user?.first_name);
-		updateUserForm.setFieldValue('lastname', user?.last_name);
-		updateUserForm.setFieldValue('email', user?.email);
-		// updateUserForm.setFieldValue('password', user?.password);
-		// updateUserForm.setFieldValue('phoneNumber', user?.phoneNumber);
-		// updateUserForm.setFieldValue('companyName', user?.companyName);
-		// updateUserForm.setFieldValue('Country', user?.Country);
-		// updateUserForm.setFieldValue('State', user?.State);
-		// updateUserForm.setFieldValue('gender', user?.gender);
-		setmodalTitle(`Update User`);
-	};
+	}, [formik.values.country, updateUserForm.values.country]);
 
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text}>
@@ -294,29 +351,30 @@ const UserList = () => {
 							</thead>
 							<tbody>
 								{isSuccess &&
-									dataPagination(userList, currentPage, perPage).map(
-										(i, index) => (
-											<TableRow
-												key={i.id}
-												// eslint-disable-next-line react/jsx-props-no-spreading
-												{...i}
-												index={index + 1}
-												handleClick={handleData}
-												handleEditUser={handleEditUser}
-											/>
-										),
-									)}
+									data &&
+									dataPagination(data, currentPage, perPage).map((i, index) => (
+										<TableRow
+											key={i.id}
+											// eslint-disable-next-line react/jsx-props-no-spreading
+											{...i}
+											index={index + 1}
+											handleClick={handleData}
+											handleEditUser={handleEditUser}
+										/>
+									))}
 							</tbody>
 						</table>
 					</CardBody>
-					<PaginationButtons
-						data={userList}
-						label='items'
-						setCurrentPage={setCurrentPage}
-						currentPage={currentPage}
-						perPage={perPage}
-						setPerPage={setPerPage}
-					/>
+					{data && isSuccess && data && (
+						<PaginationButtons
+							data={data && data}
+							label='items'
+							setCurrentPage={setCurrentPage}
+							currentPage={currentPage}
+							perPage={perPage}
+							setPerPage={setPerPage}
+						/>
+					)}
 				</Card>
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
@@ -328,27 +386,21 @@ const UserList = () => {
 						<div className='col-12'>
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
-									<Avatar
-										srcSet={USERS.JOHN.src}
-										src={USERS.JOHN.src}
-										color='info'
-									/>
+									{avatar ? (
+										<Avatar src={avatar} color='storybook' />
+									) : (
+										<Avatar src={UserImage} color='storybook' />
+									)}
 								</div>
 								<div className='col-lg'>
 									<div className='row g-4'>
 										<div className='col-auto'>
-											<input
+											<Input
 												type='file'
-												name='src'
+												id='avatar'
+												name='avatar'
 												accept='image/*'
-												onChange={(e) => {
-													const file =
-														e.currentTarget.files &&
-														e.currentTarget.files[0];
-													if (file) {
-														formik.setFieldValue('src', file);
-													}
-												}}
+												onChange={handleImageChange}
 											/>
 										</div>
 									</div>
@@ -356,11 +408,20 @@ const UserList = () => {
 							</div>
 						</div>
 						<div className='col-12 border-bottom' />
-						<FormGroup id='fastname' label='First Name' className='col-lg-6'>
-							<Input onChange={formik.handleChange} value={formik.values.fastname} />
-						</FormGroup>
-						<FormGroup id='fastname' label='Last name' className='col-lg-6'>
+						<FormGroup id='first_name' label='First Name' className='col-lg-6'>
 							<Input
+								name='first_name'
+								onChange={updateUserForm.handleChange}
+								value={
+									modalTitle === 'New User'
+										? formik.values.first_name
+										: updateUserForm.values.first_name
+								}
+							/>
+						</FormGroup>
+						<FormGroup id='last_name' label='Last name' className='col-lg-6'>
+							<Input
+								name='last_name'
 								type='text'
 								onChange={
 									modalTitle === 'New User'
@@ -369,14 +430,15 @@ const UserList = () => {
 								}
 								value={
 									modalTitle === 'New User'
-										? formik.values.fastname
-										: updateUserForm.values.fastname
+										? formik.values.last_name
+										: updateUserForm.values.last_name
 								}
 							/>
 						</FormGroup>
 						<FormGroup id='email' label='Email' className='col-lg-6'>
 							<Input
 								type='email'
+								name='email'
 								onChange={
 									modalTitle === 'New User'
 										? formik.handleChange
@@ -398,9 +460,10 @@ const UserList = () => {
 								/>
 							</FormGroup>
 						)}
-						<FormGroup id='phoneNumber' label='Phone Number' className='col-lg-6'>
+						<FormGroup id='phone_number' label='Phone Number' className='col-lg-6'>
 							<Input
 								type='text'
+								name='phone_number'
 								onChange={
 									modalTitle === 'New User'
 										? formik.handleChange
@@ -408,14 +471,15 @@ const UserList = () => {
 								}
 								value={
 									modalTitle === 'New User'
-										? formik.values.phoneNumber
-										: updateUserForm.values.phoneNumber
+										? formik.values.phone_number
+										: updateUserForm.values.phone_number
 								}
 							/>
 						</FormGroup>
-						<FormGroup id='companyName' label='Company Name' className='col-lg-6'>
+						<FormGroup id='company_name' label='Company Name' className='col-lg-6'>
 							<Input
 								type='text'
+								name='company_name'
 								onChange={
 									modalTitle === 'New User'
 										? formik.handleChange
@@ -423,17 +487,18 @@ const UserList = () => {
 								}
 								value={
 									modalTitle === 'New User'
-										? formik.values.companyName
-										: updateUserForm.values.companyName
+										? formik.values.company_name
+										: updateUserForm.values.company_name
 								}
 							/>
 						</FormGroup>
-						<FormGroup id='Country' label='Country' className='col-lg-6'>
+						<FormGroup id='country' label='Country' className='col-lg-6'>
 							<Select
 								ariaLabel='Country'
 								placeholder='Choose from list of countries'
 								required
 								list={countryList}
+								name='country'
 								onChange={
 									modalTitle === 'New User'
 										? formik.handleChange
@@ -441,12 +506,12 @@ const UserList = () => {
 								}
 								value={
 									modalTitle === 'New User'
-										? formik.values.Country
-										: updateUserForm.values.Country
+										? formik.values.country
+										: updateUserForm.values.country
 								}
 							/>
 						</FormGroup>
-						<FormGroup id='State' label='State' className='col-lg-6'>
+						<FormGroup id='state' label='State' className='col-lg-6'>
 							<Select
 								ariaLabel='State'
 								placeholder='Choose from list of State'
@@ -459,9 +524,10 @@ const UserList = () => {
 								}
 								value={
 									modalTitle === 'New User'
-										? formik.values.State
-										: updateUserForm.values.State
+										? formik.values.state
+										: updateUserForm.values.state
 								}
+								name='state'
 							/>
 						</FormGroup>
 						<FormGroup id='gender' label='Gender' className='col-lg-6'>
@@ -474,6 +540,7 @@ const UserList = () => {
 									{ value: 'female', text: 'Female' },
 									{ value: 'other', text: 'Other' },
 								]}
+								name='gender'
 								onChange={
 									modalTitle === 'New User'
 										? formik.handleChange
@@ -490,13 +557,7 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
-						<Button
-							color='info'
-							onClick={
-								modalTitle === 'New User'
-									? formik.handleSubmit
-									: updateUserForm.handleSubmit
-							}>
+						<Button color='info' onClick={updateUserForm.handleSubmit}>
 							{modalTitle === 'New User' ? 'Save' : 'Update'}
 						</Button>
 					</CardFooterLeft>
