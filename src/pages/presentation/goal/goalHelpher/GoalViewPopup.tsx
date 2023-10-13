@@ -247,6 +247,18 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																												.secheduledate
 																										}
 																										type='date'
+																										autoComplete='current-password'
+																										isTouched={
+																											formik
+																												.touched
+																												.secheduledate
+																										}
+																										isValid={
+																											formik.isValid
+																										}
+																										onBlur={
+																											formik.handleBlur
+																										}
 																									/>
 																								</FormGroup>
 																							</div>
@@ -261,18 +273,22 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																										) => {
 																											return (
 																												<Accordion
-																													key={
-																														q.id
+
+																													id={
+																														item.id
 																													}
-																													id='logofaq1'
-																													className='mb-1'
-																											>
+																													isFlush
+																													className='mb-1'>
+
 																													<AccordionItem
 																														id={
 																															q.id
 																														}
 																														title={
 																															q.name
+																														}
+																														activeItem={
+																															null
 																														}>
 																														{
 																															q.answer

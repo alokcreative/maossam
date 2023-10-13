@@ -5,6 +5,7 @@ import React, {
 	forwardRef,
 	ReactElement,
 	ReactNode,
+	useEffect,
 	useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -31,13 +32,14 @@ interface IAccordionItemProps {
 	setActiveItem?: any;
 }
 export const AccordionItem = forwardRef<HTMLDivElement, IAccordionItemProps>(
-	({ id, icon, title, children, tag, headerTag, overWriteColor, ...props }, ref) => {
+	({ id, icon, title, children, tag, headerTag, overWriteColor, activeItem, ...props }, ref) => {
 		// eslint-disable-next-line react/prop-types
-		const ACTIVE = props.activeItem === id;
-		console.log('props.activeItem>>', props.activeItem);
-		console.log('id>>>', id);
-		console.log('props>>>', props);
-
+		const ACTIVE = activeItem == id;
+		// console.log('props.activeItem>>', props.activeItem);
+		// console.log('id>>>', id);
+		// console.log('activeItem>>>', activeItem);
+		// const [ACTIVE, setACTIVE] = useState(props.activeItem === id);
+		// props.setActiveItem(null);
 		return (
 			<TagWrapper tag={tag} ref={ref} className={classNames('accordion-item')}>
 				<TagWrapper tag={headerTag} className={classNames('accordion-header')} id={id}>
@@ -115,7 +117,7 @@ AccordionItem.defaultProps = {
 	tag: 'div',
 	headerTag: 'h2',
 	overWriteColor: null,
-	activeItem: undefined,
+	activeItem: null,
 	setActiveItem: undefined,
 };
 
@@ -131,12 +133,12 @@ interface IAccordionProps {
 
 }
 const Accordion = forwardRef<HTMLDivElement | HTMLTableSectionElement, IAccordionProps>(
-	({ tag, id, activeItemId , children, shadow, color, isFlush, className }, ref) => {
-		const [activeItem, setActiveItem] = useState<TActiveItemId>(
-			activeItemId === false
-				? null
-				: activeItemId || (Array.isArray(children) && children?.flat()[0].props.id),
-		);
+
+	({ tag, id, activeItemId, children, shadow, color, isFlush, className }, ref) => {
+		const [activeItem, setActiveItem] = useState<TActiveItemId>(null);
+		useEffect(() => {
+			setActiveItem(null);
+		}, [id]);
 
 		return (
 			<TagWrapper

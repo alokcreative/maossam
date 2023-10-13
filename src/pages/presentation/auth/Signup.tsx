@@ -58,6 +58,15 @@ const Signup: FC = () => {
 			if (!values.password) {
 				errors.password = 'Required';
 			}
+			if (values.password.length < 8) {
+				errors.password = 'Password must be of 8 Character ';
+			}
+			if (values.confirm_password.length < 8) {
+				errors.confirm_password = 'Password must be of 8 Character ';
+			}
+			if (values.confirm_password.length !== values.password.length) {
+				errors.confirm_password = 'Password must be same';
+			}
 			if (!values.confirm_password) {
 				errors.confirm_password = 'Required';
 			}
