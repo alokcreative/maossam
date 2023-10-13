@@ -246,7 +246,9 @@ const UserList = () => {
 			if (!values.phone_number) {
 				errors.phone_number = 'Required';
 			}
-
+			if (values.phone_number.length !== 10) {
+				errors.phone_number = 'Must be 10 digit';
+			}
 			if (!values.company_name) {
 				errors.company_name = 'Required';
 			}
@@ -369,6 +371,9 @@ const UserList = () => {
 			}
 			if (!values.phone_number) {
 				errors.phone_number = 'Required';
+			}
+			if (values.phone_number.length !== 10) {
+				errors.phone_number = 'Must be 10 digit';
 			}
 
 			if (!values.company_name) {
