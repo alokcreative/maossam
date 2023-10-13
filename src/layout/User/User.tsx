@@ -40,7 +40,7 @@ const User = () => {
 	const [collapseStatus, setCollapseStatus] = useState<boolean>(false);
 	const { t } = useTranslation(['translation', 'menu']);
 	const token = localStorage?.getItem('access_token');
-	const [GetUsersMutation, { data,isLoading }] = useGetUsersMutation();
+	const [GetUsersMutation, { data, isLoading }] = useGetUsersMutation();
 	const [userData, setUserData] = useState<IUserData>(data);
 	const [LogoutMutation] = useLogoutMutation();
 	useEffect(() => {

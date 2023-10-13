@@ -44,45 +44,52 @@ const Profile = () => {
 
 	const formik = useFormik({
 		initialValues: {
-			firstName: data ? data?.first_name : ' ',
-			lastName: data ? data?.last_name : '',
-			emailAddress: data ? data?.email : '',
-			phone: data ? data?.phone_number : '',
+			first_name: data ? data?.first_name : ' ',
+			last_name: data ? data?.last_name : '',
+			email: data ? data?.email : '',
+			phone_number: data ? data?.phone_number : '',
 			gender: data ? data?.gender : '',
 		},
 		validate: (values) => {
 			const errors: {
-				firstName?: string;
-				lastName?: string;
-				emailAddress?: string;
-				phone?: string;
+				first_name?: string;
+				last_name?: string;
+				email?: string;
+				phone_number?: string;
 				gender?: string;
 			} = {};
-			if (!values.firstName) {
-				errors.firstName = 'Required';
+			if (!values.first_name) {
+				errors.first_name = 'Required';
 			}
 
-			if (!values.lastName) {
-				errors.lastName = 'Required';
+			if (!values.last_name) {
+				errors.last_name = 'Required';
 			}
-			if (!values.emailAddress) {
-				errors.emailAddress = 'Required';
+			if (!values.email) {
+				errors.email = 'Required';
+			}
+			if (!values.phone_number) {
+				errors.phone_number = 'Required';
+			}
+			if (!values.gender) {
+				errors.gender = 'Required';
 			}
 
 			return errors;
 		},
 		onSubmit: async (values) => {
 			const userData = new FormData();
-			userData.append('first_name', values.firstName);
-			userData.append('last_name', values.lastName);
-			userData.append('email', values.emailAddress);
+			userData.append('first_name', values.first_name);
+			userData.append('last_name', values.last_name);
+			userData.append('email', values.email);
 			userData.append('gender', values.gender);
-			userData.append('phone_number', values.phone);
+			userData.append('phone_number', values.phone_number);
 			if (avatar instanceof File) {
 				userData.append('avatar', avatar, avatar.name);
 			}
 			await UpdateProfileMutation({ id: data.id, userData }).then((res) => {
 				refetch();
+				toast('Profile Updated Successfully');
 			});
 		},
 	});
@@ -142,11 +149,10 @@ const Profile = () => {
 	});
 	useEffect(() => {
 		refetch();
-		formik.setFieldValue('firstName', data ? data?.first_name : ' ');
-		formik.setFieldValue('firstName', data ? data?.first_name : ' ');
-		formik.setFieldValue('lastName', data ? data?.last_name : '');
-		formik.setFieldValue('emailAddress', data ? data?.email : '');
-		formik.setFieldValue('phone', data ? data?.phone_number : '');
+		formik.setFieldValue('first_name', data ? data?.first_name : ' ');
+		formik.setFieldValue('last_name', data ? data?.last_name : '');
+		formik.setFieldValue('email', data ? data?.email : '');
+		formik.setFieldValue('phone_number', data ? data?.phone_number : '');
 		formik.setFieldValue('gender', data ? data?.gender : '');
 		formik.setFieldValue('currentPassword', '');
 		formik.setFieldValue('confirmPassword', '');
@@ -209,9 +215,11 @@ const Profile = () => {
 														/>
 													</div>
 													<div className='col-auto'>
-														<Button color='dark' isLight icon='Delete'>
-															Delete Avatar
-														</Button>
+														<Button
+															color='dark'
+															isLight
+															icon='Delete'
+														/>
 													</div>
 													{/* <div className='col-12'>
 														<p className='lead text-muted'>
@@ -238,14 +246,17 @@ const Profile = () => {
 								<CardBody>
 									<div className='row g-4'>
 										<div className='col-md-6'>
-											<FormGroup id='firstName' label='First Name' isFloating>
+											<FormGroup
+												id='first_name'
+												label='First Name'
+												isFloating>
 												<Input
-													name='firstName'
+													name='first_name'
 													placeholder='First Name'
 													autoComplete='additional-name'
 													onChange={formik.handleChange}
 													onBlur={formik.handleBlur}
-													value={formik.values.firstName}
+													value={formik.values.first_name}
 													isValid={formik.isValid}
 													// isTouched={formik.touched.firstName}
 													// invalidFeedback={formik.errors.firstName}
@@ -254,14 +265,14 @@ const Profile = () => {
 											</FormGroup>
 										</div>
 										<div className='col-md-6'>
-											<FormGroup id='lastName' label='Last Name' isFloating>
+											<FormGroup id='last_name' label='Last Name' isFloating>
 												<Input
-													name='lastName'
+													name='last_name'
 													placeholder='Last Name'
 													autoComplete='family-name'
 													onChange={formik.handleChange}
 													onBlur={formik.handleBlur}
-													value={formik.values.lastName}
+													value={formik.values.last_name}
 													isValid={formik.isValid}
 													// isTouched={formik.touched.lastName}
 													// invalidFeedback={formik.errors.lastName}
@@ -282,7 +293,7 @@ const Profile = () => {
 													autoComplete='email'
 													onChange={formik.handleChange}
 													onBlur={formik.handleBlur}
-													value={formik.values.emailAddress}
+													value={formik.values.email}
 													isValid={formik.isValid}
 													// isTouched={formik.touched.emailAddress}
 													// invalidFeedback={formik.errors.emailAddress}
@@ -291,15 +302,18 @@ const Profile = () => {
 											</FormGroup>
 										</div>
 										<div className='col-md-6'>
-											<FormGroup id='phone' label='Phone Number' isFloating>
+											<FormGroup
+												id='phone_number'
+												label='Phone Number'
+												isFloating>
 												<Input
 													type='tel'
-													name='phone'
+													name='phone_number'
 													placeholder='Phone Number'
 													autoComplete='tel'
 													onChange={formik.handleChange}
 													onBlur={formik.handleBlur}
-													value={formik.values.phone}
+													value={formik.values.phone_number}
 													isValid={formik.isValid}
 													// isTouched={formik.touched.phone}
 													// invalidFeedback={formik.errors.phone}

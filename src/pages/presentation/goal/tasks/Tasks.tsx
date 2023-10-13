@@ -50,7 +50,6 @@ const Tasks: FC = () => {
 	// const role = user.role || localUser?.role;
 	const role = localStorage?.getItem('role');
 
-
 	useEffect(() => {
 		const allTasks: ITaskValue[] = [];
 		data.forEach((goal) => {
@@ -311,17 +310,17 @@ const Tasks: FC = () => {
 						</ModalBody>
 						<ModalFooter>
 							<CardFooterLeft>
+								<Button color='info' onClick={formiknewTask.handleSubmit}>
+									Save
+								</Button>
+							</CardFooterLeft>
+							<CardFooterRight>
 								<Button
 									color='danger'
 									onClick={() => {
 										setIsOpen(false);
 									}}>
 									Cancel
-								</Button>
-							</CardFooterLeft>
-							<CardFooterRight>
-								<Button color='info' onClick={formiknewTask.handleSubmit}>
-									Save
 								</Button>
 							</CardFooterRight>
 						</ModalFooter>

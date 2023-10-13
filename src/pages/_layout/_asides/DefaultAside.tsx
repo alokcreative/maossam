@@ -55,7 +55,7 @@ const DefaultAside = () => {
 	return (
 		<>
 			{isLoading ? (
-				<div/>
+				<div />
 			) : (
 				<Aside>
 					<AsideHead>

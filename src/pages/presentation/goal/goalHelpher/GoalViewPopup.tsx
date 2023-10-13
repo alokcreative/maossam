@@ -115,6 +115,9 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
+
+
+
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
@@ -258,8 +261,12 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																										) => {
 																											return (
 																												<Accordion
+																													key={
+																														q.id
+																													}
 																													id='logofaq1'
-																													className='mb-1'>
+																													className='mb-1'
+																											>
 																													<AccordionItem
 																														id={
 																															q.id
@@ -267,7 +274,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																														title={
 																															q.name
 																														}>
-																														{' '}
 																														{
 																															q.answer
 																														}

@@ -19,15 +19,14 @@ interface ITableRowProps {
 	deleteAction(...args: unknown[]): unknown;
 }
 
-const TableRow: FC<ITableRowProps> = ({id, task, edit, view, deleteAction }) => {
+const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) => {
 	const { user } = useSelector((state: RootState) => state.auth);
 
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
 	const role = localStorage?.getItem('role');
-	const [isModalOpen,setIsModalOpen]=useState(false)
-
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	return (
 		<tr>
@@ -40,7 +39,6 @@ const TableRow: FC<ITableRowProps> = ({id, task, edit, view, deleteAction }) => 
 							{/* <div className='text-muted'>
 						<small>{category}</small>
 					</div> */}
-
 						</div>
 					</td>
 					<td>{task.ITask.description}</td>
@@ -51,6 +49,7 @@ const TableRow: FC<ITableRowProps> = ({id, task, edit, view, deleteAction }) => 
 					<td>{task.ITask.expectedTime}</td>
 					<td className='h5'>
 						<Badge
+							
 							color={
 								(task.ITask.status === 'Hold' && 'danger') ||
 								(task.ITask.status === 'Todo' && 'secondary') ||
@@ -80,7 +79,7 @@ const TableRow: FC<ITableRowProps> = ({id, task, edit, view, deleteAction }) => 
 									setIsModalOpen={setIsModalOpen}
 								/>
 							)}
-							{role !== "user" && (
+							{role !== 'user' && (
 								<>
 									<Button
 										icon='Edit'
@@ -101,7 +100,6 @@ const TableRow: FC<ITableRowProps> = ({id, task, edit, view, deleteAction }) => 
 					</td>
 				</>
 			)}
-
 		</tr>
 	);
 };

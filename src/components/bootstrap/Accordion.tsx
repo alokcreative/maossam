@@ -128,9 +128,10 @@ interface IAccordionProps {
 	color?: TColor;
 	isFlush?: boolean;
 	className?: string;
+
 }
 const Accordion = forwardRef<HTMLDivElement | HTMLTableSectionElement, IAccordionProps>(
-	({ tag, id, activeItemId, children, shadow, color, isFlush, className }, ref) => {
+	({ tag, id, activeItemId , children, shadow, color, isFlush, className }, ref) => {
 		const [activeItem, setActiveItem] = useState<TActiveItemId>(
 			activeItemId === false
 				? null
