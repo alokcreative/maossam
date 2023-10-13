@@ -55,7 +55,7 @@ const ModalsStepForm: React.FC = () => {
 				.then((user: IUserData) => {
 					setData(user);
 				})
-				.catch(()=>{
+				.catch(() => {
 					localStorage.removeItem('refresh_token');
 					localStorage.removeItem('access_token');
 					localStorage.removeItem('tourModalStarted');
@@ -64,7 +64,7 @@ const ModalsStepForm: React.FC = () => {
 					localStorage.removeItem('facit_asideStatus');
 					localStorage.removeItem('user');
 					navigate('/auth-pages/login');
-				})
+				});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);
@@ -106,6 +106,9 @@ const ModalsStepForm: React.FC = () => {
 				errors.phone_number = 'Characters must be 10';
 			}
 			if (values.companyName === '') {
+				errors.companyName = 'Field Required';
+			}
+			if (!values.companyName) {
 				errors.companyName = 'Field Required';
 			}
 			if (values.country === '') {
@@ -323,19 +326,21 @@ const ModalsStepForm: React.FC = () => {
 							</button>
 						)}
 						{currentStep < steps.length - 2 && (
-							<button
-								type='button'
+							<Button
 								onClick={nextStep}
-								disabled={!!formik.errors.phone_number}
+								isDisable={
+									currentStep === 0
+										? !!formik.errors.phone_number
+										: !!formik.errors.companyName
+								}
 								className='btn btn-info px-4 mx-1'>
 								Next
-							</button>
+							</Button>
 						)}
 						{currentStep === steps.length - 2 && (
 							<Button
 								color='success'
 								icon='save'
-								isLight
 								className='btn btn-info px-4 mx-1'
 								isDisable={
 									!!formik.errors.companyName &&

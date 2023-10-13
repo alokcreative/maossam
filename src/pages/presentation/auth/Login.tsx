@@ -240,8 +240,8 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 														value={formik.values.password}
 														isTouched={formik.touched.password}
 														invalidFeedback={formik.errors.password}
-														validFeedback='Looks good!'
 														isValid={formik.isValid}
+														validFeedback='Looks good!'
 														onChange={formik.handleChange}
 														onBlur={formik.handleBlur}
 													/>

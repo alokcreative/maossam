@@ -124,7 +124,7 @@ const WorkingTimeSlot: FC = () => {
 								<div className='row align-items-center'>
 									<div className='col-12 col-md-2'>
 										<div className='mb-3 d-none d-md-block'>
-											<h5 className='text-start fw-bold'>Weekday</h5>
+											<h5 className='text-start fw-bold'>Weekdays</h5>
 										</div>
 									</div>
 									<div className='col-6 col-md-5'>
