@@ -246,9 +246,20 @@ const ProductDetailsPage = () => {
 											</Button>
 										</div>
 									)}
+									{role === 'user' && (
+										<div className='col-12'>
+											<Button
+												icon='Delete'
+												color='danger'
+												isLight
+												className='w-100 p-3'>
+												Delete
+											</Button>
+										</div>
+									)}
 								</div>
 							</CardBody>
-							{role === 'user' && (
+							{/* {role === 'user' && (
 								<CardFooter>
 									<CardFooterLeft className='w-100'>
 										<Button
@@ -260,7 +271,7 @@ const ProductDetailsPage = () => {
 										</Button>
 									</CardFooterLeft>
 								</CardFooter>
-							)}
+							)} */}
 						</Card>
 					</div>
 					<div className='col-lg-8'>

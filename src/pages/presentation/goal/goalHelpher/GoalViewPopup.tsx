@@ -115,6 +115,9 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
+
+
+
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
@@ -270,11 +273,13 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																										) => {
 																											return (
 																												<Accordion
+
 																													id={
 																														item.id
 																													}
 																													isFlush
 																													className='mb-1'>
+
 																													<AccordionItem
 																														id={
 																															q.id
@@ -285,7 +290,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																														activeItem={
 																															null
 																														}>
-																														{' '}
 																														{
 																															q.answer
 																														}

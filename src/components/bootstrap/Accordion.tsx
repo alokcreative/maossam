@@ -130,13 +130,16 @@ interface IAccordionProps {
 	color?: TColor;
 	isFlush?: boolean;
 	className?: string;
+
 }
 const Accordion = forwardRef<HTMLDivElement | HTMLTableSectionElement, IAccordionProps>(
+
 	({ tag, id, activeItemId, children, shadow, color, isFlush, className }, ref) => {
 		const [activeItem, setActiveItem] = useState<TActiveItemId>(null);
 		useEffect(() => {
 			setActiveItem(null);
 		}, [id]);
+
 		return (
 			<TagWrapper
 				tag={tag}

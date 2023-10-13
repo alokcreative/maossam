@@ -6,7 +6,7 @@ import SubHeader, {
 	SubHeaderRight,
 	SubheaderSeparator,
 } from '../../../layout/SubHeader/SubHeader';
-import Page from '../../../layout/Page/Page';
+import Page, { IPageProps } from '../../../layout/Page/Page';
 import { adminDashboardPagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Button from '../../../components/bootstrap/Button';
@@ -133,7 +133,6 @@ export interface IUser {
 	last_name: string;
 	email: string;
 	password: string;
-
 	// teamMember?: string;
 	country?: string;
 	company_name?: string;
@@ -163,6 +162,7 @@ const UserList = () => {
 	const [modalTitle, setmodalTitle] = useState<string>('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
+	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
 	// 	Object.keys(USERS).map((key) => ({
@@ -206,6 +206,60 @@ const UserList = () => {
 			gender: '',
 			avatar: undefined as File | undefined,
 		},
+
+		validate: (values) => {
+			const errors: {
+				// id: string;
+				first_name?: string;
+				last_name?: string;
+				email?: string;
+				password?: string;
+				country?: string;
+				company_name?: string;
+				state?: string;
+				phone_number?: string;
+				gender?: string;
+				avatar?: string;
+			} = {};
+
+			if (!values.first_name) {
+				errors.first_name = 'Required';
+			}
+
+			if (!values.last_name) {
+				errors.last_name = 'Required';
+			}
+			if (!values.email) {
+				errors.email = 'Required';
+			}
+
+			if (!values.country) {
+				errors.country = 'Required';
+			}
+			if (!values.state) {
+				errors.state = 'Required';
+			}
+
+			if (!values.gender) {
+				errors.gender = 'Required';
+			}
+			if (!values.phone_number) {
+				errors.phone_number = 'Required';
+			}
+
+			if (!values.company_name) {
+				errors.company_name = 'Required';
+			}
+			if (!values.password) {
+				errors.password = 'Required';
+			}
+			if (!values.avatar) {
+				errors.avatar = 'Required'; // Add error message for the avatar field
+			}
+
+			return errors;
+		},
+
 		onSubmit: (values, { resetForm }) => {
 			// console.log('NewUser>>>>', values);
 
@@ -222,14 +276,17 @@ const UserList = () => {
 			if (avatar instanceof File) {
 				userData.append('avatar', avatar, avatar.name);
 			}
-			createProfile({ userData }).then((res) => {
-				setIsOpen(false);
-				refetch();
-			});
-			// updateProfile({ id: updateUserForm.values.id, userData }).then((res) => {
+			// createProfile({ userData }).then((res) => {
 			// 	setIsOpen(false);
 			// 	refetch();
 			// });
+
+			if (Object.keys(formik.errors).length === 0) {
+				createProfile({ userData }).then((res) => {
+					setIsOpen(false);
+					refetch();
+				});
+			}
 			console.log('userData>>>>>>>>>>>>>>', userData.values);
 
 			setIsOpen(false);
@@ -274,6 +331,52 @@ const UserList = () => {
 			// avatar: FormData,
 		},
 		enableReinitialize: true,
+
+		validate: (values) => {
+			const errors: {
+				// id: string;
+				first_name?: string;
+				last_name?: string;
+				email?: string;
+				password?: string;
+				country?: string;
+				company_name?: string;
+				state?: string;
+				phone_number?: string;
+				gender?: string;
+			} = {};
+
+			if (!values.first_name) {
+				errors.first_name = 'Required';
+			}
+
+			if (!values.last_name) {
+				errors.last_name = 'Required';
+			}
+			if (!values.email) {
+				errors.email = 'Required';
+			}
+
+			if (!values.country) {
+				errors.country = 'Required';
+			}
+			if (!values.state) {
+				errors.state = 'Required';
+			}
+
+			if (!values.gender) {
+				errors.gender = 'Required';
+			}
+			if (!values.phone_number) {
+				errors.phone_number = 'Required';
+			}
+
+			if (!values.company_name) {
+				errors.company_name = 'Required';
+			}
+
+			return errors;
+		},
 		onSubmit: (values, { resetForm }) => {
 			const userData = new FormData();
 			userData.append('first_name', values.first_name);
@@ -318,9 +421,18 @@ const UserList = () => {
 		const file = event.target.files[0];
 
 		// updateUserForm.setFieldValue('avatar', file);
-		// // console.log('file >>', file);
+		console.log('file >>', file);
 
 		setAvatar(file);
+
+		if (file.type.includes('png') || file.type.includes('jpeg')) {
+			setAvatar(file);
+			const imageURL = URL.createObjectURL(file);
+			setSrc(imageURL);
+		} else {
+			toast('Only PNG and JPEG Allowed');
+			event.target.value = '';
+		}
 	};
 	useEffect(() => {
 		const stateListupdated = State.getStatesOfCountry(formik.values.country);
@@ -406,8 +518,10 @@ const UserList = () => {
 								<div className='col-lg-auto'>
 									{modalTitle === 'New User' ? (
 										<Avatar src={UserImage} color='storybook' />
+									) : avatar instanceof File ? (
+										<Avatar src={src} color='storybook' />
 									) : (
-										avatar instanceof File   ?<Avatar src={UserImage} color='storybook' />: <Avatar src={avatar} color='storybook' />
+										<Avatar src={avatar} color='storybook' />
 									)}
 								</div>
 								<div className='col-lg'>
@@ -419,6 +533,9 @@ const UserList = () => {
 												name='avatar'
 												accept='image/*'
 												onChange={handleImageChange}
+												invalidFeedback={formik.errors.avatar}
+												isValid={formik.isValid}
+												isTouched={formik.touched.avatar}
 											/>
 										</div>
 									</div>
@@ -439,6 +556,9 @@ const UserList = () => {
 										? formik.values.first_name
 										: updateUserForm.values.first_name
 								}
+								invalidFeedback={formik.errors.first_name}
+								isValid={formik.isValid}
+								isTouched={formik.touched.first_name}
 							/>
 						</FormGroup>
 						<FormGroup id='last_name' label='Last name' className='col-lg-6'>
@@ -455,6 +575,9 @@ const UserList = () => {
 										? formik.values.last_name
 										: updateUserForm.values.last_name
 								}
+								invalidFeedback={formik.errors.last_name}
+								isValid={formik.isValid}
+								isTouched={formik.touched.last_name}
 							/>
 						</FormGroup>
 						<FormGroup id='email' label='Email' className='col-lg-6'>
@@ -471,6 +594,9 @@ const UserList = () => {
 										? formik.values.email
 										: updateUserForm.values.email
 								}
+								invalidFeedback={formik.errors.email}
+								isValid={formik.isValid}
+								isTouched={formik.touched.email}
 							/>
 						</FormGroup>
 						{modalTitle === 'New User' && (
@@ -479,6 +605,9 @@ const UserList = () => {
 									type='password'
 									onChange={formik.handleChange}
 									value={formik.values.password}
+									invalidFeedback={formik.errors.password}
+									isValid={formik.isValid}
+									isTouched={formik.touched.password}
 								/>
 							</FormGroup>
 						)}
@@ -496,6 +625,9 @@ const UserList = () => {
 										? formik.values.phone_number
 										: updateUserForm.values.phone_number
 								}
+								invalidFeedback={formik.errors.phone_number}
+								isValid={formik.isValid}
+								isTouched={formik.touched.phone_number}
 							/>
 						</FormGroup>
 						<FormGroup id='company_name' label='Company Name' className='col-lg-6'>
@@ -512,6 +644,9 @@ const UserList = () => {
 										? formik.values.company_name
 										: updateUserForm.values.company_name
 								}
+								invalidFeedback={formik.errors.company_name}
+								isValid={formik.isValid}
+								isTouched={formik.touched.company_name}
 							/>
 						</FormGroup>
 						<FormGroup id='country' label='Country' className='col-lg-6'>
@@ -531,6 +666,9 @@ const UserList = () => {
 										? formik.values.country
 										: updateUserForm.values.country
 								}
+								invalidFeedback={formik.errors.country}
+								isValid={formik.isValid}
+								isTouched={formik.touched.country}
 							/>
 						</FormGroup>
 						<FormGroup id='state' label='State' className='col-lg-6'>
@@ -538,6 +676,7 @@ const UserList = () => {
 								ariaLabel='State'
 								placeholder='Choose from list of State'
 								required
+								name='state'
 								list={stateList}
 								onChange={
 									modalTitle === 'New User'
@@ -549,7 +688,9 @@ const UserList = () => {
 										? formik.values.state
 										: updateUserForm.values.state
 								}
-								name='state'
+								invalidFeedback={formik.errors.state}
+								isValid={formik.isValid}
+								isTouched={formik.touched.state}
 							/>
 						</FormGroup>
 						<FormGroup id='gender' label='Gender' className='col-lg-6'>
@@ -573,6 +714,9 @@ const UserList = () => {
 										? formik.values.gender
 										: updateUserForm.values.gender
 								}
+								invalidFeedback={formik.errors.gender}
+								isValid={formik.isValid}
+								isTouched={formik.touched.gender}
 							/>
 						</FormGroup>
 					</div>

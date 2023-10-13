@@ -22,9 +22,10 @@ interface ICommonTableRowProps {
 const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, price, stock }) => {
 	const { darkModeStatus } = useDarkMode();
 	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
+	const role = localStorage?.getItem('role');
 	return (
 		<tr>
 			<th scope='row'>{id}</th>
@@ -100,7 +101,7 @@ const CommonTableRow: FC<ICommonTableRowProps> = ({ id, image, name, category, p
 					to={`../${pagesMenu.productId.path}/${id}`}
 					aria-label='Detail'
 				/>
-				{role !== Role.admin && (
+				{role === 'user' && (
 					<>
 						<Button
 							icon='Edit'
