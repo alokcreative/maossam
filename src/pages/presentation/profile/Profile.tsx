@@ -53,10 +53,22 @@ const Profile = () => {
 		validate: (values) => {
 			const errors: {
 				firstName?: string;
+				lastName?: string;
 				emailAddress?: string;
-				confirmPassword?: string;
-				currentPassword?: string;
+				phone?: string;
+				gender?: string;
 			} = {};
+			if (!values.firstName) {
+				errors.firstName = 'Required';
+			}
+
+			if (!values.lastName) {
+				errors.lastName = 'Required';
+			}
+			if (!values.emailAddress) {
+				errors.emailAddress = 'Required';
+			}
+
 			return errors;
 		},
 		onSubmit: async (values) => {

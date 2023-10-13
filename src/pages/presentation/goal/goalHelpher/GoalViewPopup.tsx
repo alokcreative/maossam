@@ -111,15 +111,14 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 			secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
 		},
 		onSubmit: (values) => {
-			console.log(values.secheduledate);
+			// console.log(values.secheduledate);
 		},
 	});
 
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
-		if(role!='superadmin')
-		navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
+		if (role != 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
 	};
 
 	return (
