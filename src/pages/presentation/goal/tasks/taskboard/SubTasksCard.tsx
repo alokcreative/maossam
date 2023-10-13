@@ -38,6 +38,8 @@ const SubTasksCard: FC<IAssetNameProps> = (props) => {
 	
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
+		const role = localStorage.getItem('role');
+		if(role!='superadmin')
 		navigate(`../${pagesMenu.taskId.path}/${task.goalId}/${taskId}`);
 	};
 

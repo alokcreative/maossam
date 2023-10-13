@@ -407,7 +407,7 @@ const UserList = () => {
 									{modalTitle === 'New User' ? (
 										<Avatar src={UserImage} color='storybook' />
 									) : (
-										<Avatar src={avatar} color='storybook' />
+										avatar instanceof File   ?<Avatar src={UserImage} color='storybook' />: <Avatar src={avatar} color='storybook' />
 									)}
 								</div>
 								<div className='col-lg'>

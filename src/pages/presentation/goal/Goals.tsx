@@ -218,7 +218,6 @@ const Goals: FC = () => {
 				<div className='display-4 fw-bold py-3'> Goals</div>
 				<div className='row h-100'>
 					<div className='col-12'>
-
 						{productView === false ? (
 							<div className='row'>
 								{goalList.map((item) => (
@@ -261,13 +260,19 @@ const Goals: FC = () => {
 														currentPage,
 														perPage,
 													).map((i) => {
-
 														return (
 															<tr>
 																<th scope='row'>{i.id}</th>
 																<th>{i.name}</th>
 																<td>{i.description}</td>
-																<td><span style={{whiteSpace:'nowrap'}}>{i.timeline}</span></td>
+																<td>
+																	<span
+																		style={{
+																			whiteSpace: 'nowrap',
+																		}}>
+																		{i.timeline}
+																	</span>
+																</td>
 																<td className='h5'>
 																	<Badge
 																		color={
@@ -285,38 +290,40 @@ const Goals: FC = () => {
 																</td>
 																<td>
 																	<div className='d-flex flex-nowrap'>
-																	<Button
-																		icon='Visibility'
-																		color='primary'
-																		isLight
-																		onClick={() =>
-																			openModal(i.id)
-																		}
-																		className='me-1'
-																	/>
-																	{role !== 'user' ? (
-																		<>
-																			<Button
-																				icon='Edit'
-																				color='success'
-																				isLight
-																				onClick={() =>
-																					handleEdit(i.id)
-																				}
-																				className='me-1'
-																			/>
-																			<Button
-																				icon='Delete'
-																				color='danger'
-																				isLight
-																				onClick={() =>
-																					handleDelete(
-																						i.id,
-																					)
-																				}
-																			/>
-																		</>
-																	) : null}
+																		<Button
+																			icon='Visibility'
+																			color='primary'
+																			isLight
+																			onClick={() =>
+																				openModal(i.id)
+																			}
+																			className='me-1'
+																		/>
+																		{role !== 'user' ? (
+																			<>
+																				<Button
+																					icon='Edit'
+																					color='success'
+																					isLight
+																					onClick={() =>
+																						handleEdit(
+																							i.id,
+																						)
+																					}
+																					className='me-1'
+																				/>
+																				<Button
+																					icon='Delete'
+																					color='danger'
+																					isLight
+																					onClick={() =>
+																						handleDelete(
+																							i.id,
+																						)
+																					}
+																				/>
+																			</>
+																		) : null}
 																	</div>
 																</td>
 															</tr>
