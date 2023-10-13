@@ -23,6 +23,7 @@ import { useFormik } from 'formik';
 import {
 	useChangePasswordMutation,
 	useGetProfileQuery,
+	useGetUsersMutation,
 	useUpdateProfileMutation,
 } from '../../../features/auth/authApiSlice';
 import { useParams } from 'react-router-dom';
@@ -37,18 +38,19 @@ const Profile = () => {
 	const { data, isLoading, isSuccess, refetch } = useGetProfileQuery(id);
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
-
 	const [passwordChangeCTA, setPasswordChangeCTA] = useState<boolean>(false);
 	const [UpdateProfileMutation] = useUpdateProfileMutation();
 	const [ChangePasswordMutation] = useChangePasswordMutation();
+	const token = localStorage?.getItem('access_token');
+	const [GetUsersMutation] = useGetUsersMutation();
 
 	const formik = useFormik({
 		initialValues: {
-			first_name: data ? data?.first_name : ' ',
-			last_name: data ? data?.last_name : '',
-			email: data ? data?.email : '',
-			phone_number: data ? data?.phone_number : '',
-			gender: data ? data?.gender : '',
+			first_name: data ? String(data?.first_name) : ' ',
+			last_name: data ? String(data?.last_name) : '',
+			email: data ? String(data?.email) : '',
+			phone_number: data ? String(data?.phone_number) : '',
+			gender: data ? String(data?.gender) : '',
 		},
 		validate: (values) => {
 			const errors: {
@@ -71,6 +73,9 @@ const Profile = () => {
 			if (!values.phone_number) {
 				errors.phone_number = 'Required';
 			}
+			if (values.phone_number && values.phone_number.length !== 10) {
+				errors.phone_number = 'Must be 10 digit';
+			}
 			if (!values.gender) {
 				errors.gender = 'Required';
 			}
@@ -87,10 +92,21 @@ const Profile = () => {
 			if (avatar instanceof File) {
 				userData.append('avatar', avatar, avatar.name);
 			}
-			await UpdateProfileMutation({ id: data.id, userData }).then((res) => {
-				refetch();
-				toast('Profile Updated Successfully');
-			});
+			UpdateProfileMutation({ id: data.id, userData })
+				.unwrap()
+				.then((res) => {
+					console.log('res>>', res);
+					
+					if (token) {
+						GetUsersMutation(token)
+							.unwrap()
+							.then(() => {
+								console.log('called');
+								refetch();
+							});
+					}
+					toast('Profile Updated Successfully');
+				});
 		},
 	});
 
@@ -165,7 +181,14 @@ const Profile = () => {
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
-		setAvatar(file);
+		if (file.type.includes('png') || file.type.includes('jpeg')) {
+			setAvatar(file);
+			const imageURL = URL.createObjectURL(file);
+			setSrc(imageURL);
+		} else {
+			toast('Only PNG and JPEG Allowed');
+			event.target.value = '';
+		}
 	};
 
 	return (
@@ -258,8 +281,8 @@ const Profile = () => {
 													onBlur={formik.handleBlur}
 													value={formik.values.first_name}
 													isValid={formik.isValid}
-													// isTouched={formik.touched.firstName}
-													// invalidFeedback={formik.errors.firstName}
+													isTouched={formik.touched.first_name}
+													invalidFeedback={formik.errors.first_name}
 													validFeedback='Looks good!'
 												/>
 											</FormGroup>
@@ -274,8 +297,8 @@ const Profile = () => {
 													onBlur={formik.handleBlur}
 													value={formik.values.last_name}
 													isValid={formik.isValid}
-													// isTouched={formik.touched.lastName}
-													// invalidFeedback={formik.errors.lastName}
+													isTouched={formik.touched.last_name}
+													invalidFeedback={formik.errors.last_name}
 													validFeedback='Looks good!'
 												/>
 											</FormGroup>
@@ -283,10 +306,7 @@ const Profile = () => {
 									</div>
 									<div className='row g-4 mt-2'>
 										<div className='col-md-6'>
-											<FormGroup
-												id='emailAddress'
-												label='Email address'
-												isFloating>
+											<FormGroup id='email' label='Email address' isFloating>
 												<Input
 													type='email'
 													placeholder='Email address'
@@ -295,8 +315,8 @@ const Profile = () => {
 													onBlur={formik.handleBlur}
 													value={formik.values.email}
 													isValid={formik.isValid}
-													// isTouched={formik.touched.emailAddress}
-													// invalidFeedback={formik.errors.emailAddress}
+													isTouched={formik.touched.email}
+													invalidFeedback={formik.errors.email}
 													validFeedback='Looks good!'
 												/>
 											</FormGroup>
@@ -315,8 +335,8 @@ const Profile = () => {
 													onBlur={formik.handleBlur}
 													value={formik.values.phone_number}
 													isValid={formik.isValid}
-													// isTouched={formik.touched.phone}
-													// invalidFeedback={formik.errors.phone}
+													isTouched={formik.touched.phone_number}
+													invalidFeedback={formik.errors.phone_number}
 													validFeedback='Looks good!'
 												/>
 											</FormGroup>
@@ -345,6 +365,10 @@ const Profile = () => {
 													]}
 													onChange={formik.handleChange}
 													value={formik.values.gender}
+													isValid={formik.isValid}
+													isTouched={formik.touched.gender}
+													invalidFeedback={formik.errors.gender}
+													validFeedback='Looks good!'
 												/>
 											</FormGroup>
 										</div>

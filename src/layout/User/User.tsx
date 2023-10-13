@@ -43,6 +43,10 @@ const User = () => {
 	const [GetUsersMutation, { data, isLoading }] = useGetUsersMutation();
 	const [userData, setUserData] = useState<IUserData>(data);
 	const [LogoutMutation] = useLogoutMutation();
+	// console.log("User data>>>",data);
+	// useEffect(() => {
+	// 	console.log('datachanged>>', data);
+	// }, [data,GetUsersMutation,isLoading]);
 	useEffect(() => {
 		if (!token) {
 			navigate('/auth-pages/login');
@@ -152,28 +156,6 @@ const User = () => {
 										</span>
 									</span>
 								</div>
-								{/* <div
-					role='presentation'
-					className='navigation-item cursor-pointer'
-					onClick={() => {
-						setDarkModeStatus(!darkModeStatus);
-						handleItem();
-					}}>
-					<span className='navigation-link navigation-link-pill'>
-						<span className='navigation-link-info'>
-							<Icon
-								icon={darkModeStatus ? 'DarkMode' : 'LightMode'}
-								color={darkModeStatus ? 'info' : 'warning'}
-								className='navigation-icon'
-							/>
-							<span className='navigation-text'>
-								{darkModeStatus
-									? (t('menu:DarkMode') as ReactNode)
-									: (t('menu:LightMode') as ReactNode)}
-							</span>
-						</span>
-					</span>
-				</div> */}
 							</div>
 						</nav>
 						<NavigationLine />
