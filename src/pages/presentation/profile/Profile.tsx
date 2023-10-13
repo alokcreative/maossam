@@ -42,7 +42,9 @@ const Profile = () => {
 	const [UpdateProfileMutation] = useUpdateProfileMutation();
 	const [ChangePasswordMutation] = useChangePasswordMutation();
 	const token = localStorage?.getItem('access_token');
-	const [GetUsersMutation] = useGetUsersMutation();
+	const [GetUsersMutation] = useGetUsersMutation({
+		fixedCacheKey: 'shared-data',
+	  });
 
 	const formik = useFormik({
 		initialValues: {
@@ -95,13 +97,13 @@ const Profile = () => {
 			UpdateProfileMutation({ id: data.id, userData })
 				.unwrap()
 				.then((res) => {
-					console.log('res>>', res);
+					// console.log('res>>', res);
 					
 					if (token) {
 						GetUsersMutation(token)
 							.unwrap()
-							.then(() => {
-								console.log('called');
+							.then((response) => {
+								// console.log('called>>',response);
 								refetch();
 							});
 					}

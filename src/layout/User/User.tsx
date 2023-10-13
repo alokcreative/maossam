@@ -40,13 +40,14 @@ const User = () => {
 	const [collapseStatus, setCollapseStatus] = useState<boolean>(false);
 	const { t } = useTranslation(['translation', 'menu']);
 	const token = localStorage?.getItem('access_token');
-	const [GetUsersMutation, { data, isLoading }] = useGetUsersMutation();
+	const [GetUsersMutation, { data, isLoading }] = useGetUsersMutation({
+		fixedCacheKey: 'shared-data',
+	  });
 	const [userData, setUserData] = useState<IUserData>(data);
 	const [LogoutMutation] = useLogoutMutation();
-	// console.log("User data>>>",data);
-	// useEffect(() => {
-	// 	console.log('datachanged>>', data);
-	// }, [data,GetUsersMutation,isLoading]);
+	useEffect(() => {
+		setUserData(data);
+	}, [data,GetUsersMutation,isLoading]);
 	useEffect(() => {
 		if (!token) {
 			navigate('/auth-pages/login');
