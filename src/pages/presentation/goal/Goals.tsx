@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import GoalViewPopup from './goalHelpher/GoalViewPopup';
 import Item from '../../_common/dashboardHelper/GoalItems';
+import { useDeleteGoalMutation } from '../../../features/auth/taskManagementApiSlice';  
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -65,10 +66,9 @@ const Goals: FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 	const navigate = useNavigate();
-
 	const [productView, setProductView] = useState<boolean>(false);
-
 	const role = localStorage?.getItem('role');
+	const [deleteGoal] = useDeleteGoalMutation();
 
 	const formikOneWay = useFormik({
 		initialValues: {
@@ -162,6 +162,7 @@ const Goals: FC = () => {
 	const handleDelete = (id: number) => {
 		const newGoals = goalList.filter((i) => i.id !== id);
 		setGoalList(newGoals);
+		deleteGoal(id);
 	};
 	const handleEdit = (id: number) => {
 		setModalHeader('Edit Goal');

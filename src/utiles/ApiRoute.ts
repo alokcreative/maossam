@@ -12,5 +12,8 @@ const apiEndpoints = {
 	update: 'users/update/',
 	allUser: 'users/list/',
 	deleteUser: 'users/delete/',
+	deleteGoal: 'task-manager/goals/delete/',
+	updateGoal: 'task-manager/goals/update/',
+	createGoal: 'api/task-manager/goals/create/',
 };
 export default apiEndpoints;
