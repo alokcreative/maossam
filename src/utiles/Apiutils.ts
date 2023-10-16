@@ -1,16 +1,14 @@
-export const callAPIWithoutAuth = (url: string, method: string, body: string) => {
-	const object = {
-		url,
-		method,
-		body,
-		headers: {
-			'X-RapidAPI-Key': '5d8641db9fmsh04c1a1beb6e16e6p157d76jsn553e9f6dbc5a',
-			'Content-Type': 'application/json',
-			'X-RapidAPI-Host': 'logintesting.p.rapidapi.com',
-		},
-	};
+export interface IApiRequest {
+	headers: Headers;
+}
 
-	return object;
-};
+export function constructApiRequest(): IApiRequest {
+	const headers = new Headers({
+		'Content-Type': 'application/json',
+		Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+	});
 
-export const callAPI = () => {};
+	return { headers };
+}
+
+export const calcallAPIWithoutAuthlAPI = () => {};

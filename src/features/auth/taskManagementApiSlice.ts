@@ -1,3 +1,4 @@
+import { IApiRequest, constructApiRequest } from '../../utiles/Apiutils';
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
@@ -27,7 +28,10 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				url: apiEndpoints.createGoal,
 				method: 'POST',
 				body: payload,
-				header: 'Content-Type: application/json',
+				header: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
 			}),
 			invalidatesTags: [`Goal`],
 		}),
@@ -35,10 +39,13 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 		// Update Goal
 		updateGoal: builder.mutation({
 			query: (payload: any) => ({
-				url: `${apiEndpoints.updateGoal}/${payload.id}`,
+				url: `${apiEndpoints.updateGoal}${payload.id}/`,
 				method: 'PATCH',
 				body: payload,
-				header: 'Content-Type: application/json',
+				header: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
 			}),
 			invalidatesTags: [`Goal`],
 		}),
@@ -46,9 +53,12 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 		// Delete Goal
 		deleteGoal: builder.mutation({
 			query: (id: number) => ({
-				url: `${apiEndpoints.updateGoal}/${id}`,
+				url: `${apiEndpoints.deleteGoal}${id}/`,
 				method: 'DELETE',
-				header: 'Content-Type: application/json',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
 			}),
 			invalidatesTags: [`Goal`],
 		}),
@@ -73,4 +83,3 @@ export const {
 	useGetGoalsQuery,
 	useGetTaskByGoalIdQuery
 } = taskManagementApiSlice;
-
