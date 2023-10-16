@@ -16,5 +16,6 @@
 	updateGoal: 'task-manager/goals/update/',
 	createGoal: 'api/task-manager/goals/create/',
 	goalList: 'task-manager/goals/list/',
+	taslistByGoalId: 'task-manager/goals/',
 };
 export default apiEndpoints;
