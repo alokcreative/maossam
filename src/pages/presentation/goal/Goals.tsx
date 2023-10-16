@@ -1,11 +1,10 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
 import Icon from '../../../components/icon/Icon';
 import PAYMENTS from '../../../common/data/enumPaymentMethod';
-import { Role } from '../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -66,10 +65,7 @@ const Goals: FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 	const navigate = useNavigate();
-	const { user } = useSelector((state: RootState) => state.auth);
-	// const savedValue = localStorage?.getItem('user');
-	// const localUser = savedValue ? JSON.parse(savedValue) : null;
-	// const role = user.role || localUser?.role;
+
 	const [productView, setProductView] = useState<boolean>(false);
 
 	const role = localStorage?.getItem('role');
@@ -149,7 +145,7 @@ const Goals: FC = () => {
 		},
 	});
 	// const filteredData = data.filter(
-	// 	(f) =>
+	// 	(f) =>		
 	// 		// Name
 	// 		f.name.toLowerCase().includes(formik.values.searchInput.toLowerCase()) &&
 	// 		// Price
