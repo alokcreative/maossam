@@ -70,7 +70,7 @@ interface IGoal {
 	task?: ITask[] | undefined;
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
-	const { isModalOpen, setIsModalOpen, id } = props;
+	const { isModalOpen, setIsModalOpen, id=2 } = props;
 	const navigate = useNavigate();
 	// User data
 	const token = localStorage?.getItem('access_token');
@@ -114,9 +114,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 			// console.log(values.secheduledate);
 		},
 	});
-
-
-
 
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);

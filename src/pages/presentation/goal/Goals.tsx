@@ -5,6 +5,7 @@ import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHea
 import Button from '../../../components/bootstrap/Button';
 import Icon from '../../../components/icon/Icon';
 import PAYMENTS from '../../../common/data/enumPaymentMethod';
+import { Role } from '../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -17,7 +18,7 @@ import Page from '../../../layout/Page/Page';
 import showNotification from '../../../components/extras/showNotification';
 import validate from '../demo-pages/helper/editPagesValidate';
 import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
-import data from '../../../common/data/dummyGoals';
+import data1 from '../../../common/data/dummyGoals';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
@@ -29,6 +30,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import GoalViewPopup from './goalHelpher/GoalViewPopup';
 import Item from '../../_common/dashboardHelper/GoalItems';
+import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -58,16 +60,24 @@ interface CardProp {
 	taskCount: number;
 	percent: number;
 }
+interface IGoalProps {
+	category: string;
+	created_at: string;
+	description: string;
+	id: 2;
+	title: string;
+	updated_at: string;
+}
 const Goals: FC = () => {
 	const { darkModeStatus } = useDarkMode();
 
-	const [goalList, setGoalList] = useState<IValues[]>(data);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
-	const navigate = useNavigate();
-
+	// const navigate = useNavigate();
+	const { data, isLoading, isSuccess, isError } = useGetGoalsQuery({});
+	console.log('Data>>', data);
 	const [productView, setProductView] = useState<boolean>(false);
-
+	const [goalList, setGoalList] = useState<IValues[]>(data1);
 	const role = localStorage?.getItem('role');
 
 	const formikOneWay = useFormik({
@@ -145,7 +155,7 @@ const Goals: FC = () => {
 		},
 	});
 	// const filteredData = data.filter(
-	// 	(f) =>		
+	// 	(f) =>
 	// 		// Name
 	// 		f.name.toLowerCase().includes(formik.values.searchInput.toLowerCase()) &&
 	// 		// Price
@@ -210,149 +220,157 @@ const Goals: FC = () => {
 					)}
 				</SubHeaderRight>
 			</SubHeader>
-			<Page container='fluid'>
-				<div className='display-4 fw-bold py-3'> Goals</div>
-				<div className='row h-100'>
-					<div className='col-12'>
-						{productView === false ? (
-							<div className='row'>
-								{goalList.map((item) => (
-									<Item
-										key={item.id}
-										id={item.id}
-										name={item.name}
-										attributes={item.description}
-										timeline={item.timeline}
-										status={item.status}
-									/>
-								))}
-							</div>
-						) : (
-							<Card stretch>
-								<CardHeader>
-									<CardLabel icon='TrackChanges' iconColor='success'>
-										<CardTitle tag='div' className='h5'>
-											List Of Goals
-										</CardTitle>
-									</CardLabel>
-								</CardHeader>
-								<CardBody className='table-responsive'>
-									<div className='row g-4'>
-										<div className='col-12'>
-											<table className='table table-modern table-hover'>
-												<thead>
-													<tr>
-														<th scope='col'>Sr No</th>
-														<th scope='col'>Name</th>
-														<th scope='col'>Description</th>
-														<th scope='col'>Date</th>
-														<th scope='col'>Status</th>
-														<th scope='col'>Action</th>
-													</tr>
-												</thead>
-												<tbody>
-													{dataPagination(
-														goalList,
-														currentPage,
-														perPage,
-													).map((i) => {
-														return (
-															<tr>
-																<th scope='row'>{i.id}</th>
-																<th>{i.name}</th>
-																<td>{i.description}</td>
-																<td>
-																	<span
-																		style={{
-																			whiteSpace: 'nowrap',
-																		}}>
-																		{i.timeline}
-																	</span>
-																</td>
-																<td className='h5'>
-																	<Badge
-																		color={
-																			(i.status ===
-																				'Progress' &&
-																				'danger') ||
-																			(i.status === 'New' &&
-																				'warning') ||
-																			(i.status === 'Done' &&
-																				'success') ||
-																			'info'
-																		}>
-																		{i.status}
-																	</Badge>
-																</td>
-																<td>
-																	<div className='d-flex flex-nowrap'>
-																		<Button
-																			icon='Visibility'
-																			color='primary'
-																			isLight
-																			onClick={() =>
-																				openModal(i.id)
-																			}
-																			className='me-1'
-																		/>
-																		{role !== 'user' ? (
-																			<>
-																				<Button
-																					icon='Edit'
-																					color='success'
-																					isLight
-																					onClick={() =>
-																						handleEdit(
-																							i.id,
-																						)
-																					}
-																					className='me-1'
-																				/>
-																				<Button
-																					icon='Delete'
-																					color='danger'
-																					isLight
-																					onClick={() =>
-																						handleDelete(
-																							i.id,
-																						)
-																					}
-																				/>
-																			</>
-																		) : null}
-																	</div>
-																</td>
-															</tr>
-														);
-													})}
-												</tbody>
-											</table>
+			{isLoading ? (
+				<div>Loadning</div>
+			) : isSuccess ? (
+				<Page container='fluid'>
+					<div className='display-4 fw-bold py-3'> Goals</div>
+					<div className='row h-100'>
+						<div className='col-12'>
+							{productView === false ? (
+								<div className='row'>
+									{data.map((item: IGoalProps) => (
+										<Item
+											key={item.id}
+											id={item.id}
+											name={item.title}
+											attributes={item.description}
+											timeline={item.category}
+										/>
+									))}
+								</div>
+							) : (
+								<Card stretch>
+									<CardHeader>
+										<CardLabel icon='TrackChanges' iconColor='success'>
+											<CardTitle tag='div' className='h5'>
+												List Of Goals
+											</CardTitle>
+										</CardLabel>
+									</CardHeader>
+									<CardBody className='table-responsive'>
+										<div className='row g-4'>
+											<div className='col-12'>
+												<table className='table table-modern table-hover'>
+													<thead>
+														<tr>
+															<th scope='col'>Sr No</th>
+															<th scope='col'>Name</th>
+															<th scope='col'>Description</th>
+															<th scope='col'>Date</th>
+															<th scope='col'>Status</th>
+															<th scope='col'>Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														{dataPagination(
+															data,
+															currentPage,
+															perPage,
+														).map((i) => {
+															return (
+																<tr>
+																	<th scope='row'>{i.id}</th>
+																	<th>{i.name}</th>
+																	<td>{i.description}</td>
+																	<td>
+																		<span
+																			style={{
+																				whiteSpace:
+																					'nowrap',
+																			}}>
+																			{i.timeline}
+																		</span>
+																	</td>
+																	<td className='h5'>
+																		<Badge
+																			color={
+																				(i.status ===
+																					'Progress' &&
+																					'danger') ||
+																				(i.status ===
+																					'New' &&
+																					'warning') ||
+																				(i.status ===
+																					'Done' &&
+																					'success') ||
+																				'info'
+																			}>
+																			{i.status}
+																		</Badge>
+																	</td>
+																	<td>
+																		<div className='d-flex flex-nowrap'>
+																			<Button
+																				icon='Visibility'
+																				color='primary'
+																				isLight
+																				onClick={() =>
+																					openModal(i.id||1)
+																				}
+																				className='me-1'
+																			/>
+																			{role !== 'user' ? (
+																				<>
+																					<Button
+																						icon='Edit'
+																						color='success'
+																						isLight
+																						onClick={() =>
+																							handleEdit(
+																								i.id,
+																							)
+																						}
+																						className='me-1'
+																					/>
+																					<Button
+																						icon='Delete'
+																						color='danger'
+																						isLight
+																						onClick={() =>
+																							handleDelete(
+																								i.id,
+																							)
+																						}
+																					/>
+																				</>
+																			) : null}
+																		</div>
+																	</td>
+																</tr>
+															);
+														})}
+													</tbody>
+												</table>
+											</div>
 										</div>
-									</div>
-								</CardBody>
-								<CardFooter>
-									<PaginationButtons
-										data={data}
-										label='items'
-										setCurrentPage={setCurrentPage}
-										currentPage={currentPage}
-										perPage={perPage}
-										setPerPage={setPerPage}
-									/>
-								</CardFooter>
-							</Card>
-						)}
+									</CardBody>
+									<CardFooter>
+										<PaginationButtons
+											data={data}
+											label='items'
+											setCurrentPage={setCurrentPage}
+											currentPage={currentPage}
+											perPage={perPage}
+											setPerPage={setPerPage}
+										/>
+									</CardFooter>
+								</Card>
+							)}
+						</div>
 					</div>
-				</div>
 
-				{isModalOpen ? (
-					<GoalViewPopup
-						isModalOpen={isModalOpen}
-						setIsModalOpen={setIsModalOpen}
-						id={goalId}
-					/>
-				) : null}
-			</Page>
+					{isModalOpen ? (
+						<GoalViewPopup
+							isModalOpen={isModalOpen}
+							setIsModalOpen={setIsModalOpen}
+							id={goalId}
+						/>
+					) : null}
+				</Page>
+			) : (
+				<div>Error!!! : {isError}</div>
+			)}
 		</PageWrapper>
 	);
 };

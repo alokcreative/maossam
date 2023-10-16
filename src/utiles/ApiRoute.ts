@@ -1,4 +1,4 @@
-const apiEndpoints = {
+ const apiEndpoints = {
 	register: 'users/register/',
 	login: 'users/login/',
 	profile: 'users/profile/',
@@ -12,5 +12,6 @@ const apiEndpoints = {
 	update: 'users/update/',
 	allUser: 'users/list/',
 	deleteUser: 'users/delete/',
+	goalList: 'task-manager/goals/list/',
 };
 export default apiEndpoints;

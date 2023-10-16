@@ -244,7 +244,6 @@ const DashboardPage = () => {
 							name={i.name}
 							attributes={i.description}
 							timeline={i.timeline}
-							status={i.status}
 						/>
 					))}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
