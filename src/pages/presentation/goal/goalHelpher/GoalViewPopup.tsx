@@ -73,12 +73,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 
 	const { data, isLoading: loading, isSuccess, isFetching } = useGetTaskByGoalIdQuery(id!);
 
-	if (loading) {
-		console.log('Loading');
-	} else if (isSuccess) {
-		console.log('data>>', data);
-	}
-	console.log('id>>', id);
 	const navigate = useNavigate();
 	// User data
 	const token = localStorage?.getItem('access_token');
