@@ -31,7 +31,47 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+
+		// Create Goal
+		createGoal: builder.mutation({
+			query: (payload: any) => ({
+				url: apiEndpoints.createGoal,
+				method: 'POST',
+				body: payload,
+				header: 'Content-Type: application/json',
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+
+		// Update Goal
+		updateGoal: builder.mutation({
+			query: (payload: any) => ({
+				url: `${apiEndpoints.updateGoal}/${payload.id}`,
+				method: 'PATCH',
+				body: payload,
+				header: 'Content-Type: application/json',
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+
+		// Delete Goal
+		deleteGoal: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.updateGoal}/${id}`,
+				method: 'DELETE',
+				header: 'Content-Type: application/json',
+			}),
+			invalidatesTags: [`Goal`],
+		}),
 	}),
 });
 
-export const { useGetGoalsQuery } = taskManagementApiSlice;
+
+export const {
+	useRegisterUserMutation,
+	useGetProfileQuery,
+	useCreateGoalMutation,
+	useUpdateGoalMutation,
+	useDeleteGoalMutation,
+} = taskManagementApiSlice;
+
