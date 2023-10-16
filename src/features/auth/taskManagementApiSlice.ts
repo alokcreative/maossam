@@ -68,10 +68,9 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 
 
 export const {
-	useRegisterUserMutation,
-	useGetProfileQuery,
 	useCreateGoalMutation,
 	useUpdateGoalMutation,
 	useDeleteGoalMutation,
+	useGetGoalsQuery
 } = taskManagementApiSlice;
 

@@ -31,8 +31,10 @@ import { toast } from 'react-toastify';
 import GoalViewPopup from './goalHelpher/GoalViewPopup';
 import Item from '../../_common/dashboardHelper/GoalItems';
 
-import { useDeleteGoalMutation } from '../../../features/auth/taskManagementApiSlice';  
-
+import {
+	useDeleteGoalMutation,
+	useGetGoalsQuery,
+} from '../../../features/auth/taskManagementApiSlice';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -312,7 +314,9 @@ const Goals: FC = () => {
 																				color='primary'
 																				isLight
 																				onClick={() =>
-																					openModal(i.id||1)
+																					openModal(
+																						i.id || 1,
+																					)
 																				}
 																				className='me-1'
 																			/>
