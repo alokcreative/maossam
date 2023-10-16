@@ -10,6 +10,7 @@ import ProductPage from '../pages/presentation/products/ProductPage';
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 import Goals from '../pages/presentation/goal/Goals';
 import GoalDescription from '../pages/presentation/goal/GoalDescription';
+import SubTask from '../pages/presentation/goal/tasks/SubTask';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -115,6 +116,10 @@ const documentation: RouteProps[] = [
 	{
 		path: dashboardPagesMenu.tasks.path,
 		element: <Tasks />,
+	},
+	{
+		path: `${pagesMenu.subtasks.path}/:id`,
+		element: <SubTask />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.product.path}`,

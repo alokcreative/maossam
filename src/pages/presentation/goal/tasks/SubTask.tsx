@@ -33,15 +33,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import { Role } from '../../../../common/data/userDummyData';
 import SubTasksCard from './taskboard/SubTasksCard';
-import { pagesMenu } from '../../../../menu';
 import { useNavigate } from 'react-router-dom';
 
 interface ITaskValue {
 	goalId: number;
 	ITask: ITask;
 }
-const Tasks: FC = () => {
-	const navigate = useNavigate()
+const SubTask: FC = () => {
+	const navigate = useNavigate();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [modalState, setModalState] = useState('Add Task');
@@ -107,17 +106,13 @@ const Tasks: FC = () => {
 		// formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
 		// formiknewTask.setFieldValue('category', task[0]?.category);
 		// formiknewTask.setFieldValue('status', task[0]?.status);
-		// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
+		// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);s
 		setIsOpen(true);
 	};
 	const handleView = (id: ISubTask) => {
 		setModalState(`Task Details`);
-		console.log('clicked view', id);
-		// const task = taskList.filter((i) => i.id === id);
-		// setCurrTask(task[0]);
-
-		// subcardData(i);
-		if (role !== 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}/`);
+		// console.log('clicked view', id);
+		// if (role !== 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}/`);
 	};
 
 	const handleAddTask = () => {
@@ -145,17 +140,17 @@ const Tasks: FC = () => {
 						onClick={() => {
 							handleAddTask();
 						}}>
-						Add Task
+						Add SubTask
 					</Button>
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
-				<div className='display-4 fw-bold py-3'>Tasks</div>
+				<div className='display-4 fw-bold py-3'>SubTasks</div>
 				<Card stretch>
 					<CardHeader>
 						<CardLabel icon='CalendarToday' iconColor='info'>
 							<CardTitle tag='div' className='h5'>
-								Tasks List
+								SubTasks List
 							</CardTitle>
 						</CardLabel>
 					</CardHeader>
@@ -333,4 +328,4 @@ const Tasks: FC = () => {
 	);
 };
 
-export default Tasks;
+export default SubTask;

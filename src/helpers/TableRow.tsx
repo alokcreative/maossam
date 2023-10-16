@@ -49,7 +49,6 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 					<td>{task.ITask.expectedTime}</td>
 					<td className='h5'>
 						<Badge
-							
 							color={
 								(task.ITask.status === 'Hold' && 'danger') ||
 								(task.ITask.status === 'Todo' && 'secondary') ||
@@ -79,23 +78,19 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 									setIsModalOpen={setIsModalOpen}
 								/>
 							)}
-							{role !== 'user' && (
-								<>
-									<Button
-										icon='Edit'
-										color='success'
-										isLight
-										className='me-1'
-										onClick={() => edit(task.ITask.id)}
-									/>
-									<Button
-										icon='Delete'
-										color='danger'
-										isLight
-										onClick={() => deleteAction(task.ITask.id)}
-									/>
-								</>
-							)}
+							<Button
+								icon='Edit'
+								color='success'
+								isLight
+								className='me-1'
+								onClick={() => edit(task.ITask.id)}
+							/>
+							<Button
+								icon='Delete'
+								color='danger'
+								isLight
+								onClick={() => deleteAction(task.ITask.id)}
+							/>
 						</div>
 					</td>
 				</>

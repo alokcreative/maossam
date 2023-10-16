@@ -240,7 +240,7 @@ const ProductPage = () => {
 						List View
 					</Button>
 
-					{role !== 'user' && (
+					{role === 'user' && (
 						<Button
 							color={darkModeStatus ? 'light' : 'dark'}
 							isLight
