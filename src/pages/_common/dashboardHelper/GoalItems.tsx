@@ -18,9 +18,8 @@ interface IItemProps {
 	name: string;
 	attributes: string;
 	timeline: string;
-	status: string;
 }
-const Item: FC<IItemProps> = ({ name, attributes, timeline, status, id }) => {
+const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const openModalHandler = () => {

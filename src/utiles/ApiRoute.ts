@@ -1,4 +1,4 @@
-const apiEndpoints = {
+ const apiEndpoints = {
 	register: 'users/register/',
 	login: 'users/login/',
 	profile: 'users/profile/',
