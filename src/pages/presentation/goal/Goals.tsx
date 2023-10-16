@@ -279,7 +279,7 @@ const Goals: FC = () => {
 															return (
 																<tr>
 																	<th scope='row'>{i.id}</th>
-																	<th>{i.name}</th>
+																	<th>{i.title}</th>
 																	<td>{i.description}</td>
 																	<td>
 																		<span
