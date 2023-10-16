@@ -79,7 +79,7 @@ const Goals: FC = () => {
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 
 	// const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError } = useGetGoalsQuery({});
+	const { data, isLoading, isSuccess, isError ,refetch } = useGetGoalsQuery({});
 	console.log('Data>>', data);
 	const [productView, setProductView] = useState<boolean>(false);
 	const [goalList, setGoalList] = useState<IValues[]>(data1);
@@ -180,6 +180,7 @@ const Goals: FC = () => {
 		const newGoals = goalList.filter((i) => i.id !== id);
 		setGoalList(newGoals);
 		deleteGoal(id);
+		refetch();
 	};
 	const handleEdit = (id: number) => {
 		setModalHeader('Edit Goal');
@@ -275,10 +276,10 @@ const Goals: FC = () => {
 															data,
 															currentPage,
 															perPage,
-														).map((i) => {
+														).map((i, index) => {
 															return (
 																<tr>
-																	<th scope='row'>{i.id}</th>
+																	<th scope='row'>{index + 1}</th>
 																	<th>{i.title}</th>
 																	<td>{i.description}</td>
 																	<td>

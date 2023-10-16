@@ -14,7 +14,7 @@
 	deleteUser: 'users/delete/',
 	deleteGoal: 'task-manager/goals/delete/',
 	updateGoal: 'task-manager/goals/update/',
-	createGoal: 'api/task-manager/goals/create/',
+	createGoal: 'task-manager/goals/create/',
 	goalList: 'task-manager/goals/list/',
 };
 export default apiEndpoints;
