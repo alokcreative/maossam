@@ -4,6 +4,7 @@ import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
 import Icon from '../../../components/icon/Icon';
+
 import PAYMENTS from '../../../common/data/enumPaymentMethod';
 import { Role } from '../../../common/data/userDummyData';
 import Card, {
@@ -101,6 +102,7 @@ const Goals: FC = () => {
 	const [goalId, setGoalId] = useState<number>();
 
 	const openModal = (id: number) => {
+		console.log("Id og goal",id);
 		setGoalId(id);
 		setIsModalOpen(true);
 	};
@@ -315,9 +317,7 @@ const Goals: FC = () => {
 																				color='primary'
 																				isLight
 																				onClick={() =>
-																					openModal(
-																						i.id || 1,
-																					)
+																					openModal(i.id)
 																				}
 																				className='me-1'
 																			/>

@@ -198,86 +198,82 @@ const SetupBusiness = () => {
 										</div>
 									</CardBody>
 									<div className='row g-3'>
-											<div className='col-12'>
-												<Accordion id='logofaq' shadow='sm'>
-													<AccordionItem
-														id='logofaq1'
-														title='Why is a logo important for a business?'>
-														In at urna nec risus aliquam accumsan.
-														Vivamus rutrum rhoncus massa, sed facilisis
-														justo sodales vitae. Pellentesque mattis
-														felis ac enim viverra faucibus. Curabitur
-														maximus nibh massa, ut dictum quam
-														scelerisque eget. Maecenas scelerisque
-														egestas diam a posuere. Sed non vehicula
-														nunc. Proin feugiat nisi ut mi mattis
-														bibendum. Suspendisse lobortis libero ut
-														libero semper, sed fermentum lectus commodo.
-														Nam pretium mi sit amet purus imperdiet
-														tempus. Aliquam congue ligula quis vulputate
-														viverra. Morbi dapibus vitae odio vel
-														luctus. Vivamus tellus tortor, aliquet id
-														ultricies a, hendrerit non massa. Ut feugiat
-														quam non sollicitudin molestie. Praesent ut
-														ante mattis, efficitur est ac, scelerisque
-														magna. Donec congue erat a suscipit
-														condimentum. Curabitur purus nunc,
-														ullamcorper vitae lectus quis, aliquam
-														lacinia arcu.
-													</AccordionItem>
-													<AccordionItem
-														id='logofaq2'
-														title='How expensive is it to make a logo'>
-														Nunc ex odio, fermentum dignissim urna eu,
-														suscipit vehicula magna. Vestibulum vel
-														risus sed metus pellentesque gravida. Etiam
-														hendrerit lorem vitae elit tempor bibendum.
-														Vivamus tincidunt consectetur erat at
-														venenatis. Nam elementum varius massa non
-														congue. Class aptent taciti sociosqu ad
-														litora torquent per conubia nostra, per
-														inceptos himenaeos. Vivamus fermentum
-														scelerisque ligula, quis bibendum felis
-														luctus quis. Donec magna sem, ullamcorper id
-														tempus ut, pharetra sed felis. Ut quis ante
-														tristique, condimentum lacus eget, mollis
-														magna. Phasellus fringilla diam ac erat
-														consequat feugiat. Vestibulum eu ex eget
-														ligula placerat finibus. Quisque vitae velit
-														feugiat, mattis lectus nec, molestie justo.
-														Vivamus nec tincidunt augue. Pellentesque
-														nec mattis ipsum, non malesuada libero.
-														Proin aliquam est turpis, sit amet efficitur
-														ex gravida ac. Nunc in molestie augue.
-													</AccordionItem>
-													<AccordionItem
-														id='logofaq3'
-														title='Can I create one myself?'>
-														Nunc ex odio, fermentum dignissim urna eu,
-														suscipit vehicula magna. Vestibulum vel
-														risus sed metus pellentesque gravida. Etiam
-														hendrerit lorem vitae elit tempor bibendum.
-														Vivamus tincidunt consectetur erat at
-														venenatis. Nam elementum varius massa non
-														congue. Class aptent taciti sociosqu ad
-														litora torquent per conubia nostra, per
-														inceptos himenaeos. Vivamus fermentum
-														scelerisque ligula, quis bibendum felis
-														luctus quis. Donec magna sem, ullamcorper id
-														tempus ut, pharetra sed felis. Ut quis ante
-														tristique, condimentum lacus eget, mollis
-														magna. Phasellus fringilla diam ac erat
-														consequat feugiat. Vestibulum eu ex eget
-														ligula placerat finibus. Quisque vitae velit
-														feugiat, mattis lectus nec, molestie justo.
-														Vivamus nec tincidunt augue. Pellentesque
-														nec mattis ipsum, non malesuada libero.
-														Proin aliquam est turpis, sit amet efficitur
-														ex gravida ac. Nunc in molestie augue.
-													</AccordionItem>
-												</Accordion>
-											</div>
+										<div className='col-12'>
+											<Accordion id='logofaq' shadow='sm'>
+												<AccordionItem
+													id='logofaq1'
+													title='Why is a logo important for a business?'>
+													In at urna nec risus aliquam accumsan. Vivamus
+													rutrum rhoncus massa, sed facilisis justo
+													sodales vitae. Pellentesque mattis felis ac enim
+													viverra faucibus. Curabitur maximus nibh massa,
+													ut dictum quam scelerisque eget. Maecenas
+													scelerisque egestas diam a posuere. Sed non
+													vehicula nunc. Proin feugiat nisi ut mi mattis
+													bibendum. Suspendisse lobortis libero ut libero
+													semper, sed fermentum lectus commodo. Nam
+													pretium mi sit amet purus imperdiet tempus.
+													Aliquam congue ligula quis vulputate viverra.
+													Morbi dapibus vitae odio vel luctus. Vivamus
+													tellus tortor, aliquet id ultricies a, hendrerit
+													non massa. Ut feugiat quam non sollicitudin
+													molestie. Praesent ut ante mattis, efficitur est
+													ac, scelerisque magna. Donec congue erat a
+													suscipit condimentum. Curabitur purus nunc,
+													ullamcorper vitae lectus quis, aliquam lacinia
+													arcu.
+												</AccordionItem>
+												<AccordionItem
+													id='logofaq2'
+													title='How expensive is it to make a logo'>
+													Nunc ex odio, fermentum dignissim urna eu,
+													suscipit vehicula magna. Vestibulum vel risus
+													sed metus pellentesque gravida. Etiam hendrerit
+													lorem vitae elit tempor bibendum. Vivamus
+													tincidunt consectetur erat at venenatis. Nam
+													elementum varius massa non congue. Class aptent
+													taciti sociosqu ad litora torquent per conubia
+													nostra, per inceptos himenaeos. Vivamus
+													fermentum scelerisque ligula, quis bibendum
+													felis luctus quis. Donec magna sem, ullamcorper
+													id tempus ut, pharetra sed felis. Ut quis ante
+													tristique, condimentum lacus eget, mollis magna.
+													Phasellus fringilla diam ac erat consequat
+													feugiat. Vestibulum eu ex eget ligula placerat
+													finibus. Quisque vitae velit feugiat, mattis
+													lectus nec, molestie justo. Vivamus nec
+													tincidunt augue. Pellentesque nec mattis ipsum,
+													non malesuada libero. Proin aliquam est turpis,
+													sit amet efficitur ex gravida ac. Nunc in
+													molestie augue.
+												</AccordionItem>
+												<AccordionItem
+													id='logofaq3'
+													title='Can I create one myself?'>
+													Nunc ex odio, fermentum dignissim urna eu,
+													suscipit vehicula magna. Vestibulum vel risus
+													sed metus pellentesque gravida. Etiam hendrerit
+													lorem vitae elit tempor bibendum. Vivamus
+													tincidunt consectetur erat at venenatis. Nam
+													elementum varius massa non congue. Class aptent
+													taciti sociosqu ad litora torquent per conubia
+													nostra, per inceptos himenaeos. Vivamus
+													fermentum scelerisque ligula, quis bibendum
+													felis luctus quis. Donec magna sem, ullamcorper
+													id tempus ut, pharetra sed felis. Ut quis ante
+													tristique, condimentum lacus eget, mollis magna.
+													Phasellus fringilla diam ac erat consequat
+													feugiat. Vestibulum eu ex eget ligula placerat
+													finibus. Quisque vitae velit feugiat, mattis
+													lectus nec, molestie justo. Vivamus nec
+													tincidunt augue. Pellentesque nec mattis ipsum,
+													non malesuada libero. Proin aliquam est turpis,
+													sit amet efficitur ex gravida ac. Nunc in
+													molestie augue.
+												</AccordionItem>
+											</Accordion>
 										</div>
+									</div>
 								</Card>
 							</WizardItem>
 							<WizardItem id='step2'>

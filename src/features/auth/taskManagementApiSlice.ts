@@ -11,17 +11,6 @@ export const getTokenFromLocalStorage = () => {
 };
 export const taskManagementApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		// Register user
-		// registerUser: builder.mutation({
-		// 	query: (payload: any) => ({
-		// 		url: apiEndpoints.register,
-		// 		method: 'POST',
-		// 		body: payload,
-		// 		header: 'Content-Type: application/json',
-		// 	}),
-		// 	invalidatesTags: [`Register`],
-		// }),
-		// Get User
 		getGoals: builder.query({
 			query: () => ({
 				url: apiEndpoints.goalList,
@@ -73,6 +62,17 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: [`Goal`],
 		}),
+		// Delete Goal
+		getTaskByGoalId: builder.query({
+			query: (id?: number) => ({
+				url: `${apiEndpoints.taslistByGoalId}${id}/list/`,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 	}),
 });
 
@@ -81,4 +81,5 @@ export const {
 	useUpdateGoalMutation,
 	useDeleteGoalMutation,
 	useGetGoalsQuery,
+	useGetTaskByGoalIdQuery
 } = taskManagementApiSlice;

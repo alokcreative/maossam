@@ -15,7 +15,6 @@ import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accor
 import { useNavigate } from 'react-router-dom';
 import { pagesMenu } from '../../../../menu';
 // eslint-disable-next-line import/no-named-as-default
-import data from '../../../../common/data/dummyGoals';
 import dayjs from 'dayjs';
 import PaginationButtons, {
 	dataPagination,
@@ -24,7 +23,7 @@ import PaginationButtons, {
 import { TColor } from '../../../../type/color-type';
 import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
 import { IUserData } from '../../../_layout/_asides/DefaultAside';
-// import questions from '../../../../common/data/dummyTaskQuestions';
+import { useGetTaskByGoalIdQuery } from '../../../../features/auth/taskManagementApiSlice';
 
 type IAssetNameProps = {
 	id: number | undefined;
@@ -70,7 +69,16 @@ interface IGoal {
 	task?: ITask[] | undefined;
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
-	const { isModalOpen, setIsModalOpen, id=2 } = props;
+	const { isModalOpen, setIsModalOpen, id } = props;
+
+	const { data, isLoading: loading, isSuccess, isFetching } = useGetTaskByGoalIdQuery(id!);
+
+	if (loading) {
+		console.log('Loading');
+	} else if (isSuccess) {
+		console.log('data>>', data);
+	}
+	console.log('id>>', id);
 	const navigate = useNavigate();
 	// User data
 	const token = localStorage?.getItem('access_token');
@@ -102,10 +110,16 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	useEffect(() => {
-		const tasks = data.filter((goal) => goal.id === id);
-		setTaskData(tasks[0].task);
+		if (data) {
+			const { tasks } = data;
+			console.log('Tasks>>', tasks);
+			if (tasks) {
+				setTaskData(tasks);
+			}
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id]);
+	}, [id, loading, isSuccess]);
 	const formik = useFormik({
 		initialValues: {
 			secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -133,170 +147,182 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 				<ModalTitle id='mks1' />
 			</ModalHeader>
 			<ModalBody>
-				<div className='row p-auto'>
-					<div className=' mb-4 '>
-						<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
-						<p>
-							{taskData &&
-								dataPagination(taskData && taskData, currentPage, perPage).map(
-									(i) => (
-										// eslint-disable-next-line react/jsx-props-no-spreading
-										<div>
-											<p className='fw-bold h4'>
-												<span className='fw-bold  h4'>Task {i.id}:</span>{' '}
-												{i.name}
-											</p>
-											<p className='fw-bold' style={{ marginBottom: '8px' }}>
-												{i.title}
-											</p>
-											<p
-												style={{
-													height: '100px',
-													overflow: 'scroll',
-													msOverflowStyle: 'none',
-												}}>
-												{i.description}
-											</p>
+				{loading ? (
+					<div>Loading</div>
+				) : isFetching ? (
+					<div>fetching</div>
+				) : isSuccess && data ? (
+					<div className='row p-auto'>
+						<div className=' mb-4 '>
+							<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
+							<p>
+								{taskData && taskData?.length !== 0 ? (
+									dataPagination(taskData && taskData, currentPage, perPage).map(
+										(i) => (
+											// eslint-disable-next-line react/jsx-props-no-spreading
+											<div>
+												<p className='fw-bold h4'>
+													<span className='fw-bold  h4'>
+														Task {i.id}:
+													</span>{' '}
+													{i.name}
+												</p>
+												<p
+													className='fw-bold'
+													style={{ marginBottom: '8px' }}>
+													{i.title}
+												</p>
+												<p
+													style={{
+														height: '100px',
+														overflow: 'scroll',
+														msOverflowStyle: 'none',
+													}}>
+													{i.description}
+												</p>
 
-											<div className='row'>
-												<div className='col-12'>
-													<Card stretch>
-														<CardHeader
-														// style={{ paddingBottom: '0px' }}
-														>
-															<CardLabel
-																icon='TrackChanges'
-																iconColor='success'>
-																<CardTitle
-																	tag='div'
-																	className='h5 pb-0 no-gutters'>
-																	Subtask
-																</CardTitle>
-															</CardLabel>
-														</CardHeader>
-														<CardBody
-															className='table-responsive'
-															style={{ paddingTop: '0px' }}>
-															<div className='row g-4'>
-																<div className='col-12 pt-0'>
-																	<p>
-																		<span className='fw-bold'>
-																			Subtask Intro :{' '}
-																		</span>
-																		{i.subtaskIntro}
-																	</p>
-																	<table className='table table-modern table-hover'>
-																		<tbody>
-																			{i.subTask &&
-																				dataPagination(
-																					i.subTask,
-																					currentPageSubtask,
-																					perPageSubtask,
-																				).map((item) => (
-																					// eslint-disable-next-line react/jsx-props-no-spreading
-																					<div>
-																						<span
-																							className='fw-bold'
-																							style={{
-																								paddingRight:
-																									'0px',
-																							}}>
-																							Sub Task
-																							Name :
-																						</span>
-																						<span
-																							style={{
-																								paddingLeft:
-																									'1px',
-																							}}>
-																							{
-																								item.name
-																							}
-																						</span>
-																						<div className='row'>
-																							<div className='col-8'>
-																								{/* <span>
+												<div className='row'>
+													<div className='col-12'>
+														<Card stretch>
+															<CardHeader
+															// style={{ paddingBottom: '0px' }}
+															>
+																<CardLabel
+																	icon='TrackChanges'
+																	iconColor='success'>
+																	<CardTitle
+																		tag='div'
+																		className='h5 pb-0 no-gutters'>
+																		Subtask
+																	</CardTitle>
+																</CardLabel>
+															</CardHeader>
+															<CardBody
+																className='table-responsive'
+																style={{ paddingTop: '0px' }}>
+																<div className='row g-4'>
+																	<div className='col-12 pt-0'>
+																		<p>
+																			<span className='fw-bold'>
+																				Subtask Intro :{' '}
+																			</span>
+																			{i.subtaskIntro}
+																		</p>
+																		<table className='table table-modern table-hover'>
+																			<tbody>
+																				{i.subTask &&
+																				i.subTask.length !==
+																					0 ? (
+																					dataPagination(
+																						i.subTask,
+																						currentPageSubtask,
+																						perPageSubtask,
+																					).map(
+																						(item) => (
+																							// eslint-disable-next-line react/jsx-props-no-spreading
+																							<div>
+																								<span
+																									className='fw-bold'
+																									style={{
+																										paddingRight:
+																											'0px',
+																									}}>
+																									Sub
+																									Task
+																									Name
+																									:
+																								</span>
+																								<span
+																									style={{
+																										paddingLeft:
+																											'1px',
+																									}}>
+																									{
+																										item.name
+																									}
+																								</span>
+																								<div className='row'>
+																									<div className='col-8'>
+																										{/* <span>
 																									{
 																										item.description
 																									}
 																								</span> */}
-																							</div>
-																							<div className='col-12 d-flex justify-content-between mt-3'>
-																								<Button
-																									color='primary'
-																									className='mb-3'
-																									onClick={() =>
-																										handleSubmit(
-																											i.id,
-																										)
-																									}>
-																									START
-																									NOW
-																								</Button>
-																								<FormGroup id='secheduledate'>
-																									<Input
-																										onChange={
-																											formik.handleChange
-																										}
-																										value={
-																											formik
-																												.values
-																												.secheduledate
-																										}
-																										type='date'
-																										autoComplete='current-password'
-																										isTouched={
-																											formik
-																												.touched
-																												.secheduledate
-																										}
-																										isValid={
-																											formik.isValid
-																										}
-																										onBlur={
-																											formik.handleBlur
-																										}
-																									/>
-																								</FormGroup>
-																							</div>
-																						</div>
+																									</div>
+																									<div className='col-12 d-flex justify-content-between mt-3'>
+																										<Button
+																											color='primary'
+																											className='mb-3'
+																											onClick={() =>
+																												handleSubmit(
+																													i.id,
+																												)
+																											}>
+																											START
+																											NOW
+																										</Button>
+																										<FormGroup id='secheduledate'>
+																											<Input
+																												onChange={
+																													formik.handleChange
+																												}
+																												value={
+																													formik
+																														.values
+																														.secheduledate
+																												}
+																												type='date'
+																												autoComplete='current-password'
+																												isTouched={
+																													formik
+																														.touched
+																														.secheduledate
+																												}
+																												isValid={
+																													formik.isValid
+																												}
+																												onBlur={
+																													formik.handleBlur
+																												}
+																											/>
+																										</FormGroup>
+																									</div>
+																								</div>
 
-																						<div className='row g-3'>
-																							<div className='col-12'>
-																								{item.questions &&
-																									item.questions.map(
-																										(
-																											q: any,
-																										) => {
-																											return (
-																												<Accordion
+																								<div className='row g-3'>
+																									<div className='col-12'>
+																										{item.questions &&
+																											item.questions.map(
+																												(
+																													q: any,
+																												) => {
+																													return (
+																														<Accordion
+																															id={
+																																item.id
+																															}
+																															isFlush
+																															className='mb-1'>
+																															<AccordionItem
+																																id={
+																																	q.id
+																																}
+																																title={
+																																	q.name
+																																}
+																																activeItem={
+																																	null
+																																}>
+																																{
+																																	q.answer
+																																}
+																															</AccordionItem>
+																														</Accordion>
+																													);
+																												},
+																											)}
 
-																													id={
-																														item.id
-																													}
-																													isFlush
-																													className='mb-1'>
-
-																													<AccordionItem
-																														id={
-																															q.id
-																														}
-																														title={
-																															q.name
-																														}
-																														activeItem={
-																															null
-																														}>
-																														{
-																															q.answer
-																														}
-																													</AccordionItem>
-																												</Accordion>
-																											);
-																										},
-																									)}
-
-																								{/* <Accordion
+																										{/* <Accordion
 																									id='logofaq1'
 																									shadow='sm'>
 																									{item.questions &&
@@ -323,56 +349,66 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 																											},
 																										)}
 																								</Accordion> */}
+																									</div>
+																								</div>
 																							</div>
-																						</div>
+																						),
+																					)
+																				) : (
+																					<div>
+																						No Subtasks
 																					</div>
-																				))}
-																		</tbody>
-																	</table>
+																				)}
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
-															</div>
-														</CardBody>
-														<CardFooter className='p-0'>
-															<div className='col-12'>
-																{i.subTask && (
-																	<PaginationButtons
-																		data={i.subTask}
-																		label='items'
-																		setCurrentPage={
-																			setCurrentPageSubtask
-																		}
-																		currentPage={
-																			currentPageSubtask
-																		}
-																		perPage={perPageSubtask}
-																		setPerPage={
-																			setPerPageSubtask
-																		}
-																	/>
-																)}
-															</div>
-														</CardFooter>
-													</Card>
+															</CardBody>
+															<CardFooter className='p-0'>
+																<div className='col-12'>
+																	{i.subTask && (
+																		<PaginationButtons
+																			data={i.subTask}
+																			label='items'
+																			setCurrentPage={
+																				setCurrentPageSubtask
+																			}
+																			currentPage={
+																				currentPageSubtask
+																			}
+																			perPage={perPageSubtask}
+																			setPerPage={
+																				setPerPageSubtask
+																			}
+																		/>
+																	)}
+																</div>
+															</CardFooter>
+														</Card>
+													</div>
 												</div>
 											</div>
-										</div>
-									),
+										),
+									)
+								) : (
+									<div>No Tasks</div>
 								)}
-						</p>
-						<p className='mb-3'>
-							{taskData && (
-								<PaginationButtons
-									data={taskData}
-									label='items'
-									setCurrentPage={setCurrentPage}
-									currentPage={currentPage}
-									perPage={perPage}
-									setPerPage={setPerPage}
-								/>
-							)}
-						</p>
+							</p>
+							<p className='mb-3'>
+								{taskData && taskData?.length !== 0 && (
+									<PaginationButtons
+										data={taskData}
+										label='items'
+										setCurrentPage={setCurrentPage}
+										currentPage={currentPage}
+										perPage={perPage}
+										setPerPage={setPerPage}
+									/>
+								)}
+							</p>
+						</div>
 					</div>
-				</div>
+				) : null}
 			</ModalBody>
 		</Modal>
 	);
