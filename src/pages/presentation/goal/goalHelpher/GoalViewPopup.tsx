@@ -24,6 +24,7 @@ import { TColor } from '../../../../type/color-type';
 import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
 import { IUserData } from '../../../_layout/_asides/DefaultAside';
 import { useGetTaskByGoalIdQuery } from '../../../../features/auth/taskManagementApiSlice';
+import SubTask from './SubTask';
 
 type IAssetNameProps = {
 	id: number | undefined;
@@ -123,12 +124,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
-	const handleSubmit = (taskId: number) => {
-		setIsModalOpen(false);
-		const role = localStorage.getItem('role');
-		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
-	};
-
 	return (
 		<Modal
 			isOpen={isModalOpen}
@@ -174,213 +169,10 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 													}}>
 													{i.description}
 												</p>
-
-												<div className='row'>
-													<div className='col-12'>
-														<Card stretch>
-															<CardHeader
-															// style={{ paddingBottom: '0px' }}
-															>
-																<CardLabel
-																	icon='TrackChanges'
-																	iconColor='success'>
-																	<CardTitle
-																		tag='div'
-																		className='h5 pb-0 no-gutters'>
-																		Subtask
-																	</CardTitle>
-																</CardLabel>
-															</CardHeader>
-															<CardBody
-																className='table-responsive'
-																style={{ paddingTop: '0px' }}>
-																<div className='row g-4'>
-																	<div className='col-12 pt-0'>
-																		<p>
-																			<span className='fw-bold'>
-																				Subtask Intro :{' '}
-																			</span>
-																			{i.subtaskIntro}
-																		</p>
-																		<table className='table table-modern table-hover'>
-																			<tbody>
-																				{i.subTask &&
-																				i.subTask.length !==
-																					0 ? (
-																					dataPagination(
-																						i.subTask,
-																						currentPageSubtask,
-																						perPageSubtask,
-																					).map(
-																						(item) => (
-																							// eslint-disable-next-line react/jsx-props-no-spreading
-																							<div>
-																								<span
-																									className='fw-bold'
-																									style={{
-																										paddingRight:
-																											'0px',
-																									}}>
-																									Sub
-																									Task
-																									Name
-																									:
-																								</span>
-																								<span
-																									style={{
-																										paddingLeft:
-																											'1px',
-																									}}>
-																									{
-																										item.name
-																									}
-																								</span>
-																								<div className='row'>
-																									<div className='col-8'>
-																										{/* <span>
-																									{
-																										item.description
-																									}
-																								</span> */}
-																									</div>
-																									<div className='col-12 d-flex justify-content-between mt-3'>
-																										<Button
-																											color='primary'
-																											className='mb-3'
-																											onClick={() =>
-																												handleSubmit(
-																													i.id,
-																												)
-																											}>
-																											START
-																											NOW
-																										</Button>
-																										<FormGroup id='secheduledate'>
-																											<Input
-																												onChange={
-																													formik.handleChange
-																												}
-																												value={
-																													formik
-																														.values
-																														.secheduledate
-																												}
-																												type='date'
-																												autoComplete='current-password'
-																												isTouched={
-																													formik
-																														.touched
-																														.secheduledate
-																												}
-																												isValid={
-																													formik.isValid
-																												}
-																												onBlur={
-																													formik.handleBlur
-																												}
-																											/>
-																										</FormGroup>
-																									</div>
-																								</div>
-
-																								<div className='row g-3'>
-																									<div className='col-12'>
-																										{item.questions &&
-																											item.questions.map(
-																												(
-																													q: any,
-																												) => {
-																													return (
-																														<Accordion
-																															id={
-																																item.id
-																															}
-																															isFlush
-																															className='mb-1'>
-																															<AccordionItem
-																																id={
-																																	q.id
-																																}
-																																title={
-																																	q.name
-																																}
-																																activeItem={
-																																	null
-																																}>
-																																{
-																																	q.answer
-																																}
-																															</AccordionItem>
-																														</Accordion>
-																													);
-																												},
-																											)}
-
-																										{/* <Accordion
-																									id='logofaq1'
-																									shadow='sm'>
-																									{item.questions &&
-																										item.questions.map(
-																											(
-																												q: any,
-																											) => {
-																												return (
-																													<AccordionItem
-																														key={
-																															q.id
-																														}
-																														id={
-																															q.id
-																														}
-																														title={
-																															q.name
-																														}>
-																														{
-																															q.answer
-																														}
-																													</AccordionItem>
-																												);
-																											},
-																										)}
-																								</Accordion> */}
-																									</div>
-																								</div>
-																							</div>
-																						),
-																					)
-																				) : (
-																					<div>
-																						No Subtasks
-																					</div>
-																				)}
-																			</tbody>
-																		</table>
-																	</div>
-																</div>
-															</CardBody>
-															<CardFooter className='p-0'>
-																<div className='col-12'>
-																	{i.subTask && (
-																		<PaginationButtons
-																			data={i.subTask}
-																			label='items'
-																			setCurrentPage={
-																				setCurrentPageSubtask
-																			}
-																			currentPage={
-																				currentPageSubtask
-																			}
-																			perPage={perPageSubtask}
-																			setPerPage={
-																				setPerPageSubtask
-																			}
-																		/>
-																	)}
-																</div>
-															</CardFooter>
-														</Card>
-													</div>
-												</div>
+												<SubTask
+													setIsModalOpen={setIsModalOpen}
+													subTaskId={Number(i.id)}
+												/>
 											</div>
 										),
 									)
