@@ -166,10 +166,10 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 		},
 	});
 
-	const { user } = useSelector((state: RootState) => state.auth);
-	const savedValue = localStorage?.getItem('user');
-	const localUser = savedValue ? JSON.parse(savedValue) : null;
-	const role = user.role || localUser?.role;
+	// const { user } = useSelector((state: RootState) => state.auth);
+	// const savedValue = localStorage?.getItem('user');
+	// const localUser = savedValue ? JSON.parse(savedValue) : null;
+	// const role = user.role || localUser?.role;
 	return (
 		<Card stretch>
 			<CardHeader>
@@ -187,15 +187,14 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 					</CardSubTitle>
 				</CardLabel>
 				<CardActions>
-					{role === Role.admin ? (
-						<Button
-							color='info'
-							icon='Add'
-							isLight
-							onClick={() => setModalStatus(!modalStatus)}>
-							New
-						</Button>
-					) : null}
+					<Button
+						color='info'
+						icon='Add'
+						isLight
+						onClick={() => setModalStatus(!modalStatus)}>
+						New
+					</Button>
+
 					<Modal setIsOpen={setModalStatus} isOpen={modalStatus} titleId='new-todo-modal'>
 						<ModalHeader setIsOpen={setModalStatus}>
 							<ModalTitle id='new-todo-modal'>New Task</ModalTitle>
@@ -311,15 +310,13 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 								</div>
 								<div className='col' />
 								<div className='col-auto'>
-									{role === Role.admin ? (
-										<Button
-											type='submit'
-											color='info'
-											isLight
-											isDisable={!formik.isValid && !!formik.submitCount}>
-											Add Task
-										</Button>
-									) : null}
+									<Button
+										type='submit'
+										color='info'
+										isLight
+										isDisable={!formik.isValid && !!formik.submitCount}>
+										Add Task
+									</Button>
 								</div>
 							</form>
 						</ModalBody>

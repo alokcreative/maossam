@@ -41,6 +41,7 @@ const SubTasksCard: FC<IAssetNameProps> = (props) => {
 		const role = localStorage.getItem('role');
 
 		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${task.goalId}/${taskId}`);
+		if (role === 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${taskId}`);
 	};
 
 	const formik = useFormik({

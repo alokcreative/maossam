@@ -20,7 +20,7 @@ interface ITableRowProps {
 }
 
 const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) => {
-	const { user } = useSelector((state: RootState) => state.auth);
+	// const { user } = useSelector((state: RootState) => state.auth);
 
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
@@ -71,13 +71,7 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 									setIsModalOpen(true);
 								}}
 							/>
-							{isModalOpen && (
-								<SubTasksCard
-									task={task}
-									isModalOpen={isModalOpen}
-									setIsModalOpen={setIsModalOpen}
-								/>
-							)}
+
 							<Button
 								icon='Edit'
 								color='success'
@@ -91,6 +85,13 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 								isLight
 								onClick={() => deleteAction(task.ITask.id)}
 							/>
+							{isModalOpen && (
+								<SubTasksCard
+									task={task}
+									isModalOpen={isModalOpen}
+									setIsModalOpen={setIsModalOpen}
+								/>
+							)}
 						</div>
 					</td>
 				</>

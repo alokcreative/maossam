@@ -149,7 +149,7 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) =>
 					</div>
 				);
 			})}
-			<Modal setIsOpen={setEditModalStatus} isOpen={editModalStatus} size='lg' isScrollable>
+			{/* <Modal setIsOpen={setEditModalStatus} isOpen={editModalStatus} size='lg' isScrollable>
 				<ModalHeader className='px-4' setIsOpen={setEditModalStatus}>
 					<ModalTitle id='project-edit'>New Card</ModalTitle>
 				</ModalHeader>
@@ -248,10 +248,10 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) =>
 						className='w-100'
 						type='submit'
 						onClick={formik.handleSubmit}>
-						Save1
+						Save
 					</Button>
 				</ModalFooter>
-			</Modal>
+			</Modal> */}
 		</>
 	);
 };
