@@ -33,6 +33,7 @@ const SubTask: FC<IValueProps> = (props) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
 		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}`);
+		if (role === 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}`);
 	};
 
 	const formik = useFormik({

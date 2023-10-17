@@ -58,6 +58,8 @@ const TaskBoardCard: FC<IColumnCard> = ({
 	const { darkModeStatus } = useDarkMode();
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
+	const [modalStatus, setModalStatus] = useState(false);
+
 	const formik = useFormik({
 		initialValues: {
 			cardName: card.name || '',
@@ -157,18 +159,30 @@ const TaskBoardCard: FC<IColumnCard> = ({
 			)} */}
 
 			<Modal
+			
 				setIsOpen={setEditModalStatus}
 				isOpen={editModalStatus}
 				size='lg'
 				isScrollable
+				isStaticBackdrop
 				data-tour='mail-app-modal'>
-				<ModalHeader className='px-4' setIsOpen={setEditModalStatus}>
+				<ModalHeader className='px-4' setIsOpen={setEditModalStatus} 
+				style={{ filter: modalStatus ? 'blur(1px)' : 'none' }} 
+				>
 					<ModalTitle id='project-edit'>{card.name}</ModalTitle>
 				</ModalHeader>
-				<ModalBody className='px-4'>
-					<MiniTasks subTaskId={card.id} />
+				<ModalBody className='px-4' 
+				style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}
+				>
+					<MiniTasks
+						subTaskId={card.id}
+						modalStatus={modalStatus}
+						setModalStatus={setModalStatus}
+					/>
 				</ModalBody>
-				<ModalFooter className='px-4 pb-4'>
+				<ModalFooter className='px-4 pb-4' 
+				style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}
+				>
 					<Button
 						color='primary'
 						className='w-100'

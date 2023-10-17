@@ -33,8 +33,10 @@ import { Role } from '../../../../../common/data/userDummyData';
 
 interface IPropsValue {
 	subTaskId: number;
+	modalStatus: boolean;
+	setModalStatus: (status: boolean) => void;
 }
-const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
+const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) => {
 	const { id, taskId } = useParams();
 	const TODO_BADGES: {
 		[key: string]: {
@@ -77,7 +79,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 	/**
 	 * Add New Modal Status
 	 */
-	const [modalStatus, setModalStatus] = useState(false);
+	// const [modalStatus, setModalStatus] = useState(false);
 
 	/**
 	 * Ann New To/Do func
@@ -195,7 +197,24 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId }) => {
 						New
 					</Button>
 
-					<Modal setIsOpen={setModalStatus} isOpen={modalStatus} titleId='new-todo-modal'>
+					<Modal
+						setIsOpen={setModalStatus}
+						isOpen={modalStatus}
+						titleId='new-todo-modal'
+						isStaticBackdrop
+						// style={{
+						// 	position: 'fixed',
+						// 	top: 0,
+						// 	left: 0,
+						// 	width: '100%',
+						// 	height: '100%',
+						// 	background: 'rgba(0, 0, 0, 0.3)',
+						// 	display: 'flex',
+						// 	justifyContent: 'center',
+						// 	alignItems: 'center',
+						// 	zIndex: 99999,
+						// }}
+					>
 						<ModalHeader setIsOpen={setModalStatus}>
 							<ModalTitle id='new-todo-modal'>New Task</ModalTitle>
 						</ModalHeader>
