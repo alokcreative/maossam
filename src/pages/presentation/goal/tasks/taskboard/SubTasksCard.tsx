@@ -35,12 +35,11 @@ const SubTasksCard: FC<IAssetNameProps> = (props) => {
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
-	
+
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
-		if(role!='superadmin')
-		navigate(`../${pagesMenu.taskId.path}/${task.goalId}/${taskId}`);
+		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${task.goalId}/${taskId}`);
 	};
 
 	const formik = useFormik({
@@ -51,7 +50,6 @@ const SubTasksCard: FC<IAssetNameProps> = (props) => {
 			console.log(values.secheduledate);
 		},
 	});
-	console.log('i>>', task);
 	return (
 		<Modal
 			isOpen={isModalOpen}

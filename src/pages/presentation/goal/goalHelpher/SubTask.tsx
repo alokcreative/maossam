@@ -1,0 +1,184 @@
+import React, { FC, useState } from 'react';
+import Card, {
+	CardBody,
+	CardFooter,
+	CardHeader,
+	CardLabel,
+	CardTitle,
+} from '../../../../components/bootstrap/Card';
+import Button from '../../../../components/bootstrap/Button';
+import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
+import Input from '../../../../components/bootstrap/forms/Input';
+import PaginationButtons, {
+	dataPagination,
+	PER_COUNT,
+} from '../../../../components/PaginationButtons';
+import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
+import { useGetSubTaskByTaskIdQuery } from '../../../../features/auth/taskManagementApiSlice';
+import { pagesMenu } from '../../../../menu';
+import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+
+interface IValueProps {
+	subTaskId: number;
+	setIsModalOpen(...args: unknown[]): unknown;
+}
+const SubTask: FC<IValueProps> = (props) => {
+	const { subTaskId: id, setIsModalOpen } = props;
+	console.log('SubTaskId', id);
+	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
+	console.log('Subtaskdata>>>>>', data?.subtasks);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
+	const [perPage, setPerPage] = useState(PER_COUNT['1']);
+	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
+	const navigate = useNavigate();
+	const handleSubmit = (taskId: number) => {
+		setIsModalOpen(false);
+		const role = localStorage.getItem('role');
+		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
+	};
+
+	const formik = useFormik({
+		initialValues: {
+			secheduledate: '',
+		},
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		onSubmit: (values) => {},
+	});
+	return (
+		<div className='row'>
+			<div className='col-12'>
+				<Card stretch>
+					<CardHeader
+					// style={{ paddingBottom: '0px' }}
+					>
+						<CardLabel icon='TrackChanges' iconColor='success'>
+							<CardTitle tag='div' className='h5 pb-0 no-gutters'>
+								Subtask
+							</CardTitle>
+						</CardLabel>
+					</CardHeader>
+					{isLoading ? (
+						<div>loading</div>
+					) : isSuccess && data ? (
+						<CardBody className='table-responsive' style={{ paddingTop: '0px' }}>
+							<div className='row g-4'>
+								<div className='col-12 pt-0'>
+									<p>
+										<span className='fw-bold'>Subtask Intro : </span>
+										{data.task.title}
+									</p>
+									<table className='table table-modern table-hover'>
+										<tbody>
+											{data.subtasks && data.subtasks.length !== 0 ? (
+												dataPagination(
+													data.subtasks,
+													currentPageSubtask,
+													perPageSubtask,
+												).map((item) => (
+													// eslint-disable-next-line react/jsx-props-no-spreading
+													<div>
+														<span
+															className='fw-bold'
+															style={{
+																paddingRight: '0px',
+															}}>
+															Sub Task Name :
+														</span>
+														<span
+															style={{
+																paddingLeft: '1px',
+															}}>
+															{item.name}
+														</span>
+														<div className='row'>
+															<div className='col-8' />
+															<div className='col-12 d-flex justify-content-between mt-3'>
+																<Button
+																	color='primary'
+																	className='mb-3'
+																	onClick={() =>
+																		handleSubmit(id)
+																	}>
+																	START NOW
+																</Button>
+																<FormGroup id='secheduledate'>
+																	<Input
+																		onChange={
+																			formik.handleChange
+																		}
+																		value={
+																			formik.values
+																				.secheduledate
+																		}
+																		type='date'
+																		autoComplete='current-password'
+																		isTouched={
+																			formik.touched
+																				.secheduledate
+																		}
+																		isValid={formik.isValid}
+																		onBlur={formik.handleBlur}
+																	/>
+																</FormGroup>
+															</div>
+														</div>
+
+														<div className='row g-3'>
+															<div className='col-12'>
+																{item.questions &&
+																	item.questions.map((q: any) => {
+																		return (
+																			<Accordion
+																				id={item.id}
+																				isFlush
+																				className='mb-1'>
+																				<AccordionItem
+																					id={q.id}
+																					title={q.name}
+																					activeItem={
+																						null
+																					}>
+																					{q.answer}
+																				</AccordionItem>
+																			</Accordion>
+																		);
+																	})}
+															</div>
+														</div>
+													</div>
+												))
+											) : (
+												<div>No Subtasks</div>
+											)}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</CardBody>
+					) : (
+						<div>{isError}</div>
+					)}
+
+					<CardFooter className='p-0'>
+						<div className='col-12'>
+							{data && data.subtasks && data.subtasks.length !== 0 && (
+								<PaginationButtons
+									data={data.subtasks}
+									label='items'
+									setCurrentPage={setCurrentPageSubtask}
+									currentPage={currentPageSubtask}
+									perPage={perPageSubtask}
+									setPerPage={setPerPageSubtask}
+								/>
+							)}
+						</div>
+					</CardFooter>
+				</Card>
+			</div>
+		</div>
+	);
+};
+
+export default SubTask;
