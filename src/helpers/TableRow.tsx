@@ -106,13 +106,6 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 								isLight
 								onClick={() => deleteAction(task.id)}
 							/>
-							{isModalOpen && (
-								<SubTasksCard
-									task={task}
-									isModalOpen={isModalOpen}
-									setIsModalOpen={setIsModalOpen}
-								/>
-							)}
 						</div>
 					</td>
 				</>
