@@ -74,6 +74,7 @@ interface IGoalProps {
 	updated_at: string;
 }
 const Goals: FC = () => {
+	
 	const { darkModeStatus } = useDarkMode();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);

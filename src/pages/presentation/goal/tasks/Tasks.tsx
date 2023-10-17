@@ -117,7 +117,7 @@ const Tasks: FC = () => {
 		// setCurrTask(task[0]);
 
 		// subcardData(i);
-		if (role !== 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}/`);
+		// if (role !== 'superadmin') navigate(`../${pagesMenu.}/${id}/`);
 	};
 
 	const handleAddTask = () => {

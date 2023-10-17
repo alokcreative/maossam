@@ -33,7 +33,7 @@ import Input from '../../../../components/bootstrap/forms/Input';
 // import { RootState } from '../../../../store/store';
 // import { Role } from '../../../../common/data/userDummyData';
 // import SubTasksCard from './taskboard/SubTasksCard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface ITaskValue {
 	goalId: number;
@@ -41,6 +41,7 @@ interface ITaskValue {
 }
 const SubTask: FC = () => {
 	const navigate = useNavigate();
+	const { id } = useParams();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [modalState, setModalState] = useState('Add Task');
@@ -94,10 +95,10 @@ const SubTask: FC = () => {
 			setIsOpen(false);
 		},
 	});
-	const handleDeleteAction = (id: number) => {
+	const handleDeleteAction = (subId: number) => {
 		// setTaskList(taskList.filter((i) => i.id !== id));
 	};
-	const handleEdit = (id: number) => {
+	const handleEdit = (SubId: number) => {
 		setCurrTask(undefined);
 		setModalState(`Edit Task`);
 		// const task = taskList.filter((i) => i.id === id);
@@ -109,8 +110,8 @@ const SubTask: FC = () => {
 		// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);s
 		setIsOpen(true);
 	};
-	const handleView = (id: ISubTask) => {
-		setModalState(`Task Details`);
+	const handleView = (Subid: ISubTask) => {
+		setModalState(`SubTask Details`);
 		// console.log('clicked view', id);
 		// if (role !== 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}/`);
 	};
