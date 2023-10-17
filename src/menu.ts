@@ -66,7 +66,7 @@ export const dashboardPagesMenu = {
 		icon: 'flag',
 		subMenu: null,
 	},
-	
+
 	marketingassets: {
 		id: 'marketingassets',
 		text: 'Marketing Assets',
@@ -146,6 +146,13 @@ export const pagesMenu = {
 		text: 'Add Task',
 		path: '/add-task',
 		icon: 'group',
+		subMenu: null,
+	},
+	subtasks: {
+		id: 'subtasks',
+		text: 'SubTasks',
+		path: 'goal/task/subtasks',
+		icon: 'flag',
 		subMenu: null,
 	},
 	profile: {

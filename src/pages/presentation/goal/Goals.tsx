@@ -80,7 +80,7 @@ const Goals: FC = () => {
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 
 	// const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError ,refetch } = useGetGoalsQuery({});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
 	console.log('Data>>', data);
 	const [productView, setProductView] = useState<boolean>(false);
 	const [goalList, setGoalList] = useState<IValues[]>(data1);
@@ -102,7 +102,7 @@ const Goals: FC = () => {
 	const [goalId, setGoalId] = useState<number>();
 
 	const openModal = (id: number) => {
-		console.log("Id og goal",id);
+		console.log('Id og goal', id);
 		setGoalId(id);
 		setIsModalOpen(true);
 	};
@@ -181,8 +181,13 @@ const Goals: FC = () => {
 	const handleDelete = (id: number) => {
 		const newGoals = goalList.filter((i) => i.id !== id);
 		setGoalList(newGoals);
-		deleteGoal(id);
-		refetch();
+
+		deleteGoal(id).then(() => {
+			refetch().then((res) => {
+				//	TODO:  Make Toast Dynamically
+				toast('Goal Deleted Sucessfully');
+			});
+		});
 	};
 	const handleEdit = (id: number) => {
 		setModalHeader('Edit Goal');
@@ -217,18 +222,17 @@ const Goals: FC = () => {
 						onClick={() => setProductView(true)}>
 						List View
 					</Button>
-					{role !== 'user' && (
-						<Button
-							color='success'
-							isLight
-							icon='Add'
-							onClick={() => {
-								setIsOpen(true);
-								setModalHeader('Add Goal');
-							}}>
-							Add Goal
-						</Button>
-					)}
+
+					<Button
+						color='success'
+						isLight
+						icon='Add'
+						onClick={() => {
+							setIsOpen(true);
+							setModalHeader('Add Goal');
+						}}>
+						Add Goal
+					</Button>
 				</SubHeaderRight>
 			</SubHeader>
 			{isLoading ? (
@@ -321,31 +325,26 @@ const Goals: FC = () => {
 																				}
 																				className='me-1'
 																			/>
-																			{role !== 'user' ? (
-																				<>
-																					<Button
-																						icon='Edit'
-																						color='success'
-																						isLight
-																						onClick={() =>
-																							handleEdit(
-																								i.id,
-																							)
-																						}
-																						className='me-1'
-																					/>
-																					<Button
-																						icon='Delete'
-																						color='danger'
-																						isLight
-																						onClick={() =>
-																							handleDelete(
-																								i.id,
-																							)
-																						}
-																					/>
-																				</>
-																			) : null}
+
+																			<Button
+																				icon='Edit'
+																				color='success'
+																				isLight
+																				onClick={() =>
+																					handleEdit(i.id)
+																				}
+																				className='me-1'
+																			/>
+																			<Button
+																				icon='Delete'
+																				color='danger'
+																				isLight
+																				onClick={() =>
+																					handleDelete(
+																						i.id,
+																					)
+																				}
+																			/>
 																		</div>
 																	</td>
 																</tr>
