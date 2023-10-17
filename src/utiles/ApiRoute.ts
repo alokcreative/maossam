@@ -1,4 +1,4 @@
- const apiEndpoints = {
+const apiEndpoints = {
 	register: 'users/register/',
 	login: 'users/login/',
 	profile: 'users/profile/',
@@ -16,6 +16,7 @@
 	updateGoal: 'task-manager/goals/update/',
 	createGoal: 'task-manager/goals/create/',
 	goalList: 'task-manager/goals/list/',
+	taskList: 'task-manager/goals/tasks/list/',
 	taslistByGoalId: 'task-manager/goals/',
 	subTaskList: 'task-manager/goals/tasks',
 };

@@ -25,18 +25,14 @@ interface IValueProps {
 }
 const SubTask: FC<IValueProps> = (props) => {
 	const { subTaskId: id, setIsModalOpen } = props;
-	console.log('SubTaskId', id);
 	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
-	console.log('Subtaskdata>>>>>', data?.subtasks);
-	const [currentPage, setCurrentPage] = useState(1);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
-	const [perPage, setPerPage] = useState(PER_COUNT['1']);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	const navigate = useNavigate();
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
-		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}/${taskId}`);
+		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}`);
 	};
 
 	const formik = useFormik({

@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { Role } from '../common/data/userDummyData';
 import { ITask } from '../common/data/dummyGoals';
-import SubTasksCard from '../pages/presentation/goal/tasks/taskboard/SubTasksCard';
+import Modal, { ModalBody, ModalHeader } from '../components/bootstrap/Modal';
+import SubTask from '../pages/presentation/goal/goalHelpher/SubTask';
 
 interface ITaskValue {
 	goalId: number;
@@ -19,15 +20,13 @@ interface ITableRowProps {
 	deleteAction(...args: unknown[]): unknown;
 }
 
-const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) => {
-	const { user } = useSelector((state: RootState) => state.auth);
-
+const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
+	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
-	const role = localStorage?.getItem('role');
+	// const role = localStorage?.getItem('role');
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
 	return (
 		<tr>
 			{task && (
@@ -35,20 +34,19 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 					<th scope='row'>{id}</th>
 					<td>
 						<div>
-							{task.ITask.name}
+							{task.title}
 							{/* <div className='text-muted'>
 						<small>{category}</small>
 					</div> */}
 						</div>
 					</td>
-					<td>{task.ITask.description}</td>
-					{/* <td>{category}</td> */}
+					<td>{task.description}</td>
+					<td />
 					<td>
-						<span style={{ whiteSpace: 'nowrap' }}>{task.ITask.dueDate}</span>
+						{/* <span style={{ whiteSpace: 'nowrap' }}>{task.ITask.dueDate}</span> */}
 					</td>
-					<td>{task.ITask.expectedTime}</td>
 					<td className='h5'>
-						<Badge
+						{/* <Badge
 							color={
 								(task.ITask.status === 'Hold' && 'danger') ||
 								(task.ITask.status === 'Todo' && 'secondary') ||
@@ -57,7 +55,7 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 								'info'
 							}>
 							{task.ITask.status}
-						</Badge>
+						</Badge> */}
 					</td>
 					<td>
 						<div className='d-flex flex-nowrap'>
@@ -67,29 +65,46 @@ const TableRow: FC<ITableRowProps> = ({ id, task, edit, view, deleteAction }) =>
 								isLight
 								className='me-1'
 								onClick={() => {
-									view(task.ITask.id);
+									view(task.id);
 									setIsModalOpen(true);
 								}}
 							/>
 							{isModalOpen && (
-								<SubTasksCard
-									task={task}
-									isModalOpen={isModalOpen}
-									setIsModalOpen={setIsModalOpen}
-								/>
+								<Modal
+									isOpen={isModalOpen}
+									setIsOpen={setIsModalOpen}
+									id='sdmsk12'
+									size='lg'
+									isScrollable
+									isStaticBackdrop>
+									<ModalHeader setIsOpen={setIsModalOpen} />
+
+									<ModalBody>
+										<div className='row'>
+											<div className='col-12'>
+												<div className='row g-4'>
+													<SubTask
+														subTaskId={task.id}
+														setIsModalOpen={setIsModalOpen}
+													/>
+												</div>
+											</div>
+										</div>
+									</ModalBody>
+								</Modal>
 							)}
 							<Button
 								icon='Edit'
 								color='success'
 								isLight
 								className='me-1'
-								onClick={() => edit(task.ITask.id)}
+								onClick={() => edit(task.id)}
 							/>
 							<Button
 								icon='Delete'
 								color='danger'
 								isLight
-								onClick={() => deleteAction(task.ITask.id)}
+								onClick={() => deleteAction(task.id)}
 							/>
 						</div>
 					</td>

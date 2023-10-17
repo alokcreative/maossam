@@ -19,7 +19,7 @@ import PaginationButtons, {
 } from '../../../../components/PaginationButtons';
 import TableRow from '../../../../helpers/TableRow';
 // import data from '../../../common/data/dummyTaskHoldData';
-import data, { ISubTask, ITask } from '../../../../common/data/dummyGoals';
+// import data, { ISubTask, ITask } from '../../../../common/data/dummyGoals';
 import Modal, {
 	ModalBody,
 	ModalFooter,
@@ -29,40 +29,34 @@ import Modal, {
 import Select from '../../../../components/bootstrap/forms/Select';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store/store';
-import { Role } from '../../../../common/data/userDummyData';
-import SubTasksCard from './taskboard/SubTasksCard';
-import { pagesMenu } from '../../../../menu';
 import { useNavigate } from 'react-router-dom';
+import { useGetTaskListQuery } from '../../../../features/auth/taskManagementApiSlice';
 
-interface ITaskValue {
-	goalId: number;
-	ITask: ITask;
-}
+// interface ITaskValue {
+// 	goalId: number;
+// 	ITask: ITask;
+// }
 const Tasks: FC = () => {
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [modalState, setModalState] = useState('Add Task');
-	const [taskList, setTaskList] = useState<ITaskValue[] | undefined>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [currTask, setCurrTask] = useState<ITask[]>();
-	// const savedValue = localStorage?.getItem('user');
-	// const localUser = savedValue ? JSON.parse(savedValue) : null;
-	// const role = user.role || localUser?.role;
+	const { data, isLoading } = useGetTaskListQuery({});
+	const [taskList, setTaskList] = useState<any>(data);
+	const [currTask, setCurrTask] = useState();
 	const role = localStorage?.getItem('role');
-
+	console.log("data",data);
 	useEffect(() => {
-		const allTasks: ITaskValue[] = [];
-		data.forEach((goal) => {
-			if (goal.task) {
-				goal.task.forEach((task) => {
-					allTasks.push({ goalId: goal.id, ITask: task });
-				});
-			}
-		});
-		setTaskList(allTasks);
+		// const allTasks: ITaskValue[] = [];
+		// data.forEach((goal:any) => {
+		// 	if (goal.task) {
+		// 		goal.task.forEach((task) => {
+		// 			allTasks.push({ goalId: goal.id, ITask: task });
+		// 		});
+		// 	}
+		// });
+		setTaskList(data);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 	// console.log('taskList>>>', taskList);
@@ -110,11 +104,12 @@ const Tasks: FC = () => {
 		// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
 		setIsOpen(true);
 	};
-	const handleView = (id: ISubTask) => {
+	const handleView = (id: any) => {
 		setModalState(`Task Details`);
 		console.log('clicked view', id);
-		// const task = taskList.filter((i) => i.id === id);
-		// setCurrTask(task[0]);
+		const task = taskList.filter((i:any) => i.id === id);
+		console.log("task Clicked>>",task);
+		setCurrTask(task[0]);
 
 		// subcardData(i);
 		// if (role !== 'superadmin') navigate(`../${pagesMenu.}/${id}/`);

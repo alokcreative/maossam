@@ -73,6 +73,16 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		getTaskList: builder.query({
+			query: () => ({
+				url: apiEndpoints.taskList,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 		getSubTaskByTaskId: builder.query({
 			query: (id: number) => ({
 				url: `${apiEndpoints.subTaskList}/${id}/sub-task/`,
@@ -92,5 +102,6 @@ export const {
 	useDeleteGoalMutation,
 	useGetGoalsQuery,
 	useGetTaskByGoalIdQuery,
-	useGetSubTaskByTaskIdQuery
+	useGetSubTaskByTaskIdQuery,
+	useGetTaskListQuery,
 } = taskManagementApiSlice;

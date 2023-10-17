@@ -42,7 +42,7 @@ import MiniTasks from './MiniTasks';
 interface IColumnCard {
 	columnKey: string;
 	columnsData: TColumnsData;
-	card: ISubTask;
+	card: any;
 	cardsData: any;
 	setCardsData(...args: unknown[]): unknown;
 	index: number;
@@ -58,7 +58,6 @@ const TaskBoardCard: FC<IColumnCard> = ({
 	const { darkModeStatus } = useDarkMode();
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
-	console.log('cardsData>', cardsData);
 	const formik = useFormik({
 		initialValues: {
 			cardName: card.name || '',
@@ -96,10 +95,10 @@ const TaskBoardCard: FC<IColumnCard> = ({
 							'link-light': darkModeStatus,
 						})}
 						onClick={() => setEditModalStatus(true)}
-						data-tour={card.name}>
-						{card.name}
+						data-tour={card.title}>
+						{card.title}
 					</CardTitle>
-					{card.name && <CardSubTitle className='text-muted'>{card.name}</CardSubTitle>}
+					{card.title && <CardSubTitle className='text-muted'>{card.title}</CardSubTitle>}
 				</CardLabel>
 			</CardHeader>
 			<CardBody className='pt-0'>
