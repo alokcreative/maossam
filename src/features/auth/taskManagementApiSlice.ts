@@ -62,7 +62,79 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: [`Goal`],
 		}),
-		// Delete Goal
+		// create task
+		createTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.createTask}`,
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+		// Delete task
+		deleteTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.deleteTask}${id}/`,
+				method: 'Delete',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+		// Update task
+		updateTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.updateTask}${id}/`,
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+		// create sub task
+		createSubTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.createSubTask}`,
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+		// Delete sub task
+		deleteSubTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.deleteSubTask}${id}/`,
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+		// Update sub task
+		updateSubTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.updateSubTask}${id}/`,
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
+		// Get task by goal id
 		getTaskByGoalId: builder.query({
 			query: (id?: number) => ({
 				url: `${apiEndpoints.taslistByGoalId}${id}/list/`,

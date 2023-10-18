@@ -13,7 +13,7 @@ import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
 import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
-import { pagesMenu } from '../../../../menu';
+import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
 // eslint-disable-next-line import/no-named-as-default
 import dayjs from 'dayjs';
 import PaginationButtons, {
@@ -124,6 +124,10 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
+	const handleAddSubtask = (goalId: number) => {
+		setIsModalOpen(false);
+		navigate(`../${dashboardPagesMenu.tasks.path}/${goalId}/add-task`);
+	};
 	return (
 		<Modal
 			isOpen={isModalOpen}
@@ -143,7 +147,15 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 				) : isSuccess && data ? (
 					<div className='row p-auto'>
 						<div className=' mb-4 '>
-							<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
+							<div className='d-flex align-items-center justify-content-between'>
+								<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
+								<Button
+									color='primary'
+									className='mb-3'
+									onClick={() => handleAddSubtask(1)}>
+									Add Task
+								</Button>
+							</div>
 							<p>
 								{taskData && taskData?.length !== 0 ? (
 									dataPagination(taskData && taskData, currentPage, perPage).map(
@@ -156,6 +168,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 													</span>{' '}
 													{i.name}
 												</p>
+
 												<p
 													className='fw-bold'
 													style={{ marginBottom: '8px' }}>

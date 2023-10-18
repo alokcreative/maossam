@@ -29,14 +29,17 @@ import Modal, {
 import Select from '../../../../components/bootstrap/forms/Select';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetTaskListQuery } from '../../../../features/auth/taskManagementApiSlice';
+import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
+import { useEffectOnce } from 'react-use';
 
 // interface ITaskValue {
 // 	goalId: number;
 // 	ITask: ITask;
 // }
 const Tasks: FC = () => {
+	const { newTask } = useParams();
 	const navigate = useNavigate();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
@@ -46,7 +49,14 @@ const Tasks: FC = () => {
 	const [taskList, setTaskList] = useState<any>(data);
 	const [currTask, setCurrTask] = useState();
 	const role = localStorage?.getItem('role');
-	console.log("data",data);
+	useEffectOnce(() => {
+		if (newTask === 'add-task') {
+			setIsOpen(true);
+			setModalState('Add Task');
+		} else if (newTask && newTask !== 'add-task') {
+			navigate(`../${pagesMenu.page404.path}`);
+		}
+	});
 	useEffect(() => {
 		// const allTasks: ITaskValue[] = [];
 		// data.forEach((goal:any) => {
@@ -73,7 +83,7 @@ const Tasks: FC = () => {
 		},
 		enableReinitialize: true,
 		onSubmit: (values) => {
-			const newTask = {
+			const newTask1 = {
 				// id: taskList?.length + 1,
 				id: 1,
 				dueDate: values.dueDate,
@@ -87,6 +97,7 @@ const Tasks: FC = () => {
 			};
 			// setTaskList([...taskList, newTask]);
 			setIsOpen(false);
+			handleCloseClick()
 		},
 	});
 	const handleDeleteAction = (id: number) => {
@@ -107,8 +118,8 @@ const Tasks: FC = () => {
 	const handleView = (id: any) => {
 		setModalState(`Task Details`);
 		console.log('clicked view', id);
-		const task = taskList.filter((i:any) => i.id === id);
-		console.log("task Clicked>>",task);
+		const task = taskList.filter((i: any) => i.id === id);
+		console.log('task Clicked>>', task);
 		setCurrTask(task[0]);
 
 		// subcardData(i);
@@ -125,6 +136,10 @@ const Tasks: FC = () => {
 		formiknewTask.setFieldValue('expectedTime', '');
 		setModalState('Add Task');
 		setIsOpen(true);
+	};
+	const handleCloseClick = () => {
+		setIsOpen(false);
+		navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
 	return (
 		<PageWrapper>
@@ -208,7 +223,7 @@ const Tasks: FC = () => {
 				</Card>
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
-				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
+				<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
 					<ModalTitle id='new_task'>{modalState}</ModalTitle>
 				</ModalHeader>
 				{currTask ? (
@@ -315,7 +330,7 @@ const Tasks: FC = () => {
 								<Button
 									color='danger'
 									onClick={() => {
-										setIsOpen(false);
+										handleCloseClick()
 									}}>
 									Cancel
 								</Button>
