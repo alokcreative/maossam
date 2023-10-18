@@ -27,26 +27,35 @@ import { useFormik } from 'formik';
 import { useEffectOnce } from 'react-use';
 
 interface ICardsInColumn {
-	[key: string]: ISubTask[];
+	[key: string]: ISubtask[];
+}
+interface ISubtask {
+	created_at: string;
+	description: string;
+	id: number;
+	scheduled_on: string;
+	task: string;
+	title: string;
+	updated_at: string;
+	user_assigned: string;
 }
 const TaskManagement = () => {
 	const { darkModeStatus } = useDarkMode();
 	const { taskId: id, addNew } = useParams();
 	const [isOpen, setIsOpen] = useState(false);
-	console.log("addNew",addNew);
+	console.log('addNew', addNew);
 	useEffectOnce(() => {
 		if (addNew === 'add-sub-task') {
 			setIsOpen(true);
 			console.log('Add new sub task');
-		}else if(addNew && addNew !== 'add-sub-task'){
-			navigate(`../${pagesMenu.page404.path}`)
+		} else if (addNew && addNew !== 'add-sub-task') {
+			navigate(`../${pagesMenu.page404.path}`);
 		}
 	});
 
 	const navigate = useNavigate();
 	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
-
-	const [cardsData, setCardsData] = useState<any[]>(data && data.subtasks);
+	const [cardsData, setCardsData] = useState<ISubtask[]>(data && data.subtasks);
 
 	const columnsData: TColumnsData = {
 		column1: {
@@ -113,7 +122,7 @@ const TaskManagement = () => {
 
 	useEffect(() => {
 		if (data) {
-			const statusMapping: { [key: string]: ISubTask[] } = {};
+			const statusMapping: { [key: string]: ISubtask[] } = {};
 
 			// Initialize statusMapping with empty arrays for each column
 			Object.keys(columnsData).forEach((columnKey) => {
@@ -197,12 +206,12 @@ const TaskManagement = () => {
 		},
 		onSubmit: (values) => {
 			setIsOpen(false);
-			navigate(`../${pagesMenu.taskId.path}/${id}`);
+			navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		},
 	});
 	const handleCloseClick = () => {
 		setIsOpen(false);
-		navigate(`../${pagesMenu.taskId.path}/${id}`);
+		navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
 	return (
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>

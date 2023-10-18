@@ -22,8 +22,13 @@ interface IItemProps {
 const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const role = localStorage.getItem('role');
 	const openModalHandler = () => {
-		setIsModalOpen(true);
+		if (role === 'superadmin') {
+			navigate(`../goal-details/${id}`);
+		} else {
+			setIsModalOpen(true);
+		}
 	};
 	return (
 		<div className='col-md-4'>

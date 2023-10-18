@@ -6,17 +6,17 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import Button from '../../../../components/bootstrap/Button';
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../components/bootstrap/forms/Input';
+} from '../../../../../components/bootstrap/Card';
+import Button from '../../../../../components/bootstrap/Button';
+import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
+import Input from '../../../../../components/bootstrap/forms/Input';
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
-} from '../../../../components/PaginationButtons';
-import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
-import { useGetSubTaskByTaskIdQuery } from '../../../../features/auth/taskManagementApiSlice';
-import { pagesMenu } from '../../../../menu';
+} from '../../../../../components/PaginationButtons';
+import Accordion, { AccordionItem } from '../../../../../components/bootstrap/Accordion';
+import { useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
+import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 
@@ -24,7 +24,7 @@ interface IValueProps {
 	subTaskId: number;
 	setIsModalOpen(...args: unknown[]): unknown;
 }
-const SubTask: FC<IValueProps> = (props) => {
+const SubTaskCard: FC<IValueProps> = (props) => {
 	const { subTaskId: id, setIsModalOpen } = props;
 	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
@@ -33,12 +33,12 @@ const SubTask: FC<IValueProps> = (props) => {
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		const role = localStorage.getItem('role');
-		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}`);
-		if (role === 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}`);
+		if (role !== 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
+		if (role === 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
 	const handleAddSubtask = (taskId: number) => {
 		setIsModalOpen(false);
-		navigate(`../${pagesMenu.taskId.path}/${id}/add-sub-task`);
+		navigate(`../${pagesMenu.subTasks.path}/${id}/add-sub-task`);
 	};
 
 	const formik = useFormik({
@@ -191,4 +191,4 @@ const SubTask: FC<IValueProps> = (props) => {
 	);
 };
 
-export default SubTask;
+export default SubTaskCard;

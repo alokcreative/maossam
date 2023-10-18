@@ -492,11 +492,11 @@ const documentation: RouteProps[] = [
 	 * Content
 	 */
 	{
-		path: `${pagesMenu.taskId.path}/:taskId`,
+		path: `${pagesMenu.subTasks.path}/:taskId`,
 		element: <TaskManagement />,
 	},
 	{
-		path: `${pagesMenu.taskId.path}/:taskId/:addNew`,
+		path: `${pagesMenu.subTasks.path}/:taskId/:addNew`,
 		element: <TaskManagement />,
 	},
 	{

@@ -36,12 +36,20 @@ import TAGS from '../../../../../common/data/boardTagsData';
 import { TCards, TColumnData, TColumnsData } from '../../../project-management/type/types';
 import ColumnCardWrapper from '../../../project-management/component/ColumnCardWrapper';
 import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
-import { ISubTask } from '../../../../../common/data/dummyGoals';
 import SubTaskBoardData from './SubTaskBoardData';
 import { title } from 'process';
-
+interface ISubtask {
+	created_at: string;
+	description: string;
+	id: number;
+	scheduled_on: string;
+	task: string;
+	title: string;
+	updated_at: string;
+	user_assigned: string;
+}
 interface ICardsInColumn {
-	[key: string]: ISubTask[];
+	[key: string]: ISubtask[];
 }
 interface IColumns {
 	cardsData: ICardsInColumn;

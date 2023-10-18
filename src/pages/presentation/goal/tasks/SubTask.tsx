@@ -19,7 +19,7 @@ import PaginationButtons, {
 } from '../../../../components/PaginationButtons';
 import TableRow from '../../../../helpers/TableRow';
 // import data from '../../../common/data/dummyTaskHoldData';
-import data, { ISubTask, ITask } from '../../../../common/data/dummyGoals';
+import { ISubTask, ITask } from '../../../../common/data/dummyGoals';
 import Modal, {
 	ModalBody,
 	ModalFooter,
@@ -29,42 +29,62 @@ import Modal, {
 import Select from '../../../../components/bootstrap/forms/Select';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../../../../store/store';
-// import { Role } from '../../../../common/data/userDummyData';
-// import SubTasksCard from './taskboard/SubTasksCard';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useGetSubTaskByTaskIdQuery } from '../../../../features/auth/taskManagementApiSlice';
+import { useEffectOnce } from 'react-use';
+import { pagesMenu } from '../../../../menu';
+import SubtaskTableRow from './subtaskHelper/SubtaskTableRow';
 
 interface ITaskValue {
 	goalId: number;
 	ITask: ITask;
 }
+interface ISubtask {
+	created_at: string;
+	description: string;
+	id: number;
+	scheduled_on: string;
+	task: string;
+	title: string;
+	updated_at: string;
+	user_assigned: string;
+}
 const SubTask: FC = () => {
 	const navigate = useNavigate();
-	const { id } = useParams();
+	const { taskId: id, addSubtask } = useParams();
+	useEffectOnce(() => {
+		if (addSubtask === 'add-sub-task') {
+			setIsOpen(true);
+			// console.log('Add new sub task');
+		} else if (addSubtask && addSubtask !== 'add-sub-task') {
+			navigate(`../${pagesMenu.page404.path}`);
+		}
+	});
+	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
+	const [cardsData, setCardsData] = useState<ISubtask[]>(data && data.subtasks);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [modalState, setModalState] = useState('Add Task');
-	const [taskList, setTaskList] = useState<ITaskValue[] | undefined>();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [currTask, setCurrTask] = useState<ITask[]>();
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
 	const role = localStorage?.getItem('role');
+	console.log('subtask>>', data);
 
-	useEffect(() => {
-		const allTasks: ITaskValue[] = [];
-		data.forEach((goal) => {
-			if (goal.task) {
-				goal.task.forEach((task) => {
-					allTasks.push({ goalId: goal.id, ITask: task });
-				});
-			}
-		});
-		setTaskList(allTasks);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data]);
+	// useEffect(() => {
+	// 	const allTasks: ITaskValue[] = [];
+	// 	data.forEach((goal) => {
+	// 		if (goal.task) {
+	// 			goal.task.forEach((task) => {
+	// 				allTasks.push({ goalId: goal.id, ITask: task });
+	// 			});
+	// 		}
+	// 	});
+	// 	setTaskList(allTasks);
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [data]);
 	// console.log('taskList>>>', taskList);
 
 	const formiknewTask = useFormik({
@@ -166,28 +186,21 @@ const SubTask: FC = () => {
 										Name
 									</th>
 									<th scope='col'>Description</th>
-									<th scope='col'>Due Date</th>
-									<th scope='col'>
-										<span style={{ whiteSpace: 'nowrap' }}>Expected Time</span>
-									</th>
-									<th scope='col' className='cursor-pointer'>
-										Status
-									</th>
 									<th scope='col' className='cursor-pointer'>
 										Action
 									</th>
 								</tr>
 							</thead>
 							<tbody>
-								{taskList
-									? dataPagination(taskList, currentPage, perPage).map(
+								{data && data.subtasks
+									? dataPagination(data.subtasks, currentPage, perPage).map(
 											(i, index) => (
-												<TableRow
+												<SubtaskTableRow
 													// eslint-disable-next-line react/no-array-index-key
 													key={index}
 													id={index + 1}
 													// eslint-disable-next-line react/jsx-props-no-spreading
-													task={i}
+													subtask={i}
 													edit={handleEdit}
 													view={handleView}
 													deleteAction={handleDeleteAction}
@@ -198,14 +211,16 @@ const SubTask: FC = () => {
 							</tbody>
 						</table>
 					</CardBody>
-					<PaginationButtons
-						data={data}
-						label='items'
-						setCurrentPage={setCurrentPage}
-						currentPage={currentPage}
-						perPage={perPage}
-						setPerPage={setPerPage}
-					/>
+					{data && data.subtasks && (
+						<PaginationButtons
+							data={data.subtasks}
+							label='items'
+							setCurrentPage={setCurrentPage}
+							currentPage={currentPage}
+							perPage={perPage}
+							setPerPage={setPerPage}
+						/>
+					)}
 				</Card>
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>

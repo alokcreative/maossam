@@ -74,13 +74,12 @@ interface IGoalProps {
 	updated_at: string;
 }
 const Goals: FC = () => {
-	
 	const { darkModeStatus } = useDarkMode();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
 	console.log('Data>>', data);
 	const [productView, setProductView] = useState<boolean>(false);
@@ -321,9 +320,20 @@ const Goals: FC = () => {
 																				icon='Visibility'
 																				color='primary'
 																				isLight
-																				onClick={() =>
-																					openModal(i.id)
-																				}
+																				onClick={() => {
+																					if (
+																						role ===
+																						'superadmin'
+																					) {
+																						navigate(
+																							`../goal-details/${i.id}`,
+																						);
+																					} else {
+																						openModal(
+																							i.id,
+																						);
+																					}
+																				}}
 																				className='me-1'
 																			/>
 

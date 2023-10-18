@@ -24,7 +24,7 @@ import { TColor } from '../../../../type/color-type';
 import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
 import { IUserData } from '../../../_layout/_asides/DefaultAside';
 import { useGetTaskByGoalIdQuery } from '../../../../features/auth/taskManagementApiSlice';
-import SubTask from './SubTask';
+import SubTask from '../tasks/taskboard/SubTaskCard';
 
 type IAssetNameProps = {
 	id: number | undefined;

@@ -111,11 +111,11 @@ export const adminDashboardPagesMenu = {
 		icon: 'AdsClick',
 		subMenu: null,
 	},
-	task: {
-		id: 'task',
-		text: 'Task',
-		path: '/task',
-		icon: 'Task',
+	tasks: {
+		id: 'tasks',
+		text: 'Tasks',
+		path: '/tasks',
+		icon: 'flag',
 		subMenu: null,
 	},
 	marketing_assets: {
@@ -148,13 +148,13 @@ export const pagesMenu = {
 		icon: 'group',
 		subMenu: null,
 	},
-	subtasks: {
-		id: 'subtasks',
-		text: 'SubTasks',
-		path: 'goal/task/subtasks',
-		icon: 'flag',
-		subMenu: null,
-	},
+	// subtasks: {
+	// 	id: 'subtasks',
+	// 	text: 'SubTasks',
+	// 	path: 'goal/task/subtasks',
+	// 	icon: 'flag',
+	// 	subMenu: null,
+	// },
 	profile: {
 		id: 'profile',
 		text: 'Profile',
@@ -292,10 +292,17 @@ export const pagesMenu = {
 		text: 'Apps',
 		icon: 'Extension',
 	},
-	taskId: {
+	subTasks: {
 		id: 'subtasks',
 		text: 'Subtasks',
-		path: '/task',
+		path: '/sub-tasks',
+		icon: 'AdsClick',
+		subMenu: null,
+	},
+	goalDesc: {
+		id: 'goalDesc',
+		text: 'Goal Details',
+		path: '/goal-details',
 		icon: 'AdsClick',
 		subMenu: null,
 	},
