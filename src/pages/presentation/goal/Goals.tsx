@@ -10,6 +10,8 @@ import { Role } from '../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooter,
+	CardFooterLeft,
+	CardFooterRight,
 	CardHeader,
 	CardLabel,
 	CardTitle,
@@ -35,7 +37,18 @@ import Item from '../../_common/dashboardHelper/GoalItems';
 import {
 	useDeleteGoalMutation,
 	useGetGoalsQuery,
+	useCreateGoalMutation,
+	useUpdateGoalMutation
 } from '../../../features/auth/taskManagementApiSlice';
+import Modal, {
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+	ModalTitle,
+} from '../../../components/bootstrap/Modal';
+import FormGroup from '../../../components/bootstrap/forms/FormGroup';
+import  Input from "../../../components/bootstrap/forms/Input"
+import Select from '../../../components/bootstrap/forms/Select';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -46,44 +59,53 @@ export const SELECT_OPTIONS = [
 	{ value: 6, text: 'Product Six' },
 ];
 
-interface IValues {
-	id: number;
-	name: string;
-	description: string;
-	timeline: string;
-	status: string;
-}
+// interface IValues {
+// 	id: number;
+// 	name: string;
+// 	description: string;
+// 	date: string;
+// 	status: string;
+// 	category: string;
+// }
 
-interface CardProp {
-	id: number;
-	name: string;
-	image: string;
-	option: string;
-	teamName: string;
-	dueDate: string;
-	attachCount: number;
-	taskCount: number;
-	percent: number;
-}
+// interface CardProp {
+// 	id: number;
+// 	name: string;
+// 	image: string;
+// 	option: string;
+// 	teamName: string;
+// 	dueDate: string;
+// 	attachCount: number;
+// 	taskCount: number;
+// 	percent: number;
+// }
 interface IGoalProps {
-	category: string;
-	created_at: string;
-	description: string;
-	id: 2;
+	id: number;
 	title: string;
-	updated_at: string;
+	description: string;
+	date: string;
+	status: string;
+	category: string;
 }
 const Goals: FC = () => {
-	const { darkModeStatus } = useDarkMode();
 
+	// const navigate = useNavigate();
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
+	const [createGoal] = useCreateGoalMutation();
+	const [updateGoal] = useUpdateGoalMutation();
+	const { darkModeStatus } = useDarkMode();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
+
 
 	const navigate = useNavigate();
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
 	console.log('Data>>', data);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [perPage, setPerPage] = useState(PER_COUNT['10']);
+
 	const [productView, setProductView] = useState<boolean>(false);
-	const [goalList, setGoalList] = useState<IValues[]>(data1);
+	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
 
 	const role = localStorage?.getItem('role');
 	const [deleteGoal] = useDeleteGoalMutation();
@@ -102,67 +124,135 @@ const Goals: FC = () => {
 	const [goalId, setGoalId] = useState<number>();
 
 	const openModal = (id: number) => {
-		console.log('Id og goal', id);
+		// console.log('Id og goal', id);
 		setGoalId(id);
 		setIsModalOpen(true);
 	};
 
-	const formik = useFormik({
-		initialValues: {
-			firstName: 'John',
-			lastName: 'Doe',
-			displayName: 'johndoe',
-			emailAddress: 'johndoe@site.com',
-			currentPassword: '',
-			newPassword: '',
-			confirmPassword: '',
-			searchInput: '',
-			date: "dayjs().add(1, 'days').format('YYYY-MM-DD')",
-			payment: Object.keys(PAYMENTS).map((i) => PAYMENTS[i].name),
-			minPrice: '',
-			maxPrice: '',
-			mCustomer: '',
-			mrCustomer: '',
-			mRevenue: '',
-			mrRevenue: '',
-			maPotential: '',
-			nPrice: '',
-			pToday: '',
-		},
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		validate,
-		onSubmit: () => {
-			showNotification(
-				<span className='d-flex align-items-center'>
-					<Icon icon='Info' size='lg' className='me-1' />
-					<span>Updated Successfully</span>
-				</span>,
-				"The user's account details have been successfully updated.",
-			);
-		},
-	});
-
-	const formiknewGoal = useFormik({
+	const formikNewGoal = useFormik({
 		initialValues: {
 			name: '',
 			description: '',
-			timeline: '',
-			photo: '',
+			date: '',
+			status: '',
+			category: '',
 		},
-		onSubmit: (values) => {
-			// console.log(`values>> ${values.attribute}  ${goalList.length + 1}`);
-			const newGoal = {
-				id: goalList.length + 1,
-				name: values.name,
-				description: values.description,
-				timeline: values.timeline,
-				status: 'New',
-			};
-			setGoalList([...goalList, newGoal]);
-			console.log(values.photo);
+
+		validate: (values) => {
+			const errors: {
+				// id: string;
+				name?: string;
+				description?: string;
+				date?: string;
+				status?: string;
+				category?: string;
+			} = {};
+
+			if (!values.name) {
+				errors.name = 'Required';
+			}
+
+			if (!values.description) {
+				errors.description = 'Required';
+			}
+			if (!values.date) {
+				errors.date = 'Required';
+			}
+
+			if (!values.status) {
+				errors.status = 'Required';
+			}
+			if (!values.category) {
+				errors.category = 'Required';
+			}
+			return errors;
+		},
+
+		onSubmit: (values, { resetForm }) => {
+			const goalData = new FormData();
+			goalData.append('name', values.name);
+			goalData.append('description', values.description);
+			goalData.append('date', values.date);
+			goalData.append('status', values.status);
+			goalData.append('category', values.category);
+
+			// if (Object.keys(formik.errros).length === 0) {
+			// 	createGoal({ goalData }).then((res) => {
+			// 		setIsOpen(false);
+			// 		refetch();
+			// 	});
+			// }
 			setIsOpen(false);
+			resetForm();
 		},
 	});
+
+	const newGoal = () => {
+		setIsOpen(true);
+		setModalHeader('New Goal');
+	};
+
+	const updateGoalForm = useFormik({
+		initialValues: {
+			id: '',
+			name: '',
+			description: '',
+			date: '',
+			status: '',
+			category: '',
+		},
+		enableReinitialize: true,
+		validate: (values) => {
+			const errors: {
+				name?: string;
+				description?: string;
+				date?: string;
+				status?: string;
+				category?: string;
+			} = {};
+
+			if (!values.name) {
+				errors.name = 'Required';
+			}
+
+			if (!values.description) {
+				errors.description = 'Required';
+			}
+			if (!values.date) {
+				errors.date = 'Required';
+			}
+
+			if (!values.status) {
+				errors.status = 'Required';
+			}
+			if (!values.category) {
+				errors.category = 'Required';
+			}
+			return errors;
+		},
+		onSubmit: (values, { resetForm }) => {
+			const goalData = new FormData();
+			goalData.append('name', values.name);
+			goalData.append('description', values.description);
+			goalData.append('date', values.date);
+			goalData.append('status', values.status);
+			goalData.append('category', values.category);
+
+			updateGoal({id: updateGoalForm.values.id , goalData }).then((res) => {
+				setIsOpen(false);
+				refetch();
+			});
+
+			// showNotification(
+			// 	<span className='d-flex align-items-center'>
+			// 		<Icon icon='Info' size='lg' className='me-1' />
+			// 		<span>Updated Successfully</span>
+			// 	</span>,
+			// 	"The user's account details have been successfully updated.",
+			// );
+		},
+	});
+
 	// const filteredData = data.filter(
 	// 	(f) =>
 	// 		// Name
@@ -176,8 +266,6 @@ const Goals: FC = () => {
 
 	// const { items, requestSort, getClassNamesFor } = useSortableData(filteredData);
 
-	const [currentPage, setCurrentPage] = useState(1);
-	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const handleDelete = (id: number) => {
 		const newGoals = goalList.filter((i) => i.id !== id);
 		setGoalList(newGoals);
@@ -190,8 +278,21 @@ const Goals: FC = () => {
 		});
 	};
 	const handleEdit = (id: number) => {
-		setModalHeader('Edit Goal');
+		setModalHeader('Update Goal');
 		setIsOpen(true);
+
+		const goal = data.find((i: IGoalProps) => i.id === id);
+		updateGoalForm.setFieldValue('id', goal?.id);
+		updateGoalForm.setFieldValue('name', goal?.title);
+		updateGoalForm.setFieldValue('description', goal?.description);
+		updateGoalForm.setFieldValue('date', goal?.date);
+		updateGoalForm.setFieldValue('status', goal?.status);
+		updateGoalForm.setFieldValue('category', goal?.category);
+	};
+
+	const handleCloseClick = () => {
+		setIsOpen(false);
+		// navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
 
 	return (
@@ -223,14 +324,7 @@ const Goals: FC = () => {
 						List View
 					</Button>
 
-					<Button
-						color='success'
-						isLight
-						icon='Add'
-						onClick={() => {
-							setIsOpen(true);
-							setModalHeader('Add Goal');
-						}}>
+					<Button color='success' isLight icon='Add' onClick={newGoal}>
 						Add Goal
 					</Button>
 				</SubHeaderRight>
@@ -392,6 +486,153 @@ const Goals: FC = () => {
 			) : (
 				<div>Error!!! : {isError}</div>
 			)}
+
+			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
+				<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
+					<ModalTitle id='new_task'>{modalHeader}</ModalTitle>
+				</ModalHeader>
+
+				<ModalBody className='px-4'>
+					<div className='row g-4'>
+						<div className='col-12 border-bottom' />
+						<FormGroup id='name' label='Name' className='col-lg-6'>
+							<Input
+								type='text'
+								name='name'
+								onChange={
+									modalHeader === 'New Goal'
+										? formikNewGoal.handleChange
+										: updateGoalForm.handleChange
+								}
+								value={
+									modalHeader === 'New Goal'
+										? formikNewGoal.values.name
+										: updateGoalForm.values.name
+								}
+								invalidFeedback={formikNewGoal.errors.name}
+								isValid={formikNewGoal.isValid}
+								isTouched={formikNewGoal.touched.name}
+							/>
+						</FormGroup>
+						<FormGroup id='description' label='Description' className='col-lg-6'>
+							<Input
+								type='text'
+								name='description'
+								onChange={
+									modalHeader === 'New Goal'
+										? formikNewGoal.handleChange
+										: updateGoalForm.handleChange
+								}
+								value={
+									modalHeader === 'New Goal'
+										? formikNewGoal.values.description
+										: updateGoalForm.values.description
+								}
+								invalidFeedback={formikNewGoal.errors.description}
+								isValid={formikNewGoal.isValid}
+								isTouched={formikNewGoal.touched.description}
+							/>
+						</FormGroup>
+						<FormGroup id='date' label='Date' className='col-lg-6'>
+							<Input
+								type='date'
+								name='date'
+								onChange={
+									modalHeader === 'New Goal'
+										? formikNewGoal.handleChange
+										: updateGoalForm.handleChange
+								}
+								value={
+									modalHeader === 'New Goal'
+										? formikNewGoal.values.date
+										: updateGoalForm.values.date
+								}
+								invalidFeedback={formikNewGoal.errors.date}
+								isValid={formikNewGoal.isValid}
+								isTouched={formikNewGoal.touched.date}
+							/>
+						</FormGroup>
+
+						<FormGroup id='status' label='Status' className='col-lg-6'>
+							<Select
+								ariaLabel='Default select Status'
+								placeholder='Select One...'
+								name='status'
+								list={[
+									{ value: 'Backlog', text: 'Backlog' },
+									{ value: 'Todo', text: 'Todo' },
+									{ value: 'InProgress', text: 'InProgress' },
+									{ value: 'Done', text: 'Done' },
+									{ value: 'Hold', text: 'Hold' },
+								]}
+								onChange={
+									modalHeader === 'New Goal'
+										? formikNewGoal.handleChange
+										: updateGoalForm.handleChange
+								}
+								value={
+									modalHeader === 'New Goal'
+										? formikNewGoal.values.status
+										: updateGoalForm.values.status
+								}
+								invalidFeedback={formikNewGoal.errors.status}
+								isValid={formikNewGoal.isValid}
+								isTouched={formikNewGoal.touched.status}
+							/>
+						</FormGroup>
+
+						<FormGroup id='category' label='Category' className='col-lg-6'>
+							<Select
+								ariaLabel='Default select Category'
+								placeholder='Select One...'
+								name='category'
+								list={[
+									{ value: 'Backlog', text: 'Backlog' },
+									{ value: 'Todo', text: 'Todo' },
+									{ value: 'InProgress', text: 'InProgress' },
+									{ value: 'Done', text: 'Done' },
+									{ value: 'Hold', text: 'Hold' },
+								]}
+								onChange={
+									modalHeader === 'New Goal'
+										? formikNewGoal.handleChange
+										: updateGoalForm.handleChange
+								}
+								value={
+									modalHeader === 'New Goal'
+										? formikNewGoal.values.category
+										: updateGoalForm.values.category
+								}
+								invalidFeedback={formikNewGoal.errors.category}
+								isValid={formikNewGoal.isValid}
+								isTouched={formikNewGoal.touched.category}
+							/>
+						</FormGroup>
+					</div>
+				</ModalBody>
+				<ModalFooter>
+					<CardFooterLeft>
+						<Button
+							color='info'
+							onClick={
+								modalHeader === 'New Goal'
+									? formikNewGoal.handleSubmit
+									: updateGoalForm.handleSubmit
+							}>
+							{modalHeader === 'New Goal' ? ' Save' : 'Update'}
+						</Button>
+					</CardFooterLeft>
+					<CardFooterRight>
+						<Button
+							color='danger'
+							onClick={() => {
+								handleCloseClick();
+							}}>
+							Cancel
+						</Button>
+					</CardFooterRight>
+				</ModalFooter>
+			</Modal>
 		</PageWrapper>
 	);
 };

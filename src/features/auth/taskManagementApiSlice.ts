@@ -6,6 +6,7 @@ interface ILogoutProps {
 	accessToken: string;
 	refresh: { refresh: string };
 }
+
 interface ICreateTaskProps {
 	goal_id: string;
 	description: string;
@@ -15,6 +16,22 @@ interface IUpdateTaskProps {
 	taskData:{description: string;title: string;}
 	task_id?: string;
 }
+
+
+interface IGoal {
+	name: string;
+	description: string;
+	date: string;
+	status: string;
+	category: string;
+}
+
+interface IGoalPayload {
+	id?: string;
+	goalData: FormData;
+}
+
+
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
 };
@@ -33,10 +50,10 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 
 		// Create Goal
 		createGoal: builder.mutation({
-			query: (payload: any) => ({
+			query: (payload: IGoalPayload) => ({
 				url: apiEndpoints.createGoal,
 				method: 'POST',
-				body: payload,
+				body: payload.goalData,
 				header: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -47,10 +64,10 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 
 		// Update Goal
 		updateGoal: builder.mutation({
-			query: (payload: any) => ({
+			query: (payload: IGoalPayload) => ({
 				url: `${apiEndpoints.updateGoal}${payload.id}/`,
 				method: 'PATCH',
-				body: payload,
+				body: payload.goalData,
 				header: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
