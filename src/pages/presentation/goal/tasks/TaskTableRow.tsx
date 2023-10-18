@@ -1,31 +1,30 @@
 import React, { FC, useState } from 'react';
-import Badge from '../components/bootstrap/Badge';
-import Button from '../components/bootstrap/Button';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import { Role } from '../common/data/userDummyData';
-import { ITask } from '../common/data/dummyGoals';
-import Modal, { ModalBody, ModalHeader } from '../components/bootstrap/Modal';
-import SubTask from '../pages/presentation/goal/tasks/taskboard/SubTaskCard';
+import Badge from '../../../../components/bootstrap/Badge';
+import Button from '../../../../components/bootstrap/Button';
+import Modal, { ModalBody, ModalHeader } from '../../../../components/bootstrap/Modal';
+import SubTaskCard from './taskboard/SubTaskCard';
+import { pagesMenu } from '../../../../menu';
+import { useNavigate } from 'react-router-dom';
 
 interface ITaskValue {
-	goalId: number;
-	ITask: ITask;
+	id:number;
+	title: string;
+	description: string;
 }
 interface ITableRowProps {
 	id: number;
 	task: ITaskValue;
 	edit(...args: unknown[]): unknown;
-	view(...args: unknown[]): unknown;
 	deleteAction(...args: unknown[]): unknown;
 }
 
-const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
+const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
-	// const role = localStorage?.getItem('role');
+	const role = localStorage?.getItem('role');
+	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	return (
 		<tr>
@@ -65,7 +64,6 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 								isLight
 								className='me-1'
 								onClick={() => {
-									view(task.id);
 									setIsModalOpen(true);
 								}}
 							/>
@@ -83,7 +81,7 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 										<div className='row'>
 											<div className='col-12'>
 												<div className='row g-4'>
-													<SubTask
+													<SubTaskCard
 														subTaskId={task.id}
 														setIsModalOpen={setIsModalOpen}
 													/>
@@ -114,4 +112,4 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 	);
 };
 
-export default TableRow;
+export default TaskTableRow;

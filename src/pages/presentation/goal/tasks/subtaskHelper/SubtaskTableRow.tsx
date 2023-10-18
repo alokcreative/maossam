@@ -1,26 +1,26 @@
 import React, { FC, useState } from 'react';
-import Badge from '../components/bootstrap/Badge';
-import Button from '../components/bootstrap/Button';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import { Role } from '../common/data/userDummyData';
-import { ITask } from '../common/data/dummyGoals';
-import Modal, { ModalBody, ModalHeader } from '../components/bootstrap/Modal';
-import SubTask from '../pages/presentation/goal/tasks/taskboard/SubTaskCard';
+import Button from '../../../../../components/bootstrap/Button';
+import Modal ,{ ModalBody, ModalHeader } from '../../../../../components/bootstrap/Modal';
 
-interface ITaskValue {
-	goalId: number;
-	ITask: ITask;
+interface ISubtask {
+	created_at: string;
+	description: string;
+	id: number;
+	scheduled_on: string;
+	task: string;
+	title: string;
+	updated_at: string;
+	user_assigned: string;
 }
 interface ITableRowProps {
 	id: number;
-	task: ITaskValue;
+	subtask: ISubtask;
 	edit(...args: unknown[]): unknown;
 	view(...args: unknown[]): unknown;
 	deleteAction(...args: unknown[]): unknown;
 }
 
-const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
+const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, view, deleteAction }) => {
 	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
@@ -29,34 +29,15 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	return (
 		<tr>
-			{task && (
+			{subtask && (
 				<>
 					<th scope='row'>{id}</th>
 					<td>
 						<div>
-							{task.title}
-							{/* <div className='text-muted'>
-						<small>{category}</small>
-					</div> */}
+							{subtask.title}
 						</div>
 					</td>
-					<td>{task.description}</td>
-					<td />
-					<td>
-						{/* <span style={{ whiteSpace: 'nowrap' }}>{task.ITask.dueDate}</span> */}
-					</td>
-					<td className='h5'>
-						{/* <Badge
-							color={
-								(task.ITask.status === 'Hold' && 'danger') ||
-								(task.ITask.status === 'Todo' && 'secondary') ||
-								(task.ITask.status === 'InProgress' && 'warning') ||
-								(task.ITask.status === 'Done' && 'success') ||
-								'info'
-							}>
-							{task.ITask.status}
-						</Badge> */}
-					</td>
+					<td>{subtask.description}</td>
 					<td>
 						<div className='d-flex flex-nowrap'>
 							<Button
@@ -65,11 +46,11 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 								isLight
 								className='me-1'
 								onClick={() => {
-									view(task.id);
+									view(subtask.id);
 									setIsModalOpen(true);
 								}}
 							/>
-							{isModalOpen && (
+							{/* {isModalOpen && (
 								<Modal
 									isOpen={isModalOpen}
 									setIsOpen={setIsModalOpen}
@@ -92,19 +73,19 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 										</div>
 									</ModalBody>
 								</Modal>
-							)}
+							)} */}
 							<Button
 								icon='Edit'
 								color='success'
 								isLight
 								className='me-1'
-								onClick={() => edit(task.id)}
+								onClick={() => edit(subtask.id)}
 							/>
 							<Button
 								icon='Delete'
 								color='danger'
 								isLight
-								onClick={() => deleteAction(task.id)}
+								onClick={() => deleteAction(subtask.id)}
 							/>
 						</div>
 					</td>
@@ -114,4 +95,4 @@ const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 	);
 };
 
-export default TableRow;
+export default SubtaskTableRow;

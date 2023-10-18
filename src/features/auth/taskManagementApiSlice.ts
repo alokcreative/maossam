@@ -7,6 +7,17 @@ interface ILogoutProps {
 	refresh: { refresh: string };
 }
 
+interface ICreateTaskProps {
+	goal_id: string;
+	description: string;
+	title: string;
+}
+interface IUpdateTaskProps {
+	taskData:{description: string;title: string;}
+	task_id?: string;
+}
+
+
 interface IGoal {
 	name: string;
 	description: string;
@@ -19,6 +30,7 @@ interface IGoalPayload {
 	id?: string;
 	goalData: FormData;
 }
+
 
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
@@ -78,15 +90,15 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 		}),
 		// create task
 		createTask: builder.mutation({
-			query: (id: number) => ({
+			query: (payload: ICreateTaskProps) => ({
 				url: `${apiEndpoints.createTask}`,
 				method: 'POST',
+				body: payload,
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
 				},
 			}),
-			invalidatesTags: [`Goal`],
 		}),
 		// Delete task
 		deleteTask: builder.mutation({
@@ -102,15 +114,15 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 		}),
 		// Update task
 		updateTask: builder.mutation({
-			query: (id: number) => ({
-				url: `${apiEndpoints.updateTask}${id}/`,
+			query: (payload: IUpdateTaskProps) => ({
+				url: `${apiEndpoints.updateTask}${payload.task_id}/`,
 				method: 'PATCH',
+				body: payload.taskData,
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
 				},
 			}),
-			invalidatesTags: [`Goal`],
 		}),
 		// create sub task
 		createSubTask: builder.mutation({
@@ -190,4 +202,7 @@ export const {
 	useGetTaskByGoalIdQuery,
 	useGetSubTaskByTaskIdQuery,
 	useGetTaskListQuery,
+	useCreateTaskMutation,
+	useDeleteTaskMutation,
+	useUpdateTaskMutation,
 } = taskManagementApiSlice;

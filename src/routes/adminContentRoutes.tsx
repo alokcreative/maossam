@@ -94,7 +94,12 @@ const documentation: RouteProps[] = [
 		element: <USERS.USERLIST />,
 	},
 	{
-		path: `${adminDashboardPagesMenu.task.path}`,
+		path: `${adminDashboardPagesMenu.tasks.path}`,
+		element: <Tasks />,
+	},
+	
+	{
+		path: `${adminDashboardPagesMenu.tasks.path}/:goalId/:newTask`,
 		element: <Tasks />,
 	},
 	{
@@ -102,7 +107,7 @@ const documentation: RouteProps[] = [
 		element: <MarketingAssets />,
 	},
 	{
-		path: `${pagesMenu.taskId.path}/:id`,
+		path: `${pagesMenu.goalDesc.path}/:id`,
 		element: <GoalDescription />,
 	},
 	{
@@ -114,11 +119,11 @@ const documentation: RouteProps[] = [
 		element: <Goals />,
 	},
 	{
-		path: dashboardPagesMenu.tasks.path,
-		element: <Tasks />,
+		path: `${pagesMenu.subTasks.path}/:taskId`,
+		element: <SubTask />,
 	},
 	{
-		path: `${pagesMenu.subtasks.path}/:id`,
+		path: `${pagesMenu.subTasks.path}/:taskId/:addSubtask`,
 		element: <SubTask />,
 	},
 	{
