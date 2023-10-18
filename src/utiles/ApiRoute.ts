@@ -15,6 +15,13 @@ const apiEndpoints = {
 	deleteGoal: 'task-manager/goals/delete/',
 	updateGoal: 'task-manager/goals/update/',
 	createGoal: 'task-manager/goals/create/',
+	createTask: 'task-manager/goals/tasks/create/',
+	deleteTask: 'task-manager/goals/tasks/delete/',
+	updateTask: 'task-manager/goals/tasks/update/',
+	createSubTask: 'task-manager/goals/tasks/sub-task/create/',
+	deleteSubTask: 'task-manager/goals/tasks/sub-task/delete/',
+	updateSubTask: 'task-manager/goals/tasks/sub-task/update/',
+
 	goalList: 'task-manager/goals/list/',
 	taskList: 'task-manager/goals/tasks/list/',
 	taslistByGoalId: 'task-manager/goals/',

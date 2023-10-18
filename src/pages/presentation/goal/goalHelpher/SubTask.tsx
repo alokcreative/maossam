@@ -4,6 +4,7 @@ import Card, {
 	CardFooter,
 	CardHeader,
 	CardLabel,
+	CardSubTitle,
 	CardTitle,
 } from '../../../../components/bootstrap/Card';
 import Button from '../../../../components/bootstrap/Button';
@@ -35,6 +36,10 @@ const SubTask: FC<IValueProps> = (props) => {
 		if (role !== 'superadmin') navigate(`../${pagesMenu.taskId.path}/${id}`);
 		if (role === 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}`);
 	};
+	const handleAddSubtask = (taskId: number) => {
+		setIsModalOpen(false);
+		navigate(`../${pagesMenu.taskId.path}/${id}/add-sub-task`);
+	};
 
 	const formik = useFormik({
 		initialValues: {
@@ -55,6 +60,14 @@ const SubTask: FC<IValueProps> = (props) => {
 								Subtask
 							</CardTitle>
 						</CardLabel>
+						<CardSubTitle>
+							<Button
+								color='primary'
+								className='mb-3'
+								onClick={() => handleAddSubtask(id)}>
+								Add Sub Task
+							</Button>
+						</CardSubTitle>
 					</CardHeader>
 					{isLoading ? (
 						<div>loading</div>

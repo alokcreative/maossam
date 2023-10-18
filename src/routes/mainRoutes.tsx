@@ -496,6 +496,10 @@ const documentation: RouteProps[] = [
 		element: <TaskManagement />,
 	},
 	{
+		path: `${pagesMenu.taskId.path}/:taskId/:addNew`,
+		element: <TaskManagement />,
+	},
+	{
 		path: componentPagesMenu.content.path,
 		element: <CONTENT.CONTENTS />,
 	},
@@ -823,15 +827,6 @@ const documentation: RouteProps[] = [
 		path: componentPagesMenu.charts.subMenu.chartsTreeMap.path,
 		element: <CHARTS_PAGE.TREE_MAP />,
 	},
-
-	// {
-	// 	path: componentPagesMenu.notification.path,
-	// 	element: <EXTRA.NOTIFICATION />,
-	// },
-	// {
-	// 	path: componentPagesMenu.hooks.path,
-	// 	element: <EXTRA.HOOKS />,
-	// },
 	{
 		path: modalPages.modal.path,
 		element: <ModalsStepForm />,
@@ -857,16 +852,16 @@ const documentation: RouteProps[] = [
 		element: <Tasks />,
 	},
 	{
+		path: `${dashboardPagesMenu.tasks.path}/:goalId/:newTask`,
+		element: <Tasks />,
+	},
+	{
 		path: pagesMenu.setupbusiness.path,
 		element: <SetupBusiness />,
 	},
 	{
 		path: dashboardPagesMenu.product_services.path,
 		element: <ProductPage />,
-	},
-	{
-		path: `${pagesMenu.taskId.path}/:id/:id`,
-		element: <TaskManagement />,
 	},
 	{
 		path: dashboardPagesMenu.faq.path,
