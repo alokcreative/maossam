@@ -241,10 +241,19 @@ const Goals: FC = () => {
 				category: values.category,
 			};
 
-			updateGoal({ id: updateGoalForm.values.id, goalData }).then((res) => {
-				setIsOpen(false);
-				refetch();
-			});
+			updateGoal({ id: updateGoalForm.values.id, goalData })
+				.unwrap()
+				.then((res) => {
+					setIsOpen(false);
+					refetch();
+					if (res) {
+						toast('Updated');
+					}
+				})
+				.catch((res) => {
+					// console.log(res.data.detail[0]);
+					toast(res.data.detail[0]);
+				});
 
 			// showNotification(
 			// 	<span className='d-flex align-items-center'>
@@ -274,12 +283,17 @@ const Goals: FC = () => {
 			const newGoals = data.filter((i: IGoalProps) => i.id !== id);
 			setGoalList(newGoals);
 
-			deleteGoal(id).then(() => {
-				refetch().then((res) => {
+			deleteGoal(id)
+				.unwrap()
+				.then((response) => {
 					//	TODO:  Make Toast Dynamically
-					toast('Goal Deleted Sucessfully');
+					toast('Goal deleted sucessfully');
+					refetch().then((res) => {});
+				})
+				.catch((response1) => {
+					// console.log("rescatch>>",response1.data.detail[0]);
+					toast(response1.data.detail[0]);
 				});
-			});
 		}
 	};
 	const handleEdit = (id: number) => {
@@ -492,7 +506,7 @@ const Goals: FC = () => {
 				<div>Error!!! : {isError}</div>
 			)}
 
-			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
+			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 				<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
 					<ModalTitle id='new_task'>{modalHeader}</ModalTitle>
 				</ModalHeader>

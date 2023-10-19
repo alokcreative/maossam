@@ -7,7 +7,7 @@ import { pagesMenu } from '../../../../menu';
 import { useNavigate } from 'react-router-dom';
 
 interface ITaskValue {
-	id:number;
+	id: number;
 	title: string;
 	description: string;
 }
@@ -26,6 +26,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	const role = localStorage?.getItem('role');
 	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showMore, setShowMore] = useState<boolean>(false);
 	return (
 		<tr>
 			{task && (
@@ -39,7 +40,14 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 					</div> */}
 						</div>
 					</td>
-					<td>{task.description}</td>
+					<td>
+						{showMore ? `${task.description}` : `${task.description.substring(0, 50)}`}
+						{task.description.length > 50 && (
+							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
+								...
+							</span>
+						)}
+					</td>
 					<td />
 					<td>
 						{/* <span style={{ whiteSpace: 'nowrap' }}>{task.ITask.dueDate}</span> */}

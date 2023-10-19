@@ -42,7 +42,7 @@ import { useEffectOnce } from 'react-use';
 import Loading from '../../../../common/other/Loading';
 import { toast } from 'react-toastify';
 
-interface IGoalValue {
+interface IGoalValueData {
 	category: string;
 	created_at: string;
 	description: string;
@@ -63,7 +63,7 @@ interface ITaskValue {
 	updated_at: string;
 }
 const Tasks: FC = () => {
-	const { newTask } = useParams();
+	const { goalId, newTask } = useParams();
 	const navigate = useNavigate();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
@@ -77,6 +77,7 @@ const Tasks: FC = () => {
 	const [taskList, setTaskList] = useState<ITaskValue[]>(data);
 	const [currTask, setCurrTask] = useState<ITaskValue>();
 	const [goalList, setGoalList] = useState<IGoalValue[]>();
+	const [goalName, setGoalName] = useState<string>();
 	const [createTask] = useCreateTaskMutation();
 	const [deleteTask] = useDeleteTaskMutation({
 		fixedCacheKey: 'deleteTask',
@@ -87,7 +88,7 @@ const Tasks: FC = () => {
 
 	// const role = localStorage?.getItem('role');
 	useEffectOnce(() => {
-		refetch()
+		refetch();
 		if (newTask === 'add-task') {
 			setIsOpen(true);
 			setModalState('Add Task');
@@ -96,23 +97,17 @@ const Tasks: FC = () => {
 		}
 	});
 	useEffect(() => {
-		// const allTasks: ITaskValue[] = [];
-		// data.forEach((goal:any) => {
-		// 	if (goal.task) {
-		// 		goal.task.forEach((task) => {
-		// 			allTasks.push({ goalId: goal.id, ITask: task });
-		// 		});
-		// 	}
-		// });
 		setTaskList(data);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 	useEffect(() => {
 		if (goalsData) {
-			const GoalList = goalsData.map((item: IGoalValue) => {
+			const GoalList = goalsData.map((item: IGoalValueData) => {
 				return { value: item.id, text: item.title };
 			});
 			setGoalList(GoalList);
+			const GoalName = GoalList.filter((item: IGoalValue) => item.value === Number(goalId!));
+			setGoalName(GoalName[0]?.text);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [goalsData]);
@@ -125,7 +120,7 @@ const Tasks: FC = () => {
 			category: '',
 			expectedTime: '',
 			status: '',
-			goalId: '',
+			goalId: newTask,
 			taskId: '',
 		},
 		enableReinitialize: true,
@@ -325,17 +320,21 @@ const Tasks: FC = () => {
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
-						{modalState !== 'Edit Task' && (
-							<FormGroup id='goalId' label='Goals' className='col-lg-6'>
-								<Select
-									ariaLabel='Default select example'
-									placeholder='Select One...'
-									onChange={formiknewTask.handleChange}
-									value={formiknewTask.values.goalId}
-									list={goalList}
-								/>
-							</FormGroup>
-						)}
+						{modalState !== 'Edit Task' &&
+							(newTask ? (
+								<div className='h4 fw-bold py-3'>Goal : {goalName} </div>
+							) : (
+								<FormGroup id='goalId' label='Goals' className='col-lg-6'>
+									<Select
+										ariaLabel='Default select example'
+										placeholder='Select One...'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.goalId}
+										list={goalList}
+										defaultValue='3'
+									/>
+								</FormGroup>
+							))}
 
 						<FormGroup id='name' label='Name' className='col-lg-6'>
 							<Input

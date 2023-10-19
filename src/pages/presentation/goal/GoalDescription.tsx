@@ -38,6 +38,7 @@ import Loading from '../../../common/other/Loading';
 import { toast } from 'react-toastify';
 import SubTask from './tasks/SubTask';
 import TableRow from '../../../helpers/TableRow';
+import TaskTableRow from './tasks/TaskTableRow';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -92,6 +93,7 @@ const GoalDescription: FC = () => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		Number(id!),
 	);
+	const [showMore, setShowMore] = useState<boolean>(false);
 	const [createTask] = useCreateTaskMutation();
 	const [deleteTask] = useDeleteTaskMutation({
 		fixedCacheKey: 'deleteTask',
@@ -236,7 +238,18 @@ const GoalDescription: FC = () => {
 									</div>
 									<div>
 										<span className='display-7 fw-bold p-3'>Description :</span>
-										<span>{data.goal?.description}</span>
+										<span>
+											{showMore
+												? `${data.goal?.description}`
+												: `${data.goal?.description.substring(0, 50)}`}
+											{data.goal?.description.length > 50 && (
+												<span
+													aria-hidden='true'
+													onClick={() => setShowMore(!showMore)}>
+													...
+												</span>
+											)}
+										</span>
 									</div>
 								</CardBody>
 							</Card>
@@ -313,14 +326,13 @@ const GoalDescription: FC = () => {
 															currentPage,
 															perPage,
 														).map((i, index) => (
-															<TableRow
+															<TaskTableRow
 																// eslint-disable-next-line react/no-array-index-key
 																key={index}
 																id={index + 1}
 																// eslint-disable-next-line react/jsx-props-no-spreading
 																task={i}
 																edit={handleEdit}
-																view={handleView}
 																deleteAction={handleDeleteAction}
 															/>
 														))
