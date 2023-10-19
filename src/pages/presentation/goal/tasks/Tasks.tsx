@@ -326,7 +326,7 @@ const Tasks: FC = () => {
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
 						{modalState !== 'Edit Task' && (
-							<FormGroup id='goalId' label='goalId' className='col-lg-6'>
+							<FormGroup id='goalId' label='Goals' className='col-lg-6'>
 								<Select
 									ariaLabel='Default select example'
 									placeholder='Select One...'

@@ -38,7 +38,7 @@ import {
 	useDeleteGoalMutation,
 	useGetGoalsQuery,
 	useCreateGoalMutation,
-	useUpdateGoalMutation
+	useUpdateGoalMutation,
 } from '../../../features/auth/taskManagementApiSlice';
 import Modal, {
 	ModalBody,
@@ -47,7 +47,7 @@ import Modal, {
 	ModalTitle,
 } from '../../../components/bootstrap/Modal';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import  Input from "../../../components/bootstrap/forms/Input"
+import Input from '../../../components/bootstrap/forms/Input';
 import Select from '../../../components/bootstrap/forms/Select';
 
 export const SELECT_OPTIONS = [
@@ -83,23 +83,18 @@ interface IGoalProps {
 	id: number;
 	title: string;
 	description: string;
-	date: string;
-	status: string;
-	category: string;
+	date?: string;
+	status?: string;
+	category?: string;
 }
 const Goals: FC = () => {
-
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
 	const { darkModeStatus } = useDarkMode();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
-
-
-	const navigate = useNavigate();
-	console.log('Data>>', data);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 
@@ -169,18 +164,22 @@ const Goals: FC = () => {
 
 		onSubmit: (values, { resetForm }) => {
 			const goalData = new FormData();
-			goalData.append('name', values.name);
+			goalData.append('title', values.name);
 			goalData.append('description', values.description);
-			goalData.append('date', values.date);
-			goalData.append('status', values.status);
+			// goalData.append('date', values.date);
+			// goalData.append('status', values.status);
 			goalData.append('category', values.category);
 
-			// if (Object.keys(formik.errros).length === 0) {
-			// 	createGoal({ goalData }).then((res) => {
-			// 		setIsOpen(false);
-			// 		refetch();
-			// 	});
-			// }
+			if (Object.keys(formikNewGoal.errors).length === 0) {
+				createGoal({
+					title: values.name,
+					description: values.description,
+					category: values.category,
+				}).then((res) => {
+					setIsOpen(false);
+					refetch();
+				});
+			}
 			setIsOpen(false);
 			resetForm();
 		},
@@ -230,14 +229,19 @@ const Goals: FC = () => {
 			return errors;
 		},
 		onSubmit: (values, { resetForm }) => {
-			const goalData = new FormData();
-			goalData.append('name', values.name);
-			goalData.append('description', values.description);
-			goalData.append('date', values.date);
-			goalData.append('status', values.status);
-			goalData.append('category', values.category);
+			// const goalData = new FormData();
+			// goalData.append('title', values.name);
+			// goalData.append('description', values.description);
+			// // goalData.append('date', values.date);
+			// // goalData.append('status', values.status);
+			// goalData.append('category', values.category);
+			const goalData = {
+				title: values.name,
+				description: values.description,
+				category: values.category,
+			};
 
-			updateGoal({id: updateGoalForm.values.id , goalData }).then((res) => {
+			updateGoal({ id: updateGoalForm.values.id, goalData }).then((res) => {
 				setIsOpen(false);
 				refetch();
 			});
@@ -266,15 +270,17 @@ const Goals: FC = () => {
 	// const { items, requestSort, getClassNamesFor } = useSortableData(filteredData);
 
 	const handleDelete = (id: number) => {
-		const newGoals = goalList.filter((i) => i.id !== id);
-		setGoalList(newGoals);
+		if (data) {
+			const newGoals = data.filter((i: IGoalProps) => i.id !== id);
+			setGoalList(newGoals);
 
-		deleteGoal(id).then(() => {
-			refetch().then((res) => {
-				//	TODO:  Make Toast Dynamically
-				toast('Goal Deleted Sucessfully');
+			deleteGoal(id).then(() => {
+				refetch().then((res) => {
+					//	TODO:  Make Toast Dynamically
+					toast('Goal Deleted Sucessfully');
+				});
 			});
-		});
+		}
 	};
 	const handleEdit = (id: number) => {
 		setModalHeader('Update Goal');
@@ -343,7 +349,7 @@ const Goals: FC = () => {
 											id={item.id}
 											name={item.title}
 											attributes={item.description}
-											timeline={item.category}
+											timeline={item.category!}
 										/>
 									))}
 								</div>
@@ -586,11 +592,10 @@ const Goals: FC = () => {
 								placeholder='Select One...'
 								name='category'
 								list={[
-									{ value: 'Backlog', text: 'Backlog' },
-									{ value: 'Todo', text: 'Todo' },
-									{ value: 'InProgress', text: 'InProgress' },
-									{ value: 'Done', text: 'Done' },
-									{ value: 'Hold', text: 'Hold' },
+									{ value: '4', text: 'Category4' },
+									{ value: '2', text: 'New Category2' },
+									{ value: '1', text: 'Category1' },
+									{ value: '3', text: 'Category3' },
 								]}
 								onChange={
 									modalHeader === 'New Goal'

@@ -30,7 +30,12 @@ import Select from '../../../../components/bootstrap/forms/Select';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetSubTaskByTaskIdQuery } from '../../../../features/auth/taskManagementApiSlice';
+import {
+	useCreateSubTaskMutation,
+	useDeleteSubTaskMutation,
+	useGetSubTaskByTaskIdQuery,
+	useUpdateSubTaskMutation,
+} from '../../../../features/auth/taskManagementApiSlice';
 import { useEffectOnce } from 'react-use';
 import { pagesMenu } from '../../../../menu';
 import SubtaskTableRow from './subtaskHelper/SubtaskTableRow';
@@ -60,7 +65,12 @@ const SubTask: FC = () => {
 			navigate(`../${pagesMenu.page404.path}`);
 		}
 	});
-	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
+	const { data, isLoading, isSuccess, isError, refetch } = useGetSubTaskByTaskIdQuery(
+		Number(id!),
+	);
+	const [createSubTask] = useCreateSubTaskMutation();
+	const [updateSubTask] = useUpdateSubTaskMutation();
+	const [deleteSubTask] = useDeleteSubTaskMutation();
 	const [cardsData, setCardsData] = useState<ISubtask[]>(data && data.subtasks);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
@@ -87,47 +97,63 @@ const SubTask: FC = () => {
 	// }, [data]);
 	// console.log('taskList>>>', taskList);
 
-	const formiknewTask = useFormik({
+	const formik = useFormik({
 		initialValues: {
-			name: '',
+			title: '',
 			description: '',
 			dueDate: '',
 			category: '',
 			expectedTime: '',
 			status: '',
 			goalId: 0,
+			sub_id: '',
 		},
 		enableReinitialize: true,
 		onSubmit: (values) => {
-			const newTask = {
-				// id: taskList?.length + 1,
-				id: 1,
-				dueDate: values.dueDate,
-				name: values.name,
-				description: values.description,
-				category: values.category,
-				expectedTime: values.expectedTime,
-				status: values.status,
-				edit: 'Edit',
-				goalId: values.goalId,
-			};
+			console.log('id>>>>', id);
+			if (modalState === 'Add Task') {
+				createSubTask({
+					task_id: String(id),
+					title: values.title,
+					description: values.description,
+				}).then((res) => {
+					console.log('Subtask Created', res);
+					refetch();
+				});
+			}
+			if (modalState === 'Edit Task') {
+				const taskData = {
+					task_id: String(id),
+					description: values.description,
+					title: values.title,
+				};
+				updateSubTask({
+					subtaskId: String(values.sub_id),
+					taskData,
+				}).then(() => {
+					refetch();
+				});
+			}
 			// setTaskList([...taskList, newTask]);
 			setIsOpen(false);
 		},
 	});
 	const handleDeleteAction = (subId: number) => {
 		// setTaskList(taskList.filter((i) => i.id !== id));
+		deleteSubTask(subId).then((res)=>{
+			console.log("res",res);
+			refetch();
+		})
 	};
 	const handleEdit = (SubId: number) => {
-		setCurrTask(undefined);
 		setModalState(`Edit Task`);
-		// const task = taskList.filter((i) => i.id === id);
-		// formiknewTask.setFieldValue('name', task[0]?.name);
-		// formiknewTask.setFieldValue('description', task[0]?.description);
-		// formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
-		// formiknewTask.setFieldValue('category', task[0]?.category);
-		// formiknewTask.setFieldValue('status', task[0]?.status);
-		// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);s
+		const task = data.subtasks.filter((i: any) => i.id === SubId);
+		formik.setFieldValue('title', task[0]?.title);
+		formik.setFieldValue('description', task[0]?.description);
+		formik.setFieldValue('sub_id', task[0]?.id);
+		// formik.setFieldValue('category', task[0]?.category);
+		// formik.setFieldValue('status', task[0]?.status);
+		// formik.setFieldValue('expectedTime', task[0]?.expectedTime);
 		setIsOpen(true);
 	};
 	const handleView = (Subid: ISubTask) => {
@@ -135,15 +161,19 @@ const SubTask: FC = () => {
 		// console.log('clicked view', id);
 		// if (role !== 'superadmin') navigate(`../${pagesMenu.subtasks.path}/${id}/`);
 	};
+	const handleCloseClick = () => {
+		setIsOpen(false);
+		navigate(`../${pagesMenu.subTasks.path}/${id}`);
+	};
 
 	const handleAddTask = () => {
 		setCurrTask(undefined);
-		formiknewTask.setFieldValue('name', '');
-		formiknewTask.setFieldValue('description', '');
-		formiknewTask.setFieldValue('dueDate', '');
-		formiknewTask.setFieldValue('category', '');
-		formiknewTask.setFieldValue('status', '');
-		formiknewTask.setFieldValue('expectedTime', '');
+		formik.setFieldValue('name', '');
+		formik.setFieldValue('description', '');
+		formik.setFieldValue('dueDate', '');
+		formik.setFieldValue('category', '');
+		formik.setFieldValue('status', '');
+		formik.setFieldValue('expectedTime', '');
 		setModalState('Add Task');
 		setIsOpen(true);
 	};
@@ -224,7 +254,7 @@ const SubTask: FC = () => {
 				</Card>
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
-				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
+				<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
 					<ModalTitle id='new_task'>{modalState}</ModalTitle>
 				</ModalHeader>
 				{currTask ? (
@@ -265,32 +295,35 @@ const SubTask: FC = () => {
 						<ModalBody className='px-4'>
 							<div className='row g-4'>
 								<div className='col-12 border-bottom' />
-								<FormGroup id='name' label='Name' className='col-lg-6'>
+								<FormGroup id='title' label='Name' className='col-lg-6'>
 									<Input
 										type='text'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.name}
+										onChange={formik.handleChange}
+										value={formik.values.title}
 									/>
 								</FormGroup>
-								<FormGroup id='name' label='Description' className='col-lg-6'>
+								<FormGroup
+									id='description'
+									label='Description'
+									className='col-lg-6'>
 									<Input
 										type='text'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.description}
+										onChange={formik.handleChange}
+										value={formik.values.description}
 									/>
 								</FormGroup>
 								<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
 									<Input
 										type='date'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.dueDate}
+										onChange={formik.handleChange}
+										value={formik.values.dueDate}
 									/>
 								</FormGroup>
 								{/* <FormGroup id='category' label='Enter Category'>
 									<Input
 										type='text'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.category}
+										onChange={formik.handleChange}
+										value={formik.values.category}
 									/>
 								</FormGroup> */}
 
@@ -300,16 +333,16 @@ const SubTask: FC = () => {
 									className='col-lg-6'>
 									<Input
 										type='date'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.expectedTime}
+										onChange={formik.handleChange}
+										value={formik.values.expectedTime}
 									/>
 								</FormGroup>
 								<FormGroup id='status' label='Status' className='col-lg-6'>
 									<Select
 										ariaLabel='Default select example'
 										placeholder='Select One...'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.status}
+										onChange={formik.handleChange}
+										value={formik.values.status}
 										list={[
 											{ value: 'Backlog', text: 'Backlog' },
 											{ value: 'Todo', text: 'Todo' },
@@ -323,7 +356,7 @@ const SubTask: FC = () => {
 						</ModalBody>
 						<ModalFooter>
 							<CardFooterLeft>
-								<Button color='info' onClick={formiknewTask.handleSubmit}>
+								<Button color='info' onClick={formik.handleSubmit}>
 									Save
 								</Button>
 							</CardFooterLeft>
