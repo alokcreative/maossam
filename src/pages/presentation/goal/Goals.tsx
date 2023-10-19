@@ -117,7 +117,7 @@ const Goals: FC = () => {
 	// console.log(`date>>> ${Date.now()}`);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [goalId, setGoalId] = useState<number>();
-
+	const [showMore, setShowMore] = useState<boolean>(false);
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -315,7 +315,6 @@ const Goals: FC = () => {
 		// navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
 
-
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -384,12 +383,48 @@ const Goals: FC = () => {
 												<table className='table table-modern table-hover'>
 													<thead>
 														<tr>
-															<th scope='col'>Sr No</th>
-															<th scope='col'>Name</th>
-															<th scope='col'>Description</th>
-															<th scope='col'>Date</th>
-															<th scope='col'>Status</th>
-															<th scope='col'>Action</th>
+															<th
+																scope='col'
+																style={{
+																	whiteSpace: 'nowrap',
+																}}>
+																Sr No
+															</th>
+															<th
+																scope='col'
+																style={{
+																	whiteSpace: 'nowrap',
+																}}>
+																Name
+															</th>
+															<th
+																scope='col'
+																style={{
+																	whiteSpace: 'nowrap',
+																}}>
+																Description
+															</th>
+															<th
+																scope='col'
+																style={{
+																	whiteSpace: 'nowrap',
+																}}>
+																Date
+															</th>
+															<th
+																scope='col'
+																style={{
+																	whiteSpace: 'nowrap',
+																}}>
+																Status
+															</th>
+															<th
+																scope='col'
+																style={{
+																	whiteSpace: 'nowrap',
+																}}>
+																Action
+															</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -452,7 +487,9 @@ const Goals: FC = () => {
 																				className='me-1'
 																			/>
 																			{Number(logUserId) ===
-																			i.created_by ? (
+																				i.created_by ||
+																			role ===
+																				'superadmin' ? (
 																				<>
 																					<Button
 																						icon='Edit'

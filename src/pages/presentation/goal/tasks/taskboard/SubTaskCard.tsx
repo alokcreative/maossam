@@ -31,9 +31,10 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	const navigate = useNavigate();
+	const role = localStorage.getItem('role');
+	const logUserId = localStorage.getItem('UserId');
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
-		const role = localStorage.getItem('role');
 		if (role !== 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		if (role === 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
@@ -49,6 +50,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: (values) => {},
 	});
+	// console.log('SubtaskData>>>', data?.task?.created_by);
 	return (
 		<div className='row'>
 			<div className='col-12'>
@@ -62,12 +64,15 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 							</CardTitle>
 						</CardLabel>
 						<CardSubTitle>
-							<Button
-								color='primary'
-								className='mb-3'
-								onClick={() => handleAddSubtask(id)}>
-								Add Sub Task
-							</Button>
+							{data && (Number(logUserId) === data.task.created_by ||
+								role === 'superadmin') && (
+								<Button
+									color='primary'
+									className='mb-3'
+									onClick={() => handleAddSubtask(id)}>
+									Add Sub Task
+								</Button>
+							)}
 						</CardSubTitle>
 					</CardHeader>
 					{isLoading ? (

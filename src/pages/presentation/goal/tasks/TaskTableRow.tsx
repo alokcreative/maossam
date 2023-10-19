@@ -78,7 +78,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 									setIsModalOpen(true);
 								}}
 							/>
-							{Number(logUserId) === task.created_by ? (
+							{Number(logUserId) === task.created_by || role === 'superadmin' ? (
 								<>
 									<Button
 										icon='Edit'

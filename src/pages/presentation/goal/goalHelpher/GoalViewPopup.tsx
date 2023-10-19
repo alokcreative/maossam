@@ -71,12 +71,12 @@ interface IGoal {
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const { isModalOpen, setIsModalOpen, id } = props;
-
 	const { data, isLoading: loading, isSuccess, isFetching } = useGetTaskByGoalIdQuery(id!);
-
 	const navigate = useNavigate();
 	// User data
 	const token = localStorage?.getItem('access_token');
+	const logUserId = localStorage.getItem('UserId');
+	const role = localStorage.getItem('role');
 	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
 	const [userData, setUserData] = useState<IUserData>();
 	useEffect(() => {
@@ -107,7 +107,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	useEffect(() => {
 		if (data) {
 			const { tasks } = data;
-			console.log('Tasks>>', tasks);
+			// console.log('Tasks>>', tasks);
 			if (tasks) {
 				setTaskData(tasks);
 			}
@@ -124,6 +124,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
+	console.log('data>>121', data);
 	const handleAddSubtask = (goalId: number) => {
 		setIsModalOpen(false);
 		navigate(`../${dashboardPagesMenu.tasks.path}/${goalId}/add-task`);
@@ -149,12 +150,15 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 						<div className=' mb-4 '>
 							<div className='d-flex align-items-center justify-content-between'>
 								<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
-								<Button
-									color='primary'
-									className='mb-3'
-									onClick={() => handleAddSubtask(id!)}>
-									Add Task
-								</Button>
+								{(Number(logUserId) === data.goal.created_by ||
+									role === 'superadmin') && (
+									<Button
+										color='primary'
+										className='mb-3'
+										onClick={() => handleAddSubtask(id!)}>
+										Add Task
+									</Button>
+								)}
 							</div>
 							<p>
 								{taskData && taskData?.length !== 0 ? (

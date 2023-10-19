@@ -22,6 +22,7 @@ interface IItemProps {
 const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showMore, setShowMore] = useState<boolean>(false);
 	const role = localStorage.getItem('role');
 	const openModalHandler = () => {
 		if (role === 'superadmin') {
@@ -44,7 +45,13 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 							<p className='h6 fw-bold'>Description:</p>
 						</div>
 						<div className='col-12'>
-							<p className='text-muted'>{attributes}</p>
+							{showMore ? `${attributes}` : `${attributes.substring(0, 100)}`}
+							{attributes.length > 50 && (
+								<span aria-hidden='true' onClick={(e) => {e.stopPropagation(); setShowMore(!showMore)}}>
+									...
+								</span>
+							)}
+							{/* <p className='text-muted'>{attributes}</p> */}
 						</div>
 					</div>
 					<div className='row'>

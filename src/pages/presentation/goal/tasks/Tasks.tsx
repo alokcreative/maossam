@@ -49,6 +49,7 @@ interface IGoalValueData {
 	id: number;
 	title: string;
 	updated_at: string;
+	created_by: number;
 }
 interface IGoalValue {
 	value: number;
@@ -86,7 +87,8 @@ const Tasks: FC = () => {
 		fixedCacheKey: 'updateTask',
 	});
 
-	// const role = localStorage?.getItem('role');
+	const role = localStorage?.getItem('role');
+	const logUserId = localStorage.getItem('UserId');
 	useEffectOnce(() => {
 		refetch();
 		if (newTask === 'add-task') {
@@ -103,10 +105,16 @@ const Tasks: FC = () => {
 	useEffect(() => {
 		if (goalsData) {
 			const GoalList = goalsData.map((item: IGoalValueData) => {
-				return { value: item.id, text: item.title };
+				if (Number(logUserId) === item.created_by || role === 'superadmin') {
+					return { value: item.id, text: item.title };
+				}
+				return null;
 			});
-			setGoalList(GoalList);
-			const GoalName = GoalList.filter((item: IGoalValue) => item.value === Number(goalId!));
+			const filteredData = GoalList.filter((item: IGoalValue) => item !== null);
+			setGoalList(filteredData);
+			const GoalName = filteredData.filter(
+				(item: IGoalValue) => item.value === Number(goalId!),
+			);
 			setGoalName(GoalName[0]?.text);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,7 +128,7 @@ const Tasks: FC = () => {
 			category: '',
 			expectedTime: '',
 			status: '',
-			goalId: newTask,
+			goalId: '',
 			taskId: '',
 		},
 		enableReinitialize: true,
@@ -129,10 +137,10 @@ const Tasks: FC = () => {
 				createTask({
 					title: values.name,
 					description: values.description,
-					goal_id: String(values.goalId),
+					goal_id: String(goalId || values.goalId),
 				})
 					.unwrap()
-					.then((res: any) => {
+					.then(() => {
 						refetch();
 					})
 					.catch(() => {
@@ -149,10 +157,10 @@ const Tasks: FC = () => {
 					task_id: values.taskId,
 				})
 					.unwrap()
-					.then((res) => {
+					.then(() => {
 						refetch();
 					})
-					.catch((res) => {
+					.catch(() => {
 						// console.log('error', res);
 					});
 			}
