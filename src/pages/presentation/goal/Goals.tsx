@@ -99,7 +99,6 @@ const Goals: FC = () => {
 
 
 	const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
 	console.log('Data>>', data);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);

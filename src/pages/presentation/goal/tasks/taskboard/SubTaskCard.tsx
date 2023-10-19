@@ -19,6 +19,7 @@ import { useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskMan
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import SubTaskQuestion from './SubTaskQuestion';
 
 interface IValueProps {
 	subTaskId: number;
@@ -134,8 +135,8 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																</FormGroup>
 															</div>
 														</div>
-
-														<div className='row g-3'>
+														<SubTaskQuestion id={item.id} />
+														{/* <div className='row g-3'>
 															<div className='col-12'>
 																{item.questions &&
 																	item.questions.map((q: any) => {
@@ -156,7 +157,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																		);
 																	})}
 															</div>
-														</div>
+														</div> */}
 													</div>
 												))
 											) : (

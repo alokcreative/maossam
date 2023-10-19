@@ -26,5 +26,6 @@ const apiEndpoints = {
 	taskList: 'task-manager/goals/tasks/list/',
 	taslistByGoalId: 'task-manager/goals/',
 	subTaskList: 'task-manager/goals/tasks',
+	faqlistBySubtask: 'task-manager/goals/tasks/sub-task',
 };
 export default apiEndpoints;
