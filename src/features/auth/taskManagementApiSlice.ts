@@ -203,6 +203,17 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+
+		getFaqBySubTaskId: builder.query({
+			query: (id?: number) => ({
+				url: `${apiEndpoints.faqlistBySubtask}/${id}/faq/list/`,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 	}),
 });
 
@@ -217,6 +228,7 @@ export const {
 	useCreateTaskMutation,
 	useDeleteTaskMutation,
 	useUpdateTaskMutation,
+	useGetFaqBySubTaskIdQuery
 	useCreateSubTaskMutation,
 	useUpdateSubTaskMutation,
 	useDeleteSubTaskMutation,
