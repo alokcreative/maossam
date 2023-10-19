@@ -152,7 +152,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 								<Button
 									color='primary'
 									className='mb-3'
-									onClick={() => handleAddSubtask(1)}>
+									onClick={() => handleAddSubtask(id!)}>
 									Add Task
 								</Button>
 							</div>

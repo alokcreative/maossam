@@ -15,7 +15,7 @@ import Board from '../../../project-management/component/Board';
 import Button from '../../../../../components/bootstrap/Button';
 import { ISubTask } from '../../../../../common/data/dummyGoals';
 import SubTaskBoard from './SubTaskBoard';
-import { useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
+import { useCreateSubTaskMutation, useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
 import Modal, {
 	ModalBody,
 	ModalHeader,
@@ -54,9 +54,9 @@ const TaskManagement = () => {
 	});
 
 	const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
+	const { data, isLoading, isSuccess, isError , refetch } = useGetSubTaskByTaskIdQuery(Number(id!));
 	const [cardsData, setCardsData] = useState<ISubtask[]>(data && data.subtasks);
-
+	const [createSubTask] = useCreateSubTaskMutation();
 	const columnsData: TColumnsData = {
 		column1: {
 			id: 'column1',
@@ -206,6 +206,14 @@ const TaskManagement = () => {
 		},
 		onSubmit: (values) => {
 			setIsOpen(false);
+			createSubTask({
+				task_id: String(id),
+				title: values.title,
+				description: values.description,
+			}).then((res) => {
+				// console.log('Subtask Created', res);
+				refetch();
+			});
 			navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		},
 	});

@@ -13,25 +13,34 @@ interface ICreateTaskProps {
 	title: string;
 }
 interface IUpdateTaskProps {
-	taskData:{description: string;title: string;}
+	taskData: { description: string; title: string };
 	task_id?: string;
 }
-
-
 interface IGoal {
-	name: string;
+	title: string;
 	description: string;
-	date: string;
-	status: string;
+	// date: string;
+	// status: string;
 	category: string;
 }
 
+// interface Goal {
+// 	goalData: IGoal;
+// }
+
 interface IGoalPayload {
-	id?: string;
-	goalData: FormData;
+	id: string;
+	goalData: IGoal;
 }
-
-
+interface ISubtaskPayload {
+	task_id: string;
+	title: string;
+	description: string;
+}
+interface IUpdateSubaskPayload {
+	taskData: { task_id: string; description: string; title: string };
+	subtaskId?: string;
+}
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
 };
@@ -50,11 +59,11 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 
 		// Create Goal
 		createGoal: builder.mutation({
-			query: (payload: IGoalPayload) => ({
+			query: (payload: IGoal) => ({
 				url: apiEndpoints.createGoal,
 				method: 'POST',
-				body: payload.goalData,
-				header: {
+				body: payload,
+				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
 				},
@@ -68,7 +77,7 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				url: `${apiEndpoints.updateGoal}${payload.id}/`,
 				method: 'PATCH',
 				body: payload.goalData,
-				header: {
+				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
 				},
@@ -125,10 +134,12 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 		// create sub task
+
 		createSubTask: builder.mutation({
-			query: (id: number) => ({
+			query: (payload: ISubtaskPayload) => ({
 				url: `${apiEndpoints.createSubTask}`,
 				method: 'POST',
+				body: payload,
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -150,9 +161,10 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 		}),
 		// Update sub task
 		updateSubTask: builder.mutation({
-			query: (id: number) => ({
-				url: `${apiEndpoints.updateSubTask}${id}/`,
+			query: (payload: IUpdateSubaskPayload) => ({
+				url: `${apiEndpoints.updateSubTask}${payload.subtaskId}/`,
 				method: 'PATCH',
+				body: payload.taskData,
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -205,4 +217,7 @@ export const {
 	useCreateTaskMutation,
 	useDeleteTaskMutation,
 	useUpdateTaskMutation,
+	useCreateSubTaskMutation,
+	useUpdateSubTaskMutation,
+	useDeleteSubTaskMutation,
 } = taskManagementApiSlice;
