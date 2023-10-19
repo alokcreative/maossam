@@ -228,7 +228,7 @@ export const {
 	useCreateTaskMutation,
 	useDeleteTaskMutation,
 	useUpdateTaskMutation,
-	useGetFaqBySubTaskIdQuery
+	useGetFaqBySubTaskIdQuery,
 	useCreateSubTaskMutation,
 	useUpdateSubTaskMutation,
 	useDeleteSubTaskMutation,

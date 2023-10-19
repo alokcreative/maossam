@@ -97,6 +97,7 @@ const Goals: FC = () => {
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
+	const logUserId = localStorage.getItem('UserId');
 
 	const [productView, setProductView] = useState<boolean>(false);
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
@@ -300,6 +301,7 @@ const Goals: FC = () => {
 		// navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
 
+
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -435,26 +437,32 @@ const Goals: FC = () => {
 																				}}
 																				className='me-1'
 																			/>
-
-																			<Button
-																				icon='Edit'
-																				color='success'
-																				isLight
-																				onClick={() =>
-																					handleEdit(i.id)
-																				}
-																				className='me-1'
-																			/>
-																			<Button
-																				icon='Delete'
-																				color='danger'
-																				isLight
-																				onClick={() =>
-																					handleDelete(
-																						i.id,
-																					)
-																				}
-																			/>
+																			{Number(logUserId) ===
+																			i.created_by ? (
+																				<>
+																					<Button
+																						icon='Edit'
+																						color='success'
+																						isLight
+																						onClick={() =>
+																							handleEdit(
+																								i.id,
+																							)
+																						}
+																						className='me-1'
+																					/>
+																					<Button
+																						icon='Delete'
+																						color='danger'
+																						isLight
+																						onClick={() =>
+																							handleDelete(
+																								i.id,
+																							)
+																						}
+																					/>
+																				</>
+																			) : null}
 																		</div>
 																	</td>
 																</tr>

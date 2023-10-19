@@ -18,7 +18,7 @@ import { useGetUsersMutation, useLogoutMutation } from '../../features/auth/auth
 import Spinner from '../../components/bootstrap/Spinner';
 
 interface IUserData {
-	id: number;
+	id: string;
 	avatar: string | unknown;
 	first_name: string;
 	last_name: string;
@@ -58,6 +58,7 @@ const User = () => {
 					setUserData(res);
 					// console.log('data>>>>>>>', data);
 					localStorage.setItem('role', res.role);
+					localStorage.setItem('UserId', res.id);
 				})
 				.catch((error) => {
 					localStorage.removeItem('refresh_token');

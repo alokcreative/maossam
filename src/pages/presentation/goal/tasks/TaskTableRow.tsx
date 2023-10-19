@@ -7,9 +7,10 @@ import { pagesMenu } from '../../../../menu';
 import { useNavigate } from 'react-router-dom';
 
 interface ITaskValue {
-	id:number;
+	id: number;
 	title: string;
 	description: string;
+	created_by: number;
 }
 interface ITableRowProps {
 	id: number;
@@ -19,6 +20,8 @@ interface ITableRowProps {
 }
 
 const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
+	const logUserId = localStorage.getItem('UserId');
+
 	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
@@ -67,6 +70,24 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 									setIsModalOpen(true);
 								}}
 							/>
+							{Number(logUserId) === task.created_by ? (
+								<>
+									<Button
+										icon='Edit'
+										color='success'
+										isLight
+										className='me-1'
+										onClick={() => edit(task.id)}
+									/>
+									<Button
+										icon='Delete'
+										color='danger'
+										isLight
+										onClick={() => deleteAction(task.id)}
+									/>
+								</>
+							) : null}
+
 							{isModalOpen && (
 								<Modal
 									isOpen={isModalOpen}
@@ -91,19 +112,6 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 									</ModalBody>
 								</Modal>
 							)}
-							<Button
-								icon='Edit'
-								color='success'
-								isLight
-								className='me-1'
-								onClick={() => edit(task.id)}
-							/>
-							<Button
-								icon='Delete'
-								color='danger'
-								isLight
-								onClick={() => deleteAction(task.id)}
-							/>
 						</div>
 					</td>
 				</>
