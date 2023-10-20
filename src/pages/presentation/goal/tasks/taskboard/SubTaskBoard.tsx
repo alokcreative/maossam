@@ -37,7 +37,7 @@ import { TCards, TColumnData, TColumnsData } from '../../../project-management/t
 import ColumnCardWrapper from '../../../project-management/component/ColumnCardWrapper';
 import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
 import SubTaskBoardData from './SubTaskBoardData';
-import { title } from 'process';
+
 interface ISubtask {
 	created_at: string;
 	description: string;

@@ -1,4 +1,6 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { FC, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../../layout/SubHeader/SubHeader';
@@ -29,6 +31,7 @@ import Modal, {
 import Select from '../../../../components/bootstrap/forms/Select';
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../components/bootstrap/forms/Input';
+import Textarea from '../../../../components/bootstrap/forms/Textarea';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
 	useCreateSubTaskMutation,
@@ -77,6 +80,7 @@ const SubTask: FC = () => {
 	const [modalState, setModalState] = useState('Add Task');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [currTask, setCurrTask] = useState<ITask[]>();
+	const [faqs, setFaqs] = useState([{ question: '', answer: '' }]);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
@@ -107,19 +111,27 @@ const SubTask: FC = () => {
 			status: '',
 			goalId: 0,
 			sub_id: '',
+			faqs: [{ question: '', answer: '' }],
 		},
 		enableReinitialize: true,
 		onSubmit: (values) => {
 			console.log('id>>>>', id);
+			console.log('values>>>>>>', values);
 			if (modalState === 'Add Task') {
 				createSubTask({
 					task_id: String(id),
 					title: values.title,
 					description: values.description,
-				}).then((res) => {
-					console.log('Subtask Created', res);
-					refetch();
-				});
+					// faqs: values.faqs,
+				})
+					.unwrap()
+					.then((res) => {
+						console.log('Subtask Created', res);
+						refetch();
+					})
+					.catch(() => {
+						console.log('error');
+					});
 			}
 			if (modalState === 'Edit Task') {
 				const taskData = {
@@ -140,10 +152,10 @@ const SubTask: FC = () => {
 	});
 	const handleDeleteAction = (subId: number) => {
 		// setTaskList(taskList.filter((i) => i.id !== id));
-		deleteSubTask(subId).then((res)=>{
-			console.log("res",res);
+		deleteSubTask(subId).then((res) => {
+			console.log('res', res);
 			refetch();
-		})
+		});
 	};
 	const handleEdit = (SubId: number) => {
 		setModalState(`Edit Task`);
@@ -154,6 +166,7 @@ const SubTask: FC = () => {
 		// formik.setFieldValue('category', task[0]?.category);
 		// formik.setFieldValue('status', task[0]?.status);
 		// formik.setFieldValue('expectedTime', task[0]?.expectedTime);
+		setFaqs(task[0]?.faqs || []);
 		setIsOpen(true);
 	};
 	const handleView = (Subid: ISubTask) => {
@@ -174,9 +187,39 @@ const SubTask: FC = () => {
 		formik.setFieldValue('category', '');
 		formik.setFieldValue('status', '');
 		formik.setFieldValue('expectedTime', '');
-		setModalState('Add Task');
+		setModalState('Add SubTask');
 		setIsOpen(true);
 	};
+	const handleAddFAQ = () => {
+		setFaqs([...faqs, { question: '', answer: '' }]);
+	};
+	const handleQuestionChange = (index: number, value: string) => {
+		const updatedFaqs = [...faqs];
+		updatedFaqs[index].question = value;
+		setFaqs(updatedFaqs);
+		handleFAQChange(index, 'question', value);
+	};
+
+	const handleAnswerChange = (index: number, value: string) => {
+		const updatedFaqs = [...faqs];
+		updatedFaqs[index].answer = value;
+		setFaqs(updatedFaqs);
+		handleFAQChange(index, 'answer', value);
+	};
+	const handleDeleteFAQ = (index: number) => {
+		const updatedFaqs = [...faqs];
+		updatedFaqs.splice(index, 1);
+		setFaqs(updatedFaqs);
+	};
+
+	// To update the 'faqs' data in formik
+	const handleFAQChange = (index: number, field: string, value: string) => {
+		formik.setFieldValue(`faqs[${index}].${field}`, value);
+	};
+	// To update the 'faqs' data in formik
+	// const handleFAQChange = (index, field, value) => {
+	//     formik.setFieldValue(`faqs[${index}].${field}`, value);
+	// };
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -352,8 +395,62 @@ const SubTask: FC = () => {
 										]}
 									/>
 								</FormGroup>
+								{faqs.map((faq, index) => (
+									<>
+										<div key={index} className='col-lg-12 d-flex'>
+											<FormGroup
+												id={`question-${index}`}
+												label={`Question ${index + 1}`}
+												className='col-lg-6 mx-1'>
+												<Textarea
+													// type='text'
+													onChange={(
+														e: ChangeEvent<HTMLTextAreaElement>,
+													) =>
+														handleQuestionChange(index, e.target.value)
+													}
+													value={faq.question}
+												/>
+											</FormGroup>
+											<FormGroup
+												id={`answer-${index}`}
+												label={`Answer ${index + 1}`}
+												className='col-lg-6 mx-1'>
+												<Textarea
+													// type='text'
+													onChange={(
+														e: ChangeEvent<HTMLTextAreaElement>,
+													) => handleAnswerChange(index, e.target.value)}
+													value={faq.answer}
+												/>
+											</FormGroup>
+										</div>
+
+										<Button
+											color='danger'
+											className='col-lg-1 mx-2'
+											onClick={() => {
+												handleDeleteFAQ(index);
+											}}>
+											Delete
+										</Button>
+									</>
+								))}
 							</div>
 						</ModalBody>
+						<ModalFooter>
+							<CardFooterRight>
+								<Button
+									color='success'
+									isLight
+									icon='Add'
+									onClick={() => {
+										handleAddFAQ();
+									}}>
+									Add FAQ
+								</Button>
+							</CardFooterRight>
+						</ModalFooter>
 						<ModalFooter>
 							<CardFooterLeft>
 								<Button color='info' onClick={formik.handleSubmit}>
