@@ -71,7 +71,7 @@ interface IGoal {
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const { isModalOpen, setIsModalOpen, id } = props;
-	const { data, isLoading: loading, isSuccess, isFetching } = useGetTaskByGoalIdQuery(id!);
+	const { data, isLoading: loading, isSuccess, isFetching,refetch } = useGetTaskByGoalIdQuery(id!);
 	const navigate = useNavigate();
 	// User data
 	const token = localStorage?.getItem('access_token');
@@ -105,6 +105,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	useEffect(() => {
+		refetch()
 		if (data) {
 			const { tasks } = data;
 			// console.log('Tasks>>', tasks);

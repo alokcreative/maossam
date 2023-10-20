@@ -62,6 +62,7 @@ interface ITaskValue {
 	id: number;
 	title: string;
 	updated_at: string;
+	created_by: string;
 }
 const Tasks: FC = () => {
 	const { goalId, newTask } = useParams();
@@ -75,7 +76,7 @@ const Tasks: FC = () => {
 	});
 
 	const { data, isLoading, isSuccess, refetch } = useGetTaskListQuery({});
-	const [taskList, setTaskList] = useState<ITaskValue[]>(data);
+	const [taskList, setTaskList] = useState<ITaskValue[]>();
 	const [currTask, setCurrTask] = useState<ITaskValue>();
 	const [goalList, setGoalList] = useState<IGoalValue[]>();
 	const [goalName, setGoalName] = useState<string>();
@@ -99,9 +100,17 @@ const Tasks: FC = () => {
 		}
 	});
 	useEffect(() => {
-		setTaskList(data);
+		if (logUserId == '1') {
+			setTaskList(data);
+		} else {
+			const tempdata = data?.filter(
+				(item: ITaskValue) => logUserId == item.created_by || item.created_by == '1',
+			);
+			setTaskList(tempdata);
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data]);
+	}, [data, isLoading]);
 	useEffect(() => {
 		if (goalsData) {
 			const GoalList = goalsData.map((item: IGoalValueData) => {
@@ -185,26 +194,18 @@ const Tasks: FC = () => {
 	const handleEdit = (id: number) => {
 		setCurrTask(undefined);
 		setModalState(`Edit Task`);
-		const task = taskList.filter((i: ITaskValue) => i.id === id);
-		// console.log('selected task>>', task[0]);
-		formiknewTask.setFieldValue('name', task[0]?.title);
-		formiknewTask.setFieldValue('description', task[0]?.description);
-		formiknewTask.setFieldValue('taskId', task[0]?.id);
-		// formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
-		// formiknewTask.setFieldValue('category', task[0]?.category);
-		// formiknewTask.setFieldValue('status', task[0]?.status);
-		// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
+		if (taskList) {
+			const task = taskList.filter((i: ITaskValue) => i.id === id);
+			// console.log('selected task>>', task[0]);
+			formiknewTask.setFieldValue('name', task[0]?.title);
+			formiknewTask.setFieldValue('description', task[0]?.description);
+			formiknewTask.setFieldValue('taskId', task[0]?.id);
+			// formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
+			// formiknewTask.setFieldValue('category', task[0]?.category);
+			// formiknewTask.setFieldValue('status', task[0]?.status);
+			// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
+		}
 		setIsOpen(true);
-	};
-	const handleView = (id: number) => {
-		setModalState(`Task Details`);
-		// console.log('clicked view', id);
-		const task = taskList.filter((i: ITaskValue) => i.id === id);
-		// console.log('task Clicked>>', task);
-		setCurrTask(task[0]);
-
-		// subcardData(i);
-		// if (role !== 'superadmin') navigate(`../${pagesMenu.}/${id}/`);
 	};
 
 	const handleAddTask = () => {

@@ -159,30 +159,28 @@ const TaskBoardCard: FC<IColumnCard> = ({
 			)} */}
 
 			<Modal
-			
 				setIsOpen={setEditModalStatus}
 				isOpen={editModalStatus}
 				size='lg'
 				isScrollable
 				isStaticBackdrop
 				data-tour='mail-app-modal'>
-				<ModalHeader className='px-4' setIsOpen={setEditModalStatus} 
-				style={{ filter: modalStatus ? 'blur(1px)' : 'none' }} 
-				>
+				<ModalHeader
+					className='px-4'
+					setIsOpen={setEditModalStatus}
+					style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}>
 					<ModalTitle id='project-edit'>{card.name}</ModalTitle>
 				</ModalHeader>
-				<ModalBody className='px-4' 
-				style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}
-				>
+				<ModalBody className='px-4' style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}>
 					<MiniTasks
 						subTaskId={card.id}
 						modalStatus={modalStatus}
 						setModalStatus={setModalStatus}
 					/>
 				</ModalBody>
-				<ModalFooter className='px-4 pb-4' 
-				style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}
-				>
+				<ModalFooter
+					className='px-4 pb-4'
+					style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}>
 					<Button
 						color='primary'
 						className='w-100'

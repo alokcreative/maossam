@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Card, {
 	CardBody,
 	CardFooter,
@@ -20,6 +20,7 @@ import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import SubTaskQuestion from './SubTaskQuestion';
+import { useEffectOnce } from 'react-use';
 
 interface IValueProps {
 	subTaskId: number;
@@ -27,12 +28,17 @@ interface IValueProps {
 }
 const SubTaskCard: FC<IValueProps> = (props) => {
 	const { subTaskId: id, setIsModalOpen } = props;
-	const { data, isLoading, isSuccess, isError } = useGetSubTaskByTaskIdQuery(Number(id!));
+	const { data, isLoading, isSuccess, isError, refetch } = useGetSubTaskByTaskIdQuery(
+		Number(id!),
+	);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	const navigate = useNavigate();
 	const role = localStorage.getItem('role');
 	const logUserId = localStorage.getItem('UserId');
+	useEffectOnce(() => {
+		refetch();
+	});
 	const handleSubmit = (taskId: number) => {
 		setIsModalOpen(false);
 		if (role !== 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
@@ -64,15 +70,16 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 							</CardTitle>
 						</CardLabel>
 						<CardSubTitle>
-							{data && (Number(logUserId) === data.task.created_by ||
-								role === 'superadmin') && (
-								<Button
-									color='primary'
-									className='mb-3'
-									onClick={() => handleAddSubtask(id)}>
-									Add Sub Task
-								</Button>
-							)}
+							{data &&
+								(Number(logUserId) === data.task.created_by ||
+									role === 'superadmin') && (
+									<Button
+										color='primary'
+										className='mb-3'
+										onClick={() => handleAddSubtask(id)}>
+										Add Sub Task
+									</Button>
+								)}
 						</CardSubTitle>
 					</CardHeader>
 					{isLoading ? (

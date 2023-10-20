@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
@@ -86,6 +86,9 @@ interface IGoalProps {
 	date?: string;
 	status?: string;
 	category?: string;
+	created_at?: string;
+	created_by?: string;
+	updated_at?: string;
 }
 const Goals: FC = () => {
 	const navigate = useNavigate();
@@ -98,23 +101,10 @@ const Goals: FC = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const logUserId = localStorage.getItem('UserId');
-
 	const [productView, setProductView] = useState<boolean>(false);
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
-
 	const role = localStorage?.getItem('role');
 	const [deleteGoal] = useDeleteGoalMutation();
-
-	const formikOneWay = useFormik({
-		initialValues: {
-			exampleSelectOneWay: '',
-		},
-		onSubmit: (values) => {
-			// eslint-disable-next-line no-alert
-			alert(JSON.stringify(values, null, 2));
-		},
-	});
-	// console.log(`date>>> ${Date.now()}`);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [goalId, setGoalId] = useState<number>();
 	const [showMore, setShowMore] = useState<boolean>(false);
@@ -123,7 +113,19 @@ const Goals: FC = () => {
 		setGoalId(id);
 		setIsModalOpen(true);
 	};
-
+	useEffect(() => {
+		if (data) {
+			if (logUserId == '1') {
+				setGoalList(data);
+			} else {
+				const tempdata = data?.filter(
+					(item: IGoalProps) => logUserId == item.created_by || item.created_by == '1',
+				);
+				setGoalList(tempdata);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isLoading, data]);
 	const formikNewGoal = useFormik({
 		initialValues: {
 			name: '',
@@ -265,20 +267,6 @@ const Goals: FC = () => {
 			// );
 		},
 	});
-
-	// const filteredData = data.filter(
-	// 	(f) =>
-	// 		// Name
-	// 		f.name.toLowerCase().includes(formik.values.searchInput.toLowerCase()) &&
-	// 		// Price
-	// 		(formik.values.minPrice === '' || f.balance > Number(formik.values.minPrice)) &&
-	// 		(formik.values.maxPrice === '' || f.balance < Number(formik.values.maxPrice)) &&
-	// 		// Payment Type
-	// 		formik.values.payment.includes(f.payout),
-	// );
-
-	// const { items, requestSort, getClassNamesFor } = useSortableData(filteredData);
-
 	const handleDelete = (id: number) => {
 		if (data) {
 			const newGoals = data.filter((i: IGoalProps) => i.id !== id);
@@ -358,15 +346,16 @@ const Goals: FC = () => {
 						<div className='col-12'>
 							{productView === false ? (
 								<div className='row'>
-									{data.map((item: IGoalProps) => (
-										<Item
-											key={item.id}
-											id={item.id}
-											name={item.title}
-											attributes={item.description}
-											timeline={item.category!}
-										/>
-									))}
+									{goalList &&
+										goalList.map((item: IGoalProps) => (
+											<Item
+												key={item.id}
+												id={item.id}
+												name={item.title}
+												attributes={item.description}
+												timeline={item.category!}
+											/>
+										))}
 								</div>
 							) : (
 								<Card stretch>
@@ -429,7 +418,7 @@ const Goals: FC = () => {
 													</thead>
 													<tbody>
 														{dataPagination(
-															data,
+															goalList,
 															currentPage,
 															perPage,
 														).map((i, index) => {
