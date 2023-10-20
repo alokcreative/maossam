@@ -56,8 +56,8 @@ const TaskBoardCard: FC<IColumnCard> = ({
 	index,
 }) => {
 	const { darkModeStatus } = useDarkMode();
-	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
+	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [modalStatus, setModalStatus] = useState(false);
 
 	const formik = useFormik({

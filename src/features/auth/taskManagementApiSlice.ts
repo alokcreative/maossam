@@ -2,11 +2,6 @@ import { IApiRequest, constructApiRequest } from '../../utiles/Apiutils';
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
-interface ILogoutProps {
-	accessToken: string;
-	refresh: { refresh: string };
-}
-
 interface ICreateTaskProps {
 	goal_id: string;
 	description: string;
@@ -40,6 +35,21 @@ interface ISubtaskPayload {
 interface IUpdateSubaskPayload {
 	taskData: { task_id: string; description: string; title: string };
 	subtaskId?: string;
+}
+interface IMiniTaskCreatePayload {
+	subtask_id: string;
+	title: string;
+	description: string;
+}
+interface IMiniTaskUpdatePayload {
+	miniTaskId: string;
+	miniTaskData: {
+		subtask_id?: string;
+		title?: string;
+		description?: string;
+		due_date?: string;
+		status?: string;
+	};
 }
 export const getTokenFromLocalStorage = () => {
 	return localStorage.getItem('access_token');
@@ -214,6 +224,38 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		createMinitask: builder.mutation({
+			query: (payload: IMiniTaskCreatePayload) => ({
+				url: `${apiEndpoints.createMinitask}`,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
+		updateMinitask: builder.mutation({
+			query: (payload: IMiniTaskUpdatePayload) => ({
+				url: `${apiEndpoints.updateMinitask}${payload.miniTaskId}/`,
+				method: 'PATCH',
+				body: payload.miniTaskData,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
+		getMiniTasksBySubId: builder.query({
+			query: (id?: number) => ({
+				url: `${apiEndpoints.minitaskListBySubId}${id}/mini-task/list/`,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 	}),
 });
 
@@ -232,4 +274,7 @@ export const {
 	useCreateSubTaskMutation,
 	useUpdateSubTaskMutation,
 	useDeleteSubTaskMutation,
+	useCreateMinitaskMutation,
+	useUpdateMinitaskMutation,
+	useGetMiniTasksBySubIdQuery,
 } = taskManagementApiSlice;

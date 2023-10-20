@@ -41,15 +41,30 @@ const TodoPropTypes = {
 	),
 };
 
+// export interface ITodoListItem {
+// 	id?: string | number;
+// 	status?: boolean;
+// 	title?: string | number;
+// 	date?: dayjs.ConfigType;
+// 	badge?: {
+// 		text?: string;
+// 		color?: TColor;
+// 	};
+// }
 export interface ITodoListItem {
-	id?: string | number;
+	created_by?: string;
+	description?: string;
+	due_date?: string;
+	id: string | number;
 	status?: boolean;
+	status_name?: string;
+	subtask?: string;
 	title?: string | number;
-	date?: dayjs.ConfigType;
 	badge?: {
 		text?: string;
 		color?: TColor;
 	};
+	date?: dayjs.ConfigType;
 }
 
 interface ITodoItemProps {
@@ -66,7 +81,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 			newTodos[_index].status = !newTodos[_index].status;
 			setList(newTodos);
 		};
-
+		const logUserId = localStorage.getItem('UserId');
 		const removeTodo = (_index: number) => {
 			const newTodos = [...list];
 			newTodos.splice(_index, 1);
@@ -117,25 +132,32 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 							</Badge>
 						</span>
 					)} */}
-					{role === Role.admin ? (<span>
-						<Dropdown>
-							<DropdownToggle hasIcon={false}>
-								<Button
-									color={themeStatus}
-									icon='MoreHoriz'
-									aria-label='More options'
-								/>
-							</DropdownToggle>
+					{logUserId == itemData.created_by || logUserId == '1' ? (
+						<span>
+							<Dropdown>
+								<DropdownToggle hasIcon={false}>
+									<Button
+										color={themeStatus}
+										icon='MoreHoriz'
+										aria-label='More options'
+									/>
+								</DropdownToggle>
 
-							<DropdownMenu isAlignmentEnd>
-								<DropdownItem>
-									<Button onClick={() => removeTodo(index)} icon='Delete'>
-										Delete
-									</Button>
-								</DropdownItem>
-							</DropdownMenu>
-						</Dropdown>
-					</span>):null}
+								<DropdownMenu isAlignmentEnd>
+									<DropdownItem>
+										<>
+											<Button onClick={() => removeTodo(index)} icon='Delete'>
+												Delete
+											</Button>
+											<Button onClick={() => removeTodo(index)} icon='Edit'>
+												Update
+											</Button>
+										</>
+									</DropdownItem>
+								</DropdownMenu>
+							</Dropdown>
+						</span>
+					) : null}
 				</div>
 			</div>
 		);

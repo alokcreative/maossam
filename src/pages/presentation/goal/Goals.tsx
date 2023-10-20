@@ -477,8 +477,7 @@ const Goals: FC = () => {
 																			/>
 																			{Number(logUserId) ===
 																				i.created_by ||
-																			role ===
-																				'superadmin' ? (
+																				logUserId == '1' ? (
 																				<>
 																					<Button
 																						icon='Edit'

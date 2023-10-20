@@ -56,7 +56,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: (values) => {},
 	});
-	// console.log('SubtaskData>>>', data?.task?.created_by);
+	console.log('SubtaskData>>>', data);
 	return (
 		<div className='row'>
 			<div className='col-12'>
@@ -113,38 +113,72 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 															style={{
 																paddingLeft: '1px',
 															}}>
-															{item.name}
+															{item.title}
 														</span>
+														<div>
+															<span
+																className='fw-bold'
+																style={{
+																	paddingRight: '0px',
+																}}>
+																Description :
+															</span>
+															<span
+																style={{
+																	paddingLeft: '1px',
+																}}>
+																{item.description}
+															</span>
+														</div>
 														<div className='row'>
 															<div className='col-8' />
-															<div className='col-12 d-flex justify-content-between mt-3'>
-																<Button
-																	color='primary'
-																	className='mb-3'
-																	onClick={() =>
-																		handleSubmit(id)
-																	}>
-																	START NOW
-																</Button>
-																<FormGroup id='secheduledate'>
-																	<Input
-																		onChange={
-																			formik.handleChange
-																		}
-																		value={
-																			formik.values
-																				.secheduledate
-																		}
-																		type='date'
-																		autoComplete='current-password'
-																		isTouched={
-																			formik.touched
-																				.secheduledate
-																		}
-																		isValid={formik.isValid}
-																		onBlur={formik.handleBlur}
-																	/>
-																</FormGroup>
+															<div className='col-12 '>
+																{role === 'superadmin' ? (
+																	<Button
+																		color='primary'
+																		className='mb-3 d-flex justify-content-end'
+																		onClick={() =>
+																			navigate(
+																				`../${pagesMenu.subTasks.path}/${id}/`,
+																			)
+																		}>
+																		View All
+																	</Button>
+																) : (
+																	<div className='d-flex justify-content-between mt-3'>
+																		<Button
+																			color='primary'
+																			className='mb-3'
+																			onClick={() =>
+																				handleSubmit(id)
+																			}>
+																			START NOW
+																		</Button>
+																		<FormGroup id='secheduledate'>
+																			<Input
+																				onChange={
+																					formik.handleChange
+																				}
+																				value={
+																					formik.values
+																						.secheduledate
+																				}
+																				type='date'
+																				autoComplete='current-password'
+																				isTouched={
+																					formik.touched
+																						.secheduledate
+																				}
+																				isValid={
+																					formik.isValid
+																				}
+																				onBlur={
+																					formik.handleBlur
+																				}
+																			/>
+																		</FormGroup>
+																	</div>
+																)}
 															</div>
 														</div>
 														<SubTaskQuestion id={item.id} />
