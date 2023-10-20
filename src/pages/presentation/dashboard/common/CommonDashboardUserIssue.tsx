@@ -125,7 +125,7 @@ const CommonDashboardUserIssue = () => {
 				color?: TColor;
 			};
 		}[] = [{ title, date, badge }, ...list];
-		setList(newTodos);
+		// setList(newTodos);
 	};
 
 	/**

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Calendar as DatePicker } from 'react-date-range';
 import dayjs from 'dayjs';
 import { useFormik } from 'formik';
@@ -18,26 +18,75 @@ import Modal, {
 } from '../../../../../components/bootstrap/Modal';
 import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
-import Todo, { ITodoListItem } from '../../../../../components/extras/Todo';
+import Todo from '../../../../../components/extras/Todo';
 import Label from '../../../../../components/bootstrap/forms/Label';
 import Checks, { ChecksGroup } from '../../../../../components/bootstrap/forms/Checks';
 import Badge from '../../../../../components/bootstrap/Badge';
 import Progress from '../../../../../components/bootstrap/Progress';
 import { TColor } from '../../../../../type/color-type';
 import Select from '../../../../../components/bootstrap/forms/Select';
-import data from '../../../../../common/data/dummyGoals';
+// import data from '../../../../../common/data/dummyGoals';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../store/store';
-import { Role } from '../../../../../common/data/userDummyData';
+import {
+	useCreateMinitaskMutation,
+	useGetMiniTasksBySubIdQuery,
+	useUpdateMinitaskMutation,
+} from '../../../../../features/auth/taskManagementApiSlice';
 
 interface IPropsValue {
 	subTaskId: number;
 	modalStatus: boolean;
 	setModalStatus: (status: boolean) => void;
 }
+
+interface ITodoListItem {
+	created_by: string;
+	description: string;
+	due_date: string;
+	id: string;
+	status: boolean;
+	status_name: string;
+	subtask: string;
+	title: string;
+	badge?: {
+		text?: string;
+		color?: TColor;
+	};
+	date?: string;
+}
+interface ITodoItem {
+	created_by: string;
+	description: string;
+	due_date: string;
+	id: string;
+	status: string;
+	subtask: string;
+	title: string;
+	badge?: {
+		text?: string;
+		color?: TColor;
+	};
+	date?: string;
+}
 const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) => {
 	const { id, taskId } = useParams();
+	const [list, setList] = useState<ITodoListItem[] | undefined>();
+	const [createMinitask] = useCreateMinitaskMutation({});
+	const [updateMinitask] = useUpdateMinitaskMutation({});
+	const { data, isLoading, refetch } = useGetMiniTasksBySubIdQuery(subTaskId);
+	const [modalState, setModalState] = useState('Add Task');
+	useEffect(() => {
+		if (data) {
+			const transformedData = data.map((item: ITodoItem) => ({
+				...item,
+				status: item.status !== 'todo',
+			}));
+			console.log("transformedData>>",transformedData);
+			setList(transformedData);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data, isLoading]);
+	// console.log('dataMini task>>>', data.minitasks);
 	const TODO_BADGES: {
 		[key: string]: {
 			text: string;
@@ -62,17 +111,17 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	/**
 	 * To/Do List
 	 */
-	const filteredData = data
-		.filter((i) => i.id === Number(id))
-		.map((i) =>
-			i?.task
-				?.filter((task) => task?.id === Number(taskId))
-				.map((task) => task?.subTask?.filter((subtask) => subtask.id === subTaskId)),
-		)
-		.flat(2);
+	// const filteredData = data
+	// 	.filter((i) => i.id === Number(id))
+	// 	.map((i) =>
+	// 		i?.task
+	// 			?.filter((task) => task?.id === Number(taskId))
+	// 			.map((task) => task?.subTask?.filter((subtask) => subtask.id === subTaskId)),
+	// 	)
+	// 	.flat(2);
 	// console.log('filteredData>>', filteredData);
 	// console.log('filteredData miniTasks>>', filteredData[0]?.miniTasks);
-	const [list, setList] = useState<ITodoListItem[] | undefined>(filteredData[0]?.miniTasks);
+
 	const listLength = list?.length;
 	const completeTaskLength = list?.filter((i) => i.status).length;
 
@@ -100,7 +149,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 					color?: TColor;
 				};
 			}[] = [{ title, date, badge }, ...list];
-			setList(newTodos);
+			// setList(newTodos);
 		}
 	};
 
@@ -109,75 +158,62 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	 */
 	const [date, setDate] = useState(new Date());
 
-	const validate = (values: {
-		todoTitle: string;
-		todoBadges: string;
-		productSelect: string;
-		taskTime: string;
-		marketingChannel: string;
-	}) => {
+	const validate = (values: { minitaskTitle?: string; description?: string }) => {
 		const errors: {
-			todoTitle: string;
-			productSelect: string;
-			taskTime: string;
-			marketingChannel: string;
-		} = {
-			todoTitle: '',
-			productSelect: '',
-			taskTime: '',
-			marketingChannel: '',
-		};
-		if (!values.todoTitle) {
-			errors.todoTitle = 'Required';
-		} else if (values.todoTitle.length > 40) {
-			errors.todoTitle = 'Must be 40 characters or less';
+			minitaskTitle?: string;
+			description?: string;
+		} = {};
+		if (!values.minitaskTitle) {
+			errors.minitaskTitle = 'Required';
+		} else if (values.minitaskTitle.length > 40) {
+			errors.minitaskTitle = 'Must be 40 characters or less';
 		}
-		if (!values.productSelect) {
-			errors.productSelect = 'Required';
+		if (!values.description) {
+			errors.description = 'Required';
 		}
-		if (!values.taskTime) {
-			errors.taskTime = 'Required';
-		}
-		if (!values.marketingChannel) {
-			errors.marketingChannel = 'Required';
-		}
-
 		return errors;
 	};
 	const formik = useFormik({
 		initialValues: {
-			todoTitle: '',
-			todoBadges: '',
-			productSelect: '',
-			taskTime: '',
-			marketingChannel: '',
+			minitaskTitle: '',
+			description: '',
 		},
 		validate,
+		validateOnChange: false,
 		onSubmit: (values, { resetForm }) => {
-			addTodo(values.todoTitle, date, getBadgeWithText(values.todoBadges));
+			console.log('values>>', values);
+			console.log('ite.>>', date);
+			const minitaskData = {
+				subtask_id: String(subTaskId),
+				title: values.minitaskTitle,
+				description: values.description,
+			};
+			createMinitask(minitaskData)
+				.unwrap()
+				.then((res) => {
+					console.log('Minitask create res>>', res);
+					refetch();
+				})
+				.catch((res) => {
+					console.log('Minitask create res cach>>', res);
+				});
+			// addTodo(values.todoTitle, date, getBadgeWithText(values.todoBadges));
 			setModalStatus(false);
 			resetForm({
 				values: {
-					todoTitle: '',
-					todoBadges: '',
-					productSelect: '',
-					taskTime: '',
-					marketingChannel: '',
+					minitaskTitle: '',
+					description: '',
 				},
 			});
 		},
 	});
 
-	// const { user } = useSelector((state: RootState) => state.auth);
-	// const savedValue = localStorage?.getItem('user');
-	// const localUser = savedValue ? JSON.parse(savedValue) : null;
-	// const role = user.role || localUser?.role;
 	return (
 		<Card stretch>
 			<CardHeader>
 				<CardLabel icon='AssignmentTurnedIn' iconColor='danger'>
 					<CardTitle tag='div' className='h5'>
-						Tasks
+						Mini Tasks
 					</CardTitle>
 					<CardSubTitle tag='div'>
 						<Progress
@@ -219,125 +255,42 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 							<ModalTitle id='new-todo-modal'>New Task</ModalTitle>
 						</ModalHeader>
 						<ModalBody>
-							<form className='row g-3' onSubmit={formik.handleSubmit}>
-								<div className='col-12'>
-									<FormGroup id='todoTitle' label='Title'>
-										<Input
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											isValid={formik.isValid}
-											isTouched={formik.touched.todoTitle}
-											invalidFeedback={formik.errors.todoTitle}
-											validFeedback='Looks good!'
-											value={formik.values.todoTitle}
-										/>
-									</FormGroup>
-								</div>
-								<div className='col-12'>
-									<FormGroup id='productSelect' label='Product'>
-										<Select
-											ariaLabel='allProducts'
-											placeholder='Select Product'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											isValid={formik.isValid}
-											isTouched={formik.touched.productSelect}
-											invalidFeedback={formik.errors.productSelect}
-											validFeedback='Looks good!'
-											value={formik.values.productSelect}
-											list={[
-												{ value: 'value1', text: 'Beveled Cone' },
-												{ value: 'value2', text: 'Cloud Ball' },
-												{ value: 'value3', text: 'Quadrilateral' },
-												{ value: 'value4', text: 'Bendy Rectangle' },
-												{ value: 'value5', text: 'Bendy Rectangle' },
-												{ value: 'value6', text: 'Octahedron' },
-											]}
-										/>
-									</FormGroup>
-								</div>
-								<div className='col-12'>
-									<div>
-										{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-										<Label>Due Date</Label>
-									</div>
-									<div className='text-center mt-n4'>
-										<DatePicker
-											onChange={(item) => setDate(item)}
-											date={date}
-											minDate={new Date()}
-											color={process.env.REACT_APP_PRIMARY_COLOR}
-										/>
-									</div>
-								</div>
-								<div className='col-12'>
-									<FormGroup id='taskTime' label='Task Time'>
-										<Input
-											type='time'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											isValid={formik.isValid}
-											isTouched={formik.touched.taskTime}
-											invalidFeedback={formik.errors.taskTime}
-											validFeedback='Looks good!'
-											value={formik.values.taskTime}
-										/>
-									</FormGroup>
-								</div>
-								<div className='col-12'>
-									<FormGroup id='marketingChannel' label='Marketing Channel'>
-										<Select
-											ariaLabel='allProducts'
-											placeholder='Select Marketing Channel'
-											onChange={formik.handleChange}
-											onBlur={formik.handleBlur}
-											isValid={formik.isValid}
-											isTouched={formik.touched.marketingChannel}
-											invalidFeedback={formik.errors.marketingChannel}
-											validFeedback='Looks good!'
-											value={formik.values.marketingChannel}
-											list={[
-												{ value: 'value1', text: 'MA OSSIM Team' },
-												{ value: 'value2', text: 'Code Team' },
-												{ value: 'value3', text: 'Omtanke Taem' },
-											]}
-										/>
-									</FormGroup>
-								</div>
-								<div className='col-12'>
-									<FormGroup>
-										<Label htmlFor='todoBadges'>Badge</Label>
-										<ChecksGroup isInline>
-											{Object.keys(TODO_BADGES).map((i) => (
-												<Checks
-													key={TODO_BADGES[i].text}
-													type='radio'
-													name='todoBadges'
-													id={TODO_BADGES[i].text}
-													label={
-														<Badge isLight color={TODO_BADGES[i].color}>
-															{TODO_BADGES[i].text}
-														</Badge>
-													}
-													value={TODO_BADGES[i].text}
-													onChange={formik.handleChange}
-													checked={formik.values.todoBadges}
-												/>
-											))}
-										</ChecksGroup>
-									</FormGroup>
-								</div>
-								<div className='col' />
-								<div className='col-auto'>
-									<Button
-										type='submit'
-										color='info'
-										isLight
-										isDisable={!formik.isValid && !!formik.submitCount}>
-										Add Task
-									</Button>
-								</div>
-							</form>
+							<div className='col-12'>
+								<FormGroup id='minitaskTitle' label='Title'>
+									<Input
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+										isValid={formik.isValid}
+										isTouched={formik.touched.minitaskTitle}
+										invalidFeedback={formik.errors.minitaskTitle}
+										validFeedback='Looks good!'
+										value={formik.values.minitaskTitle}
+									/>
+								</FormGroup>
+							</div>
+							<div className='col-12'>
+								<FormGroup id='description' label='Title'>
+									<Input
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+										isValid={formik.isValid}
+										isTouched={formik.touched.description}
+										invalidFeedback={formik.errors.description}
+										validFeedback='Looks good!'
+										value={formik.values.description}
+									/>
+								</FormGroup>
+							</div>
+							<div className='col' />
+							<div className='col-auto'>
+								<Button
+									type='submit'
+									color='info'
+									isLight
+									onClick={formik.handleSubmit}>
+									Add Task
+								</Button>
+							</div>
 						</ModalBody>
 					</Modal>
 				</CardActions>

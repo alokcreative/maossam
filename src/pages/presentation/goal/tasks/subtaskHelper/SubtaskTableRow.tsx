@@ -1,6 +1,12 @@
 import React, { FC, useState } from 'react';
 import Button from '../../../../../components/bootstrap/Button';
-import Modal ,{ ModalBody, ModalHeader } from '../../../../../components/bootstrap/Modal';
+import Modal, {
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+	ModalTitle,
+} from '../../../../../components/bootstrap/Modal';
+import MiniTasks from '../taskboard/MiniTasks';
 
 interface ISubtask {
 	created_at: string;
@@ -26,16 +32,15 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, view, deleteAc
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
 	// const role = localStorage?.getItem('role');
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
+	const [modalStatus, setModalStatus] = useState(false);
 	return (
 		<tr>
 			{subtask && (
 				<>
 					<th scope='row'>{id}</th>
 					<td>
-						<div>
-							{subtask.title}
-						</div>
+						<div>{subtask.title}</div>
 					</td>
 					<td>{subtask.description}</td>
 					<td>
@@ -47,33 +52,48 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, view, deleteAc
 								className='me-1'
 								onClick={() => {
 									view(subtask.id);
-									setIsModalOpen(true);
+									setEditModalStatus(true);
 								}}
 							/>
-							{/* {isModalOpen && (
+							{editModalStatus && (
 								<Modal
-									isOpen={isModalOpen}
-									setIsOpen={setIsModalOpen}
-									id='sdmsk12'
+									setIsOpen={setEditModalStatus}
+									isOpen={editModalStatus}
 									size='lg'
 									isScrollable
-									isStaticBackdrop>
-									<ModalHeader setIsOpen={setIsModalOpen} />
-
-									<ModalBody>
-										<div className='row'>
-											<div className='col-12'>
-												<div className='row g-4'>
-													<SubTask
-														subTaskId={task.id}
-														setIsModalOpen={setIsModalOpen}
-													/>
-												</div>
-											</div>
-										</div>
+									isStaticBackdrop
+									data-tour='mail-app-modal'>
+									<ModalHeader
+										className='px-4'
+										setIsOpen={setEditModalStatus}
+										style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}>
+										<ModalTitle id='project-edit'>{subtask.title}</ModalTitle>
+									</ModalHeader>
+									<ModalBody
+										className='px-4'
+										style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}>
+										<MiniTasks
+											subTaskId={subtask.id}
+											modalStatus={modalStatus}
+											setModalStatus={setModalStatus}
+										/>
 									</ModalBody>
+									<ModalFooter
+										className='px-4 pb-4'
+										style={{ filter: modalStatus ? 'blur(1px)' : 'none' }}>
+										{/* <Button
+						color='primary'
+						className='w-100'
+						type='submit'
+						onClick={() => {
+							formik.handleSubmit();
+							setEditModalStatus(false);
+						}}>
+						Save
+					</Button> */}
+									</ModalFooter>
 								</Modal>
-							)} */}
+							)}
 							<Button
 								icon='Edit'
 								color='success'
