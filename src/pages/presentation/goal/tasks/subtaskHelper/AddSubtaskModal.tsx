@@ -2,7 +2,10 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { ITask } from '../../../../../common/data/dummyGoals';
 import { Calendar as DatePicker } from 'react-date-range';
 import { useFormik } from 'formik';
-import { useCreateSubTaskMutation, useCreateSubTaskwithFAQMutation } from '../../../../../features/auth/taskManagementApiSlice';
+import {
+	useCreateSubTaskwithFAQMutation,
+	useUpdateSubTaskMutation,
+} from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
 import { format, parse } from 'date-fns';
@@ -29,6 +32,12 @@ interface IAddSubtaskProps {
 	// eslint-disable-next-line react/require-default-props
 	currTask?: ITaskProps;
 }
+interface IFaq {
+	// id: string;
+	question: string;
+	answer: string;
+}
+
 interface ITaskProps {
 	description: string;
 	due_date: string;
@@ -40,6 +49,7 @@ interface ITaskProps {
 	title: string;
 	updated_at: string;
 	user_assigned: string;
+	faqs?: IFaq[];
 }
 const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	setIsOpen,
@@ -50,10 +60,11 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	modalState,
 	currTask: task,
 }) => {
-	const [createSubTask] = useCreateSubTaskMutation();
 	const [createSubTaskwithFAQ] = useCreateSubTaskwithFAQMutation();
+	const [updatedSubTask] = useUpdateSubTaskMutation();
+
 	const navigate = useNavigate();
-	const [faqs, setFaqs] = useState([{id:'', question: '', answer: '' }]);
+	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
 	useEffect(() => {
 		if (modalState === 'Add Sub Task') {
@@ -65,16 +76,17 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			formik.setFieldValue('status', '');
 			formik.setFieldValue('expected_time', '');
 		} else if (modalState === 'Edit Sub Task') {
-			console.log('currTask>>>', task);
+			console.log('currTask>>>>>>>>>', task);
 			formik.setFieldValue('name', task?.title);
 			formik.setFieldValue('description', task?.description);
 			formik.setFieldValue('sub_id', task?.id);
 			formik.setFieldValue('expected_time', task?.expected_time);
+
 			if (task?.due_date) {
 				const dueDateObject = new Date(task?.due_date);
 				setDate(dueDateObject);
 			}
-			// setFaqs(currTask?.faq);
+			setFaqs(task?.faqs!);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [modalState, handleCloseClick]);
@@ -85,12 +97,16 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			question: '',
 			answer: '',
 			expected_time: '',
+			due_date: '',
 		},
 		validate: (values) => {
 			const errors: {
 				name?: string;
 				description?: string;
 				expected_time?: string;
+				question?: string;
+				answer?: string;
+				due_date?: string;
 			} = {};
 			if (!values.name) {
 				errors.name = 'Required';
@@ -102,19 +118,30 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				errors.expected_time = 'Required';
 			}
 
+			// if (!values.question) {
+			// 	errors.question = 'Required';
+			// }
+
+			// // if (!values.due_date) {
+			// // 	errors.due_date = 'Required';
+			// // }
+			// if (!values.answer) {
+			// 	errors.answer = 'Required';
+			// }
+
 			return errors;
 		},
 		validateOnChange: false,
 		onSubmit: (values) => {
 			setIsOpen(false);
-			console.log("values.question",values);
+			console.log('values.question', values);
 			createSubTaskwithFAQ({
 				task_id: String(id),
 				title: values.name,
 				description: values.description,
-				due_date: format(date, 'MM/dd/yyyy').toString(),
+				due_date: format(date, 'MM/dd/yyyy'),
 				expected_time: values.expected_time,
-				faq_data:faqs
+				faq_data: faqs,
 			})
 				.unwrap()
 				.then((res) => {
@@ -127,8 +154,10 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		},
 	});
+
 	const handleAddFAQ = () => {
-		setFaqs([...faqs, { question: '', answer: '', id: ''}]);
+		// const newId = generateUniqueId();
+		setFaqs([...faqs, { question: '', answer: '' }]);
 	};
 	const handleFAQChange = (index: number, field: string, value: string) => {
 		formik.setFieldValue(`faqs[${index}].${field}`, value);
@@ -151,6 +180,10 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		updatedFaqs.splice(index, 1);
 		setFaqs(updatedFaqs);
 	};
+	// function generateUniqueId() {
+	// 	const newId = faqs && faqs.length + 1; 
+	// 	return newId;
+	// }
 
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
@@ -225,7 +258,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						{faqs &&
 							faqs?.map((faq, index) => (
 								<>
-									<div key={faq.id} className='col-lg-12 d-flex'>
+									<div key={Number(index)} className='col-lg-12 d-flex'>
 										<FormGroup
 											id={`question-${index}`}
 											label={`Question ${index + 1}`}

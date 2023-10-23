@@ -31,15 +31,16 @@ interface IGoalPayload {
 	goalData: IGoal;
 }
 interface FAQ {
+	// id: string;
 	question: string;
 	answer: string;
-  }
+}
 interface ISubtaskPayload {
 	task_id: string;
 	title: string;
 	description: string;
 	due_date: string;
-    expected_time: string;
+	expected_time: string;
 	faq_data?: FAQ[];
 }
 interface IUpdateSubaskPayload {
@@ -153,8 +154,20 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
-		// create sub task
 
+		// // Get SubTask
+		// getSubTask: builder.query({
+		// 	query: (id: string) => ({
+		// 		url: `${apiEndpoints.updateSubTask}/${id}/faq/list/`,
+		// 		method: 'GET',
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 			Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+		// 		},
+		// 	}),
+		// }),
+
+		// create sub task
 		createSubTask: builder.mutation({
 			query: (payload: ISubtaskPayload) => ({
 				url: `${apiEndpoints.createSubTask}`,
@@ -236,6 +249,17 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 
+		getSubTask: builder.mutation({
+			query: (id: number) => ({
+				url: `${apiEndpoints.getSubTask}${id}/faq/list/`,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
+
 		getFaqBySubTaskId: builder.query({
 			query: (id?: number) => ({
 				url: `${apiEndpoints.faqlistBySubtask}/${id}/faq/list/`,
@@ -300,4 +324,5 @@ export const {
 	useCreateMinitaskMutation,
 	useUpdateMinitaskMutation,
 	useGetMiniTasksBySubIdQuery,
+	useGetSubTaskMutation,
 } = taskManagementApiSlice;

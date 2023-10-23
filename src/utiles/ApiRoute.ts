@@ -21,7 +21,7 @@ const apiEndpoints = {
 	createSubTask: 'task-manager/goals/tasks/sub-task/create/',
 	createSubTaskwithFAQ: 'task-manager/goals/tasks/sub-task-with-faq/create/',
 	deleteSubTask: 'task-manager/goals/tasks/sub-task/delete/',
-	updateSubTask: 'task-manager/goals/tasks/sub-task/update/',
+	updateSubTask: 'task-manager/goals/tasks/sub-task/',
 	goalList: 'task-manager/goals/list/',
 	taskList: 'task-manager/goals/tasks/list/',
 	taslistByGoalId: 'task-manager/goals/',
@@ -30,5 +30,6 @@ const apiEndpoints = {
 	createMinitask: 'task-manager/goals/tasks/sub-task/mini-task/create/',
 	updateMinitask: 'task-manager/goals/tasks/sub-task/mini-task/update/',
 	minitaskListBySubId: 'task-manager/goals/tasks/sub-task/',
+getSubTask: 'task-manager/goals/tasks/sub-task/'
 };
 export default apiEndpoints;
