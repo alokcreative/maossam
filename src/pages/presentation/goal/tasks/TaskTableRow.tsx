@@ -10,7 +10,10 @@ interface ITaskValue {
 	id: number;
 	title: string;
 	description: string;
+	status: string;
 	created_by: number;
+	expected_time: number;
+	due_date: number;
 }
 interface ITableRowProps {
 	id: number;
@@ -51,21 +54,23 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 							</span>
 						)}
 					</td>
-					<td />
 					<td>
-						{/* <span style={{ whiteSpace: 'nowrap' }}>{task.ITask.dueDate}</span> */}
+						<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>
+					</td>
+					<td>
+						<span style={{ whiteSpace: 'nowrap' }}>{task.expected_time}</span>
 					</td>
 					<td className='h5'>
-						{/* <Badge
+						<Badge
 							color={
-								(task.ITask.status === 'Hold' && 'danger') ||
-								(task.ITask.status === 'Todo' && 'secondary') ||
-								(task.ITask.status === 'InProgress' && 'warning') ||
-								(task.ITask.status === 'Done' && 'success') ||
+								(task.status === 'Hold' && 'danger') ||
+								(task.status === 'Todo' && 'secondary') ||
+								(task.status === 'InProgress' && 'warning') ||
+								(task.status === 'Done' && 'success') ||
 								'info'
 							}>
-							{task.ITask.status}
-						</Badge> */}
+							{task.status}
+						</Badge>
 					</td>
 					<td>
 						<div className='d-flex flex-nowrap'>

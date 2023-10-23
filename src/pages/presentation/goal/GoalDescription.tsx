@@ -39,6 +39,8 @@ import { toast } from 'react-toastify';
 import SubTask from './tasks/SubTask';
 import TableRow from '../../../helpers/TableRow';
 import TaskTableRow from './tasks/TaskTableRow';
+import { Calendar as DatePicker } from 'react-date-range';
+import Label from '../../../components/bootstrap/forms/Label';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -52,7 +54,7 @@ interface ITask {
 	id: number;
 	title?: string;
 	description?: string;
-	status?: string;
+	// status?: string;
 	dueDate?: string | undefined;
 	category?: string;
 	expectedTime?: string;
@@ -73,7 +75,7 @@ interface ITaskProps {
 	name: string;
 	description: string;
 	category: string;
-	expectedTime: string;
+	expected_time: string;
 	status: string;
 	assigned?: string | undefined;
 	edit: string;
@@ -103,6 +105,8 @@ const GoalDescription: FC = () => {
 	});
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [taskList, setTaskList] = useState(data && data.tasks);
+	const [date, setDate] = useState<Date>(new Date());
+
 	// const handleDelete = (id: number) => {
 	// 	const newGoals = goalList.filter((i) => i.id !== id);
 	// 	setGoalList(newGoals);
@@ -129,7 +133,7 @@ const GoalDescription: FC = () => {
 			dueDate: '',
 			category: '',
 			expectedTime: '',
-			status: '',
+			// status: '',
 		},
 		enableReinitialize: true,
 		onSubmit: (values) => {
@@ -138,6 +142,9 @@ const GoalDescription: FC = () => {
 					title: values.name,
 					description: values.description,
 					goal_id: String(id),
+					due_date: date.toLocaleDateString(),
+					expected_time: values.expectedTime,
+					// status: values.status,
 				})
 					.unwrap()
 					.then((res) => {
@@ -153,6 +160,9 @@ const GoalDescription: FC = () => {
 				const taskData = {
 					title: values.name,
 					description: values.description,
+					due_date: date.toLocaleDateString(),
+					expected_time: values.expectedTime,
+					// status: values.status,
 				};
 				updateTask({
 					taskData,
@@ -210,7 +220,7 @@ const GoalDescription: FC = () => {
 		formiknewTask.setFieldValue('dueDate', '');
 		formiknewTask.setFieldValue('category', '');
 		formiknewTask.setFieldValue('status', '');
-		formiknewTask.setFieldValue('expectedTime', '');
+		formiknewTask.setFieldValue('expected_time', '');
 		setModalState('Add Task');
 		setIsOpen(true);
 	};
@@ -385,11 +395,20 @@ const GoalDescription: FC = () => {
 								/>
 							</FormGroup>
 							<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
-								<Input
-									type='date'
-									onChange={formiknewTask.handleChange}
-									value={formiknewTask.values.dueDate}
-								/>
+								<div className='col-6'>
+									<div>
+									{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+										<Label>Due Date</Label>
+									</div>
+									<div className='text-center mt-n4'>
+										<DatePicker
+											onChange={(item) => setDate(item)}
+											date={date}
+											minDate={new Date()}
+											color={process.env.REACT_APP_PRIMARY_COLOR}
+										/>
+									</div>
+								</div>
 							</FormGroup>
 							{/* <FormGroup id='category' label='Enter Category'>
 									<Input
@@ -399,14 +418,18 @@ const GoalDescription: FC = () => {
 									/>
 								</FormGroup> */}
 
-							<FormGroup id='expectedTime' label='Expected Time' className='col-lg-6'>
+							<FormGroup
+								id='expected_time'
+								label='Expected Time'
+								className='col-lg-6'>
 								<Input
-									type='date'
+									type='time'
+									name='expected_time'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.expectedTime}
 								/>
 							</FormGroup>
-							<FormGroup id='status' label='Status' className='col-lg-6'>
+							{/* <FormGroup id='status' label='Status' className='col-lg-6'>
 								<Select
 									ariaLabel='Default select example'
 									placeholder='Select One...'
@@ -420,7 +443,7 @@ const GoalDescription: FC = () => {
 										{ value: 'Hold', text: 'Hold' },
 									]}
 								/>
-							</FormGroup>
+							</FormGroup> */}
 						</div>
 					</ModalBody>
 					<ModalFooter>

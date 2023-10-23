@@ -6,6 +6,9 @@ interface ICreateTaskProps {
 	goal_id: string;
 	description: string;
 	title: string;
+	due_date: string;
+	expected_time: string;
+	// status: string;
 }
 interface IUpdateTaskProps {
 	taskData: { description: string; title: string };
@@ -14,7 +17,8 @@ interface IUpdateTaskProps {
 interface IGoal {
 	title: string;
 	description: string;
-	// date: string;
+	due_date: string;
+	expected_time: string;
 	// status: string;
 	category: string;
 }
