@@ -49,6 +49,10 @@ import Modal, {
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
 import Select from '../../../components/bootstrap/forms/Select';
+import { Calendar as DatePicker } from 'react-date-range';
+import Label from '../../../components/bootstrap/forms/Label';
+import { format } from 'date-fns';
+import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -83,8 +87,9 @@ interface IGoalProps {
 	id: number;
 	title: string;
 	description: string;
-	date?: string;
-	status?: string;
+	due_date?: string;
+	expected_time?: string;
+	// status?: string;
 	category?: string;
 	created_at?: string;
 	created_by?: string;
@@ -108,6 +113,7 @@ const Goals: FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [goalId, setGoalId] = useState<number>();
 	const [showMore, setShowMore] = useState<boolean>(false);
+	const [date, setDate] = useState<Date>(new Date());
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -119,7 +125,7 @@ const Goals: FC = () => {
 				setGoalList(data);
 			} else {
 				const tempdata = data?.filter(
-					(item: IGoalProps) => logUserId == item.created_by || item.created_by == '1',
+					(item: IGoalProps) => logUserId === item.created_by || item.created_by === '1',
 				);
 				setGoalList(tempdata);
 			}
@@ -130,8 +136,9 @@ const Goals: FC = () => {
 		initialValues: {
 			name: '',
 			description: '',
-			date: '',
-			status: '',
+			due_date: '',
+			expected_time: '',
+			// status: '',
 			category: '',
 		},
 
@@ -140,8 +147,9 @@ const Goals: FC = () => {
 				// id: string;
 				name?: string;
 				description?: string;
-				date?: string;
-				status?: string;
+				due_date?: string;
+				expected_time?: string;
+				// status?: string;
 				category?: string;
 			} = {};
 
@@ -152,13 +160,16 @@ const Goals: FC = () => {
 			if (!values.description) {
 				errors.description = 'Required';
 			}
-			if (!values.date) {
-				errors.date = 'Required';
+			// if (!values.due_date) {
+			// 	errors.due_date = 'Required';
+			// }
+			if (!values.expected_time) {
+				errors.expected_time = 'Required';
 			}
 
-			if (!values.status) {
-				errors.status = 'Required';
-			}
+			// if (!values.status) {
+			// 	errors.status = 'Required';
+			// }
 			if (!values.category) {
 				errors.category = 'Required';
 			}
@@ -166,10 +177,12 @@ const Goals: FC = () => {
 		},
 
 		onSubmit: (values, { resetForm }) => {
+			console.log('Values>>>>>>>>>>>>>>>>>>>>>>>>>>>', values);
 			const goalData = new FormData();
 			goalData.append('title', values.name);
 			goalData.append('description', values.description);
-			// goalData.append('date', values.date);
+			goalData.append('due_date', format(date, 'MM/dd/yyyy'));
+			goalData.append('expected_time', values.expected_time);
 			// goalData.append('status', values.status);
 			goalData.append('category', values.category);
 
@@ -178,6 +191,9 @@ const Goals: FC = () => {
 					title: values.name,
 					description: values.description,
 					category: values.category,
+					due_date: format(date, 'MM/dd/yyyy'),
+					expected_time: values.expected_time,
+					// status: values.status,
 				}).then((res) => {
 					setIsOpen(false);
 					refetch();
@@ -198,8 +214,9 @@ const Goals: FC = () => {
 			id: '',
 			name: '',
 			description: '',
-			date: '',
-			status: '',
+			due_date: '',
+			expected_time: '',
+			// status: '',
 			category: '',
 		},
 		enableReinitialize: true,
@@ -207,8 +224,9 @@ const Goals: FC = () => {
 			const errors: {
 				name?: string;
 				description?: string;
-				date?: string;
-				status?: string;
+				due_date?: string;
+				expected_time?: string;
+				// status?: string;
 				category?: string;
 			} = {};
 
@@ -219,13 +237,16 @@ const Goals: FC = () => {
 			if (!values.description) {
 				errors.description = 'Required';
 			}
-			if (!values.date) {
-				errors.date = 'Required';
+			if (!values.due_date) {
+				errors.due_date = 'Required';
+			}
+			if (!values.expected_time) {
+				errors.expected_time = 'Required';
 			}
 
-			if (!values.status) {
-				errors.status = 'Required';
-			}
+			// if (!values.status) {
+			// 	errors.status = 'Required';
+			// }
 			if (!values.category) {
 				errors.category = 'Required';
 			}
@@ -242,6 +263,9 @@ const Goals: FC = () => {
 				title: values.name,
 				description: values.description,
 				category: values.category,
+				due_date: format(date, 'MM/dd/yyyy'),
+				expected_time: values.expected_time,
+				// status: values.status,
 			};
 
 			updateGoal({ id: updateGoalForm.values.id, goalData })
@@ -254,8 +278,8 @@ const Goals: FC = () => {
 					}
 				})
 				.catch((res) => {
-					// console.log(res.data.detail[0]);
-					toast(res.data.detail[0]);
+					console.log(res);
+					// toast(res.data.detail[0]);
 				});
 
 			// showNotification(
@@ -290,18 +314,47 @@ const Goals: FC = () => {
 		setIsOpen(true);
 
 		const goal = data.find((i: IGoalProps) => i.id === id);
+		// console.log('goal>>>',   categoryStringValue[goal.category]);
+		// const formatedDate = formatDate(goal &&  goal?.date)
+		// let category;
+		// if (goal?.category === 'New Category2') {
+		// 	category = 2;
+		// }
+
+
+
 		updateGoalForm.setFieldValue('id', goal?.id);
 		updateGoalForm.setFieldValue('name', goal?.title);
 		updateGoalForm.setFieldValue('description', goal?.description);
-		updateGoalForm.setFieldValue('date', goal?.date);
-		updateGoalForm.setFieldValue('status', goal?.status);
-		updateGoalForm.setFieldValue('category', goal?.category);
+		updateGoalForm.setFieldValue('due_date', goal?.due_date);
+		updateGoalForm.setFieldValue('expected_time', goal?.expected_time);
+		// updateGoalForm.setFieldValue('status', goal?.status);
+		updateGoalForm.setFieldValue('category', categoryStringValue[goal.category]);
 	};
 
 	const handleCloseClick = () => {
 		setIsOpen(false);
 		// navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
+
+	// function formatDateToLocalString(dateString: string) {
+	// 	const parts = dateString.split('-'); // Split the date into year, month, and day
+	// 	if (parts.length === 3) {
+	// 		const [year, month, day] = parts;
+	// 		return `${month}/${day}/${year}`; // Rearrange and join in MM-DD-YYYY format
+	// 	}
+	// 	return dateString;
+	// }
+
+	// function formatDate(dateString: string) {
+	// 	console.log("dateString>>>>",dateString)
+	// 	const parts = dateString.split('-'); // Split the date into year, month, and day
+	// 	if (parts.length === 3) {
+	// 		const [year, month, day] = parts;
+	// 		return `${year}-${month}-${day}`; // Rearrange and join in MM-DD-YYYY format
+	// 	}
+	// 	return dateString;
+	// }
 
 	return (
 		<PageWrapper>
@@ -350,9 +403,9 @@ const Goals: FC = () => {
 										goalList.map((item: IGoalProps) => (
 											<Item
 												key={item.id}
-												id={item.id}
-												name={item.title}
-												attributes={item.description}
+												id={item?.id}
+												name={item?.title}
+												attributes={item?.description}
 												timeline={item.category!}
 											/>
 										))}
@@ -427,15 +480,8 @@ const Goals: FC = () => {
 																	<th scope='row'>{index + 1}</th>
 																	<th>{i.title}</th>
 																	<td>{i.description}</td>
-																	<td>
-																		<span
-																			style={{
-																				whiteSpace:
-																					'nowrap',
-																			}}>
-																			{i.timeline}
-																		</span>
-																	</td>
+																	<td>{i.due_date}</td>
+
 																	<td className='h5'>
 																		<Badge
 																			color={
@@ -477,7 +523,7 @@ const Goals: FC = () => {
 																			/>
 																			{Number(logUserId) ===
 																				i.created_by ||
-																				logUserId == '1' ? (
+																			logUserId === '1' ? (
 																				<>
 																					<Button
 																						icon='Edit'
@@ -585,10 +631,22 @@ const Goals: FC = () => {
 								isTouched={formikNewGoal.touched.description}
 							/>
 						</FormGroup>
-						<FormGroup id='date' label='Date' className='col-lg-6'>
+						<FormGroup id='due_date' label='Due Date' className='col-lg-6'>
+							<div>
+								<div className='text-center mt-n4'>
+									<DatePicker
+										onChange={(item) => setDate(item)}
+										date={date}
+										minDate={new Date()}
+										color={process.env.REACT_APP_PRIMARY_COLOR}
+									/>
+								</div>
+							</div>
+						</FormGroup>
+						<FormGroup id='expectedTime' label=' Expected Time' className='col-lg-6'>
 							<Input
-								type='date'
-								name='date'
+								type='time'
+								name='expected_time'
 								onChange={
 									modalHeader === 'New Goal'
 										? formikNewGoal.handleChange
@@ -596,16 +654,16 @@ const Goals: FC = () => {
 								}
 								value={
 									modalHeader === 'New Goal'
-										? formikNewGoal.values.date
-										: updateGoalForm.values.date
+										? formikNewGoal.values.expected_time
+										: updateGoalForm.values.expected_time
 								}
-								invalidFeedback={formikNewGoal.errors.date}
+								invalidFeedback={formikNewGoal.errors.expected_time}
 								isValid={formikNewGoal.isValid}
-								isTouched={formikNewGoal.touched.date}
+								isTouched={formikNewGoal.touched.expected_time}
 							/>
 						</FormGroup>
 
-						<FormGroup id='status' label='Status' className='col-lg-6'>
+						{/* <FormGroup id='status' label='Status' className='col-lg-6'>
 							<Select
 								ariaLabel='Default select Status'
 								placeholder='Select One...'
@@ -631,25 +689,20 @@ const Goals: FC = () => {
 								isValid={formikNewGoal.isValid}
 								isTouched={formikNewGoal.touched.status}
 							/>
-						</FormGroup>
+						</FormGroup> */}
 
 						<FormGroup id='category' label='Category' className='col-lg-6'>
 							<Select
 								ariaLabel='Default select Category'
 								placeholder='Select One...'
 								name='category'
-								list={[
-									{ value: '4', text: 'Category4' },
-									{ value: '2', text: 'New Category2' },
-									{ value: '1', text: 'Category1' },
-									{ value: '3', text: 'Category3' },
-								]}
+								list={categoryEnum}
 								onChange={
 									modalHeader === 'New Goal'
 										? formikNewGoal.handleChange
 										: updateGoalForm.handleChange
 								}
-								value={
+								value={  
 									modalHeader === 'New Goal'
 										? formikNewGoal.values.category
 										: updateGoalForm.values.category

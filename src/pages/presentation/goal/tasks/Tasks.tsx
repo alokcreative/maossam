@@ -41,6 +41,8 @@ import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
 import { useEffectOnce } from 'react-use';
 import Loading from '../../../../common/other/Loading';
 import { toast } from 'react-toastify';
+import { Calendar as DatePicker } from 'react-date-range';
+import { format } from 'date-fns';
 
 interface IGoalValueData {
 	category: string;
@@ -63,6 +65,8 @@ interface ITaskValue {
 	title: string;
 	updated_at: string;
 	created_by: string;
+	expected_time: string;
+	due_date: string;
 }
 const Tasks: FC = () => {
 	const { goalId, newTask } = useParams();
@@ -74,6 +78,7 @@ const Tasks: FC = () => {
 	const { data: goalsData, isLoading: loading } = useGetGoalsQuery({
 		fixedCacheKey: 'listTask',
 	});
+	const [date, setDate] = useState<Date>(new Date());
 
 	const { data, isLoading, isSuccess, refetch } = useGetTaskListQuery({});
 	const [taskList, setTaskList] = useState<ITaskValue[]>();
@@ -136,7 +141,7 @@ const Tasks: FC = () => {
 			dueDate: '',
 			category: '',
 			expectedTime: '',
-			status: '',
+			// status: '',
 			goalId: '',
 			taskId: '',
 		},
@@ -146,6 +151,9 @@ const Tasks: FC = () => {
 				createTask({
 					title: values.name,
 					description: values.description,
+					due_date: format(date, 'MM/dd/yyyy'),
+					expected_time: values.expectedTime,
+					// status: values.status,
 					goal_id: String(goalId || values.goalId),
 				})
 					.unwrap()
@@ -160,6 +168,9 @@ const Tasks: FC = () => {
 				const taskData = {
 					title: values.name,
 					description: values.description,
+					due_date: format(date, 'MM/dd/yyyy'),
+					expected_time: values.expectedTime,
+					// status: values.status,
 				};
 				updateTask({
 					taskData,
@@ -200,10 +211,9 @@ const Tasks: FC = () => {
 			formiknewTask.setFieldValue('name', task[0]?.title);
 			formiknewTask.setFieldValue('description', task[0]?.description);
 			formiknewTask.setFieldValue('taskId', task[0]?.id);
-			// formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
-			// formiknewTask.setFieldValue('category', task[0]?.category);
+			formiknewTask.setFieldValue('dueDate', task[0]?.due_date);
 			// formiknewTask.setFieldValue('status', task[0]?.status);
-			// formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
+			formiknewTask.setFieldValue('expectedTime', task[0]?.expected_time);
 		}
 		setIsOpen(true);
 	};
@@ -359,21 +369,27 @@ const Tasks: FC = () => {
 								value={formiknewTask.values.description}
 							/>
 						</FormGroup>
-						<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
-							<Input
-								type='date'
-								onChange={formiknewTask.handleChange}
-								value={formiknewTask.values.dueDate}
-							/>
-						</FormGroup>
 						<FormGroup id='expectedTime' label='Expected Time' className='col-lg-6'>
 							<Input
-								type='date'
+								type='time'
 								onChange={formiknewTask.handleChange}
 								value={formiknewTask.values.expectedTime}
 							/>
 						</FormGroup>
-						<FormGroup id='status' label='Status' className='col-lg-6'>
+						<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
+							<div>
+								<div className='text-center mt-n4'>
+									<DatePicker
+										onChange={(item) => setDate(item)}
+										date={date}
+										minDate={new Date()}
+										color={process.env.REACT_APP_PRIMARY_COLOR}
+									/>
+								</div>
+							</div>
+						</FormGroup>
+
+						{/* <FormGroup id='status' label='Status' className='col-lg-6'>
 							<Select
 								ariaLabel='Default select example'
 								placeholder='Select One...'
@@ -387,7 +403,7 @@ const Tasks: FC = () => {
 									{ value: 'Hold', text: 'Hold' },
 								]}
 							/>
-						</FormGroup>
+						</FormGroup> */}
 					</div>
 				</ModalBody>
 				<ModalFooter>
