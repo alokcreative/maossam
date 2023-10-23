@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import PageWrapper from '../../../../../layout/PageWrapper/PageWrapper';
@@ -13,11 +13,15 @@ import useDarkMode from '../../../../../hooks/useDarkMode';
 import { TColumnsData } from '../../../project-management/type/types';
 import Board from '../../../project-management/component/Board';
 import Button from '../../../../../components/bootstrap/Button';
-import { ISubTask } from '../../../../../common/data/dummyGoals';
+import { ISubTask, ITask } from '../../../../../common/data/dummyGoals';
 import SubTaskBoard from './SubTaskBoard';
-import { useCreateSubTaskMutation, useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
+import {
+	useCreateSubTaskMutation,
+	useGetSubTaskByTaskIdQuery,
+} from '../../../../../features/auth/taskManagementApiSlice';
 import Modal, {
 	ModalBody,
+	ModalFooter,
 	ModalHeader,
 	ModalTitle,
 } from '../../../../../components/bootstrap/Modal';
@@ -25,6 +29,10 @@ import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
 import { useFormik } from 'formik';
 import { useEffectOnce } from 'react-use';
+import { CardFooterLeft, CardFooterRight } from '../../../../../components/bootstrap/Card';
+import Textarea from '../../../../../components/bootstrap/forms/Textarea';
+import Select from '../../../../../components/bootstrap/forms/Select';
+import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 
 interface ICardsInColumn {
 	[key: string]: ISubtask[];
@@ -43,7 +51,8 @@ const TaskManagement = () => {
 	const { darkModeStatus } = useDarkMode();
 	const { taskId: id, addNew } = useParams();
 	const [isOpen, setIsOpen] = useState(false);
-	console.log('addNew', addNew);
+	const logUserId = localStorage.getItem('UserId');
+	const role = localStorage.getItem('role');
 	useEffectOnce(() => {
 		if (addNew === 'add-sub-task') {
 			setIsOpen(true);
@@ -54,9 +63,10 @@ const TaskManagement = () => {
 	});
 
 	const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError , refetch } = useGetSubTaskByTaskIdQuery(Number(id!));
+	const { data, isLoading, isSuccess, refetch } = useGetSubTaskByTaskIdQuery(Number(id!));
 	const [cardsData, setCardsData] = useState<ISubtask[]>(data && data.subtasks);
 	const [createSubTask] = useCreateSubTaskMutation();
+	const [modalState, setModalState] = useState('Add Sub Task');
 	const columnsData: TColumnsData = {
 		column1: {
 			id: 'column1',
@@ -89,31 +99,8 @@ const TaskManagement = () => {
 			icon: 'DirectionsRun',
 		},
 	};
-	// function getSubtasksByGoalAndTaskId(goalId: number, task_Id: number) {
-	// 	// Find the goal with the specified id
-	// 	const goal = data.find((item) => item.id === goalId);
-
-	// 	if (!goal || !goal.task) {
-	// 		// console.log('Goal not found or no tasks for this goal.');
-	// 		return [];
-	// 	}
-
-	// 	// Find the task with the specified id within the goal
-	// 	const task = goal.task.find((tempTask) => tempTask.id === task_Id);
-
-	// 	if (!task || !task.subTask) {
-	// 		// console.log('Task not found or no subtasks for this task.');
-	// 		return [];
-	// 	}
-
-	// 	// Return the subtasks for the specified task
-	// 	setCardsData(task.subTask);
-	// 	return task.subTask;
-	// }
 
 	useEffect(() => {
-		// const subtasks = getSubtasksByGoalAndTaskId(Number(id), Number(taskId));
-		// console.log('Subtasks:', subtasks);
 		if (data) setCardsData(data.subtasks);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, data]);
@@ -197,30 +184,13 @@ const TaskManagement = () => {
 	const handleBackClick = () => {
 		navigate(-1);
 	};
-	const formik = useFormik({
-		initialValues: {
-			title: '',
-			description: '',
-			question: '',
-			answer: '',
-		},
-		onSubmit: (values) => {
-			setIsOpen(false);
-			createSubTask({
-				task_id: String(id),
-				title: values.title,
-				description: values.description,
-			}).then((res) => {
-				// console.log('Subtask Created', res);
-				refetch();
-			});
-			navigate(`../${pagesMenu.subTasks.path}/${id}`);
-		},
-	});
 	const handleCloseClick = () => {
 		setIsOpen(false);
+		setModalState('');
 		navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
+
+	
 	return (
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
@@ -230,6 +200,15 @@ const TaskManagement = () => {
 					</Button>
 				</SubHeaderLeft>
 				<SubHeaderRight>
+					{data &&
+						(Number(logUserId) === data.subtasks[0].created_by ||
+							role === 'superadmin') && (
+							<Button color='info' onClick={() => setIsOpen(true)}>
+								Add Sub task
+							</Button>
+						)}
+
+					{/* Remove after test */}
 					<Button color='info' onClick={() => setIsOpen(true)}>
 						Add Sub task
 					</Button>
@@ -254,74 +233,15 @@ const TaskManagement = () => {
 			) : (
 				<div>Error!</div>
 			)}
-			<Modal
+
+			<AddSubtaskModal
 				setIsOpen={setIsOpen}
+				id={id}
+				refetch={refetch}
 				isOpen={isOpen}
-				titleId='new-sub-task-modal'
-				isStaticBackdrop>
-				<ModalHeader setIsOpen={handleCloseClick}>
-					<ModalTitle id='new-todo-modal'>New Sub Task</ModalTitle>
-				</ModalHeader>
-				<ModalBody>
-					<div className='col-12'>
-						<FormGroup id='title' label='Title'>
-							<Input
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								isValid={formik.isValid}
-								isTouched={formik.touched.title}
-								invalidFeedback={formik.errors.title}
-								validFeedback='Looks good!'
-								value={formik.values.title}
-							/>
-						</FormGroup>
-					</div>
-					<div className='col-12'>
-						<FormGroup id='description' label='Description'>
-							<Input
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								isValid={formik.isValid}
-								isTouched={formik.touched.description}
-								invalidFeedback={formik.errors.description}
-								validFeedback='Looks good!'
-								value={formik.values.description}
-							/>
-						</FormGroup>
-					</div>
-					<div className='col-12'>
-						<FormGroup id='question' label='Question'>
-							<Input
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								isValid={formik.isValid}
-								isTouched={formik.touched.question}
-								invalidFeedback={formik.errors.question}
-								validFeedback='Looks good!'
-								value={formik.values.question}
-							/>
-						</FormGroup>
-					</div>
-					<div className='col-12'>
-						<FormGroup id='answer' label='Answer'>
-							<Input
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								isValid={formik.isValid}
-								isTouched={formik.touched.answer}
-								invalidFeedback={formik.errors.answer}
-								validFeedback='Looks good!'
-								value={formik.values.answer}
-							/>
-						</FormGroup>
-					</div>
-					<div className='col-12 mt-2 d-flex align-items-center justify-content-center'>
-						<Button type='submit' color='info' isLight onClick={formik.handleSubmit}>
-							Add Task
-						</Button>
-					</div>
-				</ModalBody>
-			</Modal>
+				handleCloseClick={handleCloseClick}
+				modalState={modalState}
+			/>
 		</PageWrapper>
 	);
 };

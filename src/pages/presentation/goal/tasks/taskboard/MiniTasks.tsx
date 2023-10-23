@@ -77,7 +77,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	const [modalState, setModalState] = useState('Add Task');
 	useEffect(() => {
 		if (data) {
-			const transformedData = data.map((item: ITodoItem) => ({
+			const transformedData = data.minitasks.map((item: ITodoItem) => ({
 				...item,
 				status: item.status !== 'todo',
 			}));
@@ -181,8 +181,6 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 		validate,
 		validateOnChange: false,
 		onSubmit: (values, { resetForm }) => {
-			console.log('values>>', values);
-			console.log('ite.>>', date);
 			const minitaskData = {
 				subtask_id: String(subTaskId),
 				title: values.minitaskTitle,
@@ -295,7 +293,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody>{list && <Todo list={list} setList={setList} />}</CardBody>
+			<CardBody>{list && <Todo list={list} setList={setList} refetch={refetch}/>}</CardBody>
 		</Card>
 	);
 };

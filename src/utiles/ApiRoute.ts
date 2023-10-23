@@ -19,6 +19,7 @@ const apiEndpoints = {
 	deleteTask: 'task-manager/goals/tasks/delete/',
 	updateTask: 'task-manager/goals/tasks/update/',
 	createSubTask: 'task-manager/goals/tasks/sub-task/create/',
+	createSubTaskwithFAQ: 'task-manager/goals/tasks/sub-task-with-faq/create/',
 	deleteSubTask: 'task-manager/goals/tasks/sub-task/delete/',
 	updateSubTask: 'task-manager/goals/tasks/sub-task/update/',
 	goalList: 'task-manager/goals/list/',

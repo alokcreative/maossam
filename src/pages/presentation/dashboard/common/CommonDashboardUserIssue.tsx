@@ -345,7 +345,7 @@ const CommonDashboardUserIssue = () => {
 				</CardActions>
 			</CardHeader>
 			<CardBody >
-				<Todo list={list} setList={setList} />
+				<Todo list={list} setList={setList} refetch={()=>{}}/>
 			</CardBody>
 		</Card>
 	);

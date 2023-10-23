@@ -22,11 +22,10 @@ interface ITableRowProps {
 	id: number;
 	subtask: ISubtask;
 	edit(...args: unknown[]): unknown;
-	view(...args: unknown[]): unknown;
 	deleteAction(...args: unknown[]): unknown;
 }
 
-const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, view, deleteAction }) => {
+const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }) => {
 	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
@@ -51,7 +50,7 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, view, deleteAc
 								isLight
 								className='me-1'
 								onClick={() => {
-									view(subtask.id);
+									// view(subtask.id);
 									setEditModalStatus(true);
 								}}
 							/>

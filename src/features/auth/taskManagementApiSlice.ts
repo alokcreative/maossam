@@ -27,10 +27,17 @@ interface IGoalPayload {
 	id: string;
 	goalData: IGoal;
 }
+interface FAQ {
+	question: string;
+	answer: string;
+  }
 interface ISubtaskPayload {
 	task_id: string;
 	title: string;
 	description: string;
+	due_date: string;
+    expected_time: string;
+	faq_data?: FAQ[];
 }
 interface IUpdateSubaskPayload {
 	taskData: { task_id: string; description: string; title: string };
@@ -157,6 +164,18 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: [`Goal`],
 		}),
+		createSubTaskwithFAQ: builder.mutation({
+			query: (payload: ISubtaskPayload) => ({
+				url: `${apiEndpoints.createSubTaskwithFAQ}`,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
 		// Delete sub task
 		deleteSubTask: builder.mutation({
 			query: (id: number) => ({
@@ -272,6 +291,7 @@ export const {
 	useUpdateTaskMutation,
 	useGetFaqBySubTaskIdQuery,
 	useCreateSubTaskMutation,
+	useCreateSubTaskwithFAQMutation,
 	useUpdateSubTaskMutation,
 	useDeleteSubTaskMutation,
 	useCreateMinitaskMutation,

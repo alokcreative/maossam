@@ -11,6 +11,7 @@ import { TColor } from '../../type/color-type';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { Role } from '../../common/data/userDummyData';
+import { useUpdateMinitaskMutation } from '../../features/auth/taskManagementApiSlice';
 
 /**
  * Prop Types
@@ -71,12 +72,30 @@ interface ITodoItemProps {
 	list: ITodoListItem[];
 	setList(...args: unknown[]): unknown;
 	index: number;
+	refetch(...args: unknown[]): unknown;
 }
 export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 	({ index, list, setList, ...props }, ref) => {
 		const itemData = list[index];
+		const [updateMinitask] = useUpdateMinitaskMutation({});
+		const handleChange = (_index: number, id: number, status: boolean | string) => {
+			// console.log('_index>>', _index);
+			// console.log('id>>', id);
+			// console.log('status>>', status);
+			if (status === false) {
+				const miniTaskData = {
+					status: 'done',
+				};
+				updateMinitask({ miniTaskId: String(id), miniTaskData }).then(()=>{
 
-		const handleChange = (_index: number) => {
+				})
+			} else {
+				const miniTaskData = {
+					status: 'todo',
+				};
+				updateMinitask({ miniTaskId: String(id), miniTaskData });
+			}
+
 			const newTodos = [...list];
 			newTodos[_index].status = !newTodos[_index].status;
 			setList(newTodos);
@@ -107,7 +126,9 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 				<div className='todo-check'>
 					<Checks
 						checked={list[index].status}
-						onChange={() => handleChange(index)}
+						onChange={() =>
+							handleChange(index, Number(itemData.id), Boolean(list[index].status))
+						}
 						ariaLabel={itemData.title as string}
 					/>
 				</div>
@@ -176,14 +197,15 @@ export interface ITodoProps {
 	list: ITodoListItem[];
 	className?: string;
 	setList(...args: unknown[]): unknown;
+	refetch(...args: unknown[]): unknown;
 }
 const Todo = forwardRef<HTMLDivElement, ITodoProps>(
-	({ className, list, setList, ...props }, ref) => {
+	({refetch, className, list, setList, ...props }, ref) => {
 		return (
 			// eslint-disable-next-line react/jsx-props-no-spreading
 			<div ref={ref} className={classNames('todo', className)} {...props}>
 				{list.map((i, index) => (
-					<TodoItem key={i.id} index={index} list={list} setList={setList} />
+					<TodoItem key={i.id} index={index} list={list} setList={setList} refetch={refetch}/>
 				))}
 			</div>
 		);

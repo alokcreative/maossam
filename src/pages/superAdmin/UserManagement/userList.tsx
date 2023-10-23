@@ -255,9 +255,9 @@ const UserList = () => {
 			if (!values.password) {
 				errors.password = 'Required';
 			}
-			if (!values.avatar) {
-				errors.avatar = 'Required'; // Add error message for the avatar field
-			}
+			// if (!values.avatar) {
+			// 	errors.avatar = 'Required'; // Add error message for the avatar field
+			// }
 
 			return errors;
 		},
@@ -289,26 +289,9 @@ const UserList = () => {
 					refetch();
 				});
 			}
-			console.log('userData>>>>>>>>>>>>>>', userData.values);
-
+			setSrc(UserImage);
 			setIsOpen(false);
 			resetForm();
-			// const user: IUserProps = {
-			// 	// id: (userData.length + 1).toString(),
-			// 	first_name: values.first_name,
-			// 	last_name: values.last_name,
-			// 	email: values.email,
-			// 	phone_number: values.phone_number,
-			// 	company_name: values.company_name,
-			// 	country: values.country,
-			// 	state: values.state,
-			// 	gender: values.gender,
-			// 	password: values.password,
-			// };
-			// setUserData([...userData, user]);
-			// createProfile()
-
-			// console.log(values.id.toString());
 		},
 	});
 
@@ -426,9 +409,9 @@ const UserList = () => {
 		const file = event.target.files[0];
 
 		// updateUserForm.setFieldValue('avatar', file);
-		console.log('file >>', file);
+		// console.log('file >>', file);
 
-		setAvatar(file);
+		// setAvatar(file);
 
 		if (file.type.includes('png') || file.type.includes('jpeg')) {
 			setAvatar(file);
@@ -522,8 +505,6 @@ const UserList = () => {
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
 									{modalTitle === 'New User' ? (
-										<Avatar src={UserImage} color='storybook' />
-									) : avatar instanceof File ? (
 										<Avatar src={src} color='storybook' />
 									) : (
 										<Avatar src={avatar} color='storybook' />
@@ -539,7 +520,7 @@ const UserList = () => {
 												accept='image/*'
 												onChange={handleImageChange}
 												invalidFeedback={formik.errors.avatar}
-												isValid={formik.isValid}
+												// isValid={formik.isValid}
 												isTouched={formik.touched.avatar}
 											/>
 										</div>
