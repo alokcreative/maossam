@@ -125,7 +125,7 @@ const Goals: FC = () => {
 				setGoalList(data);
 			} else {
 				const tempdata = data?.filter(
-					(item: IGoalProps) => logUserId === item.created_by || item.created_by === '1',
+					(item: IGoalProps) => logUserId == item.created_by || item.created_by == '1',
 				);
 				setGoalList(tempdata);
 			}
@@ -177,7 +177,6 @@ const Goals: FC = () => {
 		},
 
 		onSubmit: (values, { resetForm }) => {
-			console.log('Values>>>>>>>>>>>>>>>>>>>>>>>>>>>', values);
 			const goalData = new FormData();
 			goalData.append('title', values.name);
 			goalData.append('description', values.description);

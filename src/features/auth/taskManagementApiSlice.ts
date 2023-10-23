@@ -43,8 +43,8 @@ interface ISubtaskPayload {
 	faq_data?: FAQ[];
 }
 interface IUpdateSubaskPayload {
-	taskData: { task_id: string; description: string; title: string };
-	subtaskId?: string;
+	taskData: { task_id?: string; description?: string; title?: string; status?:string };
+	subtaskId?: string; 
 }
 interface IMiniTaskCreatePayload {
 	subtask_id: string;
@@ -268,6 +268,16 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		deleteMinitask: builder.mutation({
+			query: (payload: number) => ({
+				url: `${apiEndpoints.deleteMinitask}${payload}/`,
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 		getMiniTasksBySubId: builder.query({
 			query: (id?: number) => ({
 				url: `${apiEndpoints.minitaskListBySubId}${id}/mini-task/list/`,
@@ -299,5 +309,6 @@ export const {
 	useDeleteSubTaskMutation,
 	useCreateMinitaskMutation,
 	useUpdateMinitaskMutation,
+	useDeleteMinitaskMutation,
 	useGetMiniTasksBySubIdQuery,
 } = taskManagementApiSlice;

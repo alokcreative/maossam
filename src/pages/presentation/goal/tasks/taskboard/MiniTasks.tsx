@@ -72,16 +72,16 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	const { id, taskId } = useParams();
 	const [list, setList] = useState<ITodoListItem[] | undefined>();
 	const [createMinitask] = useCreateMinitaskMutation({});
-	const [updateMinitask] = useUpdateMinitaskMutation({});
+	
 	const { data, isLoading, refetch } = useGetMiniTasksBySubIdQuery(subTaskId);
 	const [modalState, setModalState] = useState('Add Task');
 	useEffect(() => {
 		if (data) {
+			console.log("data>>",data);
 			const transformedData = data.minitasks.map((item: ITodoItem) => ({
 				...item,
 				status: item.status !== 'todo',
 			}));
-			console.log("transformedData>>",transformedData);
 			setList(transformedData);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

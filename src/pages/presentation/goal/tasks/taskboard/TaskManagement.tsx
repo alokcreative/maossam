@@ -18,6 +18,7 @@ import SubTaskBoard from './SubTaskBoard';
 import {
 	useCreateSubTaskMutation,
 	useGetSubTaskByTaskIdQuery,
+	useUpdateSubTaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
 import Modal, {
 	ModalBody,
@@ -33,6 +34,7 @@ import { CardFooterLeft, CardFooterRight } from '../../../../../components/boots
 import Textarea from '../../../../../components/bootstrap/forms/Textarea';
 import Select from '../../../../../components/bootstrap/forms/Select';
 import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
+import { toast } from 'react-toastify';
 
 interface ICardsInColumn {
 	[key: string]: ISubtask[];
@@ -46,6 +48,7 @@ interface ISubtask {
 	title: string;
 	updated_at: string;
 	user_assigned: string;
+	status: string;
 }
 const TaskManagement = () => {
 	const { darkModeStatus } = useDarkMode();
@@ -70,31 +73,31 @@ const TaskManagement = () => {
 	const columnsData: TColumnsData = {
 		column1: {
 			id: 'column1',
-			title: 'Backlog',
+			title: 'backlog',
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'RateReview',
 		},
 		column2: {
 			id: 'column2',
-			title: 'Todo',
+			title: 'todo',
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'DoneOutline',
 		},
 		column3: {
 			id: 'column3',
-			title: 'Progress',
+			title: 'progress',
 			color: COLORS.INFO.name,
 			icon: 'PendingActions',
 		},
 		column4: {
 			id: 'column4',
-			title: 'Done',
+			title: 'done',
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'Verified',
 		},
 		column5: {
 			id: 'column5',
-			title: 'Hold',
+			title: 'hold',
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'DirectionsRun',
 		},
@@ -106,6 +109,7 @@ const TaskManagement = () => {
 	}, [id, data]);
 
 	const [taskStatusToColumnMapping, setTaskStatusToColumnMapping] = useState<ICardsInColumn>();
+	const [updateSubTask] = useUpdateSubTaskMutation({});
 
 	useEffect(() => {
 		if (data) {
@@ -115,9 +119,11 @@ const TaskManagement = () => {
 			Object.keys(columnsData).forEach((columnKey) => {
 				statusMapping[columnKey] = [];
 			});
+			console.log('cardsData>>', cardsData);
 			const data1 = cardsData.map((item) => {
-				return { ...item, status: 'Backlog' };
+				return { ...item, status: item.status };
 			});
+			console.log('data1>>', data1);
 			// Assign tasks to their respective columns based on status
 			if (data1)
 				data1.forEach((task) => {
@@ -165,6 +171,18 @@ const TaskManagement = () => {
 				source.droppableId
 			].filter((task) => task.id !== Number(result.draggableId));
 			if (taskToMove) taskStatusToColumnMapping[destination.droppableId].push(taskToMove);
+			const taskData = {
+				status: columnsData[destination.droppableId].title,
+			};
+			updateSubTask({ subtaskId: String(taskToMove?.id), taskData })
+				.unwrap()
+				.then((res) => {
+					toast(`Task moved to ${res.status}`);
+					refetch();
+				})
+				.catch((res) => {
+					toast(`Something went wrong`);
+				});
 			setTaskStatusToColumnMapping(taskStatusToColumnMapping);
 			// const RESULT = move(
 
@@ -189,8 +207,7 @@ const TaskManagement = () => {
 		setModalState('');
 		navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
-
-	
+	console.log('task>>', data);
 	return (
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
@@ -201,17 +218,11 @@ const TaskManagement = () => {
 				</SubHeaderLeft>
 				<SubHeaderRight>
 					{data &&
-						(Number(logUserId) === data.subtasks[0].created_by ||
-							role === 'superadmin') && (
+						(Number(logUserId) === data.task?.created_by || role === 'superadmin') && (
 							<Button color='info' onClick={() => setIsOpen(true)}>
 								Add Sub task
 							</Button>
 						)}
-
-					{/* Remove after test */}
-					<Button color='info' onClick={() => setIsOpen(true)}>
-						Add Sub task
-					</Button>
 				</SubHeaderRight>
 			</SubHeader>
 			{isLoading ? (

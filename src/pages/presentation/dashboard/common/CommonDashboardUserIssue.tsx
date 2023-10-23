@@ -117,7 +117,7 @@ const CommonDashboardUserIssue = () => {
 	const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
 		const newTodos: {
 			id?: string | number;
-			status?: boolean;
+			status?: boolean|string;
 			title?: string | number;
 			date?: dayjs.ConfigType;
 			badge?: {

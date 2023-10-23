@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -11,7 +11,15 @@ import { TColor } from '../../type/color-type';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { Role } from '../../common/data/userDummyData';
-import { useUpdateMinitaskMutation } from '../../features/auth/taskManagementApiSlice';
+import {
+	useDeleteMinitaskMutation,
+	useUpdateMinitaskMutation,
+} from '../../features/auth/taskManagementApiSlice';
+import Modal, { ModalBody, ModalHeader, ModalTitle } from '../bootstrap/Modal';
+import FormGroup from '../bootstrap/forms/FormGroup';
+import Input from '../bootstrap/forms/Input';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 
 /**
  * Prop Types
@@ -75,9 +83,11 @@ interface ITodoItemProps {
 	refetch(...args: unknown[]): unknown;
 }
 export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
-	({ index, list, setList, ...props }, ref) => {
+	({ refetch, index, list, setList, ...props }, ref) => {
 		const itemData = list[index];
 		const [updateMinitask] = useUpdateMinitaskMutation({});
+		const [deleteMinitask] = useDeleteMinitaskMutation({});
+		const [modalStatus, setModalStatus] = useState<boolean>(false);
 		const handleChange = (_index: number, id: number, status: boolean | string) => {
 			// console.log('_index>>', _index);
 			// console.log('id>>', id);
@@ -86,14 +96,26 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 				const miniTaskData = {
 					status: 'done',
 				};
-				updateMinitask({ miniTaskId: String(id), miniTaskData }).then(()=>{
-
-				})
+				updateMinitask({ miniTaskId: String(id), miniTaskData })
+					.unwrap()
+					.then((res) => {
+						toast('Status Changed');
+					})
+					.catch((res) => {
+						console.log('resc>>1', res);
+					});
 			} else {
 				const miniTaskData = {
 					status: 'todo',
 				};
-				updateMinitask({ miniTaskId: String(id), miniTaskData });
+				updateMinitask({ miniTaskId: String(id), miniTaskData })
+					.unwrap()
+					.then((res) => {
+						toast('Status Changed');
+					})
+					.catch((res) => {
+						console.log('resc>>1', res);
+					});
 			}
 
 			const newTodos = [...list];
@@ -101,86 +123,215 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 			setList(newTodos);
 		};
 		const logUserId = localStorage.getItem('UserId');
-		const removeTodo = (_index: number) => {
+		const removeTodo = (_index: number | string) => {
 			const newTodos = [...list];
-			newTodos.splice(_index, 1);
-			setList(newTodos);
+			deleteMinitask(Number(_index))
+				.unwrap()
+				.then((res) => {
+					toast('Deleted Successfully');
+					refetch();
+				})
+				.catch((res) => {
+					console.log('resCatch', res);
+				});
+			// newTodos.splice(_index, 1);
+			// setList(newTodos);
+		};
+		const updateTodo = (_index: number | string) => {
+			setModalStatus(true);
+			console.log('_index', _index);
+			formik.setFieldValue('minitaskTitle', itemData.title);
+			formik.setFieldValue('description', itemData.description);
+			// const newTodos = [...list];
+			// newTodos.splice(_index, 1);
+			// setList(newTodos);
 		};
 
 		const { themeStatus } = useDarkMode();
-		const { user } = useSelector((state: RootState) => state.auth);
-		const savedValue = localStorage?.getItem('user');
-		const localUser = savedValue ? JSON.parse(savedValue) : null;
-		const role = user.role || localUser?.role;
-
+		const validate = (values: { minitaskTitle?: string; description?: string }) => {
+			const errors: {
+				minitaskTitle?: string;
+				description?: string;
+			} = {};
+			if (!values.minitaskTitle) {
+				errors.minitaskTitle = 'Required';
+			} else if (values.minitaskTitle.length > 40) {
+				errors.minitaskTitle = 'Must be 40 characters or less';
+			}
+			if (!values.description) {
+				errors.description = 'Required';
+			}
+			return errors;
+		};
+		const formik = useFormik({
+			initialValues: {
+				minitaskTitle: '',
+				description: '',
+			},
+			validate,
+			validateOnChange: false,
+			onSubmit: (values, { resetForm }) => {
+				const miniTaskData = {
+					// subtask_id: String(subTaskId),
+					title: values.minitaskTitle,
+					description: values.description,
+				};
+				updateMinitask({ miniTaskId: String(itemData.id), miniTaskData })
+					.unwrap()
+					.then((res) => {
+						toast('Task Updated');
+						refetch();
+					})
+					.catch((res) => {
+						console.log('rescatch>>', res);
+					});
+				setModalStatus(false);
+				resetForm({
+					values: {
+						minitaskTitle: '',
+						description: '',
+					},
+				});
+			},
+		});
 		return (
-			// eslint-disable-next-line react/jsx-props-no-spreading
-			<div ref={ref} className={classNames('todo-item')} {...props}>
-				<div className='todo-bar'>
-					<div
-						className={classNames('h-100 w-100', 'rounded', {
-							[`bg-${itemData?.badge?.color}`]: itemData?.badge,
-						})}
-					/>
-				</div>
-				<div className='todo-check'>
-					<Checks
-						checked={list[index].status}
-						onChange={() =>
-							handleChange(index, Number(itemData.id), Boolean(list[index].status))
-						}
-						ariaLabel={itemData.title as string}
-					/>
-				</div>
-				<div className='todo-content'>
-					<div
-						className={classNames('todo-title', {
-							'text-decoration-line-through': list[index].status,
-						})}>
-						{itemData.title}
+			<>
+				{/* eslint-disable-next-line react/jsx-props-no-spreading */}
+				<div ref={ref} className={classNames('todo-item')} {...props}>
+					<div className='todo-bar'>
+						<div
+							className={classNames('h-100 w-100', 'rounded', {
+								[`bg-${itemData?.badge?.color}`]: itemData?.badge,
+							})}
+						/>
 					</div>
-					{itemData.date && (
-						<div className='todo-subtitle text-muted small'>
-							{dayjs(itemData.date).fromNow()}
+					<div className='todo-check'>
+						<Checks
+							checked={list[index].status}
+							onChange={() =>
+								handleChange(
+									index,
+									Number(itemData.id),
+									Boolean(list[index].status),
+								)
+							}
+							ariaLabel={itemData.title as string}
+						/>
+					</div>
+					<div className='todo-content'>
+						<div
+							className={classNames('todo-title', {
+								'text-decoration-line-through': list[index].status,
+							})}>
+							{itemData.title}
 						</div>
-					)}
-				</div>
-				<div className='todo-extras'>
-					{/* {itemData?.badge && (
+						{itemData.date && (
+							<div className='todo-subtitle text-muted small'>
+								{dayjs(itemData.date).fromNow()}
+							</div>
+						)}
+					</div>
+					<div className='todo-extras'>
+						{/* {itemData?.badge && (
 						<span className='me-2'>
 							<Badge isLight color={itemData.badge.color}>
 								{itemData.badge.text}
 							</Badge>
 						</span>
 					)} */}
-					{logUserId == itemData.created_by || logUserId == '1' ? (
-						<span>
-							<Dropdown>
-								<DropdownToggle hasIcon={false}>
-									<Button
-										color={themeStatus}
-										icon='MoreHoriz'
-										aria-label='More options'
-									/>
-								</DropdownToggle>
+						{logUserId == itemData.created_by || logUserId == '1' ? (
+							<span>
+								<Dropdown>
+									<DropdownToggle hasIcon={false}>
+										<Button
+											color={themeStatus}
+											icon='MoreHoriz'
+											aria-label='More options'
+										/>
+									</DropdownToggle>
 
-								<DropdownMenu isAlignmentEnd>
-									<DropdownItem>
-										<>
-											<Button onClick={() => removeTodo(index)} icon='Delete'>
-												Delete
-											</Button>
-											<Button onClick={() => removeTodo(index)} icon='Edit'>
-												Update
-											</Button>
-										</>
-									</DropdownItem>
-								</DropdownMenu>
-							</Dropdown>
-						</span>
-					) : null}
+									<DropdownMenu isAlignmentEnd>
+										<DropdownItem>
+											<>
+												<Button
+													onClick={() => removeTodo(itemData.id)}
+													icon='Delete'>
+													Delete
+												</Button>
+												<Button
+													onClick={() => updateTodo(itemData.id)}
+													icon='Edit'>
+													Update
+												</Button>
+											</>
+										</DropdownItem>
+									</DropdownMenu>
+								</Dropdown>
+							</span>
+						) : null}
+					</div>
 				</div>
-			</div>
+				<Modal
+					setIsOpen={setModalStatus}
+					isOpen={modalStatus}
+					titleId='new-todo-modal'
+					isStaticBackdrop
+					// style={{
+					// 	position: 'fixed',
+					// 	top: 0,
+					// 	left: 0,
+					// 	width: '100%',
+					// 	height: '100%',
+					// 	background: 'rgba(0, 0, 0, 0.3)',
+					// 	display: 'flex',
+					// 	justifyContent: 'center',
+					// 	alignItems: 'center',
+					// 	zIndex: 99999,
+					// }}
+				>
+					<ModalHeader setIsOpen={setModalStatus}>
+						<ModalTitle id='new-todo-modal'>Update Mini Task</ModalTitle>
+					</ModalHeader>
+					<ModalBody>
+						<div className='col-12'>
+							<FormGroup id='minitaskTitle' label='Title'>
+								<Input
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									isValid={formik.isValid}
+									isTouched={formik.touched.minitaskTitle}
+									invalidFeedback={formik.errors.minitaskTitle}
+									validFeedback='Looks good!'
+									value={formik.values.minitaskTitle}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-12'>
+							<FormGroup id='description' label='Title'>
+								<Input
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									isValid={formik.isValid}
+									isTouched={formik.touched.description}
+									invalidFeedback={formik.errors.description}
+									validFeedback='Looks good!'
+									value={formik.values.description}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col' />
+						<div className='col-auto'>
+							<Button
+								type='submit'
+								color='info'
+								isLight
+								onClick={formik.handleSubmit}>
+								update
+							</Button>
+						</div>
+					</ModalBody>
+				</Modal>
+			</>
 		);
 	},
 );
@@ -200,12 +351,18 @@ export interface ITodoProps {
 	refetch(...args: unknown[]): unknown;
 }
 const Todo = forwardRef<HTMLDivElement, ITodoProps>(
-	({refetch, className, list, setList, ...props }, ref) => {
+	({ refetch, className, list, setList, ...props }, ref) => {
 		return (
 			// eslint-disable-next-line react/jsx-props-no-spreading
 			<div ref={ref} className={classNames('todo', className)} {...props}>
 				{list.map((i, index) => (
-					<TodoItem key={i.id} index={index} list={list} setList={setList} refetch={refetch}/>
+					<TodoItem
+						key={i.id}
+						index={index}
+						list={list}
+						setList={setList}
+						refetch={refetch}
+					/>
 				))}
 			</div>
 		);
