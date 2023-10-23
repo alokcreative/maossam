@@ -41,6 +41,7 @@ import TableRow from '../../../helpers/TableRow';
 import TaskTableRow from './tasks/TaskTableRow';
 import { Calendar as DatePicker } from 'react-date-range';
 import Label from '../../../components/bootstrap/forms/Label';
+import { format } from 'date-fns';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -131,18 +132,18 @@ const GoalDescription: FC = () => {
 			name: '',
 			description: '',
 			dueDate: '',
-			category: '',
+			// category: '',
 			expectedTime: '',
 			// status: '',
 		},
 		enableReinitialize: true,
-		onSubmit: (values) => {
+		onSubmit: (values,{resetForm}) => {
 			if (modalState === 'Add Task') {
 				createTask({
 					title: values.name,
 					description: values.description,
 					goal_id: String(id),
-					due_date: date.toLocaleDateString(),
+					due_date: format(date, 'MM/dd/yyyy'),
 					expected_time: values.expectedTime,
 					// status: values.status,
 				})
@@ -160,7 +161,7 @@ const GoalDescription: FC = () => {
 				const taskData = {
 					title: values.name,
 					description: values.description,
-					due_date: date.toLocaleDateString(),
+					due_date: format(date, 'MM/dd/yyyy'),
 					expected_time: values.expectedTime,
 					// status: values.status,
 				};
@@ -180,6 +181,7 @@ const GoalDescription: FC = () => {
 
 			// setTaskList([...taskList, newTask]);
 			setIsOpen(false);
+			resetForm();
 		},
 	});
 
@@ -202,10 +204,10 @@ const GoalDescription: FC = () => {
 		const task = taskList.filter((i: ITask) => Number(i.id) === taskId);
 		formiknewTask.setFieldValue('name', task[0]?.title);
 		formiknewTask.setFieldValue('description', task[0]?.description);
-		formiknewTask.setFieldValue('dueDate', task[0]?.dueDate);
-		formiknewTask.setFieldValue('category', task[0]?.category);
-		formiknewTask.setFieldValue('status', task[0]?.status);
-		formiknewTask.setFieldValue('expectedTime', task[0]?.expectedTime);
+		formiknewTask.setFieldValue('dueDate', task[0]?.due_date);
+		// formiknewTask.setFieldValue('category', task[0]?.category);
+		// formiknewTask.setFieldValue('status', task[0]?.status);
+		formiknewTask.setFieldValue('expectedTime', task[0]?.expected_time);
 		formiknewTask.setFieldValue('id', taskId);
 		setIsOpen(true);
 	};
@@ -396,10 +398,6 @@ const GoalDescription: FC = () => {
 							</FormGroup>
 							<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
 								<div className='col-6'>
-									<div>
-									{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-										<Label>Due Date</Label>
-									</div>
 									<div className='text-center mt-n4'>
 										<DatePicker
 											onChange={(item) => setDate(item)}
@@ -418,13 +416,9 @@ const GoalDescription: FC = () => {
 									/>
 								</FormGroup> */}
 
-							<FormGroup
-								id='expected_time'
-								label='Expected Time'
-								className='col-lg-6'>
+							<FormGroup id='expectedTime' label='Expected Time' className='col-lg-6'>
 								<Input
 									type='time'
-									name='expected_time'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.expectedTime}
 								/>
@@ -458,7 +452,7 @@ const GoalDescription: FC = () => {
 						</CardFooterLeft>
 						<CardFooterRight>
 							<Button color='info' onClick={formiknewTask.handleSubmit}>
-								Save
+								{modalState === "Add Task" ? 'Save' : 'Update'}
 							</Button>
 						</CardFooterRight>
 					</ModalFooter>
