@@ -1,4 +1,3 @@
-import { IApiRequest, constructApiRequest } from '../../utiles/Apiutils';
 import apiSlice from './apiSlice';
 import apiEndpoints from '../../utiles/ApiRoute';
 
