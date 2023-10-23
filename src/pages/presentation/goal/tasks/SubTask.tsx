@@ -23,6 +23,7 @@ import {
 	useDeleteSubTaskMutation,
 	useGetSubTaskByTaskIdQuery,
 	useUpdateSubTaskMutation,
+	useGetSubTaskMutation,
 } from '../../../../features/auth/taskManagementApiSlice';
 import { useEffectOnce } from 'react-use';
 import { pagesMenu } from '../../../../menu';
@@ -57,6 +58,7 @@ const SubTask: FC = () => {
 	const { data, isLoading, isSuccess, isError, refetch } = useGetSubTaskByTaskIdQuery(
 		Number(id!),
 	);
+	const [getSubtask] = useGetSubTaskMutation();
 	const [createSubTask] = useCreateSubTaskMutation();
 	const [updateSubTask] = useUpdateSubTaskMutation();
 	const [deleteSubTask] = useDeleteSubTaskMutation();
@@ -80,15 +82,20 @@ const SubTask: FC = () => {
 		navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
 
-	const handleAddTask = () => {
+	const handleAddSubTask = () => {
 		setModalState('Add Sub Task');
 		setIsOpen(true);
 	};
 	const handleEdit = (SubId: number) => {
+		getSubtask(SubId)
+			.unwrap()
+			.then((res) => {
+				console.log(res);
+			});
 		setModalState(`Edit Sub Task`);
+
 		const task = data.subtasks.filter((i: any) => i.id === SubId);
-		console.log("task>>>>",task[0]);
-		setCurrTask(task[0])
+		setCurrTask(task);
 		setIsOpen(true);
 	};
 	return (
@@ -103,7 +110,7 @@ const SubTask: FC = () => {
 						isLight
 						icon='Add'
 						onClick={() => {
-							handleAddTask();
+							handleAddSubTask();
 						}}>
 						Add SubTask
 					</Button>
