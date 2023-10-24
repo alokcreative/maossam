@@ -86,6 +86,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				const dueDateObject = new Date(task?.due_date);
 				setDate(dueDateObject);
 			}
+			// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
 			setFaqs(task?.faqs!);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
