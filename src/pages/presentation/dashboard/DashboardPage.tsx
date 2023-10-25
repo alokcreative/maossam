@@ -266,7 +266,7 @@ const DashboardPage = () => {
 						<div>No data found</div>
 					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
-						{data.length !== 0 && (
+						{data && data?.length !== 0 && (
 							<Button color='primary' onClick={() => navigate('/goals')}>
 								See more...
 							</Button>
