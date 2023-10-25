@@ -259,12 +259,14 @@ const Goals: FC = () => {
 			// // goalData.append('date', values.date);
 			// // goalData.append('status', values.status);
 			// goalData.append('category', values.category);
+			const parts = values.expected_time.split(':');
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 			const goalData = {
 				title: values.name,
 				description: values.description,
 				category: values.category,
 				due_date: format(date, 'MM/dd/yyyy'),
-				expected_time: values.expected_time,
+				expected_time: timeWithoutSeconds,
 				// status: values.status,
 			};
 

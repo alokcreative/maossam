@@ -386,20 +386,29 @@ const GoalDescription: FC = () => {
 					<ModalBody className='px-4'>
 						<div className='row g-4'>
 							<div className='col-12 border-bottom' />
-							<FormGroup id='name' label='Name' className='col-lg-6'>
-								<Input
-									type='text'
-									onChange={formiknewTask.handleChange}
-									value={formiknewTask.values.name}
-								/>
-							</FormGroup>
-							<FormGroup id='description' label='Description' className='col-lg-6'>
-								<Input
-									type='text'
-									onChange={formiknewTask.handleChange}
-									value={formiknewTask.values.description}
-								/>
-							</FormGroup>
+							<div className='col-lg-6'>
+								<FormGroup id='name' label='Name'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.name}
+									/>
+								</FormGroup>
+								<FormGroup id='description' label='Description' className='mt-3'>
+									<Input
+										type='text'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.description}
+									/>
+								</FormGroup>
+								<FormGroup id='expectedTime' label='Expected Time' className='mt-3'>
+									<Input
+										type='time'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.expectedTime}
+									/>
+								</FormGroup>
+							</div>
 							<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
 								<div className='col-6'>
 									<div className='text-center mt-n4'>
@@ -420,13 +429,6 @@ const GoalDescription: FC = () => {
 									/>
 								</FormGroup> */}
 
-							<FormGroup id='expectedTime' label='Expected Time' className='col-lg-6'>
-								<Input
-									type='time'
-									onChange={formiknewTask.handleChange}
-									value={formiknewTask.values.expectedTime}
-								/>
-							</FormGroup>
 							{/* <FormGroup id='status' label='Status' className='col-lg-6'>
 								<Select
 									ariaLabel='Default select example'
@@ -446,17 +448,18 @@ const GoalDescription: FC = () => {
 					</ModalBody>
 					<ModalFooter>
 						<CardFooterLeft>
+						<Button color='info' onClick={formiknewTask.handleSubmit}>
+								{modalState === 'Add Task' ? 'Save' : 'Update'}
+							</Button>
+						</CardFooterLeft>
+						<CardFooterRight>
+							
 							<Button
 								color='danger'
 								onClick={() => {
 									setIsOpen(false);
 								}}>
 								Cancel
-							</Button>
-						</CardFooterLeft>
-						<CardFooterRight>
-							<Button color='info' onClick={formiknewTask.handleSubmit}>
-								{modalState === 'Add Task' ? 'Save' : 'Update'}
 							</Button>
 						</CardFooterRight>
 					</ModalFooter>

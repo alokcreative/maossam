@@ -1,13 +1,13 @@
 export const categoryEnum = [
-	{ value: 1, text: 'Category4' },
-	{ value: 2, text: 'New Category2' },
-	{ value: 3, text: 'Category1' },
-	{ value: 4, text: 'Category3' },
+	{ value: 5, text: 'Category1' },
+	{ value: 6, text: 'Category2' },
+	{ value: 7, text: 'Category3' },
+	{ value: 4, text: 'Category4' },
 ];
 
 export const categoryStringValue: { [key: string]: number } = {
-	Category4: 1,
-	'New Category2': 2,
-	Category1: 3,
-	Category3: 4,
+	Category4: 4,
+	Category2: 6,
+	Category1: 5,
+	Category3: 7,
 };
