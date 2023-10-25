@@ -224,24 +224,27 @@ const DashboardAdmin = () => {
 					</div>
 					{isLoading ? (
 						<div>Loadning</div>
-					) : (
-						isSuccess &&
-						data &&
-						goalList?.slice(0, 6).map((i) => (
-							<Item
-								// onClick={() => openModal(i.id, i.name)}
-								key={i.id}
+					) : isSuccess && data.length !== 0 ? (
+						goalList
+							?.slice(0, 6)
+							.map((i) => (
+								<Item
+									key={i.id}
 									id={i.id}
 									name={i.title}
 									attributes={i.description}
 									timeline={i.expected_time!}
-							/>
-						))
+								/>
+							))
+					) : (
+						<div>No data found</div>
 					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
-						<Button color='primary' onClick={() => navigate('/goals')}>
-							See more...
-						</Button>
+					{data.length !== 0 && (
+							<Button color='primary' onClick={() => navigate('/goals')}>
+								See more...
+							</Button>
+						)}
 					</div>
 				</div>
 				<div className='col-12'>

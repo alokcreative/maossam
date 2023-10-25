@@ -250,9 +250,7 @@ const DashboardPage = () => {
 					</div>
 					{isLoading ? (
 						<div>Loadning</div>
-					) : (
-						isSuccess &&
-						data &&
+					) : isSuccess && data.length !== 0 ? (
 						goalList
 							?.slice(0, 6)
 							.map((i) => (
@@ -264,11 +262,15 @@ const DashboardPage = () => {
 									timeline={i.expected_time!}
 								/>
 							))
+					) : (
+						<div>No data found</div>
 					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
-						<Button color='primary' onClick={() => navigate('/goals')}>
-							See more...
-						</Button>
+						{data.length !== 0 && (
+							<Button color='primary' onClick={() => navigate('/goals')}>
+								See more...
+							</Button>
+						)}
 					</div>
 					<TaskOnHold />
 					{/* <div className='col-xxl-3'>

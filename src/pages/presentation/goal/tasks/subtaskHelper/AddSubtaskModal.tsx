@@ -7,6 +7,7 @@ import {
 	useDeleteFAQMutation,
 	useUpdateFAQMutation,
 	useUpdateSubTaskMutation,
+	useCreateSubTaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
@@ -66,10 +67,11 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	currTask: task,
 }) => {
 	const [createSubTaskwithFAQ] = useCreateSubTaskwithFAQMutation();
+	const [createSubTask] = useCreateSubTaskMutation();
 	const [updateSubTask] = useUpdateSubTaskMutation();
 	const [deleteFAQ] = useDeleteFAQMutation();
 	const [updateFAQ] = useUpdateFAQMutation();
-	console.log("modals>>",modalState);
+	console.log('modals>>', modalState);
 	const navigate = useNavigate();
 	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
@@ -147,7 +149,6 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		validateOnChange: false,
 		onSubmit: (values) => {
 			setIsOpen(false);
-			console.log('values.question', values);
 			if (modalState === 'Add Sub Task') {
 				createSubTaskwithFAQ({
 					task_id: String(id),
@@ -162,7 +163,10 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						// console.log('Subtask Created', res);
 						refetch();
 					})
-					.catch((res) => {});
+					.catch((res) => {
+						// toast("All fields required");
+						refetch();
+					});
 			} else if (modalState === 'Edit Sub Task') {
 				const parts = values.expected_time.split(':');
 				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;

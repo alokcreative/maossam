@@ -88,10 +88,10 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 						<CardBody className='table-responsive' style={{ paddingTop: '0px' }}>
 							<div className='row g-4'>
 								<div className='col-12 pt-0'>
-									<p>
+									{/* <p>
 										<span className='fw-bold'>Subtask Intro : </span>
 										{data.task.title}
-									</p>
+									</p> */}
 									<table className='table table-modern table-hover'>
 										<tbody>
 											{data.subtasks && data.subtasks.length !== 0 ? (
