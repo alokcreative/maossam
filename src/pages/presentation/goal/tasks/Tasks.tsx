@@ -356,21 +356,21 @@ const Tasks: FC = () => {
 									</FormGroup>
 								))}
 
-							<FormGroup id='name' label='Name' className=''>
+							<FormGroup id='name' label='Name' className='mt-3' >
 								<Input
 									type='text'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.name}
 								/>
 							</FormGroup>
-							<FormGroup id='description' label='Description' className=''>
+							<FormGroup id='description' label='Description' className='mt-3' >
 								<Input
 									type='text'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.description}
 								/>
 							</FormGroup>
-							<FormGroup id='expectedTime' label='Expected Time' className=''>
+							<FormGroup id='expectedTime' label='Expected Time' className='mt-3' >
 								<Input
 									type='time'
 									onChange={formiknewTask.handleChange}

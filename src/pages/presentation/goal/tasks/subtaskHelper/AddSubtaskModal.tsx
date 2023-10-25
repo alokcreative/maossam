@@ -69,7 +69,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	const [updateSubTask] = useUpdateSubTaskMutation();
 	const [deleteFAQ] = useDeleteFAQMutation();
 	const [updateFAQ] = useUpdateFAQMutation();
-
+	console.log("modals>>",modalState);
 	const navigate = useNavigate();
 	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
@@ -259,7 +259,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
 						<div className='col-lg-6'>
-							<FormGroup id='name' label='Name' >
+							<FormGroup id='name' label='Name'>
 								<Input
 									type='text'
 									onChange={formik.handleChange}
@@ -272,7 +272,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 									}}
 								/>
 							</FormGroup>
-							<FormGroup id='description' label='Description' >
+							<FormGroup id='description' label='Description' className='mt-3'>
 								<Input
 									type='text'
 									onChange={formik.handleChange}
@@ -285,9 +285,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 									}}
 								/>
 							</FormGroup>
-							<FormGroup
-								id='expected_time'
-								label='Expected Time'>
+							<FormGroup id='expected_time' label='Expected Time' className='mt-3'>
 								<Input
 									type='time'
 									onChange={formik.handleChange}

@@ -264,7 +264,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 										/>
 									</FormGroup>
 								</div>
-								<div className='col-12'>
+								<div className='col-12 mt-3'>
 									<FormGroup id='description' label='Description'>
 										<Input
 											onChange={formik.handleChange}
@@ -277,15 +277,16 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 										/>
 									</FormGroup>
 								</div>
-								<div className='col' />
-								<Button
-									className=''
-									type='submit'
-									color='info'
-									isLight
-									onClick={formik.handleSubmit}>
-									Add Mini Task
-								</Button>
+								<div className='col-12 d-flex justify-content-center mt-3'>
+									<Button
+										className='col-auto'
+										type='submit'
+										color='info'
+										isLight
+										onClick={formik.handleSubmit}>
+										Add Mini Task
+									</Button>
+								</div>
 							</div>
 						</ModalBody>
 					</Modal>

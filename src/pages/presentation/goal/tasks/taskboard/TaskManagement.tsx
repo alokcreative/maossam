@@ -237,7 +237,7 @@ const TaskManagement = () => {
 				refetch={refetch}
 				isOpen={isOpen}
 				handleCloseClick={handleCloseClick}
-				modalState={modalState}
+				modalState={modalState || 'Add Sub Task'}
 			/>
 		</PageWrapper>
 	);

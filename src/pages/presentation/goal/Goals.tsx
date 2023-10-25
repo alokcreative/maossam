@@ -592,7 +592,7 @@ const Goals: FC = () => {
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
 						<div className='col-6'>
-							<FormGroup id='name' label='Name'>
+							<FormGroup id='name' label='Name' >
 								<Input
 									type='text'
 									name='name'
@@ -611,7 +611,7 @@ const Goals: FC = () => {
 									isTouched={formikNewGoal.touched.name}
 								/>
 							</FormGroup>
-							<FormGroup id='description' label='Description'>
+							<FormGroup id='description' label='Description' className='mt-3'>
 								<Input
 									type='text'
 									name='description'
@@ -630,7 +630,7 @@ const Goals: FC = () => {
 									isTouched={formikNewGoal.touched.description}
 								/>
 							</FormGroup>
-							<FormGroup id='category' label='Category'>
+							<FormGroup id='category' label='Category' className='mt-3'>
 								<Select
 									ariaLabel='Default select Category'
 									placeholder='Select One...'
