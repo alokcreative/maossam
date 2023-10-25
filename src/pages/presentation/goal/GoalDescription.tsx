@@ -379,11 +379,11 @@ const GoalDescription: FC = () => {
 			)}
 
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
-				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
+				<ModalHeader setIsOpen={setIsOpen}>
 					<ModalTitle id='new_task'>{modalState}</ModalTitle>
 				</ModalHeader>
 				<>
-					<ModalBody className='px-4'>
+					<ModalBody>
 						<div className='row g-4'>
 							<div className='col-12 border-bottom' />
 							<div className='col-lg-6'>
@@ -417,6 +417,7 @@ const GoalDescription: FC = () => {
 											date={date}
 											minDate={new Date()}
 											color={process.env.REACT_APP_PRIMARY_COLOR}
+											shownDate={date}
 										/>
 									</div>
 								</div>
