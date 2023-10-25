@@ -21,8 +21,8 @@ import {
 } from '../../../../../features/auth/taskManagementApiSlice';
 
 import { useEffectOnce } from 'react-use';
-import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 import { toast } from 'react-toastify';
+import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 
 interface ICardsInColumn {
 	[key: string]: ISubtask[];
