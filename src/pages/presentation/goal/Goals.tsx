@@ -98,7 +98,7 @@ interface IGoalProps {
 }
 const Goals: FC = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({fixedCacheKey: 'listTask'});
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
 	const { darkModeStatus } = useDarkMode();
