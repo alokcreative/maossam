@@ -24,6 +24,7 @@ import instagram from '../../../assets/logos/instagram.png';
 import SocialItem from '../../_common/dashboardHelper/SocialItem';
 import MarketingAssetForms from '../../presentation/dashboard/Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
+import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 
 interface CardProp {
 	id: number;
@@ -36,6 +37,18 @@ interface CardProp {
 	taskCount: number;
 	percent: number;
 }
+interface IGoalProps {
+	id: number;
+	title: string;
+	description: string;
+	due_date?: string;
+	expected_time?: string;
+	// status?: string;
+	category?: string;
+	created_at?: string;
+	created_by?: string;
+	updated_at?: string;
+}
 const DashboardAdmin = () => {
 	const { darkModeStatus } = useDarkMode();
 	const { t } = useTranslation('menu');
@@ -45,6 +58,8 @@ const DashboardAdmin = () => {
 	const [maybeCards, setMaybeCards] = useState<CardProp[]>([]);
 	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
+	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const openModal = (id: number, nameOfBussiness: string) => {
 		setElementId(id);
@@ -207,16 +222,22 @@ const DashboardAdmin = () => {
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
 					</div>
-					{goalData.slice(0, 6).map((i) => (
-						<Item
-							// onClick={() => openModal(i.id, i.name)}
-							id={i.id}
-							key={i.id}
-							name={i.name}
-							attributes={i.description}
-							timeline={i.timeline}
-						/>
-					))}
+					{isLoading ? (
+						<div>Loadning</div>
+					) : (
+						isSuccess &&
+						data &&
+						goalList?.slice(0, 6).map((i) => (
+							<Item
+								// onClick={() => openModal(i.id, i.name)}
+								key={i.id}
+									id={i.id}
+									name={i.title}
+									attributes={i.description}
+									timeline={i.expected_time!}
+							/>
+						))
+					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
 						<Button color='primary' onClick={() => navigate('/goals')}>
 							See more...

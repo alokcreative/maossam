@@ -99,6 +99,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 				updateMinitask({ miniTaskId: String(id), miniTaskData })
 					.unwrap()
 					.then((res) => {
+						refetch();
 						toast('Status Changed');
 					})
 					.catch((res) => {
@@ -111,10 +112,11 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 				updateMinitask({ miniTaskId: String(id), miniTaskData })
 					.unwrap()
 					.then((res) => {
+						refetch();
 						toast('Status Changed');
 					})
 					.catch((res) => {
-						console.log('resc>>1', res);
+						// console.log('resc>>1', res);
 					});
 			}
 
@@ -293,7 +295,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						<ModalTitle id='new-todo-modal'>Update Mini Task</ModalTitle>
 					</ModalHeader>
 					<ModalBody>
-						<div className='col-12'>
+						<div className='row d-flex align-items-center justify-content-center'>
 							<FormGroup id='minitaskTitle' label='Title'>
 								<Input
 									onChange={formik.handleChange}
@@ -320,15 +322,13 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 							</FormGroup>
 						</div>
 						<div className='col' />
-						<div className='col-auto'>
-							<Button
-								type='submit'
-								color='info'
-								isLight
-								onClick={formik.handleSubmit}>
-								update
-							</Button>
-						</div>
+						<Button
+							type='submit'
+							color='info'
+							className='col-12 mt-4'
+							onClick={formik.handleSubmit}>
+							Update
+						</Button>
 					</ModalBody>
 				</Modal>
 			</>

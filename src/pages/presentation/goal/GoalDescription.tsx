@@ -137,32 +137,34 @@ const GoalDescription: FC = () => {
 			// status: '',
 		},
 		enableReinitialize: true,
-		onSubmit: (values,{resetForm}) => {
+		onSubmit: (values, { resetForm }) => {
 			if (modalState === 'Add Task') {
+				const parts = values.expectedTime.split(':');
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 				createTask({
 					title: values.name,
 					description: values.description,
 					goal_id: String(id),
 					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: values.expectedTime,
+					expected_time: timeWithoutSeconds,
 					// status: values.status,
 				})
 					.unwrap()
 					.then((res) => {
-						console.log('response>>', res);
 						refetch();
+						formiknewTask.resetForm();
+						setDate(new Date());
 					})
-					.catch(() => {
-						console.log('error');
-					});
+					.catch(() => {});
 			}
 			if (modalState === 'Edit Task') {
-				console.log('id>>>', values.id);
+				const parts = values.expectedTime.split(':');
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 				const taskData = {
 					title: values.name,
 					description: values.description,
 					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: values.expectedTime,
+					expected_time: timeWithoutSeconds,
 					// status: values.status,
 				};
 				updateTask({
@@ -173,6 +175,8 @@ const GoalDescription: FC = () => {
 					.then((res) => {
 						console.log('response>>', res);
 						refetch();
+						formiknewTask.resetForm();
+						setDate(new Date());
 					})
 					.catch((res) => {
 						console.log('error', res);
@@ -452,7 +456,7 @@ const GoalDescription: FC = () => {
 						</CardFooterLeft>
 						<CardFooterRight>
 							<Button color='info' onClick={formiknewTask.handleSubmit}>
-								{modalState === "Add Task" ? 'Save' : 'Update'}
+								{modalState === 'Add Task' ? 'Save' : 'Update'}
 							</Button>
 						</CardFooterRight>
 					</ModalFooter>

@@ -12,18 +12,29 @@ import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../components/PaginationButtons';
-import data, { ITask } from '../../../common/data/dummyGoals';
 import { useFormik } from 'formik';
 import TableRow from '../../../helpers/TableRow';
+import { useGetTaskListQuery } from '../../../features/auth/taskManagementApiSlice';
+import Loading from '../../../common/other/Loading';
+import TaskTableRow from '../../presentation/goal/tasks/TaskTableRow';
 
 interface ITaskValue {
-	goalId: number;
-	ITask: ITask;
+	created_at: string;
+	description: string;
+	goal: string;
+	id: number;
+	title: string;
+	updated_at: string;
+	created_by: string;
+	expected_time: string;
+	due_date: string;
+	status: string;
 }
 const TaskOnHold = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['5']);
-	const [taskList, setTaskList] = useState<ITaskValue[] | undefined>();
+	const { data, isLoading, isSuccess, refetch } = useGetTaskListQuery({});
+	const [taskList, setTaskList] = useState<ITaskValue[] | undefined>(data);
 	const formik = useFormik({
 		initialValues: {
 			taskHoldFil: ['Marketing Asset', 'Product', 'Client'],
@@ -31,26 +42,15 @@ const TaskOnHold = () => {
 		onSubmit: (values) => {},
 	});
 	useEffect(() => {
-		const allTasks: ITaskValue[] = [];
-		data.forEach((goal) => {
-			if (goal.task)
-				goal?.task.forEach((task) => {
-					allTasks.push({
-						goalId: goal.id,ITask: task,});
-					// if (task.subTask) {
-					// 	task.subTask.forEach((subTask) => {
-					// 		allTasks.push(subTask);
-					// 	});
-					// }
-				});
-		});
-
-		setTaskList(allTasks.filter((f) => f.ITask.status === 'Hold'));
+		console.log(
+			'Data>>',
+			data?.filter((f: ITaskValue) => f.status === 'hold'),
+		);
+		setTaskList(data?.filter((f: ITaskValue) => f.status === 'hold'));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
 	const deleteAction = () => {};
-	const view = () => {};
 	const edit = () => {};
 	return (
 		<div className='col-xxl-12 mt-10'>
@@ -139,53 +139,63 @@ const TaskOnHold = () => {
 					</CardActions> */}
 				</CardHeader>
 				<CardBody className='table-responsive'>
-					<table className='table table-modern table-hover'>
-						<thead>
-							<tr>
-								<th scope='col' className='cursor-pointer'>
-									Sr No
-								</th>
+					{isLoading ? (
+						<Loading />
+					) : isSuccess && taskList?.length !== 0 ? (
+						<table className='table table-modern table-hover'>
+							<thead>
+								<tr>
+									<th scope='col' className='cursor-pointer'>
+										Sr No
+									</th>
 
-								<th scope='col' className='cursor-pointer'>
-									Name
-								</th>
-								<th scope='col'>Descripton</th>
-								<th scope='col'>Due Date</th>
-								<th scope='col'>Expected Time</th>
-								<th scope='col' className='cursor-pointer'>
-									Status
-								</th>
-								<th scope='col'>Action</th>
-								{/* <th scope='col' className='cursor-pointer'>
+									<th scope='col' className='cursor-pointer'>
+										Name
+									</th>
+									<th scope='col'>Descripton</th>
+									<th scope='col'>Due Date</th>
+									<th scope='col'>Expected Time</th>
+									<th scope='col' className='cursor-pointer'>
+										Status
+									</th>
+									<th scope='col'>Action</th>
+									{/* <th scope='col' className='cursor-pointer'>
 												Edit
 											</th> */}
-							</tr>
-						</thead>
-						<tbody>
-							{taskList &&
-								dataPagination(taskList, currentPage, perPage).map((i, index) => (
-									// eslint-disable-next-line react/jsx-props-no-spreading
-									<TableRow
-										// eslint-disable-next-line react/no-array-index-key
-										key={index}
-										id={index+1}
-										task={i}
-										edit={edit}
-										view={view}
-										deleteAction={deleteAction}
-									/>
-								))}
-						</tbody>
-					</table>
+								</tr>
+							</thead>
+							<tbody>
+								{taskList &&
+									dataPagination(taskList, currentPage, perPage).map(
+										(i, index) => (
+											// eslint-disable-next-line react/jsx-props-no-spreading
+											<TaskTableRow
+												// eslint-disable-next-line react/no-array-index-key
+												key={index}
+												id={index + 1}
+												// eslint-disable-next-line react/jsx-props-no-spreading
+												task={i}
+												edit={edit}
+												deleteAction={deleteAction}
+											/>
+										),
+									)}
+							</tbody>
+						</table>
+					) : (
+						<div>No Data found</div>
+					)}
 				</CardBody>
-				<PaginationButtons
-					data={data}
-					label='items'
-					setCurrentPage={setCurrentPage}
-					currentPage={currentPage}
-					perPage={perPage}
-					setPerPage={setPerPage}
-				/>
+				{taskList?.length !== 0 && (
+					<PaginationButtons
+						data={taskList!}
+						label='items'
+						setCurrentPage={setCurrentPage}
+						currentPage={currentPage}
+						perPage={perPage}
+						setPerPage={setPerPage}
+					/>
+				)}
 			</Card>
 		</div>
 	);

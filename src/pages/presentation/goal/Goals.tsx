@@ -53,6 +53,7 @@ import { Calendar as DatePicker } from 'react-date-range';
 import Label from '../../../components/bootstrap/forms/Label';
 import { format } from 'date-fns';
 import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
+import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -137,7 +138,7 @@ const Goals: FC = () => {
 			name: '',
 			description: '',
 			due_date: '',
-			expected_time: '',
+			expected_time: '14:25',
 			// status: '',
 			category: '',
 		},
@@ -214,7 +215,7 @@ const Goals: FC = () => {
 			name: '',
 			description: '',
 			due_date: '',
-			expected_time: '',
+			expected_time: '14:25',
 			// status: '',
 			category: '',
 		},
@@ -319,8 +320,6 @@ const Goals: FC = () => {
 		// if (goal?.category === 'New Category2') {
 		// 	category = 2;
 		// }
-
-
 
 		updateGoalForm.setFieldValue('id', goal?.id);
 		updateGoalForm.setFieldValue('name', goal?.title);
@@ -592,45 +591,68 @@ const Goals: FC = () => {
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
-						<FormGroup id='name' label='Name' className='col-lg-6'>
-							<Input
-								type='text'
-								name='name'
-								onChange={
-									modalHeader === 'New Goal'
-										? formikNewGoal.handleChange
-										: updateGoalForm.handleChange
-								}
-								value={
-									modalHeader === 'New Goal'
-										? formikNewGoal.values.name
-										: updateGoalForm.values.name
-								}
-								invalidFeedback={formikNewGoal.errors.name}
-								isValid={formikNewGoal.isValid}
-								isTouched={formikNewGoal.touched.name}
-							/>
-						</FormGroup>
-						<FormGroup id='description' label='Description' className='col-lg-6'>
-							<Input
-								type='text'
-								name='description'
-								onChange={
-									modalHeader === 'New Goal'
-										? formikNewGoal.handleChange
-										: updateGoalForm.handleChange
-								}
-								value={
-									modalHeader === 'New Goal'
-										? formikNewGoal.values.description
-										: updateGoalForm.values.description
-								}
-								invalidFeedback={formikNewGoal.errors.description}
-								isValid={formikNewGoal.isValid}
-								isTouched={formikNewGoal.touched.description}
-							/>
-						</FormGroup>
-						<FormGroup id='due_date' label='Due Date' className='col-lg-6'>
+						<div className='col-6'>
+							<FormGroup id='name' label='Name'>
+								<Input
+									type='text'
+									name='name'
+									onChange={
+										modalHeader === 'New Goal'
+											? formikNewGoal.handleChange
+											: updateGoalForm.handleChange
+									}
+									value={
+										modalHeader === 'New Goal'
+											? formikNewGoal.values.name
+											: updateGoalForm.values.name
+									}
+									invalidFeedback={formikNewGoal.errors.name}
+									isValid={formikNewGoal.isValid}
+									isTouched={formikNewGoal.touched.name}
+								/>
+							</FormGroup>
+							<FormGroup id='description' label='Description'>
+								<Input
+									type='text'
+									name='description'
+									onChange={
+										modalHeader === 'New Goal'
+											? formikNewGoal.handleChange
+											: updateGoalForm.handleChange
+									}
+									value={
+										modalHeader === 'New Goal'
+											? formikNewGoal.values.description
+											: updateGoalForm.values.description
+									}
+									invalidFeedback={formikNewGoal.errors.description}
+									isValid={formikNewGoal.isValid}
+									isTouched={formikNewGoal.touched.description}
+								/>
+							</FormGroup>
+							<FormGroup id='category' label='Category'>
+								<Select
+									ariaLabel='Default select Category'
+									placeholder='Select One...'
+									name='category'
+									list={categoryEnum}
+									onChange={
+										modalHeader === 'New Goal'
+											? formikNewGoal.handleChange
+											: updateGoalForm.handleChange
+									}
+									value={
+										modalHeader === 'New Goal'
+											? formikNewGoal.values.category
+											: updateGoalForm.values.category
+									}
+									invalidFeedback={formikNewGoal.errors.category}
+									isValid={formikNewGoal.isValid}
+									isTouched={formikNewGoal.touched.category}
+								/>
+							</FormGroup>
+						</div>
+						<FormGroup id='due_date' label='Date' className='col-lg-6'>
 							<div>
 								<div className='text-center mt-n4'>
 									<DatePicker
@@ -642,7 +664,7 @@ const Goals: FC = () => {
 								</div>
 							</div>
 						</FormGroup>
-						<FormGroup id='expectedTime' label=' Expected Time' className='col-lg-6'>
+						{/* <FormGroup id='expectedTime' label=' Expected Time' className='col-lg-6'>
 							<Input
 								type='time'
 								name='expected_time'
@@ -660,57 +682,7 @@ const Goals: FC = () => {
 								isValid={formikNewGoal.isValid}
 								isTouched={formikNewGoal.touched.expected_time}
 							/>
-						</FormGroup>
-
-						{/* <FormGroup id='status' label='Status' className='col-lg-6'>
-							<Select
-								ariaLabel='Default select Status'
-								placeholder='Select One...'
-								name='status'
-								list={[
-									{ value: 'Backlog', text: 'Backlog' },
-									{ value: 'Todo', text: 'Todo' },
-									{ value: 'InProgress', text: 'InProgress' },
-									{ value: 'Done', text: 'Done' },
-									{ value: 'Hold', text: 'Hold' },
-								]}
-								onChange={
-									modalHeader === 'New Goal'
-										? formikNewGoal.handleChange
-										: updateGoalForm.handleChange
-								}
-								value={
-									modalHeader === 'New Goal'
-										? formikNewGoal.values.status
-										: updateGoalForm.values.status
-								}
-								invalidFeedback={formikNewGoal.errors.status}
-								isValid={formikNewGoal.isValid}
-								isTouched={formikNewGoal.touched.status}
-							/>
 						</FormGroup> */}
-
-						<FormGroup id='category' label='Category' className='col-lg-6'>
-							<Select
-								ariaLabel='Default select Category'
-								placeholder='Select One...'
-								name='category'
-								list={categoryEnum}
-								onChange={
-									modalHeader === 'New Goal'
-										? formikNewGoal.handleChange
-										: updateGoalForm.handleChange
-								}
-								value={  
-									modalHeader === 'New Goal'
-										? formikNewGoal.values.category
-										: updateGoalForm.values.category
-								}
-								invalidFeedback={formikNewGoal.errors.category}
-								isValid={formikNewGoal.isValid}
-								isTouched={formikNewGoal.touched.category}
-							/>
-						</FormGroup>
 					</div>
 				</ModalBody>
 				<ModalFooter>

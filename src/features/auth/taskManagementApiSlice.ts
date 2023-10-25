@@ -32,8 +32,13 @@ interface IGoalPayload {
 }
 interface FAQ {
 	// id: string;
+	
 	question: string;
 	answer: string;
+}
+interface IUpdateFAQ{
+	index?: number,
+	faq:FAQ,
 }
 interface ISubtaskPayload {
 	task_id: string;
@@ -44,8 +49,15 @@ interface ISubtaskPayload {
 	faq_data?: FAQ[];
 }
 interface IUpdateSubaskPayload {
-	taskData: { task_id?: string; description?: string; title?: string; status?:string };
-	subtaskId?: string; 
+	taskData: {
+		task_id?: string;
+		description?: string;
+		title?: string;
+		status?: string;
+		due_date?: string;
+		expected_time?: string;
+	};
+	subtaskId?: string;
 }
 interface IMiniTaskCreatePayload {
 	subtask_id: string;
@@ -312,6 +324,27 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		deleteFAQ: builder.mutation({
+			query: (index: number) => ({
+				url: `${apiEndpoints.deleteFAQ}${index}`,
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
+		updateFAQ: builder.mutation({
+			query: (payload: IUpdateFAQ) => ({
+				url: `${apiEndpoints.updateFAQ}${payload.index}/`,
+				method: 'PATCH',
+				body: payload.faq,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 	}),
 });
 
@@ -327,8 +360,8 @@ export const {
 	useDeleteTaskMutation,
 	useUpdateTaskMutation,
 	useGetFaqBySubTaskIdQuery,
-	useCreateSubTaskMutation,
 	useCreateSubTaskwithFAQMutation,
+	useCreateSubTaskMutation,
 	useUpdateSubTaskMutation,
 	useDeleteSubTaskMutation,
 	useCreateMinitaskMutation,
@@ -336,4 +369,6 @@ export const {
 	useDeleteMinitaskMutation,
 	useGetMiniTasksBySubIdQuery,
 	useGetSubTaskMutation,
+	useDeleteFAQMutation,
+	useUpdateFAQMutation,
 } = taskManagementApiSlice;

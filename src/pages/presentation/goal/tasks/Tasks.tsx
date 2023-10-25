@@ -339,43 +339,45 @@ const Tasks: FC = () => {
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
-						{modalState !== 'Edit Task' &&
-							(newTask ? (
-								<div className='h4 fw-bold py-3'>Goal : {goalName} </div>
-							) : (
-								<FormGroup id='goalId' label='Goals' className='col-lg-6'>
-									<Select
-										ariaLabel='Default select example'
-										placeholder='Select One...'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.goalId}
-										list={goalList}
-										defaultValue='3'
-									/>
-								</FormGroup>
-							))}
+						<div className='col-lg-6'>
+							{modalState !== 'Edit Task' &&
+								(newTask ? (
+									<div className='h4 fw-bold py-3'>Goal : {goalName} </div>
+								) : (
+									<FormGroup id='goalId' label='Goals' className=''>
+										<Select
+											ariaLabel='Default select example'
+											placeholder='Select One...'
+											onChange={formiknewTask.handleChange}
+											value={formiknewTask.values.goalId}
+											list={goalList}
+											defaultValue='3'
+										/>
+									</FormGroup>
+								))}
 
-						<FormGroup id='name' label='Name' className='col-lg-6'>
-							<Input
-								type='text'
-								onChange={formiknewTask.handleChange}
-								value={formiknewTask.values.name}
-							/>
-						</FormGroup>
-						<FormGroup id='description' label='Description' className='col-lg-6'>
-							<Input
-								type='text'
-								onChange={formiknewTask.handleChange}
-								value={formiknewTask.values.description}
-							/>
-						</FormGroup>
-						<FormGroup id='expectedTime' label='Expected Time' className='col-lg-6'>
-							<Input
-								type='time'
-								onChange={formiknewTask.handleChange}
-								value={formiknewTask.values.expectedTime}
-							/>
-						</FormGroup>
+							<FormGroup id='name' label='Name' className=''>
+								<Input
+									type='text'
+									onChange={formiknewTask.handleChange}
+									value={formiknewTask.values.name}
+								/>
+							</FormGroup>
+							<FormGroup id='description' label='Description' className=''>
+								<Input
+									type='text'
+									onChange={formiknewTask.handleChange}
+									value={formiknewTask.values.description}
+								/>
+							</FormGroup>
+							<FormGroup id='expectedTime' label='Expected Time' className=''>
+								<Input
+									type='time'
+									onChange={formiknewTask.handleChange}
+									value={formiknewTask.values.expectedTime}
+								/>
+							</FormGroup>
+						</div>
 						<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
 							<div>
 								<div className='text-center mt-n4'>
@@ -388,22 +390,6 @@ const Tasks: FC = () => {
 								</div>
 							</div>
 						</FormGroup>
-
-						{/* <FormGroup id='status' label='Status' className='col-lg-6'>
-							<Select
-								ariaLabel='Default select example'
-								placeholder='Select One...'
-								onChange={formiknewTask.handleChange}
-								value={formiknewTask.values.status}
-								list={[
-									{ value: 'Backlog', text: 'Backlog' },
-									{ value: 'Todo', text: 'Todo' },
-									{ value: 'InProgress', text: 'InProgress' },
-									{ value: 'Done', text: 'Done' },
-									{ value: 'Hold', text: 'Hold' },
-								]}
-							/>
-						</FormGroup> */}
 					</div>
 				</ModalBody>
 				<ModalFooter>

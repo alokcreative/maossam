@@ -12,13 +12,6 @@ interface ITaskValue {
 	goalId: number;
 	ITask: ITask;
 }
-interface ITableRowProps {
-	id: number;
-	task: ITaskValue;
-	edit(...args: unknown[]): unknown;
-	view(...args: unknown[]): unknown;
-	deleteAction(...args: unknown[]): unknown;
-}
 
 const TableRow: FC<any> = ({ id, task, edit, view, deleteAction }) => {
 	// const { user } = useSelector((state: RootState) => state.auth);

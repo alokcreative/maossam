@@ -73,7 +73,7 @@ const SubTask: FC = () => {
 	const handleDeleteAction = (subId: number) => {
 		deleteSubTask(subId)
 			.unwrap()
-			.then((res) => {
+			.then((res:unknown) => {
 				refetch();
 			});
 	};
@@ -90,19 +90,25 @@ const SubTask: FC = () => {
 		getSubtask(SubId)
 			.unwrap()
 			.then((res) => {
-				console.log(res);
+				console.log("resSub>.",res);
+				setCurrTask(res);
 			});
 		setModalState(`Edit Sub Task`);
-
-		const task = data.subtasks.filter((i: any) => i.id === SubId);
-		setCurrTask(task);
 		setIsOpen(true);
 	};
 	return (
 		<PageWrapper>
 			<SubHeader>
 				<SubHeaderLeft>
-					<Breadcrumb list={[{ title: 'Tasks', to: '/' }]} />
+				<Button
+						className=''
+						color='info'
+						isLink
+						icon='ArrowBack'
+						onClick={() => navigate(-1)}>
+						Back to list
+					</Button>
+					{/* <Breadcrumb list={[{ title: 'Tasks', to: '/' }]} /> */}
 				</SubHeaderLeft>
 				<SubHeaderRight>
 					<Button

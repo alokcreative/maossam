@@ -69,15 +69,12 @@ interface ITodoItem {
 	date?: string;
 }
 const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) => {
-	const { id, taskId } = useParams();
 	const [list, setList] = useState<ITodoListItem[] | undefined>();
 	const [createMinitask] = useCreateMinitaskMutation({});
-	
 	const { data, isLoading, refetch } = useGetMiniTasksBySubIdQuery(subTaskId);
-	const [modalState, setModalState] = useState('Add Task');
 	useEffect(() => {
 		if (data) {
-			console.log("data>>",data);
+			// console.log("data>>",data);
 			const transformedData = data.minitasks.map((item: ITodoItem) => ({
 				...item,
 				status: item.status !== 'todo',
@@ -137,21 +134,21 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	 * @param badge
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
-		if (list) {
-			const newTodos: {
-				id?: string | number;
-				status?: boolean;
-				title?: string | number;
-				date?: dayjs.ConfigType;
-				badge?: {
-					text?: string;
-					color?: TColor;
-				};
-			}[] = [{ title, date, badge }, ...list];
-			// setList(newTodos);
-		}
-	};
+	// const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
+	// 	if (list) {
+	// 		const newTodos: {
+	// 			id?: string | number;
+	// 			status?: boolean;
+	// 			title?: string | number;
+	// 			date?: dayjs.ConfigType;
+	// 			badge?: {
+	// 				text?: string;
+	// 				color?: TColor;
+	// 			};
+	// 		}[] = [{ title, date, badge }, ...list];
+	// 		// setList(newTodos);
+	// 	}
+	// };
 
 	/**
 	 * New To/Do Day
@@ -189,11 +186,11 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 			createMinitask(minitaskData)
 				.unwrap()
 				.then((res) => {
-					console.log('Minitask create res>>', res);
+					// console.log('Minitask create res>>', res);
 					refetch();
 				})
 				.catch((res) => {
-					console.log('Minitask create res cach>>', res);
+					// console.log('Minitask create res cach>>', res);
 				});
 			// addTodo(values.todoTitle, date, getBadgeWithText(values.todoBadges));
 			setModalStatus(false);
@@ -250,50 +247,51 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 						// }}
 					>
 						<ModalHeader setIsOpen={setModalStatus}>
-							<ModalTitle id='new-todo-modal'>New Task</ModalTitle>
+							<ModalTitle id='new-todo-modal'>New Mini Task</ModalTitle>
 						</ModalHeader>
 						<ModalBody>
-							<div className='col-12'>
-								<FormGroup id='minitaskTitle' label='Title'>
-									<Input
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										isValid={formik.isValid}
-										isTouched={formik.touched.minitaskTitle}
-										invalidFeedback={formik.errors.minitaskTitle}
-										validFeedback='Looks good!'
-										value={formik.values.minitaskTitle}
-									/>
-								</FormGroup>
-							</div>
-							<div className='col-12'>
-								<FormGroup id='description' label='Title'>
-									<Input
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										isValid={formik.isValid}
-										isTouched={formik.touched.description}
-										invalidFeedback={formik.errors.description}
-										validFeedback='Looks good!'
-										value={formik.values.description}
-									/>
-								</FormGroup>
-							</div>
-							<div className='col' />
-							<div className='col-auto'>
+							<div className='row d-flex align-items-center justify-content-center'>
+								<div className='col-12'>
+									<FormGroup id='minitaskTitle' label='Title'>
+										<Input
+											onChange={formik.handleChange}
+											onBlur={formik.handleBlur}
+											isValid={formik.isValid}
+											isTouched={formik.touched.minitaskTitle}
+											invalidFeedback={formik.errors.minitaskTitle}
+											validFeedback='Looks good!'
+											value={formik.values.minitaskTitle}
+										/>
+									</FormGroup>
+								</div>
+								<div className='col-12'>
+									<FormGroup id='description' label='Description'>
+										<Input
+											onChange={formik.handleChange}
+											onBlur={formik.handleBlur}
+											isValid={formik.isValid}
+											isTouched={formik.touched.description}
+											invalidFeedback={formik.errors.description}
+											validFeedback='Looks good!'
+											value={formik.values.description}
+										/>
+									</FormGroup>
+								</div>
+								<div className='col' />
 								<Button
+									className=''
 									type='submit'
 									color='info'
 									isLight
 									onClick={formik.handleSubmit}>
-									Add Task
+									Add Mini Task
 								</Button>
 							</div>
 						</ModalBody>
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody>{list && <Todo list={list} setList={setList} refetch={refetch}/>}</CardBody>
+			<CardBody>{list && <Todo list={list} setList={setList} refetch={refetch} />}</CardBody>
 		</Card>
 	);
 };

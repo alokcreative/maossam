@@ -4,6 +4,8 @@ import { Calendar as DatePicker } from 'react-date-range';
 import { useFormik } from 'formik';
 import {
 	useCreateSubTaskwithFAQMutation,
+	useDeleteFAQMutation,
+	useUpdateFAQMutation,
 	useUpdateSubTaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
@@ -21,6 +23,7 @@ import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
 import Textarea from '../../../../../components/bootstrap/forms/Textarea';
 import Label from '../../../../../components/bootstrap/forms/Label';
+import { toast } from 'react-toastify';
 
 interface IAddSubtaskProps {
 	setIsOpen(...args: unknown[]): unknown;
@@ -33,7 +36,7 @@ interface IAddSubtaskProps {
 	currTask?: ITaskProps;
 }
 interface IFaq {
-	// id: string;
+	id?: string;
 	question: string;
 	answer: string;
 }
@@ -50,6 +53,8 @@ interface ITaskProps {
 	updated_at: string;
 	user_assigned: string;
 	faqs?: IFaq[];
+	subtask?: any;
+	subtask_faqs?: any;
 }
 const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	setIsOpen,
@@ -61,14 +66,18 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	currTask: task,
 }) => {
 	const [createSubTaskwithFAQ] = useCreateSubTaskwithFAQMutation();
-	const [updatedSubTask] = useUpdateSubTaskMutation();
+	const [updateSubTask] = useUpdateSubTaskMutation();
+	const [deleteFAQ] = useDeleteFAQMutation();
+	const [updateFAQ] = useUpdateFAQMutation();
 
 	const navigate = useNavigate();
 	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
+
 	useEffect(() => {
 		if (modalState === 'Add Sub Task') {
 			setDate(new Date());
+			setFaqs([{ question: '', answer: '' }]);
 			formik.setFieldValue('name', '');
 			formik.setFieldValue('description', '');
 			formik.setFieldValue('dueDate', '');
@@ -76,19 +85,22 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			formik.setFieldValue('status', '');
 			formik.setFieldValue('expected_time', '');
 		} else if (modalState === 'Edit Sub Task') {
-			console.log('currTask>>>>>>>>>', task);
-			formik.setFieldValue('name', task?.title);
-			formik.setFieldValue('description', task?.description);
-			formik.setFieldValue('sub_id', task?.id);
-			formik.setFieldValue('expected_time', task?.expected_time);
+			setFaqs([{ question: '', answer: '' }]);
+			formik.setFieldValue('name', task?.subtask?.title);
+			formik.setFieldValue('description', task?.subtask?.description);
+			formik.setFieldValue('sub_id', task?.subtask?.id);
+			formik.setFieldValue('expected_time', task?.subtask?.expected_time);
 
-			if (task?.due_date) {
-				const dueDateObject = new Date(task?.due_date);
+			if (task) {
+				const dueDateObject = new Date(task?.subtask?.due_date);
 				setDate(dueDateObject);
+				console.log('dueDateObject>>', dueDateObject);
 			}
 			// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-			setFaqs(task?.faqs!);
+			setFaqs(task?.subtask_faqs!);
 		}
+		// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+		// setFaqs(task?.subtask_faqs!);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [modalState, handleCloseClick]);
 	const formik = useFormik({
@@ -136,58 +148,109 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		onSubmit: (values) => {
 			setIsOpen(false);
 			console.log('values.question', values);
-			createSubTaskwithFAQ({
-				task_id: String(id),
-				title: values.name,
-				description: values.description,
-				due_date: format(date, 'MM/dd/yyyy'),
-				expected_time: values.expected_time,
-				faq_data: faqs,
-			})
-				.unwrap()
-				.then((res) => {
-					// console.log('Subtask Created', res);
-					refetch();
+			if (modalState === 'Add Sub Task') {
+				createSubTaskwithFAQ({
+					task_id: String(id),
+					title: values.name,
+					description: values.description,
+					due_date: String(format(date, 'MM/dd/yyyy')),
+					expected_time: values.expected_time,
+					faq_data: faqs,
 				})
-				.catch((res) => {
-					console.log('res', res);
-				});
+					.unwrap()
+					.then((res) => {
+						// console.log('Subtask Created', res);
+						refetch();
+					})
+					.catch((res) => {});
+			} else if (modalState === 'Edit Sub Task') {
+				const parts = values.expected_time.split(':');
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+				const taskData = {
+					expected_time: timeWithoutSeconds,
+					due_date: String(format(date, 'MM/dd/yyyy')),
+					description: values.description,
+					title: values.name,
+				};
+				updateSubTask({ subtaskId: String(task?.subtask.id), taskData })
+					.unwrap()
+					.then((res) => {
+						toast(`Task updated sucessfully`);
+						refetch();
+					})
+					.catch((res) => {
+						toast(`Something went wrong`);
+					});
+			}
 			navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		},
 	});
 
 	const handleAddFAQ = () => {
-		// const newId = generateUniqueId();
-		setFaqs([...faqs, { question: '', answer: '' }]);
+		if (faqs[faqs.length - 1]?.question !== '' && faqs[faqs.length - 1]?.answer !== '') {
+			setFaqs([...faqs, { question: '', answer: '' }]);
+		} else if (faqs.length === 0) {
+			setFaqs([...faqs, { question: '', answer: '' }]);
+		} else {
+		}
 	};
+
 	const handleFAQChange = (index: number, field: string, value: string) => {
 		formik.setFieldValue(`faqs[${index}].${field}`, value);
 	};
 	const handleQuestionChange = (index: number, value: string) => {
-		const updatedFaqs = [...faqs];
-		updatedFaqs[index].question = value;
+		const updatedFaqs: IFaq[] = [...faqs];
+		updatedFaqs[index] = { ...updatedFaqs[index], question: value };
 		setFaqs(updatedFaqs);
 		handleFAQChange(index, 'question', value);
 	};
 
 	const handleAnswerChange = (index: number, value: string) => {
 		const updatedFaqs = [...faqs];
-		updatedFaqs[index].answer = value;
+		updatedFaqs[index] = { ...updatedFaqs[index], answer: value };
 		setFaqs(updatedFaqs);
 		handleFAQChange(index, 'answer', value);
 	};
-	const handleDeleteFAQ = (index: number) => {
+
+	const handleDeleteFAQ = (index: number, _index: number) => {
+		if (modalState === 'Edit Sub Task') {
+			deleteFAQ(index)
+				.unwrap()
+				.then((res: unknown) => {
+					// refetch();
+					const updatedFaqs = [...faqs];
+					updatedFaqs.splice(_index, 1);
+					setFaqs(updatedFaqs);
+				})
+				.catch((res: unknown) => {});
+		} else if (modalState === 'Add Sub Task') {
+			const updatedFaqs = [...faqs];
+			updatedFaqs.splice(_index, 1);
+			setFaqs(updatedFaqs);
+		}
+	};
+	const handleHandleUpdate = (index: number, _index: number) => {
 		const updatedFaqs = [...faqs];
-		updatedFaqs.splice(index, 1);
-		setFaqs(updatedFaqs);
+		const faq = {
+			question: updatedFaqs[_index].question,
+			answer: updatedFaqs[_index].answer,
+		};
+		updateFAQ({ index, faq })
+			.unwrap()
+			.then((res) => {
+				toast('Updated Successfully');
+				updatedFaqs.splice(index, 1);
+				setFaqs(updatedFaqs);
+			})
+			.catch((res) => {});
 	};
 	// function generateUniqueId() {
-	// 	const newId = faqs && faqs.length + 1; 
+	// 	const newId = faqs && faqs.length + 1;
 	// 	return newId;
 	// }
 
 	return (
-		<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg'>
+		<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 			<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
 				<ModalTitle id='new_task'>{modalState}</ModalTitle>
 			</ModalHeader>
@@ -195,39 +258,49 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
-						<FormGroup id='name' label='Name' className='col-lg-6'>
-							<Input
-								type='text'
-								onChange={formik.handleChange}
-								value={formik.values.name}
-								isValid={formik.isValid}
-								isTouched={formik.touched.name}
-								invalidFeedback={formik.errors.name}
-								onFocus={() => {
-									formik.setErrors({});
-								}}
-							/>
-						</FormGroup>
-						<FormGroup id='description' label='Description' className='col-lg-6'>
-							<Input
-								type='text'
-								onChange={formik.handleChange}
-								value={formik.values.description}
-								isValid={formik.isValid}
-								isTouched={formik.touched.description}
-								invalidFeedback={formik.errors.description}
-								onFocus={() => {
-									formik.setErrors({});
-								}}
-							/>
-						</FormGroup>
-						{/* <FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
-							<Input
-								type='date'
-								onChange={formik.handleChange}
-								value={formik.values.dueDate}
-							/>
-						</FormGroup> */}
+						<div className='col-lg-6'>
+							<FormGroup id='name' label='Name' >
+								<Input
+									type='text'
+									onChange={formik.handleChange}
+									value={formik.values.name}
+									isValid={formik.isValid}
+									isTouched={formik.touched.name}
+									invalidFeedback={formik.errors.name}
+									onFocus={() => {
+										formik.setErrors({});
+									}}
+								/>
+							</FormGroup>
+							<FormGroup id='description' label='Description' >
+								<Input
+									type='text'
+									onChange={formik.handleChange}
+									value={formik.values.description}
+									isValid={formik.isValid}
+									isTouched={formik.touched.description}
+									invalidFeedback={formik.errors.description}
+									onFocus={() => {
+										formik.setErrors({});
+									}}
+								/>
+							</FormGroup>
+							<FormGroup
+								id='expected_time'
+								label='Expected Time'>
+								<Input
+									type='time'
+									onChange={formik.handleChange}
+									value={formik.values.expected_time}
+									isValid={formik.isValid}
+									isTouched={formik.touched.expected_time}
+									invalidFeedback={formik.errors.expected_time}
+									onFocus={() => {
+										formik.setErrors({});
+									}}
+								/>
+							</FormGroup>
+						</div>
 						<div className='col-6'>
 							<div>
 								{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -236,79 +309,80 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 							<div className='text-center mt-n4'>
 								<DatePicker
 									onChange={(item) => setDate(item)}
-									date={date}
+									date={date || task?.subtask?.due_date}
 									minDate={new Date()}
 									color={process.env.REACT_APP_PRIMARY_COLOR}
 									shownDate={date}
 								/>
 							</div>
 						</div>
-						<FormGroup id='expected_time' label='Expected Time' className='col-lg-6'>
-							<Input
-								type='time'
-								onChange={formik.handleChange}
-								value={formik.values.expected_time}
-								isValid={formik.isValid}
-								isTouched={formik.touched.expected_time}
-								invalidFeedback={formik.errors.expected_time}
-								onFocus={() => {
-									formik.setErrors({});
-								}}
-							/>
-						</FormGroup>
-						{faqs &&
-							faqs?.map((faq, index) => (
-								<>
-									<div key={Number(index)} className='col-lg-12 d-flex'>
-										<FormGroup
-											id={`question-${index}`}
-											label={`Question ${index + 1}`}
-											className='col-lg-6 mx-1'>
-											<Textarea
-												// type='text'
-												onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-													handleQuestionChange(index, e.target.value)
-												}
-												value={faq.question}
-											/>
-										</FormGroup>
-										<FormGroup
-											id={`answer-${index}`}
-											label={`Answer ${index + 1}`}
-											className='col-lg-6 mx-1'>
-											<Textarea
-												// type='text'
-												onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-													handleAnswerChange(index, e.target.value)
-												}
-												value={faq.answer}
-											/>
-										</FormGroup>
-									</div>
 
-									<Button
-										color='danger'
-										className='col-lg-1 mx-2'
-										onClick={() => {
-											handleDeleteFAQ(index);
-										}}>
-										Delete
-									</Button>
-								</>
-							))}
+						{faqs &&
+							faqs?.map((faq, index) => {
+								return (
+									<>
+										<div key={Number(index)} className='col-lg-12 d-flex'>
+											<FormGroup
+												id={`question-${index}`}
+												label={`Question ${index + 1}`}
+												className='col-lg-6 mx-1'>
+												<Textarea
+													onChange={(
+														e: ChangeEvent<HTMLTextAreaElement>,
+													) => {
+														handleQuestionChange(index, e.target.value);
+													}}
+													value={faq.question}
+												/>
+											</FormGroup>
+											<FormGroup
+												id={`answer-${index}`}
+												label={`Answer ${index + 1}`}
+												className='col-lg-6 mx-1'>
+												<Textarea
+													onChange={(
+														e: ChangeEvent<HTMLTextAreaElement>,
+													) => handleAnswerChange(index, e.target.value)}
+													value={faq.answer}
+												/>
+											</FormGroup>
+										</div>
+										{modalState === 'Edit Sub Task' && (
+											<Button
+												color='success'
+												className='col-lg-1 mx-2'
+												onClick={() => {
+													handleHandleUpdate(Number(faq.id!), index);
+												}}>
+												Update
+											</Button>
+										)}
+										<Button
+											color='danger'
+											className='col-lg-1 mx-2'
+											onClick={() => {
+												handleDeleteFAQ(Number(faq.id!), index);
+											}}>
+											Delete
+										</Button>
+									</>
+								);
+							})}
 					</div>
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterRight>
-						<Button
-							color='success'
-							isLight
-							icon='Add'
-							onClick={() => {
-								handleAddFAQ();
-							}}>
-							Add FAQ
-						</Button>
+						{modalState === 'Add Sub Task' && (
+							<Button
+								color='success'
+								isLight
+								icon='Add'
+								onClick={() => {
+									handleAddFAQ();
+								}}>
+								Add FAQ
+							</Button>
+						)}
 					</CardFooterRight>
 				</ModalFooter>
 				<ModalFooter>

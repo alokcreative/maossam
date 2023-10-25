@@ -21,8 +21,8 @@ import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
 import { PER_COUNT } from '../../../components/PaginationButtons';
-import data from '../../../common/data/dummyTaskHoldData';
-import goalData from '../../../common/data/dummyGoals';
+// import data from '../../../common/data/dummyTaskHoldData';
+// import goalData from '../../../common/data/dummyGoals';
 import { useFormik } from 'formik';
 import SocialItem from '../../_common/dashboardHelper/SocialItem';
 import Item from '../../_common/dashboardHelper/GoalItems';
@@ -30,6 +30,7 @@ import TaskOnHold from '../../_common/dashboardHelper/TaskOnHold';
 import MarketingAssetForms from './Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
 import GoalViewPopup from '../goal/goalHelpher/GoalViewPopup';
+import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 
 interface ITableRowProps {
 	id: number;
@@ -92,14 +93,21 @@ interface CardProp {
 	taskCount: number;
 	percent: number;
 }
-
+interface IGoalProps {
+	id: number;
+	title: string;
+	description: string;
+	due_date?: string;
+	expected_time?: string;
+	// status?: string;
+	category?: string;
+	created_at?: string;
+	created_by?: string;
+	updated_at?: string;
+}
 const DashboardPage = () => {
 	const { mobileDesign } = useContext(ThemeContext);
-	// const { setIsOpen } = useTour();
-	// const [currentPage, setCurrentPage] = useState(1);
-	// const [perPage, setPerPage] = useState(PER_COUNT['5']);
 	const { themeStatus } = useDarkMode();
-	// const [activeTab, setActiveTab] = useState<TTabs>(TABS.YEARLY);
 	const navigate = useNavigate();
 	const [elementId, setElementId] = useState<number>();
 	const [elementName, setElementName] = useState<string>();
@@ -108,6 +116,9 @@ const DashboardPage = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const [goalId, setGoalId] = useState<number>();
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
+	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
+
 	const openModal = (id: number, nameOfBussiness: string) => {
 		setElementId(id);
 		setElementName(nameOfBussiness);
@@ -182,7 +193,7 @@ const DashboardPage = () => {
 		onSubmit: (values) => {},
 	});
 
-	const filteredData = data.filter((f) => formik.values.taskHoldFil.includes(f.category));
+	// const filteredData = data.filter((f) => formik.values.taskHoldFil.includes(f.category));
 
 	const getFormValue = (isSocialMedia: string, isSocialMediaimportant: string) => {
 		const element: CardProp[] = cards.filter((card) => card.id === elementId);
@@ -237,15 +248,23 @@ const DashboardPage = () => {
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
 					</div>
-					{goalData.slice(0, 6).map((i) => (
-						<Item
-							key={i.id}
-							id={i.id}
-							name={i.name}
-							attributes={i.description}
-							timeline={i.timeline}
-						/>
-					))}
+					{isLoading ? (
+						<div>Loadning</div>
+					) : (
+						isSuccess &&
+						data &&
+						goalList
+							?.slice(0, 6)
+							.map((i) => (
+								<Item
+									key={i.id}
+									id={i.id}
+									name={i.title}
+									attributes={i.description}
+									timeline={i.expected_time!}
+								/>
+							))
+					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
 						<Button color='primary' onClick={() => navigate('/goals')}>
 							See more...

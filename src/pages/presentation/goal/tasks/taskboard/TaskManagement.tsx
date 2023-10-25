@@ -13,26 +13,14 @@ import useDarkMode from '../../../../../hooks/useDarkMode';
 import { TColumnsData } from '../../../project-management/type/types';
 import Board from '../../../project-management/component/Board';
 import Button from '../../../../../components/bootstrap/Button';
-import { ISubTask, ITask } from '../../../../../common/data/dummyGoals';
 import SubTaskBoard from './SubTaskBoard';
 import {
 	useCreateSubTaskMutation,
 	useGetSubTaskByTaskIdQuery,
 	useUpdateSubTaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
-import Modal, {
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-	ModalTitle,
-} from '../../../../../components/bootstrap/Modal';
-import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../../components/bootstrap/forms/Input';
-import { useFormik } from 'formik';
+
 import { useEffectOnce } from 'react-use';
-import { CardFooterLeft, CardFooterRight } from '../../../../../components/bootstrap/Card';
-import Textarea from '../../../../../components/bootstrap/forms/Textarea';
-import Select from '../../../../../components/bootstrap/forms/Select';
 import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 import { toast } from 'react-toastify';
 
@@ -119,11 +107,9 @@ const TaskManagement = () => {
 			Object.keys(columnsData).forEach((columnKey) => {
 				statusMapping[columnKey] = [];
 			});
-			console.log('cardsData>>', cardsData);
 			const data1 = cardsData.map((item) => {
 				return { ...item, status: item.status };
 			});
-			console.log('data1>>', data1);
 			// Assign tasks to their respective columns based on status
 			if (data1)
 				data1.forEach((task) => {
