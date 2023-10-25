@@ -20,9 +20,9 @@ import {
 	useUpdateSubTaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
 
+import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 import { useEffectOnce } from 'react-use';
 import { toast } from 'react-toastify';
-import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 
 interface ICardsInColumn {
 	[key: string]: ISubtask[];
