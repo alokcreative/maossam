@@ -102,8 +102,11 @@ const ModalsStepForm: React.FC = () => {
 				state?: string;
 				companyName?: string;
 			} = {};
-			if (values.phone_number.length !== 10) {
-				errors.phone_number = 'Characters must be 10';
+			if (!values.phone_number) {
+				errors.phone_number = 'Required';
+			}
+			if (values.phone_number && values.phone_number.length !== 9) {
+				errors.phone_number = 'Characters must be 9';
 			}
 			if (values.companyName === '') {
 				errors.companyName = 'Field Required';

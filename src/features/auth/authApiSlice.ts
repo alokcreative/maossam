@@ -139,6 +139,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 					Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 				},
 			}),
+			keepUnusedDataFor: 5,
 		}),
 
 		// Create User

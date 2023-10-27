@@ -6,6 +6,8 @@ const apiSlice = createApi({
 	reducerPath: 'apiSlice',
 	baseQuery,
 	tagTypes: ['Register', 'Login', 'User', 'Profile', 'Goal'],
+	refetchOnReconnect: true,
+	keepUnusedDataFor: 30,
 	endpoints: (builder) => ({}),
 });
 

@@ -116,7 +116,7 @@ const DashboardPage = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const [goalId, setGoalId] = useState<number>();
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({fixedCacheKey: 'listTask',});
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
 
 	const openModal = (id: number, nameOfBussiness: string) => {

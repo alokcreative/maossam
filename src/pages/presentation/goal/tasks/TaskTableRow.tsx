@@ -4,7 +4,7 @@ import Button from '../../../../components/bootstrap/Button';
 import Modal, { ModalBody, ModalHeader } from '../../../../components/bootstrap/Modal';
 import SubTaskCard from './taskboard/SubTaskCard';
 import { pagesMenu } from '../../../../menu';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ITaskValue {
 	id: number;
@@ -24,13 +24,13 @@ interface ITableRowProps {
 
 const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	const logUserId = localStorage.getItem('UserId');
-
+	const location = useLocation();
+	console.log('location', location.pathname);
 	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
 	const role = localStorage?.getItem('role');
-	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
 	return (
@@ -57,9 +57,12 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 					<td>
 						<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>
 					</td>
-					<td>
-						<span style={{ whiteSpace: 'nowrap' }}>{task.expected_time}</span>
-					</td>
+					{location?.pathname != '/goals' && (
+						<td>
+							<span style={{ whiteSpace: 'nowrap' }}>{task.expected_time}</span>
+						</td>
+					)}
+
 					<td className='h5'>
 						<Badge
 							color={

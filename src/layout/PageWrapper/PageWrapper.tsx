@@ -41,7 +41,7 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 				GetUsersMutation(token)
 					.unwrap()
 					.then((data) => {
-						console.log('data>>>', data);
+						// console.log('data>>>', data);
 						if (isProtected && (data === '' || token === '')) {
 							navigate(`../${pagesMenu.login.path}`);
 						}

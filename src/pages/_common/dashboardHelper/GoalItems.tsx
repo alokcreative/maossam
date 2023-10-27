@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import useDarkMode from '../../../hooks/useDarkMode';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { pagesMenu } from '../../../menu';
 import Card, {
 	CardActions,
@@ -12,6 +12,7 @@ import Card, {
 import Badge from '../../../components/bootstrap/Badge';
 import Progress from '../../../components/bootstrap/Progress';
 import GoalViewPopup from '../../presentation/goal/goalHelpher/GoalViewPopup';
+import { useGetTaskByGoalIdQuery } from '../../../features/auth/taskManagementApiSlice';
 
 interface IItemProps {
 	id: number;
@@ -24,6 +25,11 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
 	const role = localStorage.getItem('role');
+	const { data, isLoading, isSuccess, refetch } = useGetTaskByGoalIdQuery(
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		Number(id!),
+	);
+	console.log("taskid>>",data?.tasks);
 	const openModalHandler = () => {
 		if (role === 'superadmin') {
 			navigate(`../goal-details/${id}`);
@@ -60,6 +66,9 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 							<Progress isAutoColor value={0} height={10} />
 						</div>
 					</div>
+					<p className='mt-2 mb-0'>Number of task:  {data?.tasks.length}</p>
+					{/* <div className='row mt-2 mb-0'>
+					</div> */}
 				</CardBody>
 			</Card>
 			{isModalOpen ? (
