@@ -1,12 +1,10 @@
-import React, { useLayoutEffect, forwardRef, ReactElement, useState, useEffect } from 'react';
+import React, { useLayoutEffect, forwardRef, ReactElement, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { ISubHeaderProps } from '../SubHeader/SubHeader';
 import { IPageProps } from '../Page/Page';
 import { pagesMenu } from '../../menu';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import { useGetUsersMutation } from '../../features/auth/authApiSlice';
 
 interface IPageWrapperProps {
@@ -23,13 +21,13 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 	({ isProtected, title, description, className, children }, ref) => {
 		useLayoutEffect(() => {
 			// @ts-ignore
-			document.getElementsByTagName('TITLE')[0].text = `${title ? `${title} | ` : ''}${
-				process.env.REACT_APP_SITE_NAME
-			}`;
+			document.getElementsByTagName('TITLE')[0].text = `${
+				title ? `${title} | ` : ''
+			}${`Maossam`}`;
 			// @ts-ignore
 			document
 				?.querySelector('meta[name="description"]')
-				.setAttribute('content', description || process.env.REACT_APP_META_DESC || '');
+				.setAttribute('content', description || '');
 		});
 
 		const token = localStorage?.getItem('access_token');

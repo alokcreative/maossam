@@ -25,6 +25,7 @@ import SocialItem from '../../_common/dashboardHelper/SocialItem';
 import MarketingAssetForms from '../../presentation/dashboard/Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
 import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
+import { dashboardPagesMenu } from '../../../menu';
 
 interface CardProp {
 	id: number;
@@ -133,7 +134,7 @@ const DashboardAdmin = () => {
 	};
 
 	return (
-		<PageWrapper isProtected>
+		<PageWrapper isProtected title={dashboardPagesMenu.dashboard.text}>
 			<Page container='fluid'>
 				<Card className='shadow-3d-info'>
 					<CardHeader>

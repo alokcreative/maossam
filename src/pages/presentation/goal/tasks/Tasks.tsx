@@ -234,7 +234,7 @@ const Tasks: FC = () => {
 		navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
 	return (
-		<PageWrapper>
+		<PageWrapper title={dashboardPagesMenu.tasks.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb list={[{ title: 'Tasks', to: '/' }]} />

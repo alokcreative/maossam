@@ -54,6 +54,7 @@ import Label from '../../../components/bootstrap/forms/Label';
 import { format } from 'date-fns';
 import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
 import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
+import { dashboardPagesMenu } from '../../../menu';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -357,7 +358,7 @@ const Goals: FC = () => {
 	// }
 
 	return (
-		<PageWrapper>
+		<PageWrapper title={dashboardPagesMenu.goals.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb

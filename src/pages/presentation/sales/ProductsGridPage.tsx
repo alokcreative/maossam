@@ -25,7 +25,7 @@ import Badge from '../../../components/bootstrap/Badge';
 import Input from '../../../components/bootstrap/forms/Input';
 import PlaceholderImage from '../../../components/extras/PlaceholderImage';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { pagesMenu } from '../../../menu';
+import { adminDashboardPagesMenu, pagesMenu } from '../../../menu';
 import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
 
 interface IValues {
@@ -122,15 +122,15 @@ const ProductsGridPage = () => {
 	}, [editItem]);
 
 	return (
-		<PageWrapper title={pagesMenu.sales.subMenu.productsGrid.text}>
+		<PageWrapper title={adminDashboardPagesMenu.product.text}>
 			<SubHeader>
 				<SubHeaderLeft>
 					<Breadcrumb
 						list={[
-							{ title: pagesMenu.sales.text, to: pagesMenu.sales.path },
+							{ title: adminDashboardPagesMenu.product.text, to: adminDashboardPagesMenu.product.path },
 							{
-								title: pagesMenu.sales.subMenu.productsGrid.text,
-								to: pagesMenu.sales.subMenu.productsGrid.path,
+								title: adminDashboardPagesMenu.product.text,
+								to: adminDashboardPagesMenu.product.path,
 							},
 						]}
 					/>

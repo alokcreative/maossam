@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTour } from '@reactour/tour';
 import useDarkMode from '../../../hooks/useDarkMode';
-import { pagesMenu } from '../../../menu';
+import { dashboardPagesMenu, pagesMenu } from '../../../menu';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, {
 	SubHeaderLeft,
@@ -216,7 +216,7 @@ const DashboardPage = () => {
 	};
 
 	return (
-		<PageWrapper title={pagesMenu.sales.subMenu.dashboard.text}>
+		<PageWrapper title={dashboardPagesMenu.dashboard.text}>
 			{/* <SubHeader>
 				<SubHeaderLeft>
 					<span className='h4 mb-0 fw-bold'>Overview</span>
