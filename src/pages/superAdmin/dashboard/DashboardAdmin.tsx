@@ -58,7 +58,7 @@ const DashboardAdmin = () => {
 	const [maybeCards, setMaybeCards] = useState<CardProp[]>([]);
 	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({fixedCacheKey: 'listTask'});
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const openModal = (id: number, nameOfBussiness: string) => {

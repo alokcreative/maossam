@@ -178,7 +178,7 @@ const Signup: FC = () => {
 				</FormGroup>
 			</div>
 			<div className='col-12'>
-				<FormGroup id='confirm-password' isFloating label='confirm password'>
+				<FormGroup id='confirm-password' isFloating label='Confirm password'>
 					<Input
 						autoComplete='confirm password'
 						type='password'

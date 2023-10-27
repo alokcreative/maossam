@@ -14,15 +14,13 @@ import Susy9 from './assets/img/wanna/susy/susy9.png';
 import Susy10 from './assets/img/wanna/susy/susy10.png';
 import useDarkMode from './hooks/useDarkMode';
 import Button from './components/bootstrap/Button';
-import {useSelector} from 'react-redux'
 import { componentPagesMenu, pagesMenu } from './menu';
 // import FormGroup from './components/bootstrap/forms/FormGroup';
 // import { Input } from './components/icon/material-icons';
 import { useNavigate } from 'react-router-dom';
 import Checks, { ChecksGroup } from './components/bootstrap/forms/Checks';
 import { useFormik } from 'formik';
-import { RootState } from './store/store';
-import { Role } from './common/data/userDummyData';
+import { useGetProfileQuery } from './features/auth/authApiSlice';
 
 /**
  * Steps style
@@ -128,10 +126,9 @@ const DarkModeTour = () => {
 	);
 };
 const ProfileTour = () => {
-	const classes = useStyles();
 	// const { userData, setUser } = useContext(AuthContext);
-	const userData = useSelector((state: RootState) => state.auth.user);
-
+	const userId = localStorage.getItem('UserId');
+	const { data } = useGetProfileQuery(userId);
 	const navigate = useNavigate();
 	const { setIsOpen } = useTour();
 	const handleClick = () => {
@@ -147,26 +144,24 @@ const ProfileTour = () => {
 				navigate('/timeslot');
 				setIsOpen(false);
 			}
+			if (values.tourLink === 'goals') {
+				navigate('/goals');
+				setIsOpen(false);
+			}
+			if (values.tourLink === 'profile') {
+				navigate(`../${pagesMenu.profile.path}/${userId}`);
+				setIsOpen(false);
+			}
 			if (values.tourLink === 'marketingAssets') {
-				navigate('/marketing-assets');
+				navigate('marketing-assets');
 				setIsOpen(false);
 			}
-			if (values.tourLink === 'productsServices') {
-				navigate('/products');
+			if (values.tourLink === 'productServices') {
+				navigate('product-services');
 				setIsOpen(false);
 			}
-			if (values.tourLink === 'customerProfiles') {
-				navigate(
-					`../${pagesMenu.appointment.subMenu.employeeID.path}/${userData?.id || 0}`,
-				);
-				setIsOpen(false);
-			}
-			if (values.tourLink === 'marketingPlan') {
-				navigate('marketing-plans');
-				setIsOpen(false);
-			}
-			if (values.tourLink === 'partners') {
-				navigate('partners-list');
+			if (values.tourLink === 'products') {
+				navigate('products');
 				setIsOpen(false);
 			}
 			if (values.tourLink === 'dashboard') {
@@ -177,43 +172,24 @@ const ProfileTour = () => {
 				navigate('/user-management');
 				setIsOpen(false);
 			}
-			if (values.tourLink === 'task') {
-				navigate('/task');
-				setIsOpen(false);
-			}
-			if (values.tourLink === 'projects') {
-				navigate('/projects');
-				setIsOpen(false);
-			}
-			if (values.tourLink === 'timeTracking') {
-				navigate('/time-tracking');
+			if (values.tourLink === 'tasks') {
+				navigate('/tasks');
 				setIsOpen(false);
 			}
 		},
 	});
-
 	return (
 		<div className='row'>
 			<div className=' d-flex align-items-center'>
 				<div>
 					<div>
-						<p>Hi {userData.name}</p>
+						<p>Hi, {data?.first_name}</p>
 						<p>We will quickly introduce you to the main features of Maossim.</p>
 						<p>In just a few steps you’ll be ready to start your journey to success!</p>
 					</div>
 					<div>
-						{userData.role=== Role.admin ? (
+						{userId === '1' ? (
 							<ChecksGroup>
-								<Checks
-									id='dashboard'
-									type='radio'
-									name='tourLink'
-									value='dashboard'
-									onChange={formik.handleChange}
-									checked={formik.values.tourLink}
-									label='Dashboard'
-								/>
-
 								<Checks
 									id='users'
 									type='radio'
@@ -227,37 +203,36 @@ const ProfileTour = () => {
 								<Checks
 									type='radio'
 									name='tourLink'
-									value='task'
+									value='tasks'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Task'
+									label='Tasks'
+								/>
+								<Checks
+									type='radio'
+									name='tourLink'
+									value='products'
+									onChange={formik.handleChange}
+									checked={formik.values.tourLink}
+									label='Products'
 								/>
 
 								<Checks
 									type='radio'
 									name='tourLink'
-									value='customerProfiles'
+									value='marketingAssets'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Customers’ profiles'
+									label='Marketing Assets'
 								/>
-
+								
 								<Checks
 									type='radio'
 									name='tourLink'
-									value='projects'
+									value='profile'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Projects'
-								/>
-
-								<Checks
-									type='radio'
-									name='tourLink'
-									value='timeTracking'
-									onChange={formik.handleChange}
-									checked={formik.values.tourLink}
-									label='Time Tracking'
+									label='Profile'
 								/>
 							</ChecksGroup>
 						) : (
@@ -273,7 +248,24 @@ const ProfileTour = () => {
 								/>
 
 								<Checks
-									id='marketingAssets'
+									id='goals'
+									type='radio'
+									name='tourLink'
+									value='goals'
+									onChange={formik.handleChange}
+									checked={formik.values.tourLink}
+									label='Goals'
+								/>
+
+								<Checks
+									type='radio'
+									name='tourLink'
+									value='tasks'
+									onChange={formik.handleChange}
+									checked={formik.values.tourLink}
+									label='Task'
+								/>
+								<Checks
 									type='radio'
 									name='tourLink'
 									value='marketingAssets'
@@ -281,41 +273,21 @@ const ProfileTour = () => {
 									checked={formik.values.tourLink}
 									label='Marketing Assets'
 								/>
-
 								<Checks
 									type='radio'
 									name='tourLink'
-									value='productsServices'
+									value='productServices'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Products/Services'
+									label='Product Services'
 								/>
-
 								<Checks
 									type='radio'
 									name='tourLink'
-									value='customerProfiles'
+									value='profile'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Customers’ profiles'
-								/>
-
-								<Checks
-									type='radio'
-									name='tourLink'
-									value='marketingPlan'
-									onChange={formik.handleChange}
-									checked={formik.values.tourLink}
-									label='Marketing Plan'
-								/>
-
-								<Checks
-									type='radio'
-									name='tourLink'
-									value='partners'
-									onChange={formik.handleChange}
-									checked={formik.values.tourLink}
-									label='Partners'
+									label='Profile'
 								/>
 							</ChecksGroup>
 						)}
@@ -371,7 +343,6 @@ const LangSwitcherTour = () => {
 					</p>
 				</div>
 			</div>
-			
 		</div>
 	);
 };

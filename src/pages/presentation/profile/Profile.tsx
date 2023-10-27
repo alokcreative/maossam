@@ -335,7 +335,7 @@ const Profile = () => {
 													autoComplete='tel'
 													onChange={formik.handleChange}
 													onBlur={formik.handleBlur}
-													value={formik.values.phone_number}
+													value={`+972 ${formik.values.phone_number}`}
 													isValid={formik.isValid}
 													isTouched={formik.touched.phone_number}
 													invalidFeedback={formik.errors.phone_number}

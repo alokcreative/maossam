@@ -42,10 +42,10 @@ const TaskOnHold = () => {
 		onSubmit: (values) => {},
 	});
 	useEffect(() => {
-		console.log(
-			'Data>>',
-			data?.filter((f: ITaskValue) => f.status === 'hold'),
-		);
+		// console.log(
+		// 	'Data>>',
+		// 	data?.filter((f: ITaskValue) => f.status === 'hold'),
+		// );
 		setTaskList(data?.filter((f: ITaskValue) => f.status === 'hold'));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
