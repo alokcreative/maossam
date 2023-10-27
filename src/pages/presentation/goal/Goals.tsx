@@ -54,7 +54,6 @@ import Label from '../../../components/bootstrap/forms/Label';
 import { format } from 'date-fns';
 import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
 import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
-import TaskTableRow from './tasks/TaskTableRow';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -99,9 +98,7 @@ interface IGoalProps {
 }
 const Goals: FC = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
-		fixedCacheKey: 'listTask',
-	});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({fixedCacheKey: 'listTask'});
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
 	const { darkModeStatus } = useDarkMode();
@@ -118,7 +115,6 @@ const Goals: FC = () => {
 	const [goalId, setGoalId] = useState<number>();
 	const [showMore, setShowMore] = useState<boolean>(false);
 	const [date, setDate] = useState<Date>(new Date());
-	console.log("data",data);
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -264,7 +260,7 @@ const Goals: FC = () => {
 			// // goalData.append('status', values.status);
 			// goalData.append('category', values.category);
 			const parts = values.expected_time.split(':');
-			const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 			const goalData = {
 				title: values.name,
 				description: values.description,
@@ -480,15 +476,81 @@ const Goals: FC = () => {
 															perPage,
 														).map((i, index) => {
 															return (
-																<TaskTableRow
-																	// eslint-disable-next-line react/no-array-index-key
-																	key={index}
-																	id={index + 1}
-																	// eslint-disable-next-line react/jsx-props-no-spreading
-																	task={i}
-																	edit={handleEdit}
-																	deleteAction={handleDelete}
-																/>
+																<tr>
+																	<th scope='row'>{index + 1}</th>
+																	<th>{i.title}</th>
+																	<td>{i.description}</td>
+																	<td>{i.due_date}</td>
+
+																	<td className='h5'>
+																		<Badge
+																			color={
+																				(i.status ===
+																					'Progress' &&
+																					'danger') ||
+																				(i.status ===
+																					'New' &&
+																					'warning') ||
+																				(i.status ===
+																					'Done' &&
+																					'success') ||
+																				'info'
+																			}>
+																			{i.status}
+																		</Badge>
+																	</td>
+																	<td>
+																		<div className='d-flex flex-nowrap'>
+																			<Button
+																				icon='Visibility'
+																				color='primary'
+																				isLight
+																				onClick={() => {
+																					if (
+																						role ===
+																						'superadmin'
+																					) {
+																						navigate(
+																							`../goal-details/${i.id}`,
+																						);
+																					} else {
+																						openModal(
+																							i.id,
+																						);
+																					}
+																				}}
+																				className='me-1'
+																			/>
+																			{Number(logUserId) ===
+																				i.created_by ||
+																			logUserId === '1' ? (
+																				<>
+																					<Button
+																						icon='Edit'
+																						color='success'
+																						isLight
+																						onClick={() =>
+																							handleEdit(
+																								i.id,
+																							)
+																						}
+																						className='me-1'
+																					/>
+																					<Button
+																						icon='Delete'
+																						color='danger'
+																						isLight
+																						onClick={() =>
+																							handleDelete(
+																								i.id,
+																							)
+																						}
+																					/>
+																				</>
+																			) : null}
+																		</div>
+																	</td>
+																</tr>
 															);
 														})}
 													</tbody>
@@ -532,7 +594,7 @@ const Goals: FC = () => {
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
 						<div className='col-6'>
-							<FormGroup id='name' label='Name'>
+							<FormGroup id='name' label='Name' >
 								<Input
 									type='text'
 									name='name'
