@@ -32,7 +32,7 @@ import { RootState } from '../../../store/store';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import GoalViewPopup from './goalHelpher/GoalViewPopup';
-import Item from '../../_common/dashboardHelper/GoalItems';
+import Item from '../dashboardHelper/GoalItems';
 
 import {
 	useDeleteGoalMutation,

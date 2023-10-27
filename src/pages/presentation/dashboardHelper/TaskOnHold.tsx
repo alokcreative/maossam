@@ -16,7 +16,7 @@ import { useFormik } from 'formik';
 import TableRow from '../../../helpers/TableRow';
 import { useGetTaskListQuery } from '../../../features/auth/taskManagementApiSlice';
 import Loading from '../../../common/other/Loading';
-import TaskTableRow from '../../presentation/goal/tasks/TaskTableRow';
+import TaskTableRow from '../goal/tasks/TaskTableRow';
 
 interface ITaskValue {
 	created_at: string;

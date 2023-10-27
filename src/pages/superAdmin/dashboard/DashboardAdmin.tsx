@@ -15,13 +15,13 @@ import Card, {
 import useDarkMode from '../../../hooks/useDarkMode';
 import { useTranslation } from 'react-i18next';
 import goalData from '../../../common/data/dummyGoals';
-import Item from '../../_common/dashboardHelper/GoalItems';
+import Item from '../../presentation/dashboardHelper/GoalItems';
 import Button from '../../../components/bootstrap/Button';
-import TaskOnHold from '../../_common/dashboardHelper/TaskOnHold';
+import TaskOnHold from '../../presentation/dashboardHelper/TaskOnHold';
 import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
-import SocialItem from '../../_common/dashboardHelper/SocialItem';
+import SocialItem from '../../presentation/dashboardHelper/SocialItem';
 import MarketingAssetForms from '../../presentation/dashboard/Marketing/MarketingAssetForms/MarketingAssetForms';
 import { toast } from 'react-toastify';
 import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';

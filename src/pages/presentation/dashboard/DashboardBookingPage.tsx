@@ -143,8 +143,6 @@ const MyWeekEvent = (data: { event: IEvent }) => {
 
 const DashboardBookingPage = () => {
 	const { darkModeStatus, themeStatus } = useDarkMode();
-	useMinimizeAside();
-
 	const [toggleRightPanel, setToggleRightPanel] = useState(true);
 
 	// BEGIN :: Calendar

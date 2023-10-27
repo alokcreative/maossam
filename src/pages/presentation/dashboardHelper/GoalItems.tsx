@@ -11,7 +11,7 @@ import Card, {
 } from '../../../components/bootstrap/Card';
 import Badge from '../../../components/bootstrap/Badge';
 import Progress from '../../../components/bootstrap/Progress';
-import GoalViewPopup from '../../presentation/goal/goalHelpher/GoalViewPopup';
+import GoalViewPopup from '../goal/goalHelpher/GoalViewPopup';
 import { useGetTaskByGoalIdQuery } from '../../../features/auth/taskManagementApiSlice';
 
 interface IItemProps {
@@ -29,7 +29,7 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		Number(id!),
 	);
-	console.log("taskid>>",data?.tasks);
+	console.log('taskid>>', data?.tasks);
 	const openModalHandler = () => {
 		if (role === 'superadmin') {
 			navigate(`../goal-details/${id}`);
@@ -53,21 +53,26 @@ const Item: FC<IItemProps> = ({ name, attributes, timeline, id }) => {
 						<div className='col-12'>
 							{showMore ? `${attributes}` : `${attributes.substring(0, 100)}`}
 							{attributes.length > 30 && (
-								<span aria-hidden='true' onClick={(e) => {e.stopPropagation(); setShowMore(!showMore)}}>
+								<span
+									aria-hidden='true'
+									onClick={(e) => {
+										e.stopPropagation();
+										setShowMore(!showMore);
+									}}>
 									...
 								</span>
 							)}
 							{/* <p className='text-muted'>{attributes}</p> */}
 						</div>
 					</div>
-					<p className='mt-3 mb-1'>No. of task:  {data?.tasks.length}</p>
+					<p className='mt-3 mb-1'>No. of task: {data?.tasks.length}</p>
 					<div className='row'>
 						<div className='col-md-12'>
 							{0}%
 							<Progress isAutoColor value={0} height={10} />
 						</div>
 					</div>
-					
+
 					{/* <div className='row mt-2 mb-0'>
 					</div> */}
 				</CardBody>
