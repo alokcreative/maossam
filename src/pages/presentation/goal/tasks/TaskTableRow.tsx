@@ -25,7 +25,6 @@ interface ITableRowProps {
 const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	const logUserId = localStorage.getItem('UserId');
 	const location = useLocation();
-	console.log('location', location.pathname);
 	// const { user } = useSelector((state: RootState) => state.auth);
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
@@ -57,7 +56,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 					<td>
 						<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>
 					</td>
-					{location?.pathname != '/goals' && (
+					{ location && location?.pathname != '/goals' && (
 						<td>
 							<span style={{ whiteSpace: 'nowrap' }}>{task.expected_time}</span>
 						</td>
