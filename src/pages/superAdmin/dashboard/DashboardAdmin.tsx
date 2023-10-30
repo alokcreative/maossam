@@ -265,7 +265,7 @@ const DashboardAdmin = () => {
 								/>
 							))
 					) : (
-						<div>No data found</div>
+						<div>No goals yet.</div>
 					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
 						{data && data?.length !== 0 && (

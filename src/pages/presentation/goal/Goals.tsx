@@ -396,7 +396,7 @@ const Goals: FC = () => {
 						<div className='col-12'>
 							{gridData.view === 'grid' ? (
 								<div className='row'>
-									{goalList &&
+									{goalList?.length!==0 ?
 										goalList.map((item: IGoalProps) => (
 											<Item
 												parent='main'
@@ -415,7 +415,7 @@ const Goals: FC = () => {
 												attributes={item?.description}
 												timeline={item.category!}
 											/>
-										))}
+										)):<div>No goals yet.</div>}
 								</div>
 							) : (
 								<Card stretch>
@@ -477,7 +477,7 @@ const Goals: FC = () => {
 														</tr>
 													</thead>
 													<tbody>
-														{dataPagination(
+														{goalList?.length !== 0 ? dataPagination(
 															goalList,
 															currentPage,
 															perPage,
@@ -562,7 +562,7 @@ const Goals: FC = () => {
 																	</td>
 																</tr>
 															);
-														})}
+														}):<div>No goals yet.</div>}
 													</tbody>
 												</table>
 											</div>
