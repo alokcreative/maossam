@@ -10,6 +10,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ToastContainer } from 'react-toastify';
 import ThemeContext from '../contexts/themeContext';
+import { DashboardProvider } from '../contexts/dashboardContext';
+import { ProductProvider } from '../contexts/productContext';
 import Wrapper from '../layout/Wrapper/Wrapper';
 import Portal from '../layout/Portal/Portal';
 import useDarkMode from '../hooks/useDarkMode';
@@ -73,43 +75,52 @@ const App = () => {
 			document.body.classList.remove('modern-design');
 		}
 	});
-	
+
 	return (
 		<ThemeProvider theme={theme}>
-			<GoogleOAuthProvider clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}>
-				<TourProvider
-					steps={steps}
-					styles={styles}
-					showNavigation={false}
-					showBadge={false}>
-					<div
-						ref={ref}
-						className='app'
-						style={{
-							backgroundColor: fullScreenStatus ? 'var(--bs-body-bg)' : undefined,
-							zIndex: fullScreenStatus ? 1 : undefined,
-							overflow: fullScreenStatus ? 'scroll' : undefined,
-						}}>
-						{location.pathname.includes('resetpassword') ? (
-							<Routes>
-								<Route
-									path='resetpassword/:resetCode'
-									element={<ResetPasswordPage />}
-								/>
-							</Routes>
-						) : (
-							<>
-								<AsideRoutes />
-								<Wrapper />
-							</>
-						)}
-					</div>
-					<Portal id='portal-notification'>
-						<ReactNotifications />
-					</Portal>
-					<ToastContainer closeButton={ToastCloseButton} toastClassName='toast show' />
-				</TourProvider>
-			</GoogleOAuthProvider>
+			<DashboardProvider>
+				<ProductProvider>
+					<GoogleOAuthProvider clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}>
+						<TourProvider
+							steps={steps}
+							styles={styles}
+							showNavigation={false}
+							showBadge={false}>
+							<div
+								ref={ref}
+								className='app'
+								style={{
+									backgroundColor: fullScreenStatus
+										? 'var(--bs-body-bg)'
+										: undefined,
+									zIndex: fullScreenStatus ? 1 : undefined,
+									overflow: fullScreenStatus ? 'scroll' : undefined,
+								}}>
+								{location.pathname.includes('resetpassword') ? (
+									<Routes>
+										<Route
+											path='resetpassword/:resetCode'
+											element={<ResetPasswordPage />}
+										/>
+									</Routes>
+								) : (
+									<>
+										<AsideRoutes />
+										<Wrapper />
+									</>
+								)}
+							</div>
+							<Portal id='portal-notification'>
+								<ReactNotifications />
+							</Portal>
+							<ToastContainer
+								closeButton={ToastCloseButton}
+								toastClassName='toast show'
+							/>
+						</TourProvider>
+					</GoogleOAuthProvider>
+				</ProductProvider>
+			</DashboardProvider>
 		</ThemeProvider>
 	);
 };

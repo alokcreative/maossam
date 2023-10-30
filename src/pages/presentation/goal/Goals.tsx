@@ -53,6 +53,7 @@ import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
 import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
 import { dashboardPagesMenu } from '../../../menu';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
+import { useDashboard } from '../../../contexts/dashboardContext';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -108,7 +109,7 @@ const Goals: FC = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const logUserId = localStorage.getItem('UserId');
-	const [productView, setProductView] = useState<boolean>(false);
+	const { gridData, setGridData } = useDashboard();
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
 	const role = localStorage?.getItem('role');
 	const [deleteGoal] = useDeleteGoalMutation();
@@ -368,16 +369,16 @@ const Goals: FC = () => {
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView === false ? 'me-3 active' : 'me-3'}`}
-						onClick={() => setProductView(false)}>
+						className={`${gridData.view === 'grid' ? 'me-3 active' : 'me-3'}`}
+						onClick={() => setGridData({ view: 'grid' })}>
 						Grid View
 					</Button>
 					<Button
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView === true ? 'active' : ''}`}
-						onClick={() => setProductView(true)}>
+						className={`${gridData.view === 'list' ? 'active' : ''}`}
+						onClick={() => setGridData({ view: 'list' })}>
 						List View
 					</Button>
 
@@ -393,7 +394,7 @@ const Goals: FC = () => {
 					<div className='display-4 fw-bold py-3'> Goals</div>
 					<div className='row h-100'>
 						<div className='col-12'>
-							{productView === false ? (
+							{gridData.view === 'grid' ? (
 								<div className='row'>
 									{goalList &&
 										goalList.map((item: IGoalProps) => (

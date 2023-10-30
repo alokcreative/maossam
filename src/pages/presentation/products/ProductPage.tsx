@@ -35,6 +35,7 @@ import { string } from 'yargs';
 import { Role } from '../../../common/data/userDummyData';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import { useProduct } from '../../../contexts/productContext';
 
 interface IValues {
 	name: string;
@@ -90,6 +91,8 @@ const ProductPage = () => {
 	const [editItem, setEditItem] = useState<IValues | null>(null);
 	const [editPanel, setEditPanel] = useState<boolean>(false);
 	const [productView, setproductView] = useState<boolean>(false);
+	const { gridData, setGridData } = useProduct();
+
 	const [filterableData, setFilterableData] = useState(data);
 	const role = localStorage?.getItem("role")
 
@@ -227,16 +230,16 @@ const ProductPage = () => {
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView === false ? 'me-0 active' : 'me-0'}`}
-						onClick={() => setProductView(false)}>
+						className={`${gridData.view === 'grid' ? 'me-0 active' : 'me-0'}`}
+						onClick={() => setGridData({ view: 'grid' })}>
 						Grid View
 					</Button>
 					<Button
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${productView === true ? 'active' : ''}`}
-						onClick={() => setProductView(true)}>
+						className={`${gridData.view === 'list'  ? 'active' : ''}`}
+						onClick={() => setGridData({ view: 'list' })}>
 						List View
 					</Button>
 
@@ -256,7 +259,7 @@ const ProductPage = () => {
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='display-4 fw-bold py-3'>Products</div>
-				{productView === false ? (
+				{gridData.view === 'grid' ? (
 					<div className='row'>
 						{filterableData.map((item) => (
 							<div key={item.id} className='col-xxl-3 col-xl-4 col-md-6'>

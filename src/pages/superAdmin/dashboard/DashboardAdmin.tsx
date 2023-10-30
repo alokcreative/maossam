@@ -246,11 +246,11 @@ const DashboardAdmin = () => {
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
 					</div>
 					{isLoading ? (
-						<div>Loadning...</div>
+						<div>Loading...</div>
 					) : isSuccess && data.length !== 0 ? (
-						goalList
+						data
 							?.slice(0, 6)
-							.map((i) => (
+							.map((i:IGoalProps) => (
 								<Item
 									parent='dashboard'
 									handleEdit={() => {}}
