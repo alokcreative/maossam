@@ -21,6 +21,7 @@ import Input from '../bootstrap/forms/Input';
 import { useFormik } from 'formik';
 import showNotification from './showNotification';
 import Icon from '../icon/Icon';
+import ConfirmationModal from '../../pages/documentation/components/ConfirmationModal';
 
 /**
  * Prop Types
@@ -138,9 +139,14 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 			setList(newTodos);
 		};
 		const logUserId = localStorage.getItem('UserId');
-		const removeTodo = (_index: number | string) => {
+		const role = localStorage.getItem('role');
+		const [showConfirmation, setShowConfirmation] = useState(false);
+		const [deleteId, setDeleteId] = useState<number>();
+		const removeTodo = () => {
+			const indextemp = deleteId;
+			setShowConfirmation(false);
 			const newTodos = [...list];
-			deleteMinitask(Number(_index))
+			deleteMinitask(Number(indextemp))
 				.unwrap()
 				.then((res) => {
 					showNotification(
@@ -252,21 +258,14 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 							})}>
 							{itemData.title}
 						</div>
-						{itemData.date && (
+						{itemData.description && (
 							<div className='todo-subtitle text-muted small'>
-								{dayjs(itemData.date).fromNow()}
+								{itemData.description}
 							</div>
 						)}
 					</div>
 					<div className='todo-extras'>
-						{/* {itemData?.badge && (
-						<span className='me-2'>
-							<Badge isLight color={itemData.badge.color}>
-								{itemData.badge.text}
-							</Badge>
-						</span>
-					)} */}
-						{logUserId == itemData.created_by || logUserId == '1' ? (
+						{logUserId == itemData.created_by || role == 'superadmin' ? (
 							<span>
 								<Dropdown>
 									<DropdownToggle hasIcon={false}>
@@ -281,7 +280,10 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 										<DropdownItem>
 											<>
 												<Button
-													onClick={() => removeTodo(itemData.id)}
+													onClick={() => {
+														setShowConfirmation(true);
+														setDeleteId(Number(itemData.id!));
+													}}
 													icon='Delete'>
 													Delete
 												</Button>
@@ -356,6 +358,11 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						</Button>
 					</ModalBody>
 				</Modal>
+				<ConfirmationModal
+					isOpen={showConfirmation}
+					setIsOpen={() => setShowConfirmation(false)}
+					onConfirm={removeTodo}
+				/>
 			</>
 		);
 	},

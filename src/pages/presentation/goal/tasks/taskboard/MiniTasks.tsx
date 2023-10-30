@@ -72,9 +72,11 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	const [list, setList] = useState<ITodoListItem[] | undefined>();
 	const [createMinitask] = useCreateMinitaskMutation({});
 	const { data, isLoading, refetch } = useGetMiniTasksBySubIdQuery(subTaskId);
+	const logUserId = localStorage.getItem('UserId');
+	const role = localStorage.getItem('role');
 	useEffect(() => {
 		if (data) {
-			// console.log("data>>",data);
+			console.log('data>>', data);
 			const transformedData = data.minitasks.map((item: ITodoItem) => ({
 				...item,
 				status: item.status !== 'todo',
@@ -153,8 +155,6 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	/**
 	 * New To/Do Day
 	 */
-	const [date, setDate] = useState(new Date());
-
 	const validate = (values: { minitaskTitle?: string; description?: string }) => {
 		const errors: {
 			minitaskTitle?: string;
@@ -220,13 +220,15 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 					</CardSubTitle>
 				</CardLabel>
 				<CardActions>
-					<Button
-						color='info'
-						icon='Add'
-						isLight
-						onClick={() => setModalStatus(!modalStatus)}>
-						New
-					</Button>
+					{(logUserId == data?.subtask?.created_by || role == 'superadmin') && (
+						<Button
+							color='info'
+							icon='Add'
+							isLight
+							onClick={() => setModalStatus(!modalStatus)}>
+							New
+						</Button>
+					)}
 
 					<Modal
 						setIsOpen={setModalStatus}
@@ -251,7 +253,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 						</ModalHeader>
 						<ModalBody>
 							<div className='row d-flex align-items-center justify-content-center'>
-								<div className='col-12'>
+								<div className='col-12 mb-3'>
 									<FormGroup id='minitaskTitle' label='Title'>
 										<Input
 											onChange={formik.handleChange}

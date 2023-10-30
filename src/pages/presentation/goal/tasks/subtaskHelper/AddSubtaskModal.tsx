@@ -68,11 +68,9 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	currTask: task,
 }) => {
 	const [createSubTaskwithFAQ] = useCreateSubTaskwithFAQMutation();
-	const [createSubTask] = useCreateSubTaskMutation();
 	const [updateSubTask] = useUpdateSubTaskMutation();
 	const [deleteFAQ] = useDeleteFAQMutation();
 	const [updateFAQ] = useUpdateFAQMutation();
-	console.log('modals>>', modalState);
 	const navigate = useNavigate();
 	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
@@ -89,18 +87,20 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			formik.setFieldValue('expected_time', '');
 		} else if (modalState === 'Edit Sub Task') {
 			setFaqs([{ question: '', answer: '' }]);
-			formik.setFieldValue('name', task?.subtask?.title);
-			formik.setFieldValue('description', task?.subtask?.description);
-			formik.setFieldValue('sub_id', task?.subtask?.id);
-			formik.setFieldValue('expected_time', task?.subtask?.expected_time);
+			formik.setFieldValue('name', task?.subtask?.title || task?.title);
+			formik.setFieldValue('description', task?.subtask?.description || task?.description);
+			formik.setFieldValue('sub_id', task?.subtask?.id || task?.id);
+			formik.setFieldValue(
+				'expected_time',
+				task?.subtask?.expected_time || task?.expected_time,
+			);
 
 			if (task) {
-				const dueDateObject = new Date(task?.subtask?.due_date);
+				const dueDateObject = new Date(task?.subtask?.due_date || task?.due_date);
 				setDate(dueDateObject);
-				console.log('dueDateObject>>', dueDateObject);
 			}
 			// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-			setFaqs(task?.subtask_faqs!);
+			setFaqs(task?.subtask_faqs! || task?.faqs);
 		}
 		// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
 		// setFaqs(task?.subtask_faqs!);
@@ -149,6 +149,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		},
 		validateOnChange: false,
 		onSubmit: (values) => {
+			console.log('values>>', values);
 			setIsOpen(false);
 			if (modalState === 'Add Sub Task') {
 				createSubTaskwithFAQ({
@@ -169,6 +170,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						refetch();
 					});
 			} else if (modalState === 'Edit Sub Task') {
+				console.log('Edit Sub Task');
 				const parts = values.expected_time.split(':');
 				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 				const taskData = {
@@ -177,7 +179,11 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 					description: values.description,
 					title: values.name,
 				};
-				updateSubTask({ subtaskId: String(task?.subtask.id), taskData })
+				
+					const subtaskId = String(task?.subtask.id);
+				
+
+				updateSubTask({ subtaskId, taskData })
 					.unwrap()
 					.then((res) => {
 						showNotification(

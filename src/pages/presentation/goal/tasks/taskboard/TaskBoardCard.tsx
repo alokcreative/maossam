@@ -82,7 +82,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 	const [modalState, setModalState] = useState('Edit Sub Task');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [getSubtask] = useGetSubTaskMutation();
-	console.log("cardsData>>",cardsData);
+	const [currTask, setCurrTask] = useState();
 
 	const formik = useFormik({
 		initialValues: {
@@ -120,12 +120,12 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				});
 		}
 	};
-	const handleEdit = (SubId: number) => {
-		// getSubtask(SubId)
-		// 	.unwrap()
-		// 	.then((res) => {
-		// 		setCurrTask(res);
-		// 	});
+	const handleEdit = () => {
+		getSubtask(cardsData?.id)
+			.unwrap()
+			.then((res) => {
+				setCurrTask(res);
+			});
 		setModalState(`Edit Sub Task`);
 		setIsOpen(true);
 	};
@@ -276,7 +276,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				isOpen={isOpen}
 				handleCloseClick={()=>setIsOpen(false)}
 				modalState={modalState}
-				currTask={cardsData}
+				currTask={currTask}
 			/>
 		</>
 	);
