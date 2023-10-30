@@ -35,13 +35,12 @@ import {
 	useUpdateTaskMutation,
 } from '../../../features/auth/taskManagementApiSlice';
 import Loading from '../../../common/other/Loading';
-import { toast } from 'react-toastify';
-import SubTask from './tasks/SubTask';
-import TableRow from '../../../helpers/TableRow';
 import TaskTableRow from './tasks/TaskTableRow';
 import { Calendar as DatePicker } from 'react-date-range';
-import Label from '../../../components/bootstrap/forms/Label';
 import { format } from 'date-fns';
+import Icon from '../../../components/icon/Icon';
+import showNotification from '../../../components/extras/showNotification';
+import ConfirmationModal from '../../documentation/components/ConfirmationModal';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -92,6 +91,8 @@ const GoalDescription: FC = () => {
 	const navigate = useNavigate();
 	const [modalState, setModalState] = useState('Add Task');
 	const [currTask, setCurrTask] = useState<ITask>();
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [deleteId, setDeleteId] = useState<number>();
 	const { data, isLoading, isSuccess, refetch } = useGetTaskByGoalIdQuery(
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		Number(id!),
@@ -189,18 +190,34 @@ const GoalDescription: FC = () => {
 		},
 	});
 
-	const handleDeleteAction = (taskId: number) => {
+	const handleDeleteAction = () => {
+		const taskId = deleteId;
+		setShowConfirmation(false);
 		// setTaskList(taskList.filter((i) => i.id !== taskId));
-		deleteTask(taskId)
-			.unwrap()
-			.then((res: unknown) => {
-				toast(`Task deleted successfully`);
-				refetch();
-			})
-			.catch((res) => {
-				toast(`${res.data.detail[0]}`);
-				// console.log('Delete task rejects>>', res.data.detail[0]);
-			});
+		if (taskId) {
+			deleteTask(taskId)
+				.unwrap()
+				.then((res: unknown) => {
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Task deleted successfully</span>
+						</span>,
+						``,
+					);
+					refetch();
+				})
+				.catch((res) => {
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>{res.data.detail[0]}</span>
+						</span>,
+						``,
+					);
+					// console.log('Delete task rejects>>', res.data.detail[0]);
+				});
+		}
 	};
 	const handleEdit = (taskId: number) => {
 		setCurrTask(undefined);
@@ -349,7 +366,10 @@ const GoalDescription: FC = () => {
 																// eslint-disable-next-line react/jsx-props-no-spreading
 																task={i}
 																edit={handleEdit}
-																deleteAction={handleDeleteAction}
+																deleteAction={() => {
+																	setShowConfirmation(true);
+																	setDeleteId(i.id);
+																}}
 															/>
 														))
 													) : (
@@ -449,12 +469,11 @@ const GoalDescription: FC = () => {
 					</ModalBody>
 					<ModalFooter>
 						<CardFooterLeft>
-						<Button color='info' onClick={formiknewTask.handleSubmit}>
+							<Button color='info' onClick={formiknewTask.handleSubmit}>
 								{modalState === 'Add Task' ? 'Save' : 'Update'}
 							</Button>
 						</CardFooterLeft>
 						<CardFooterRight>
-							
 							<Button
 								color='danger'
 								onClick={() => {
@@ -466,6 +485,11 @@ const GoalDescription: FC = () => {
 					</ModalFooter>
 				</>
 			</Modal>
+			<ConfirmationModal
+				isOpen={showConfirmation}
+				setIsOpen={() => setShowConfirmation(false)}
+				onConfirm={handleDeleteAction}
+			/>
 		</PageWrapper>
 	);
 };

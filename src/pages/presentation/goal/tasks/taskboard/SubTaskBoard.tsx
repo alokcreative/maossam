@@ -55,9 +55,10 @@ interface IColumns {
 	cardsData: ICardsInColumn;
 	columnsData: TColumnsData;
 	setCardsData(...args: unknown[]): unknown;
+	refetch(...args: unknown[]): unknown;
 }
 
-const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) => {
+const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData,refetch }) => {
 	const { darkModeStatus } = useDarkMode();
 
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
@@ -95,32 +96,6 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) =>
 										</Badge>
 									</CardTitle>
 								</CardLabel>
-								<CardActions>
-									<Dropdown>
-										<DropdownToggle hasIcon={false}>
-											<Button
-												icon='MoreVert'
-												color={darkModeStatus ? 'dark' : undefined}
-												aria-label='More actions'
-											/>
-										</DropdownToggle>
-										<DropdownMenu isAlignmentEnd>
-											<DropdownItem>
-												<Button icon='Edit'>Rename column</Button>
-											</DropdownItem>
-											<DropdownItem>
-												<Button icon='Speed'>Set column limit</Button>
-											</DropdownItem>
-											<DropdownItem>
-												<Button icon='AddBox'>Add new column</Button>
-											</DropdownItem>
-											<DropdownItem isDivider />
-											<DropdownItem>
-												<Button icon='Delete'>Delete column</Button>
-											</DropdownItem>
-										</DropdownMenu>
-									</Dropdown>
-								</CardActions>
 							</CardHeader>
 							<Droppable droppableId={columnKey}>
 								{(
@@ -133,6 +108,7 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData }) =>
 										ref={providedDroppable.innerRef}
 										style={getListStyle(snapshotDroppable.isDraggingOver)}>
 										<SubTaskBoardData
+											refetch={refetch}
 											columnKey={columnKey}
 											columnsData={columnsData}
 											cardsInTheColumn={cardsData}

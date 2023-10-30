@@ -40,9 +40,11 @@ import {
 import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
 import { useEffectOnce } from 'react-use';
 import Loading from '../../../../common/other/Loading';
-import { toast } from 'react-toastify';
 import { Calendar as DatePicker } from 'react-date-range';
 import { format } from 'date-fns';
+import showNotification from '../../../../components/extras/showNotification';
+import Icon from '../../../../components/icon/Icon';
+import ConfirmationModal from '../../../documentation/components/ConfirmationModal';
 
 interface IGoalValueData {
 	category: string;
@@ -86,6 +88,8 @@ const Tasks: FC = () => {
 	const [goalList, setGoalList] = useState<IGoalValue[]>();
 	const [goalName, setGoalName] = useState<string>();
 	const [createTask] = useCreateTaskMutation();
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [deleteId, setDeleteId] = useState<number>();
 	const [deleteTask] = useDeleteTaskMutation({
 		fixedCacheKey: 'deleteTask',
 	});
@@ -165,11 +169,13 @@ const Tasks: FC = () => {
 					});
 			}
 			if (modalState === 'Edit Task') {
+				const parts = values.expectedTime.split(':');
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 				const taskData = {
 					title: values.name,
 					description: values.description,
 					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: values.expectedTime,
+					expected_time: timeWithoutSeconds,
 					// status: values.status,
 				};
 				updateTask({
@@ -189,18 +195,34 @@ const Tasks: FC = () => {
 			handleCloseClick();
 		},
 	});
-	const handleDeleteAction = (taskId: number) => {
+	const handleDeleteAction = () => {
 		// setTaskList(taskList.filter((i) => i.id !== taskId));
-		deleteTask(taskId)
-			.unwrap()
-			.then((res: unknown) => {
-				toast(`Task deleted successfully`);
-				refetch();
-			})
-			.catch((res) => {
-				toast(`${res.data.detail[0]}`);
-				// console.log('Delete task rejects>>', res.data.detail[0]);
-			});
+		const taskId = deleteId;
+		setShowConfirmation(false);
+		if (taskId) {
+			deleteTask(taskId)
+				.unwrap()
+				.then((res: unknown) => {
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Task deleted successfully</span>
+						</span>,
+						``,
+					);
+					refetch();
+				})
+				.catch((res) => {
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>{res.data.detail[0]}</span>
+						</span>,
+						``,
+					);
+					// console.log('Delete task rejects>>', res.data.detail[0]);
+				});
+		}
 	};
 	const handleEdit = (id: number) => {
 		setCurrTask(undefined);
@@ -310,7 +332,10 @@ const Tasks: FC = () => {
 														// eslint-disable-next-line react/jsx-props-no-spreading
 														task={i}
 														edit={handleEdit}
-														deleteAction={handleDeleteAction}
+														deleteAction={() => {
+															setShowConfirmation(true);
+															setDeleteId(i.id);
+														}}
 													/>
 												),
 										  )
@@ -356,21 +381,21 @@ const Tasks: FC = () => {
 									</FormGroup>
 								))}
 
-							<FormGroup id='name' label='Name' className='mt-3' >
+							<FormGroup id='name' label='Name' className='mt-3'>
 								<Input
 									type='text'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.name}
 								/>
 							</FormGroup>
-							<FormGroup id='description' label='Description' className='mt-3' >
+							<FormGroup id='description' label='Description' className='mt-3'>
 								<Input
 									type='text'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.description}
 								/>
 							</FormGroup>
-							<FormGroup id='expectedTime' label='Expected Time' className='mt-3' >
+							<FormGroup id='expectedTime' label='Expected Time' className='mt-3'>
 								<Input
 									type='time'
 									onChange={formiknewTask.handleChange}
@@ -409,6 +434,11 @@ const Tasks: FC = () => {
 					</CardFooterRight>
 				</ModalFooter>
 			</Modal>
+			<ConfirmationModal
+				isOpen={showConfirmation}
+				setIsOpen={() => setShowConfirmation(false)}
+				onConfirm={handleDeleteAction}
+			/>
 		</PageWrapper>
 	);
 };

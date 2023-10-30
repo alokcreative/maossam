@@ -19,7 +19,8 @@ import Modal, { ModalBody, ModalHeader, ModalTitle } from '../bootstrap/Modal';
 import FormGroup from '../bootstrap/forms/FormGroup';
 import Input from '../bootstrap/forms/Input';
 import { useFormik } from 'formik';
-import { toast } from 'react-toastify';
+import showNotification from './showNotification';
+import Icon from '../icon/Icon';
 
 /**
  * Prop Types
@@ -100,7 +101,13 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 					.unwrap()
 					.then((res) => {
 						refetch();
-						toast('Status Changed');
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>Status Changed.</span>
+							</span>,
+							``,
+						);
 					})
 					.catch((res) => {
 						console.log('resc>>1', res);
@@ -113,7 +120,13 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 					.unwrap()
 					.then((res) => {
 						refetch();
-						toast('Status Changed');
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>Status Changed.</span>
+							</span>,
+							``,
+						);
 					})
 					.catch((res) => {
 						// console.log('resc>>1', res);
@@ -130,7 +143,13 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 			deleteMinitask(Number(_index))
 				.unwrap()
 				.then((res) => {
-					toast('Deleted Successfully');
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Deleted Successfully.</span>
+						</span>,
+						``,
+					);
 					refetch();
 				})
 				.catch((res) => {
@@ -181,7 +200,13 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 				updateMinitask({ miniTaskId: String(itemData.id), miniTaskData })
 					.unwrap()
 					.then((res) => {
-						toast('Task Updated');
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>Task Updated.</span>
+							</span>,
+							``,
+						);
 						refetch();
 					})
 					.catch((res) => {

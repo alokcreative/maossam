@@ -38,6 +38,19 @@ import { move } from '../../../project-management/helper/helper';
 import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
 import { ISubTask } from '../../../../../common/data/dummyGoals';
 import MiniTasks from './MiniTasks';
+import Dropdown, {
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+} from '../../../../../components/bootstrap/Dropdown';
+import {
+	useDeleteSubTaskMutation,
+	useGetSubTaskMutation,
+	useUpdateSubTaskMutation,
+} from '../../../../../features/auth/taskManagementApiSlice';
+import ConfirmationModal from '../../../../documentation/components/ConfirmationModal';
+import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
+import { useParams } from 'react-router-dom';
 
 interface IColumnCard {
 	columnKey: string;
@@ -45,6 +58,7 @@ interface IColumnCard {
 	card: any;
 	cardsData: any;
 	setCardsData(...args: unknown[]): unknown;
+	refetch(...args: unknown[]): unknown;
 	index: number;
 }
 const TaskBoardCard: FC<IColumnCard> = ({
@@ -54,11 +68,21 @@ const TaskBoardCard: FC<IColumnCard> = ({
 	cardsData,
 	setCardsData,
 	index,
+	refetch,
 }) => {
+	const { taskId: id } = useParams();
 	const { darkModeStatus } = useDarkMode();
 	const [showMore, setShowMore] = useState<boolean>(false);
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [modalStatus, setModalStatus] = useState(false);
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [deleteId, setDeleteId] = useState<number>();
+	const [updateSubTask] = useUpdateSubTaskMutation();
+	const [deleteSubTask] = useDeleteSubTaskMutation();
+	const [modalState, setModalState] = useState('Edit Sub Task');
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [getSubtask] = useGetSubTaskMutation();
+	console.log("cardsData>>",cardsData);
 
 	const formik = useFormik({
 		initialValues: {
@@ -85,6 +109,26 @@ const TaskBoardCard: FC<IColumnCard> = ({
 			setEditModalStatus(false);
 		},
 	});
+	const handleDeleteAction = () => {
+		const subId = deleteId;
+		setShowConfirmation(false);
+		if (subId) {
+			deleteSubTask(subId)
+				.unwrap()
+				.then((res: unknown) => {
+					refetch();
+				});
+		}
+	};
+	const handleEdit = (SubId: number) => {
+		// getSubtask(SubId)
+		// 	.unwrap()
+		// 	.then((res) => {
+		// 		setCurrTask(res);
+		// 	});
+		setModalState(`Edit Sub Task`);
+		setIsOpen(true);
+	};
 
 	return (
 		<>
@@ -102,6 +146,33 @@ const TaskBoardCard: FC<IColumnCard> = ({
 					</CardTitle>
 					{card.title && <CardSubTitle className='text-muted'>{card.title}</CardSubTitle>}
 				</CardLabel>
+				<CardActions>
+					<Dropdown>
+						<DropdownToggle hasIcon={false}>
+							<Button
+								icon='MoreVert'
+								color={darkModeStatus ? 'dark' : undefined}
+								aria-label='More actions'
+							/>
+						</DropdownToggle>
+						<DropdownMenu isAlignmentEnd>
+							<DropdownItem>
+								<Button icon='Edit' onClick={handleEdit}>Edit</Button>
+							</DropdownItem>
+							<DropdownItem isDivider />
+							<DropdownItem>
+								<Button
+									icon='Delete'
+									onClick={() => {
+										setShowConfirmation(true);
+										setDeleteId(card.id);
+									}}>
+									Delete
+								</Button>
+							</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
+				</CardActions>
 			</CardHeader>
 			<CardBody className='pt-0'>
 				{/* <div className='row g-2 mb-3'> */}
@@ -193,6 +264,20 @@ const TaskBoardCard: FC<IColumnCard> = ({
 					</Button>
 				</ModalFooter>
 			</Modal>
+			<ConfirmationModal
+				isOpen={showConfirmation}
+				setIsOpen={() => setShowConfirmation(false)}
+				onConfirm={handleDeleteAction}
+			/>
+			<AddSubtaskModal
+				setIsOpen={setIsOpen}
+				id={id}
+				refetch={refetch}
+				isOpen={isOpen}
+				handleCloseClick={()=>setIsOpen(false)}
+				modalState={modalState}
+				currTask={cardsData}
+			/>
 		</>
 	);
 };

@@ -28,9 +28,6 @@ import PaginationButtons, {
 } from '../../../components/PaginationButtons';
 import Badge from '../../../components/bootstrap/Badge';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../../store/store';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import GoalViewPopup from './goalHelpher/GoalViewPopup';
 import Item from '../dashboardHelper/GoalItems';
 
@@ -55,6 +52,7 @@ import { format } from 'date-fns';
 import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
 import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
 import { dashboardPagesMenu } from '../../../menu';
+import ConfirmationModal from '../../documentation/components/ConfirmationModal';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -99,7 +97,9 @@ interface IGoalProps {
 }
 const Goals: FC = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({fixedCacheKey: 'listTask'});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
+		fixedCacheKey: 'listTask',
+	});
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
 	const { darkModeStatus } = useDarkMode();
@@ -116,6 +116,8 @@ const Goals: FC = () => {
 	const [goalId, setGoalId] = useState<number>();
 	const [showMore, setShowMore] = useState<boolean>(false);
 	const [date, setDate] = useState<Date>(new Date());
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [deleteId, setDeleteId] = useState<number>();
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -254,14 +256,8 @@ const Goals: FC = () => {
 			return errors;
 		},
 		onSubmit: (values, { resetForm }) => {
-			// const goalData = new FormData();
-			// goalData.append('title', values.name);
-			// goalData.append('description', values.description);
-			// // goalData.append('date', values.date);
-			// // goalData.append('status', values.status);
-			// goalData.append('category', values.category);
 			const parts = values.expected_time.split(':');
-				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+			const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 			const goalData = {
 				title: values.name,
 				description: values.description,
@@ -277,25 +273,24 @@ const Goals: FC = () => {
 					setIsOpen(false);
 					refetch();
 					if (res) {
-						toast('Updated');
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>Goal updated sucessfully.</span>
+							</span>,
+							``,
+						);
 					}
 				})
 				.catch((res) => {
 					console.log(res);
-					// toast(res.data.detail[0]);
 				});
-
-			// showNotification(
-			// 	<span className='d-flex align-items-center'>
-			// 		<Icon icon='Info' size='lg' className='me-1' />
-			// 		<span>Updated Successfully</span>
-			// 	</span>,
-			// 	"The user's account details have been successfully updated.",
-			// );
 		},
 	});
-	const handleDelete = (id: number) => {
-		if (data) {
+	const handleDelete = () => {
+		const id = deleteId;
+		setShowConfirmation(false);
+		if (data && id) {
 			const newGoals = data.filter((i: IGoalProps) => i.id !== id);
 			setGoalList(newGoals);
 
@@ -303,12 +298,31 @@ const Goals: FC = () => {
 				.unwrap()
 				.then((response) => {
 					//	TODO:  Make Toast Dynamically
-					toast('Goal deleted sucessfully');
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Goal deleted sucessfully.</span>
+						</span>,
+						``,
+					);
 					refetch().then((res) => {});
 				})
 				.catch((response1) => {
 					// console.log("rescatch>>",response1.data.detail[0]);
-					toast(response1.data.detail[0]);
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>{response1.data.detail[0]}</span>
+						</span>,
+						``,
+					);
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>{response1.data.detail[0]}</span>
+						</span>,
+						``,
+					);
 				});
 		}
 	};
@@ -337,25 +351,6 @@ const Goals: FC = () => {
 		setIsOpen(false);
 		// navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
-
-	// function formatDateToLocalString(dateString: string) {
-	// 	const parts = dateString.split('-'); // Split the date into year, month, and day
-	// 	if (parts.length === 3) {
-	// 		const [year, month, day] = parts;
-	// 		return `${month}/${day}/${year}`; // Rearrange and join in MM-DD-YYYY format
-	// 	}
-	// 	return dateString;
-	// }
-
-	// function formatDate(dateString: string) {
-	// 	console.log("dateString>>>>",dateString)
-	// 	const parts = dateString.split('-'); // Split the date into year, month, and day
-	// 	if (parts.length === 3) {
-	// 		const [year, month, day] = parts;
-	// 		return `${year}-${month}-${day}`; // Rearrange and join in MM-DD-YYYY format
-	// 	}
-	// 	return dateString;
-	// }
 
 	return (
 		<PageWrapper title={dashboardPagesMenu.goals.text}>
@@ -403,6 +398,16 @@ const Goals: FC = () => {
 									{goalList &&
 										goalList.map((item: IGoalProps) => (
 											<Item
+												parent='main'
+												handleDelete={() => {
+													setShowConfirmation(true);
+													setDeleteId(item.id);
+												}}
+												handleEdit={handleEdit}
+												handleView={(id) =>
+													navigate(`../goal-details/${id}`)
+												}
+												created_by={item.created_by!}
 												key={item.id}
 												id={item?.id}
 												name={item?.title}
@@ -541,11 +546,14 @@ const Goals: FC = () => {
 																						icon='Delete'
 																						color='danger'
 																						isLight
-																						onClick={() =>
-																							handleDelete(
+																						onClick={() => {
+																							setShowConfirmation(
+																								true,
+																							);
+																							setDeleteId(
 																								i.id,
-																							)
-																						}
+																							);
+																						}}
 																					/>
 																				</>
 																			) : null}
@@ -595,7 +603,7 @@ const Goals: FC = () => {
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
 						<div className='col-6'>
-							<FormGroup id='name' label='Name' >
+							<FormGroup id='name' label='Name'>
 								<Input
 									type='text'
 									name='name'
@@ -711,6 +719,11 @@ const Goals: FC = () => {
 					</CardFooterRight>
 				</ModalFooter>
 			</Modal>
+			<ConfirmationModal
+				isOpen={showConfirmation}
+				setIsOpen={() => setShowConfirmation(false)}
+				onConfirm={handleDelete}
+			/>
 		</PageWrapper>
 	);
 };

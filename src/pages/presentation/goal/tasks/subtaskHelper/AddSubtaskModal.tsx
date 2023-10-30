@@ -24,7 +24,8 @@ import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
 import Textarea from '../../../../../components/bootstrap/forms/Textarea';
 import Label from '../../../../../components/bootstrap/forms/Label';
-import { toast } from 'react-toastify';
+import showNotification from '../../../../../components/extras/showNotification';
+import Icon from '../../../../../components/icon/Icon';
 
 interface IAddSubtaskProps {
 	setIsOpen(...args: unknown[]): unknown;
@@ -179,11 +180,23 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				updateSubTask({ subtaskId: String(task?.subtask.id), taskData })
 					.unwrap()
 					.then((res) => {
-						toast(`Task updated sucessfully`);
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>Task updated sucessfully</span>
+							</span>,
+							``,
+						);
 						refetch();
 					})
 					.catch((res) => {
-						toast(`Something went wrong`);
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>Something went wrong</span>
+							</span>,
+							``,
+						);
 					});
 			}
 			navigate(`../${pagesMenu.subTasks.path}/${id}`);
@@ -242,7 +255,13 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		updateFAQ({ index, faq })
 			.unwrap()
 			.then((res) => {
-				toast('Updated Successfully');
+				showNotification(
+					<span className='d-flex align-items-center'>
+						<Icon icon='Info' size='lg' className='me-1' />
+						<span>Updated Successfully</span>
+					</span>,
+					``,
+				);
 				updatedFaqs.splice(index, 1);
 				setFaqs(updatedFaqs);
 			})

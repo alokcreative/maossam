@@ -30,7 +30,8 @@ import { useParams } from 'react-router-dom';
 import Spinner from '../../../components/bootstrap/Spinner';
 import Page404 from '../auth/Page404';
 import Select from '../../../components/bootstrap/forms/Select';
-import { toast } from 'react-toastify';
+import showNotification from '../../../components/extras/showNotification';
+import Icon from '../../../components/icon/Icon';
 
 const Profile = () => {
 	const { id } = useParams();
@@ -107,7 +108,13 @@ const Profile = () => {
 								refetch();
 							});
 					}
-					toast('Profile Updated Successfully');
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Profile Updated Successfully</span>
+						</span>,
+						``,
+					);
 				});
 		},
 	});
@@ -156,11 +163,24 @@ const Profile = () => {
 			ChangePasswordMutation(payload)
 				.unwrap()
 				.then((res) => {
-					if (res?.detail[0]) toast(res?.detail[0]);
+					if (res?.detail[0]) {
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>{res.data?.detail[0]}</span>
+							</span>,
+							``,
+						);
+					}
 				})
 				.catch((res) => {
-					// console.log("res>>",res);
-					toast(res.data?.detail[0]);
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>{res.data?.detail[0]}</span>
+						</span>,
+						``,
+					);
 				});
 			resetForm();
 		},
@@ -188,7 +208,13 @@ const Profile = () => {
 			const imageURL = URL.createObjectURL(file);
 			setSrc(imageURL);
 		} else {
-			toast('Only PNG and JPEG Allowed');
+			showNotification(
+				<span className='d-flex align-items-center'>
+					<Icon icon='Info' size='lg' className='me-1' />
+					<span>Only PNG and JPEG Allowed</span>
+				</span>,
+				``,
+			);
 			event.target.value = '';
 		}
 	};

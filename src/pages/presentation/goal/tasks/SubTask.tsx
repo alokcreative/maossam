@@ -29,6 +29,7 @@ import { useEffectOnce } from 'react-use';
 import { pagesMenu } from '../../../../menu';
 import SubtaskTableRow from './subtaskHelper/SubtaskTableRow';
 import AddSubtaskModal from './subtaskHelper/AddSubtaskModal';
+import ConfirmationModal from '../../../documentation/components/ConfirmationModal';
 
 interface ITaskValue {
 	goalId: number;
@@ -66,16 +67,21 @@ const SubTask: FC = () => {
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [modalState, setModalState] = useState('Add Sub Task');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [deleteId, setDeleteId] = useState<number>();
 	const [currTask, setCurrTask] = useState();
 	const role = localStorage?.getItem('role');
 
-	const handleDeleteAction = (subId: number) => {
-		deleteSubTask(subId)
-			.unwrap()
-			.then((res:unknown) => {
-				refetch();
-			});
+	const handleDeleteAction = () => {
+		const subId = deleteId;
+		setShowConfirmation(false);
+		if (subId) {
+			deleteSubTask(subId)
+				.unwrap()
+				.then((res: unknown) => {
+					refetch();
+				});
+		}
 	};
 	const handleCloseClick = () => {
 		setIsOpen(false);
@@ -90,7 +96,6 @@ const SubTask: FC = () => {
 		getSubtask(SubId)
 			.unwrap()
 			.then((res) => {
-				console.log("resSub>.",res);
 				setCurrTask(res);
 			});
 		setModalState(`Edit Sub Task`);
@@ -100,7 +105,7 @@ const SubTask: FC = () => {
 		<PageWrapper>
 			<SubHeader>
 				<SubHeaderLeft>
-				<Button
+					<Button
 						className=''
 						color='info'
 						isLink
@@ -159,7 +164,8 @@ const SubTask: FC = () => {
 													// eslint-disable-next-line react/jsx-props-no-spreading
 													subtask={i}
 													edit={handleEdit}
-													deleteAction={handleDeleteAction}
+													deleteAction={()=>{setShowConfirmation(true);
+														setDeleteId(i.id);}}
 												/>
 											),
 									  )
@@ -187,6 +193,11 @@ const SubTask: FC = () => {
 				handleCloseClick={handleCloseClick}
 				modalState={modalState}
 				currTask={currTask}
+			/>
+			<ConfirmationModal
+				isOpen={showConfirmation}
+				setIsOpen={() => setShowConfirmation(false)}
+				onConfirm={handleDeleteAction}
 			/>
 		</PageWrapper>
 	);

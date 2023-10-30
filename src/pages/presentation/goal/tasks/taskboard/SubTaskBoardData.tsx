@@ -16,6 +16,7 @@ interface IColumnCardWrapper {
 	columnsData: TColumnsData;
 	cardsInTheColumn: any;
 	setCardsData(...args: unknown[]): unknown;
+	refetch(...args: unknown[]): unknown;
 }
 
 const SubTaskBoardData: FC<IColumnCardWrapper> = ({
@@ -23,6 +24,7 @@ const SubTaskBoardData: FC<IColumnCardWrapper> = ({
 	columnsData,
 	cardsInTheColumn,
 	setCardsData,
+	refetch,
 }) => {
 	// console.log('cardsData', cardsInTheColumn);
 	// console.log('columnKey', columnKey);
@@ -55,6 +57,7 @@ const SubTaskBoardData: FC<IColumnCardWrapper> = ({
 									providedDraggable.draggableProps.style,
 								)}>
 								<TaskBoardCard
+									refetch={refetch}
 									columnKey={columnKey}
 									columnsData={columnsData}
 									card={card}

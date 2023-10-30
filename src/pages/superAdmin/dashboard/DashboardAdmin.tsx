@@ -23,9 +23,9 @@ import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
 import SocialItem from '../../presentation/dashboardHelper/SocialItem';
 import MarketingAssetForms from '../../presentation/dashboard/Marketing/MarketingAssetForms/MarketingAssetForms';
-import { toast } from 'react-toastify';
 import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 import { dashboardPagesMenu } from '../../../menu';
+import showNotification from '../../../components/extras/showNotification';
 
 interface CardProp {
 	id: number;
@@ -59,7 +59,9 @@ const DashboardAdmin = () => {
 	const [maybeCards, setMaybeCards] = useState<CardProp[]>([]);
 	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({fixedCacheKey: 'listTask'});
+	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
+		fixedCacheKey: 'listTask',
+	});
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const openModal = (id: number, nameOfBussiness: string) => {
@@ -69,13 +71,33 @@ const DashboardAdmin = () => {
 	};
 
 	// Function to handle closing the modal
-	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !');
+	const notifyOnYes = () =>
+		showNotification(
+			<span className='d-flex align-items-center'>
+				<Icon icon='Info' size='lg' className='me-1' />
+				<span>Great! We’ll check out the best set up for you !</span>
+			</span>,
+			``,
+		);
 	const notifyOnNoAndNotSure = () =>
-		toast(
-			'I guess we’ll need to check that out – will send you more info on this media and add it to media to check!',
+		showNotification(
+			<span className='d-flex align-items-center'>
+				<Icon icon='Info' size='lg' className='me-1' />
+				<span>
+					I guess we’ll need to check that out – will send you more info on this media and
+					add it to media to check!
+				</span>
+			</span>,
+			``,
 		);
 	const notifyOnNoAndNope = () =>
-		toast('– Ok, Good to know, no need to spend time and energy when not necessary ');
+		showNotification(
+			<span className='d-flex align-items-center'>
+				<Icon icon='Info' size='lg' className='me-1' />
+				<span>– Ok, Good to know, no need to spend time and energy when not necessary</span>
+			</span>,
+			``,
+		);
 
 	const [cards, setCards] = useState<CardProp[]>([
 		{
@@ -224,12 +246,17 @@ const DashboardAdmin = () => {
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
 					</div>
 					{isLoading ? (
-						<div>Loadning</div>
+						<div>Loadning...</div>
 					) : isSuccess && data.length !== 0 ? (
 						goalList
 							?.slice(0, 6)
 							.map((i) => (
 								<Item
+									parent='dashboard'
+									handleEdit={() => {}}
+									handleDelete={() => {}}
+									handleView={(id) => navigate(`../goal-details/${id}`)}
+									created_by={i.created_by!}
 									key={i.id}
 									id={i.id}
 									name={i.title}
@@ -241,7 +268,7 @@ const DashboardAdmin = () => {
 						<div>No data found</div>
 					)}
 					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
-					{data && data?.length !== 0 && (
+						{data && data?.length !== 0 && (
 							<Button color='primary' onClick={() => navigate('/goals')}>
 								See more...
 							</Button>

@@ -1,19 +1,9 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../../components/bootstrap/Modal';
 import { useFormik } from 'formik';
 import Button from '../../../../components/bootstrap/Button';
-import Card, {
-	CardBody,
-	CardFooter,
-	CardHeader,
-	CardLabel,
-	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../components/bootstrap/forms/Input';
-import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
-import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
+import { dashboardPagesMenu } from '../../../../menu';
 // eslint-disable-next-line import/no-named-as-default
 import dayjs from 'dayjs';
 import PaginationButtons, {
@@ -71,7 +61,13 @@ interface IGoal {
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const { isModalOpen, setIsModalOpen, id } = props;
-	const { data, isLoading: loading, isSuccess, isFetching,refetch } = useGetTaskByGoalIdQuery(id!);
+	const {
+		data,
+		isLoading: loading,
+		isSuccess,
+		isFetching,
+		refetch,
+	} = useGetTaskByGoalIdQuery(id!);
 	const navigate = useNavigate();
 	// User data
 	const token = localStorage?.getItem('access_token');
@@ -105,7 +101,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	useEffect(() => {
-		refetch()
+		refetch();
 		if (data) {
 			const { tasks } = data;
 			// console.log('Tasks>>', tasks);
@@ -169,7 +165,8 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 											<div>
 												<p className='fw-bold h4'>
 													<span className='fw-bold  h4'>
-														Task: {i.title}</span>
+														Task: {i.title}
+													</span>
 												</p>
 												<p
 													style={{

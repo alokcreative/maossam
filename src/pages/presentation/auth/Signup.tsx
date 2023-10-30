@@ -7,7 +7,8 @@ import Button from '../../../components/bootstrap/Button';
 import Spinner from '../../../components/bootstrap/Spinner';
 import * as Yup from 'yup';
 import { useRegisterUserMutation } from '../../../features/auth/authApiSlice';
-import { toast } from 'react-toastify';
+import showNotification from '../../../components/extras/showNotification';
+import Icon from '../../../components/icon/Icon';
 
 const Signup: FC = () => {
 	const [RegisterUserMutation, { isLoading }] = useRegisterUserMutation();
@@ -86,8 +87,13 @@ const Signup: FC = () => {
 							navigate('/modals-step-form');
 						})
 						.catch((rejected) => {
-							// console.error('rejected>>>', rejected);
-							toast(rejected.data?.email[0]);
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>{rejected.data?.email[0]}</span>
+								</span>,
+								``,
+							);
 							navigate('/auth-pages/login');
 							formik.setFieldValue('first_name', '');
 							formik.setFieldValue('last_name', '');

@@ -22,7 +22,8 @@ import {
 
 import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 import { useEffectOnce } from 'react-use';
-import { toast } from 'react-toastify';
+import showNotification from '../../../../../components/extras/showNotification';
+import Icon from '../../../../../components/icon/Icon';
 
 interface ICardsInColumn {
 	[key: string]: ISubtask[];
@@ -163,11 +164,23 @@ const TaskManagement = () => {
 			updateSubTask({ subtaskId: String(taskToMove?.id), taskData })
 				.unwrap()
 				.then((res) => {
-					toast(`Task moved to ${res.status}`);
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Task moved to ${res.status}</span>
+						</span>,
+						``,
+					);
 					refetch();
 				})
 				.catch((res) => {
-					toast(`Something went wrong`);
+					showNotification(
+						<span className='d-flex align-items-center'>
+							<Icon icon='Info' size='lg' className='me-1' />
+							<span>Something went wrong</span>
+						</span>,
+						``,
+					);
 				});
 			setTaskStatusToColumnMapping(taskStatusToColumnMapping);
 			// const RESULT = move(
@@ -193,7 +206,6 @@ const TaskManagement = () => {
 		setModalState('');
 		navigate(`../${pagesMenu.subTasks.path}/${id}`);
 	};
-	console.log('task>>', data);
 	return (
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
 			<SubHeader>
@@ -219,6 +231,7 @@ const TaskManagement = () => {
 						<Board>
 							{taskStatusToColumnMapping && (
 								<SubTaskBoard
+									refetch={refetch}
 									columnsData={columnsData}
 									cardsData={taskStatusToColumnMapping}
 									setCardsData={setCardsData}

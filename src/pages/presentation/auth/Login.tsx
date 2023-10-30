@@ -16,13 +16,14 @@ import {
 	useForgetPasswordMutation,
 	useLoginUserMutation,
 } from '../../../features/auth/authApiSlice';
-import { toast } from 'react-toastify';
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
 } from '../../../components/bootstrap/Modal';
+import Icon from '../../../components/icon/Icon';
+import showNotification from '../../../components/extras/showNotification';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -93,7 +94,13 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 							navigate('/');
 						})
 						.catch((rejected) => {
-							toast(rejected.data?.detail);
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>{rejected.data?.detail}</span>
+								</span>,
+								``,
+							);
 							formik.setFieldValue('email', '');
 							formik.setFieldValue('password', '');
 						});
@@ -136,10 +143,22 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 						.unwrap()
 						.then((res) => {
 							// console.log('res>>>>>', res.message);
-							toast(res.message);
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>{res.message}</span>
+								</span>,
+								``,
+							);
 						})
 						.catch((res) => {
-							toast(res.data?.email[0]);
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>{res.data?.email[0]}</span>
+								</span>,
+								``,
+							);
 						});
 				});
 			}

@@ -44,9 +44,8 @@ import {
 	useUpdateProfileMutation,
 	useCreateProfileMutation,
 } from '../../../features/auth/authApiSlice';
-import Spinner from '../../../components/bootstrap/Spinner';
-import { toast } from 'react-toastify';
-import { Obj } from '@popperjs/core';
+import showNotification from '../../../components/extras/showNotification';
+import Icon from '../../../components/icon/Icon';
 
 interface ITableRowProps {
 	index: number;
@@ -183,13 +182,20 @@ const UserList = () => {
 		// console.log('id>>>>', id);
 		// const updatedData = data.filter((user: IUserProps) => user.id !== id);
 		// setUserData(updatedData);
-		deleteProfile(id).then(() => {
-			refetch().then((res) => {
-				console.log('res>>', res.data);
-				// setUserList(res.data);
+		deleteProfile(id)
+			.unwrap()
+			.then(() => {
+				refetch().then((res) => {
+					// setUserList(res.data);
+				});
+				showNotification(
+					<span className='d-flex align-items-center'>
+						<Icon icon='Info' size='lg' className='me-1' />
+						<span>User Deleted Sucessfully</span>
+					</span>,
+					``,
+				);
 			});
-			toast('User Deleted Sucessfully');
-		});
 	};
 
 	const formik = useFormik({
@@ -418,7 +424,13 @@ const UserList = () => {
 			const imageURL = URL.createObjectURL(file);
 			setSrc(imageURL);
 		} else {
-			toast('Only PNG and JPEG Allowed');
+			showNotification(
+				<span className='d-flex align-items-center'>
+					<Icon icon='Info' size='lg' className='me-1' />
+					<span>Only PNG and JPEG Allowed</span>
+				</span>,
+				``,
+			);
 			event.target.value = '';
 		}
 	};
