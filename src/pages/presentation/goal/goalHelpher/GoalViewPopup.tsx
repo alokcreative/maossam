@@ -97,9 +97,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 	}, [token]);
 	const [taskData, setTaskData] = useState<ITask[] | undefined>();
 	const [currentPage, setCurrentPage] = useState(1);
-	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
 	const [perPage, setPerPage] = useState(PER_COUNT['1']);
-	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	useEffect(() => {
 		refetch();
 		if (data) {
@@ -121,7 +119,6 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		},
 	});
 
-	console.log('data>>121', data);
 	const handleAddSubtask = (goalId: number) => {
 		setIsModalOpen(false);
 		navigate(`../${dashboardPagesMenu.tasks.path}/${goalId}/add-task`);

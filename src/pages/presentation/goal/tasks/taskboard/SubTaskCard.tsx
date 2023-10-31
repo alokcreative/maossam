@@ -14,7 +14,6 @@ import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../../../components/PaginationButtons';
-import Accordion, { AccordionItem } from '../../../../../components/bootstrap/Accordion';
 import { useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +27,7 @@ interface IValueProps {
 }
 const SubTaskCard: FC<IValueProps> = (props) => {
 	const { subTaskId: id, setIsModalOpen } = props;
+	const [errMsg, setErrMsg] = useState<string>();
 	const { data, isLoading, isSuccess, isError, refetch } = useGetSubTaskByTaskIdQuery(
 		Number(id!),
 	);
@@ -39,7 +39,33 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 	useEffectOnce(() => {
 		refetch();
 	});
+
+	const formik = useFormik({
+		enableReinitialize: true,
+		initialValues: {
+			secheduledate: '',
+		},
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		onSubmit: (values, { resetForm }) => {
+			resetForm({
+				values: {
+					secheduledate: '',
+				},
+			});
+		},
+	});
+	useEffect(() => {
+		formik.resetForm();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentPageSubtask]);
+	useEffect(() => {
+		setErrMsg('');
+	}, [formik.values.secheduledate]);
 	const handleSubmit = (taskId: number) => {
+		if (formik.values.secheduledate === '') {
+			setErrMsg('Please select date to start the task');
+			return;
+		}
 		setIsModalOpen(false);
 		if (role !== 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		if (role === 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
@@ -48,15 +74,6 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 		setIsModalOpen(false);
 		navigate(`../${pagesMenu.subTasks.path}/${id}/add-sub-task`);
 	};
-
-	const formik = useFormik({
-		initialValues: {
-			secheduledate: '',
-		},
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		onSubmit: (values) => {},
-	});
-	console.log('SubtaskData>>>', data);
 	return (
 		<div className='row'>
 			<div className='col-12'>
@@ -154,8 +171,9 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																			}>
 																			START NOW
 																		</Button>
-																		<FormGroup id='secheduledate'>
+																		<FormGroup>
 																			<Input
+																				id='secheduledate'
 																				onChange={
 																					formik.handleChange
 																				}
@@ -164,7 +182,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																						.secheduledate
 																				}
 																				type='date'
-																				autoComplete='current-password'
+																				autoComplete='secheduledate'
 																				isTouched={
 																					formik.touched
 																						.secheduledate
@@ -176,6 +194,9 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																					formik.handleBlur
 																				}
 																			/>
+																			<span className='text-danger'>
+																				{errMsg}
+																			</span>
 																		</FormGroup>
 																	</div>
 																)}
@@ -207,7 +228,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 													</div>
 												))
 											) : (
-												<div>No Subtasks</div>
+												<div>No subtasks yet.</div>
 											)}
 										</tbody>
 									</table>

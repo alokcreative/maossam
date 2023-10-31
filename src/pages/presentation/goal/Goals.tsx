@@ -397,7 +397,7 @@ const Goals: FC = () => {
 							{gridData.view === 'grid' ? (
 								<div className='row'>
 									{goalList?.length !== 0 ? (
-										goalList.map((item: IGoalProps) => (
+										goalList?.map((item: IGoalProps) => (
 											<Item
 												parent='main'
 												handleDelete={() => {

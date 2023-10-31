@@ -216,7 +216,6 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						refetch();
 					})
 					.catch((res) => {
-						console.log('rescatch>>', res);
 					});
 				setModalStatus(false);
 				resetForm({

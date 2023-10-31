@@ -149,7 +149,6 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		},
 		validateOnChange: false,
 		onSubmit: (values) => {
-			console.log('values>>', values);
 			setIsOpen(false);
 			if (modalState === 'Add Sub Task') {
 				createSubTaskwithFAQ({
@@ -170,7 +169,6 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						refetch();
 					});
 			} else if (modalState === 'Edit Sub Task') {
-				console.log('Edit Sub Task');
 				const parts = values.expected_time.split(':');
 				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
 				const taskData = {
@@ -213,8 +211,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			setFaqs([...faqs, { question: '', answer: '' }]);
 		} else if (faqs.length === 0) {
 			setFaqs([...faqs, { question: '', answer: '' }]);
-		} else {
-		}
+		} 
 	};
 
 	const handleFAQChange = (index: number, field: string, value: string) => {
@@ -352,15 +349,15 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 												id={`question-${index}`}
 												label={`Question ${index + 1}`}
 												className='col-lg-6 mx-1'>
-												{/* <Textarea
+												<Textarea
 													onChange={(
 														e: ChangeEvent<HTMLTextAreaElement>,
 													) => {
 														handleQuestionChange(index, e.target.value);
 													}}
 													value={faq.question}
-												/> */}
-											
+												/>
+												
 											</FormGroup>
 											<FormGroup
 												id={`answer-${index}`}

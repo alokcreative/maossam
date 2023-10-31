@@ -167,7 +167,7 @@ const TaskManagement = () => {
 					showNotification(
 						<span className='d-flex align-items-center'>
 							<Icon icon='Info' size='lg' className='me-1' />
-							<span>Task moved to ${res.status}</span>
+							<span>Task moved to {res.status}</span>
 						</span>,
 						``,
 					);
