@@ -7,7 +7,6 @@ import {
 	useDeleteFAQMutation,
 	useUpdateFAQMutation,
 	useUpdateSubTaskMutation,
-	useCreateSubTaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
@@ -211,7 +210,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			setFaqs([...faqs, { question: '', answer: '' }]);
 		} else if (faqs.length === 0) {
 			setFaqs([...faqs, { question: '', answer: '' }]);
-		} 
+		}
 	};
 
 	const handleFAQChange = (index: number, field: string, value: string) => {
@@ -269,10 +268,6 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			})
 			.catch((res) => {});
 	};
-	// function generateUniqueId() {
-	// 	const newId = faqs && faqs.length + 1;
-	// 	return newId;
-	// }
 
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>

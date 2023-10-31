@@ -154,22 +154,26 @@ const SubTask: FC = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{data && data.subtasks
-									? dataPagination(data.subtasks, currentPage, perPage).map(
-											(i, index) => (
-												<SubtaskTableRow
-													// eslint-disable-next-line react/no-array-index-key
-													key={index}
-													id={index + 1}
-													// eslint-disable-next-line react/jsx-props-no-spreading
-													subtask={i}
-													edit={handleEdit}
-													deleteAction={()=>{setShowConfirmation(true);
-														setDeleteId(i.id);}}
-												/>
-											),
-									  )
-									: null}
+								{data && data.subtasks && data.subtasks.length !== 0 ? (
+									dataPagination(data.subtasks, currentPage, perPage).map(
+										(i, index) => (
+											<SubtaskTableRow
+												// eslint-disable-next-line react/no-array-index-key
+												key={index}
+												id={index + 1}
+												// eslint-disable-next-line react/jsx-props-no-spreading
+												subtask={i}
+												edit={handleEdit}
+												deleteAction={() => {
+													setShowConfirmation(true);
+													setDeleteId(i.id);
+												}}
+											/>
+										),
+									)
+								) : (
+									<div>No subtask yet.</div>
+								)}
 							</tbody>
 						</table>
 					</CardBody>

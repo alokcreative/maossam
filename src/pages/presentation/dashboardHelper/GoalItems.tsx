@@ -22,6 +22,7 @@ import Button from '../../../components/bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
+import { useEffectOnce } from 'react-use';
 
 interface IItemProps {
 	id: number;
@@ -53,10 +54,13 @@ const Item: FC<IItemProps> = ({
 
 	const { themeStatus, darkModeStatus } = useDarkMode();
 	const { t } = useTranslation(['translation', 'menu']);
-	const { data, isLoading, isSuccess, refetch } = useGetTaskByGoalIdQuery(
+	const { data, refetch } = useGetTaskByGoalIdQuery(
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		Number(id!),
 	);
+	useEffectOnce(() => {
+		refetch();
+	});
 	const openModalHandler = () => {
 		if (role === 'superadmin') {
 			navigate(`../goal-details/${id}`);

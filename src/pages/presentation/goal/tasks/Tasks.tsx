@@ -322,24 +322,26 @@ const Tasks: FC = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{taskList
-										? dataPagination(taskList, currentPage, perPage).map(
-												(i, index) => (
-													<TaskTableRow
-														// eslint-disable-next-line react/no-array-index-key
-														key={index}
-														id={index + 1}
-														// eslint-disable-next-line react/jsx-props-no-spreading
-														task={i}
-														edit={handleEdit}
-														deleteAction={() => {
-															setShowConfirmation(true);
-															setDeleteId(i.id);
-														}}
-													/>
-												),
-										  )
-										: null}
+									{taskList && taskList?.length !== 0 ? (
+										dataPagination(taskList, currentPage, perPage).map(
+											(i, index) => (
+												<TaskTableRow
+													// eslint-disable-next-line react/no-array-index-key
+													key={index}
+													id={index + 1}
+													// eslint-disable-next-line react/jsx-props-no-spreading
+													task={i}
+													edit={handleEdit}
+													deleteAction={() => {
+														setShowConfirmation(true);
+														setDeleteId(i.id);
+													}}
+												/>
+											),
+										)
+									) : (
+										<div>Not task yet.</div>
+									)}
 								</tbody>
 							</table>
 						</CardBody>

@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Accordion, { AccordionItem } from '../../../../../components/bootstrap/Accordion';
 import { useGetFaqBySubTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
 import Spinner from '../../../../../components/bootstrap/Spinner';
+import { useEffectOnce } from 'react-use';
 
 type IAssetNameProps = {
 	id: number | undefined;
@@ -17,8 +18,9 @@ interface IFaq {
 const SubTaskQuestion: FC<IAssetNameProps> = ({ id }) => {
 	const { data, isLoading, isSuccess, isFetching, refetch } = useGetFaqBySubTaskIdQuery(id!);
 
-	console.log('Question Data>>>>', data);
-	console.log('Question Data ID>>>>', id);
+	useEffectOnce(() => {
+		refetch();
+	});
 
 	if (isLoading) {
 		<Spinner />;

@@ -388,7 +388,7 @@ const Goals: FC = () => {
 				</SubHeaderRight>
 			</SubHeader>
 			{isLoading ? (
-				<div>Loadning</div>
+				<div>Loading...</div>
 			) : isSuccess ? (
 				<Page container='fluid'>
 					<div className='display-4 fw-bold py-3'> Goals</div>
@@ -456,13 +456,23 @@ const Goals: FC = () => {
 																}}>
 																Description
 															</th>
-															<th
+															{/* <th
 																scope='col'
 																style={{
 																	whiteSpace: 'nowrap',
 																}}>
-																Date
-															</th>
+																No. of task
+															</th> */}
+															{role != 'superadmin' && (
+																<th
+																	scope='col'
+																	style={{
+																		whiteSpace: 'nowrap',
+																	}}>
+																	Date
+																</th>
+															)}
+
 															<th
 																scope='col'
 																style={{
@@ -493,7 +503,8 @@ const Goals: FC = () => {
 																		</th>
 																		<th>{i.title}</th>
 																		<td>{i.description}</td>
-																		<td>{i.due_date}</td>
+																		{role != 'superadmin' && <td>{i.due_date}</td>}
+																		
 
 																		<td className='h5'>
 																			<Badge

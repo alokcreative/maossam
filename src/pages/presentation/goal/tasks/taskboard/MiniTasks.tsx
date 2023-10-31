@@ -176,7 +176,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 			description: '',
 		},
 		validate,
-		validateOnChange: false,
+		validateOnChange: true,
 		onSubmit: (values, { resetForm }) => {
 			const minitaskData = {
 				subtask_id: String(subTaskId),
@@ -253,7 +253,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 						</ModalHeader>
 						<ModalBody>
 							<div className='row d-flex align-items-center justify-content-center'>
-								<div className='col-12 mb-3'>
+								<div className='col-12 pb-3'>
 									<FormGroup id='minitaskTitle' label='Title'>
 										<Input
 											onChange={formik.handleChange}
@@ -266,7 +266,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 										/>
 									</FormGroup>
 								</div>
-								<div className='col-12 mt-3'>
+								<div className='col-12 pt-3'>
 									<FormGroup id='description' label='Description'>
 										<Input
 											onChange={formik.handleChange}
@@ -294,7 +294,13 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody>{list && <Todo list={list} setList={setList} refetch={refetch} />}</CardBody>
+			<CardBody>
+				{list && list?.length !== 0 ? (
+					<Todo list={list} setList={setList} refetch={refetch} />
+				) : (
+					<div>Not minitask yet.</div>
+				)}
+			</CardBody>
 		</Card>
 	);
 };
