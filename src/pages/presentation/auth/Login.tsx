@@ -24,6 +24,7 @@ import Modal, {
 } from '../../../components/bootstrap/Modal';
 import Icon from '../../../components/icon/Icon';
 import showNotification from '../../../components/extras/showNotification';
+import { TInputTypes } from '../../../type/input-type';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -60,6 +61,8 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 	const [LoginUserMutation, { isLoading }] = useLoginUserMutation();
 	const [ForgetPasswordMutation, { isLoading: loading }] = useForgetPasswordMutation();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [passwordType, setPasswordType] = useState<TInputTypes>('password');
+	const [passwordIcon, setPasswordIcon] = useState('VisibilityOff');
 
 	const navigate = useNavigate();
 
@@ -82,7 +85,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 
 			return errors;
 		},
-		validateOnChange: false,
+		validateOnChange: true,
 		onSubmit: async (values) => {
 			if (values.email) {
 				startTransition(() => {
@@ -116,7 +119,6 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 	const handleLinkClick = (e: React.FormEvent) => {
 		e.preventDefault(); // Prevent the default browser behavior
 	};
-
 
 	const formikLink = useFormik({
 		enableReinitialize: true,
@@ -164,7 +166,16 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 			}
 		},
 	});
-
+	const handlePasswordShow = () => {
+		if (passwordType === 'password') {
+			setPasswordType('text');
+			setPasswordIcon('VisibilityOff');
+		}
+		if (passwordType === 'text') {
+			setPasswordType('password');
+			setPasswordIcon('Visibility');
+		}
+	};
 	return (
 		<PageWrapper isProtected={false} title={singUpStatus ? 'Sign Up' : 'Login'}>
 			<Page className='p-0'>
@@ -253,21 +264,42 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 													isFloating
 													label='Password'>
 													<Input
-														type='password'
+														type={passwordType}
 														name='password'
 														autoComplete='current-password'
 														value={formik.values.password}
 														isTouched={formik.touched.password}
 														invalidFeedback={formik.errors.password}
 														isValid={formik.isValid}
-														validFeedback='Looks good!'
 														onChange={formik.handleChange}
 														onBlur={formik.handleBlur}
 													/>
+													{formik.values.password !== '' ? (
+														<div
+															style={{
+																position: 'absolute',
+																right: '26px',
+																bottom: '12px',
+															}}>
+															<Icon
+																size='lg'
+																icon={passwordIcon}
+																onClick={handlePasswordShow}
+															/>
+														</div>
+													) : (
+														<div />
+													)}
 												</FormGroup>
+
 												<div
-													className='cursor-pointer d-flex align-items-end justify-content-end me-3 mt-2'
+													className='cursor-pointer me-3 mt-2'
 													onClick={() => setIsOpen(true)}
+													style={{
+														position: 'absolute',
+														right: '0px',
+														paddingBottom: '10px',
+													}}
 													onKeyDown={() => setIsOpen(true)}
 													aria-hidden='true'>
 													Forget Password
@@ -276,7 +308,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 											<div className='col-12'>
 												<Button
 													color='warning'
-													className='w-100 py-3'
+													className='w-100 py-3 mt-4'
 													onClick={formik.handleSubmit}>
 													{isLoading && (
 														<Spinner isSmall inButton isGrow />

@@ -9,10 +9,13 @@ import * as Yup from 'yup';
 import { useRegisterUserMutation } from '../../../features/auth/authApiSlice';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
+import { TInputTypes } from '../../../type/input-type';
 
 const Signup: FC = () => {
 	const [RegisterUserMutation, { isLoading }] = useRegisterUserMutation();
 	const navigate = useNavigate();
+	const [passwordType, setPasswordType] = useState<TInputTypes>('password');
+	const [passwordIcon, setPasswordIcon] = useState('VisibilityOff');
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 	const validateEmail = (value: string) => {
 		let error;
@@ -106,7 +109,16 @@ const Signup: FC = () => {
 			}
 		},
 	});
-
+	const handlePasswordShow = () => {
+		if (passwordType === 'password') {
+			setPasswordType('text');
+			setPasswordIcon('VisibilityOff');
+		}
+		if (passwordType === 'text') {
+			setPasswordType('password');
+			setPasswordIcon('Visibility');
+		}
+	};
 	return (
 		<>
 			<div className='col-12'>
@@ -169,7 +181,7 @@ const Signup: FC = () => {
 				<FormGroup id='signup-password' isFloating label='Password'>
 					<Input
 						autoComplete='password'
-						type='password'
+						type={passwordType}
 						name='password'
 						onChange={formik.handleChange}
 						value={formik.values.password}
@@ -181,6 +193,18 @@ const Signup: FC = () => {
 							formik.setErrors({});
 						}}
 					/>
+					{formik.values.password !== '' ? (
+						<div
+							style={{
+								position: 'absolute',
+								right: '26px',
+								bottom: `${formik.errors.password ? '33px' : '12px'}`,
+							}}>
+							<Icon size='lg' icon={passwordIcon} onClick={handlePasswordShow} />
+						</div>
+					) : (
+						<div />
+					)}
 				</FormGroup>
 			</div>
 			<div className='col-12'>

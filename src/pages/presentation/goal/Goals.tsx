@@ -396,7 +396,7 @@ const Goals: FC = () => {
 						<div className='col-12'>
 							{gridData.view === 'grid' ? (
 								<div className='row'>
-									{goalList?.length!==0 ?
+									{goalList?.length !== 0 ? (
 										goalList.map((item: IGoalProps) => (
 											<Item
 												parent='main'
@@ -415,7 +415,10 @@ const Goals: FC = () => {
 												attributes={item?.description}
 												timeline={item.category!}
 											/>
-										)):<div>No goals yet.</div>}
+										))
+									) : (
+										<div>No goals yet.</div>
+									)}
 								</div>
 							) : (
 								<Card stretch>
@@ -477,92 +480,101 @@ const Goals: FC = () => {
 														</tr>
 													</thead>
 													<tbody>
-														{goalList?.length !== 0 ? dataPagination(
-															goalList,
-															currentPage,
-															perPage,
-														).map((i, index) => {
-															return (
-																<tr>
-																	<th scope='row'>{index + 1}</th>
-																	<th>{i.title}</th>
-																	<td>{i.description}</td>
-																	<td>{i.due_date}</td>
+														{goalList?.length !== 0 ? (
+															dataPagination(
+																goalList,
+																currentPage,
+																perPage,
+															)?.map((i, index) => {
+																return (
+																	<tr>
+																		<th scope='row'>
+																			{index + 1}
+																		</th>
+																		<th>{i.title}</th>
+																		<td>{i.description}</td>
+																		<td>{i.due_date}</td>
 
-																	<td className='h5'>
-																		<Badge
-																			color={
-																				(i.status ===
-																					'Progress' &&
-																					'danger') ||
-																				(i.status ===
-																					'New' &&
-																					'warning') ||
-																				(i.status ===
-																					'Done' &&
-																					'success') ||
-																				'info'
-																			}>
-																			{i.status}
-																		</Badge>
-																	</td>
-																	<td>
-																		<div className='d-flex flex-nowrap'>
-																			<Button
-																				icon='Visibility'
-																				color='primary'
-																				isLight
-																				onClick={() => {
-																					if (
-																						role ===
-																						'superadmin'
-																					) {
-																						navigate(
-																							`../goal-details/${i.id}`,
-																						);
-																					} else {
-																						openModal(
-																							i.id,
-																						);
-																					}
-																				}}
-																				className='me-1'
-																			/>
-																			{Number(logUserId) ===
-																				i.created_by ||
-																			logUserId === '1' ? (
-																				<>
-																					<Button
-																						icon='Edit'
-																						color='success'
-																						isLight
-																						onClick={() =>
-																							handleEdit(
+																		<td className='h5'>
+																			<Badge
+																				color={
+																					(i.status ===
+																						'Progress' &&
+																						'danger') ||
+																					(i.status ===
+																						'New' &&
+																						'warning') ||
+																					(i.status ===
+																						'Done' &&
+																						'success') ||
+																					'info'
+																				}>
+																				{i.status}
+																			</Badge>
+																		</td>
+																		<td>
+																			<div className='d-flex flex-nowrap'>
+																				<Button
+																					icon='Visibility'
+																					color='primary'
+																					isLight
+																					onClick={() => {
+																						if (
+																							role ===
+																							'superadmin'
+																						) {
+																							navigate(
+																								`../goal-details/${i.id}`,
+																							);
+																						} else {
+																							openModal(
 																								i.id,
-																							)
+																							);
 																						}
-																						className='me-1'
-																					/>
-																					<Button
-																						icon='Delete'
-																						color='danger'
-																						isLight
-																						onClick={() => {
-																							setShowConfirmation(
-																								true,
-																							);
-																							setDeleteId(
-																								i.id,
-																							);
-																						}}
-																					/>
-																				</>
-																			) : null}
-																		</div>
-																	</td>
-																</tr>
-															);
-														}):<div>No goals yet.</div>}
+																					}}
+																					className='me-1'
+																				/>
+																				{Number(
+																					logUserId,
+																				) ===
+																					i.created_by ||
+																				logUserId ===
+																					'1' ? (
+																					<>
+																						<Button
+																							icon='Edit'
+																							color='success'
+																							isLight
+																							onClick={() =>
+																								handleEdit(
+																									i.id,
+																								)
+																							}
+																							className='me-1'
+																						/>
+																						<Button
+																							icon='Delete'
+																							color='danger'
+																							isLight
+																							onClick={() => {
+																								setShowConfirmation(
+																									true,
+																								);
+																								setDeleteId(
+																									i.id,
+																								);
+																							}}
+																						/>
+																					</>
+																				) : null}
+																			</div>
+																		</td>
+																	</tr>
+																);
+															})
+														) : (
+															<div>No goals yet.</div>
+														)}
 													</tbody>
 												</table>
 											</div>

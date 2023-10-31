@@ -179,9 +179,8 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 					description: values.description,
 					title: values.name,
 				};
-				
-					const subtaskId = String(task?.subtask.id);
-				
+
+				const subtaskId = String(task?.subtask.id);
 
 				updateSubTask({ subtaskId, taskData })
 					.unwrap()
@@ -221,7 +220,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	const handleFAQChange = (index: number, field: string, value: string) => {
 		formik.setFieldValue(`faqs[${index}].${field}`, value);
 	};
-	const handleQuestionChange = (index: number, value: string) => {
+	const handleQuestionChange = (index: number, value: any) => {
 		const updatedFaqs: IFaq[] = [...faqs];
 		updatedFaqs[index] = { ...updatedFaqs[index], question: value };
 		setFaqs(updatedFaqs);
@@ -353,14 +352,15 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 												id={`question-${index}`}
 												label={`Question ${index + 1}`}
 												className='col-lg-6 mx-1'>
-												<Textarea
+												{/* <Textarea
 													onChange={(
 														e: ChangeEvent<HTMLTextAreaElement>,
 													) => {
 														handleQuestionChange(index, e.target.value);
 													}}
 													value={faq.question}
-												/>
+												/> */}
+											
 											</FormGroup>
 											<FormGroup
 												id={`answer-${index}`}
