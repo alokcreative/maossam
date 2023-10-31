@@ -3,6 +3,7 @@ import Accordion, { AccordionItem } from '../../../../../components/bootstrap/Ac
 import { useGetFaqBySubTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
 import Spinner from '../../../../../components/bootstrap/Spinner';
 import { useEffectOnce } from 'react-use';
+import parse from 'html-react-parser';
 
 type IAssetNameProps = {
 	id: number | undefined;
@@ -30,6 +31,7 @@ const SubTaskQuestion: FC<IAssetNameProps> = ({ id }) => {
 		<Spinner />;
 	}
 
+
 	return (
 		<div className='row g-3'>
 			<div className='col-12'>
@@ -39,8 +41,11 @@ const SubTaskQuestion: FC<IAssetNameProps> = ({ id }) => {
 					data?.subtask_faqs.map((q: IFaq) => {
 						return (
 							<Accordion id={data.id} isFlush className='mb-1'>
-								<AccordionItem id={q.id} title={q.question} activeItem={null}>
-									{q.answer}
+								<AccordionItem
+									id={q.id}
+									title={parse(q.question)}
+									activeItem={null}>
+									{parse(q.answer)}
 								</AccordionItem>
 							</Accordion>
 						);

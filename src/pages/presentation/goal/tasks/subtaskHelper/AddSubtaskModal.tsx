@@ -1,7 +1,8 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
-import { ITask } from '../../../../../common/data/dummyGoals';
 import { Calendar as DatePicker } from 'react-date-range';
 import { useFormik } from 'formik';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import {
 	useCreateSubTaskwithFAQMutation,
 	useDeleteFAQMutation,
@@ -100,7 +101,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			}
 			// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
 			setFaqs(task?.subtask_faqs! || task?.faqs);
-		}
+		}else{}
 		// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
 		// setFaqs(task?.subtask_faqs!);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -344,25 +345,38 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 												id={`question-${index}`}
 												label={`Question ${index + 1}`}
 												className='col-lg-6 mx-1'>
-												<Textarea
+												{/* <Textarea
 													onChange={(
 														e: ChangeEvent<HTMLTextAreaElement>,
 													) => {
 														handleQuestionChange(index, e.target.value);
 													}}
 													value={faq.question}
+												/> */}
+												<ReactQuill
+													theme='snow'
+													value={faq.question}
+													onChange={(value) => {
+														handleQuestionChange(index, value);
+													}}
 												/>
-												
 											</FormGroup>
 											<FormGroup
 												id={`answer-${index}`}
 												label={`Answer ${index + 1}`}
 												className='col-lg-6 mx-1'>
-												<Textarea
+												{/* <Textarea
 													onChange={(
 														e: ChangeEvent<HTMLTextAreaElement>,
 													) => handleAnswerChange(index, e.target.value)}
 													value={faq.answer}
+												/> */}
+												<ReactQuill
+													theme='snow'
+													value={faq.answer}
+													onChange={(value) => {
+														handleAnswerChange(index, value);
+													}}
 												/>
 											</FormGroup>
 										</div>
