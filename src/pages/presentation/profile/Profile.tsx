@@ -45,7 +45,7 @@ const Profile = () => {
 	const token = localStorage?.getItem('access_token');
 	const [GetUsersMutation] = useGetUsersMutation({
 		fixedCacheKey: 'shared-data',
-	  });
+	});
 
 	const formik = useFormik({
 		initialValues: {
@@ -79,6 +79,9 @@ const Profile = () => {
 			if (values.phone_number && values.phone_number.length !== 10) {
 				errors.phone_number = 'Must be 10 digit';
 			}
+			if (isNaN(parseInt(values.phone_number, 10))) {
+				errors.phone_number = 'Value should be number';
+			}
 			if (!values.gender) {
 				errors.gender = 'Required';
 			}
@@ -99,7 +102,7 @@ const Profile = () => {
 				.unwrap()
 				.then((res) => {
 					// console.log('res>>', res);
-					
+
 					if (token) {
 						GetUsersMutation(token)
 							.unwrap()
@@ -349,7 +352,10 @@ const Profile = () => {
 												/>
 											</FormGroup>
 										</div>
-										<div className='col-md-6'>
+										<div className='col-md-6 d-flex'>
+											<div className='input-group-prepend'>
+												<span className='input-group-text'>+972</span>
+											</div>
 											<FormGroup
 												id='phone_number'
 												label='Phone Number'
@@ -361,7 +367,7 @@ const Profile = () => {
 													autoComplete='tel'
 													onChange={formik.handleChange}
 													onBlur={formik.handleBlur}
-													value={`+972 ${formik.values.phone_number}`}
+													value={formik.values.phone_number}
 													isValid={formik.isValid}
 													isTouched={formik.touched.phone_number}
 													invalidFeedback={formik.errors.phone_number}

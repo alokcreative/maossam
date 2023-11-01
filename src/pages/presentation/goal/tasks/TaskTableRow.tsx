@@ -53,13 +53,19 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 							</span>
 						)}
 					</td>
-					<td>
-						<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>
-					</td>
-					{ location && location?.pathname != '/goals' && (
-						<td>
-							<span style={{ whiteSpace: 'nowrap' }}>{task.expected_time}</span>
-						</td>
+					{role != 'superadmin' && (
+						<>
+							<td>
+								<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>
+							</td>
+							{location && location?.pathname != '/goals' && (
+								<td>
+									<span style={{ whiteSpace: 'nowrap' }}>
+										{task.expected_time}
+									</span>
+								</td>
+							)}
+						</>
 					)}
 
 					<td className='h5'>

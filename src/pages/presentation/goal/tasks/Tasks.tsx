@@ -299,14 +299,19 @@ const Tasks: FC = () => {
 										<th scope='col' style={{ whiteSpace: 'nowrap' }}>
 											Description
 										</th>
-										<th scope='col' style={{ whiteSpace: 'nowrap' }}>
-											Due Date
-										</th>
-										<th scope='col'>
-											<span style={{ whiteSpace: 'nowrap' }}>
-												Expected Time
-											</span>
-										</th>
+										{role != 'superadmin' && (
+											<>
+												<th scope='col' style={{ whiteSpace: 'nowrap' }}>
+													Due Date
+												</th>
+												<th scope='col'>
+													<span style={{ whiteSpace: 'nowrap' }}>
+														Expected Time
+													</span>
+												</th>
+											</>
+										)}
+
 										<th
 											scope='col'
 											className='cursor-pointer'
