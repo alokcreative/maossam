@@ -284,7 +284,7 @@ const Goals: FC = () => {
 					}
 				})
 				.catch((res) => {
-					console.log(res);
+					// console.log(res);
 				});
 		},
 	});
@@ -549,8 +549,7 @@ const Goals: FC = () => {
 																					logUserId,
 																				) ===
 																					i.created_by ||
-																				logUserId ===
-																					'1' ? (
+																					role =='superadmin' ? (
 																					<>
 																						<Button
 																							icon='Edit'

@@ -131,6 +131,7 @@ const ProfileTour = () => {
 	const { data } = useGetProfileQuery(userId);
 	const navigate = useNavigate();
 	const { setIsOpen } = useTour();
+	const role = localStorage?.getItem('role');
 	const handleClick = () => {
 		setIsOpen(false);
 	};
@@ -188,7 +189,7 @@ const ProfileTour = () => {
 						<p>In just a few steps you’ll be ready to start your journey to success!</p>
 					</div>
 					<div>
-						{userId === '1' ? (
+						{role =='superadmin' ? (
 							<ChecksGroup>
 								<Checks
 									id='users'

@@ -109,7 +109,7 @@ const Tasks: FC = () => {
 		}
 	});
 	useEffect(() => {
-		if (logUserId == '1') {
+		if (role =='superadmin') {
 			setTaskList(data);
 		} else {
 			const tempdata = data?.filter(

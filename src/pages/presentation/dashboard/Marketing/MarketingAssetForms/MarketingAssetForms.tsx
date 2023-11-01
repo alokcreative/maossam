@@ -79,7 +79,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 			clickVal: '',
 		},
 		onSubmit(values, formikHelpers) {
-			console.log(values.clickVal);
+			// console.log(values.clickVal);
 			navigate('/add-task');
 		},
 	});

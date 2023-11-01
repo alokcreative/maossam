@@ -111,7 +111,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						);
 					})
 					.catch((res) => {
-						console.log('resc>>1', res);
+						// console.log('resc>>1', res);
 					});
 			} else {
 				const miniTaskData = {
@@ -159,14 +159,14 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 					refetch();
 				})
 				.catch((res) => {
-					console.log('resCatch', res);
+					// console.log('resCatch', res);
 				});
 			// newTodos.splice(_index, 1);
 			// setList(newTodos);
 		};
 		const updateTodo = (_index: number | string) => {
 			setModalStatus(true);
-			console.log('_index', _index);
+			// console.log('_index', _index);
 			formik.setFieldValue('minitaskTitle', itemData.title);
 			formik.setFieldValue('description', itemData.description);
 			// const newTodos = [...list];

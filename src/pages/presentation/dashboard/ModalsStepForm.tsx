@@ -125,7 +125,7 @@ const ModalsStepForm: React.FC = () => {
 		},
 		validateOnChange: false,
 		onSubmit: (values) => {
-			console.log('Validated');
+			// console.log('Validated');
 			nextStep();
 			const userdetails = {
 				country: values.country,
@@ -137,7 +137,7 @@ const ModalsStepForm: React.FC = () => {
 	});
 	useEffect(() => {
 		const stateListupdated = State.getStatesOfCountry(formik.values.country);
-		console.log(formik.values.country);
+		// console.log(formik.values.country);
 		const LIST = stateListupdated.map(({ name }) => ({
 			value: name,
 			text: name,

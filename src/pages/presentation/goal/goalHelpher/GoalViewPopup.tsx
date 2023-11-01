@@ -145,7 +145,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 							<div className='d-flex align-items-center justify-content-between'>
 								<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
 								{(Number(logUserId) === data.goal.created_by ||
-									logUserId == '1') && (
+									role =='superadmin') && (
 									<Button
 										color='primary'
 										className='mb-3'

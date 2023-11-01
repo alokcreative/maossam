@@ -174,13 +174,13 @@ const GoalDescription: FC = () => {
 				})
 					.unwrap()
 					.then((res) => {
-						console.log('response>>', res);
+						// console.log('response>>', res);
 						refetch();
 						formiknewTask.resetForm();
 						setDate(new Date());
 					})
 					.catch((res) => {
-						console.log('error', res);
+						// console.log('error', res);
 					});
 			}
 
