@@ -17,6 +17,7 @@ interface ISubtask {
 	title: string;
 	updated_at: string;
 	user_assigned: string;
+	minitask_count: string;
 }
 interface ITableRowProps {
 	id: number;
@@ -26,11 +27,6 @@ interface ITableRowProps {
 }
 
 const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }) => {
-	// const { user } = useSelector((state: RootState) => state.auth);
-	// const savedValue = localStorage?.getItem('user');
-	// const localUser = savedValue ? JSON.parse(savedValue) : null;
-	// const role = user.role || localUser?.role;
-	// const role = localStorage?.getItem('role');
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [modalStatus, setModalStatus] = useState(false);
 	return (
@@ -42,6 +38,7 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 						<div>{subtask.title}</div>
 					</td>
 					<td>{subtask.description}</td>
+					<td>{subtask.minitask_count}</td>
 					<td>
 						<div className='d-flex flex-nowrap'>
 							<Button

@@ -14,6 +14,7 @@ interface ITaskValue {
 	created_by: number;
 	expected_time: number;
 	due_date: number;
+	subtask_count: number;
 }
 interface ITableRowProps {
 	id: number;
@@ -52,6 +53,9 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 								...
 							</span>
 						)}
+					</td>
+					<td>
+						{task.subtask_count}
 					</td>
 					{role != 'superadmin' && (
 						<>

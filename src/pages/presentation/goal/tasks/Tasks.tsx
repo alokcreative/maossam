@@ -69,6 +69,7 @@ interface ITaskValue {
 	created_by: string;
 	expected_time: string;
 	due_date: string;
+	subtask_count: string;
 }
 const Tasks: FC = () => {
 	const { goalId, newTask } = useParams();
@@ -298,6 +299,9 @@ const Tasks: FC = () => {
 										</th>
 										<th scope='col' style={{ whiteSpace: 'nowrap' }}>
 											Description
+										</th>
+										<th scope='col' style={{ whiteSpace: 'nowrap' }}>
+											Subtask Count
 										</th>
 										{role != 'superadmin' && (
 											<>

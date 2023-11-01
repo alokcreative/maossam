@@ -103,6 +103,7 @@ interface IGoalProps {
 	created_at?: string;
 	created_by?: string;
 	updated_at?: string;
+	task_count: string;
 }
 const DashboardPage = () => {
 	const { mobileDesign } = useContext(ThemeContext);
@@ -287,6 +288,7 @@ const DashboardPage = () => {
 									name={i.title}
 									attributes={i.description}
 									timeline={i.expected_time!}
+									task_count={i?.task_count}
 								/>
 							))
 					) : (

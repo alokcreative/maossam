@@ -95,6 +95,7 @@ interface IGoalProps {
 	created_at?: string;
 	created_by?: string;
 	updated_at?: string;
+	task_count: string;
 }
 const Goals: FC = () => {
 	const navigate = useNavigate();
@@ -124,9 +125,9 @@ const Goals: FC = () => {
 		setGoalId(id);
 		setIsModalOpen(true);
 	};
-	useEffect(() => {
-		refetch();
-	});
+	// useEffect(() => {
+	// 	refetch();
+	// });
 	useEffect(() => {
 		if (data) {
 			if (logUserId == '1') {
@@ -416,6 +417,7 @@ const Goals: FC = () => {
 												id={item?.id}
 												name={item?.title}
 												attributes={item?.description}
+												task_count={item?.task_count}
 												timeline={item.category!}
 											/>
 										))
@@ -459,13 +461,13 @@ const Goals: FC = () => {
 																}}>
 																Description
 															</th>
-															{/* <th
+															<th
 																scope='col'
 																style={{
 																	whiteSpace: 'nowrap',
 																}}>
 																No. of task
-															</th> */}
+															</th>
 															{role != 'superadmin' && (
 																<th
 																	scope='col'
@@ -506,6 +508,7 @@ const Goals: FC = () => {
 																		</th>
 																		<th>{i.title}</th>
 																		<td>{i.description}</td>
+																		<td>{i.task_count}</td>
 																		{role != 'superadmin' && (
 																			<td>{i.due_date}</td>
 																		)}

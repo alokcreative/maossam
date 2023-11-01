@@ -44,6 +44,7 @@ interface ISubtask {
 	title: string;
 	updated_at: string;
 	user_assigned: string;
+	minitask_count: string;
 }
 const SubTask: FC = () => {
 	const navigate = useNavigate();
@@ -148,6 +149,7 @@ const SubTask: FC = () => {
 										Name
 									</th>
 									<th scope='col'>Description</th>
+									<th scope='col'>Minitask Count</th>
 									<th scope='col' className='cursor-pointer'>
 										Action
 									</th>

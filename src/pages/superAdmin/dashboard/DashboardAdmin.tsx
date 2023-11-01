@@ -49,6 +49,8 @@ interface IGoalProps {
 	created_at?: string;
 	created_by?: string;
 	updated_at?: string;
+	task_count: string;
+
 }
 const DashboardAdmin = () => {
 	const { darkModeStatus } = useDarkMode();
@@ -262,6 +264,7 @@ const DashboardAdmin = () => {
 									name={i.title}
 									attributes={i.description}
 									timeline={i.expected_time!}
+									task_count={i?.task_count}
 								/>
 							))
 					) : (

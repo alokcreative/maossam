@@ -34,6 +34,7 @@ interface IItemProps {
 	handleEdit(...args: unknown[]): unknown;
 	handleView(...args: unknown[]): unknown;
 	parent: string;
+	task_count: string;
 }
 const Item: FC<IItemProps> = ({
 	name,
@@ -45,6 +46,7 @@ const Item: FC<IItemProps> = ({
 	handleEdit,
 	handleView,
 	parent,
+	task_count,
 }) => {
 	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -148,7 +150,7 @@ const Item: FC<IItemProps> = ({
 							{/* <p className='text-muted'>{attributes}</p> */}
 						</div>
 					</div>
-					<p className='mt-3 mb-1'>No. of task: {data?.tasks.length}</p>
+					<p className='mt-3 mb-1'>No. of task: {task_count}</p>
 					<div className='row'>
 						<div className='col-md-12'>
 							{0}%
