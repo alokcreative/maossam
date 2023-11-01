@@ -11,7 +11,7 @@ import {
 } from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
-import { format, parse } from 'date-fns';
+import { format } from 'date-fns';
 import Modal, {
 	ModalBody,
 	ModalFooter,
@@ -22,7 +22,6 @@ import { CardFooterLeft, CardFooterRight } from '../../../../../components/boots
 import Button from '../../../../../components/bootstrap/Button';
 import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../../../components/bootstrap/forms/Input';
-import Textarea from '../../../../../components/bootstrap/forms/Textarea';
 import Label from '../../../../../components/bootstrap/forms/Label';
 import showNotification from '../../../../../components/extras/showNotification';
 import Icon from '../../../../../components/icon/Icon';
@@ -75,37 +74,6 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
 
-	useEffect(() => {
-		if (modalState === 'Add Sub Task') {
-			setDate(new Date());
-			setFaqs([{ question: '', answer: '' }]);
-			formik.setFieldValue('name', '');
-			formik.setFieldValue('description', '');
-			formik.setFieldValue('dueDate', '');
-			formik.setFieldValue('category', '');
-			formik.setFieldValue('status', '');
-			formik.setFieldValue('expected_time', '');
-		} else if (modalState === 'Edit Sub Task') {
-			setFaqs([{ question: '', answer: '' }]);
-			formik.setFieldValue('name', task?.subtask?.title || task?.title);
-			formik.setFieldValue('description', task?.subtask?.description || task?.description);
-			formik.setFieldValue('sub_id', task?.subtask?.id || task?.id);
-			formik.setFieldValue(
-				'expected_time',
-				task?.subtask?.expected_time || task?.expected_time,
-			);
-
-			if (task) {
-				const dueDateObject = new Date(task?.subtask?.due_date || task?.due_date);
-				setDate(dueDateObject);
-			}
-			// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-			setFaqs(task?.subtask_faqs! || task?.faqs);
-		}else{}
-		// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-		// setFaqs(task?.subtask_faqs!);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [modalState, handleCloseClick]);
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -205,7 +173,34 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		},
 	});
+	useEffect(() => {
+		if (modalState === 'Add Sub Task') {
+			setDate(new Date());
+			formik.setFieldValue('name', '');
+			formik.setFieldValue('description', '');
+			formik.setFieldValue('dueDate', '');
+			formik.setFieldValue('category', '');
+			formik.setFieldValue('status', '');
+			formik.setFieldValue('expected_time', '');
+			setFaqs([]);
+		} else if (modalState === 'Edit Sub Task' && task) {
+			setFaqs([{ question: '', answer: '' }]);
+			formik.setFieldValue('name', task?.subtask?.title || task?.title);
+			formik.setFieldValue('description', task?.subtask?.description || task?.description);
+			formik.setFieldValue('sub_id', task?.subtask?.id || task?.id);
+			formik.setFieldValue(
+				'expected_time',
+				task?.subtask?.expected_time || task?.expected_time,
+			);
 
+			setFaqs(task?.subtask_faqs || task?.faqs);
+			if (task) {
+				const dueDateObject = new Date(task?.subtask?.due_date || task?.due_date);
+				setDate(dueDateObject);
+			}
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [modalState, handleCloseClick]);
 	const handleAddFAQ = () => {
 		if (faqs[faqs.length - 1]?.question !== '' && faqs[faqs.length - 1]?.answer !== '') {
 			setFaqs([...faqs, { question: '', answer: '' }]);
