@@ -361,7 +361,7 @@ const UserList = () => {
 			if (!values.phone_number) {
 				errors.phone_number = 'Required';
 			}
-			if (values.phone_number.length !== 10) {
+			if (values?.phone_number?.length !== 10) {
 				errors.phone_number = 'Must be 10 digit';
 			}
 
@@ -419,7 +419,7 @@ const UserList = () => {
 
 		// setAvatar(file);
 
-		if (file.type.includes('png') || file.type.includes('jpeg')) {
+		if (file && (file.type.includes('png') || file.type.includes('jpeg'))) {
 			setAvatar(file);
 			const imageURL = URL.createObjectURL(file);
 			setSrc(imageURL);
@@ -446,7 +446,7 @@ const UserList = () => {
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
 			<SubHeader>
-				<SubHeaderLeft />
+				<SubHeaderLeft ><div/></SubHeaderLeft>
 				<SubHeaderRight>
 					<Button color='info' icon='Add' isLight onClick={newUser}>
 						Add User

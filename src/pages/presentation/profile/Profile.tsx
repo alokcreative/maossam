@@ -206,7 +206,7 @@ const Profile = () => {
 	const handleImageChange = (event: any) => {
 		event.preventDefault();
 		const file = event.target.files[0];
-		if (file.type.includes('png') || file.type.includes('jpeg')) {
+		if (file && (file.type.includes('png') || file.type.includes('jpeg'))) {
 			setAvatar(file);
 			const imageURL = URL.createObjectURL(file);
 			setSrc(imageURL);
@@ -268,13 +268,13 @@ const Profile = () => {
 															// onBlur={formik.handleBlur}
 														/>
 													</div>
-													<div className='col-auto'>
+													{/* <div className='col-auto'>
 														<Button
 															color='dark'
 															isLight
 															icon='Delete'
 														/>
-													</div>
+													</div> */}
 													{/* <div className='col-12'>
 														<p className='lead text-muted'>
 															Avatar helps your teammates get to know
