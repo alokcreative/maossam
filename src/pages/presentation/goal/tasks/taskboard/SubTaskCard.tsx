@@ -74,6 +74,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 		setIsModalOpen(false);
 		navigate(`../${pagesMenu.subTasks.path}/${id}/add-sub-task`);
 	};
+
 	return (
 		<div className='row'>
 			<div className='col-12'>

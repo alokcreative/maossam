@@ -15,8 +15,8 @@ const showNotification = (
 		animationIn: ['animate__animated', 'animate__fadeIn'],
 		animationOut: ['animate__animated', 'animate__fadeOut'],
 		dismiss: {
-			duration: 5000,
-			pauseOnHover: true,
+			duration: 2000,
+			pauseOnHover: false,
 			onScreen: true,
 			showIcon: true,
 			waitForAnimation: true,

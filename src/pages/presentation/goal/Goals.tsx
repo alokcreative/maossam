@@ -125,6 +125,9 @@ const Goals: FC = () => {
 		setIsModalOpen(true);
 	};
 	useEffect(() => {
+		refetch();
+	});
+	useEffect(() => {
 		if (data) {
 			if (logUserId == '1') {
 				setGoalList(data);
@@ -503,8 +506,9 @@ const Goals: FC = () => {
 																		</th>
 																		<th>{i.title}</th>
 																		<td>{i.description}</td>
-																		{role != 'superadmin' && <td>{i.due_date}</td>}
-																		
+																		{role != 'superadmin' && (
+																			<td>{i.due_date}</td>
+																		)}
 
 																		<td className='h5'>
 																			<Badge
@@ -549,7 +553,8 @@ const Goals: FC = () => {
 																					logUserId,
 																				) ===
 																					i.created_by ||
-																					role =='superadmin' ? (
+																				role ==
+																					'superadmin' ? (
 																					<>
 																						<Button
 																							icon='Edit'
