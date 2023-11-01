@@ -108,6 +108,8 @@ const GoalDescription: FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [taskList, setTaskList] = useState(data && data.tasks);
 	const [date, setDate] = useState<Date>(new Date());
+	const role = localStorage?.getItem('role');
+
 
 	// const handleDelete = (id: number) => {
 	// 	const newGoals = goalList.filter((i) => i.id !== id);
@@ -335,16 +337,25 @@ const GoalDescription: FC = () => {
 															style={{ whiteSpace: 'nowrap' }}>
 															Status
 														</th>
-														<th
-															scope='col'
-															style={{ whiteSpace: 'nowrap' }}>
-															ExpectedTime
-														</th>
-														<th
-															scope='col'
-															style={{ whiteSpace: 'nowrap' }}>
-															Due Date
-														</th>
+														{role != 'superadmin' && (
+															<>
+																<th
+																	scope='col'
+																	style={{
+																		whiteSpace: 'nowrap',
+																	}}>
+																	ExpectedTime
+																</th>
+																<th
+																	scope='col'
+																	style={{
+																		whiteSpace: 'nowrap',
+																	}}>
+																	Due Date
+																</th>
+															</>
+														)}
+
 														<th
 															scope='col'
 															style={{ whiteSpace: 'nowrap' }}>
