@@ -54,9 +54,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 							</span>
 						)}
 					</td>
-					<td>
-						{task.subtask_count}
-					</td>
+					<td>{task.subtask_count}</td>
 					{role != 'superadmin' && (
 						<>
 							<td>
