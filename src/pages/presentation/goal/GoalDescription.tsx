@@ -335,6 +335,11 @@ const GoalDescription: FC = () => {
 														<th
 															scope='col'
 															style={{ whiteSpace: 'nowrap' }}>
+															No. of subtask
+														</th>
+														<th
+															scope='col'
+															style={{ whiteSpace: 'nowrap' }}>
 															Status
 														</th>
 														{role != 'superadmin' && (
