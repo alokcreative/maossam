@@ -38,9 +38,9 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 				<>
 					<th scope='row'>{id}</th>
 					<td>
-						<div>{subtask.title}</div>
+						<div className='line-clamp'>{subtask.title}</div>
 					</td>
-					<td>
+					<td className='parent col-6'>
 						{showMore
 							? (parse(subtask.description))
 							: parse(subtask.description.substring(0, 50))}

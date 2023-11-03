@@ -21,6 +21,7 @@ import steps, { styles } from '../steps';
 import AsideRoutes from '../layout/Aside/AsideRoutes';
 import { ToastCloseButton } from '../components/bootstrap/Toasts';
 import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
+import '../assets/css/index.css';
 
 const App = () => {
 	getOS();

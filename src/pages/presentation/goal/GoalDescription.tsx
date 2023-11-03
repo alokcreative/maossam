@@ -277,12 +277,12 @@ const GoalDescription: FC = () => {
 										<span className='display-7 fw-bold p-3'>Name :</span>
 										<span>{data.goal?.title}</span>
 									</div>
-									<div>
-										<span className='display-7 fw-bold p-3'>Description :</span>
-										<span className='ml-2'>
+									<div  className='display-7 fw-bold p-3'>
+										<span>Description :</span>
+										<span className='ml-5 parent'>
 											{showMore
 												? parse(data.goal?.description)
-												: parse(data.goal?.description.substring(0, 50))}
+												: parse(data.goal?.description.substring(0, 100))}
 											{data.goal?.description.length > 50 && (
 												<span
 													aria-hidden='true'

@@ -39,14 +39,14 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 				<>
 					<th scope='row'>{id}</th>
 					<td>
-						<div>
+						<div className='line-clamp'>
 							{task.title}
 							{/* <div className='text-muted'>
 						<small>{category}</small>
 					</div> */}
 						</div>
 					</td>
-					<td>
+					<td className='parent col-6'>
 						{showMore
 							? (parse(task.description))
 							: parse(task.description.substring(0, 50))}

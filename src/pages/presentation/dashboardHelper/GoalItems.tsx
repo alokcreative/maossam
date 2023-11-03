@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
 import { useEffectOnce } from 'react-use';
+import parse from 'html-react-parser';
 
 interface IItemProps {
 	id: number;
@@ -135,8 +136,8 @@ const Item: FC<IItemProps> = ({
 						<div className='col-auto'>
 							<p className='h6 fw-bold'>Description:</p>
 						</div>
-						<div className='col-12'>
-							{showMore ? `${attributes}` : `${attributes.substring(0, 100)}`}
+						<div className='col-12 parent'>
+							{showMore ? parse(attributes) : parse(attributes.substring(0, 100))}
 							{attributes.length > 30 && (
 								<span
 									aria-hidden='true'

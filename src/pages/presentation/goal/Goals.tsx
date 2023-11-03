@@ -487,13 +487,14 @@ const Goals: FC = () => {
 															</th>
 															<th
 																scope='col'
+																className='line-clamp'
 																style={{
 																	whiteSpace: 'nowrap',
 																}}>
 																Name
 															</th>
 															<th
-																scope='col'
+																scope='col-6'
 																style={{
 																	whiteSpace: 'nowrap',
 																}}>

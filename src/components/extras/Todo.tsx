@@ -231,14 +231,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 			<>
 				<div>
 					{/* eslint-disable-next-line react/jsx-props-no-spreading */}
-					<div ref={ref} className={classNames('todo-item')} {...props}>
-						<div className='todo-bar'>
-							<div
-								className={classNames('h-100 w-100', 'rounded', {
-									[`bg-${itemData?.badge?.color}`]: itemData?.badge,
-								})}
-							/>
-						</div>
+					<div ref={ref} className='richcontent'>
 						<div className='todo-check'>
 							<Checks
 								checked={list[index].status}
@@ -260,7 +253,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 								{itemData.title}
 							</div>
 							{itemData.description && (
-								<div className='todo-subtitle text-muted small'>
+								<div className='todo-subtitle text-muted small parent'>
 									{parse(itemData.description)}
 								</div>
 							)}
