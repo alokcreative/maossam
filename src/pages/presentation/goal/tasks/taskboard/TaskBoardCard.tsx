@@ -51,6 +51,7 @@ import {
 import ConfirmationModal from '../../../../documentation/components/ConfirmationModal';
 import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 import { useParams } from 'react-router-dom';
+import parse from 'html-react-parser'
 
 interface IColumnCard {
 	columnKey: string;
@@ -212,7 +213,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				)} */}
 				{/* {card.description} */}
 				<p className='mb-1'>{card.expectedTime}</p>
-				<p>{showMore ? `${card.description}` : `${card.description.substring(0, 100)}`}</p>
+				<p>{showMore ? parse(card.description) : parse(card.description.substring(0, 100))}</p>
 				<Button className='p-0' onClick={() => setShowMore(!showMore)}>
 					{showMore ? 'Show less' : 'Show more'}
 				</Button>

@@ -32,6 +32,7 @@ import {
 	useGetMiniTasksBySubIdQuery,
 	useUpdateMinitaskMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
+import ReactQuill from 'react-quill';
 
 interface IPropsValue {
 	subTaskId: number;
@@ -158,15 +159,11 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 	const validate = (values: { minitaskTitle?: string; description?: string }) => {
 		const errors: {
 			minitaskTitle?: string;
-			description?: string;
 		} = {};
 		if (!values.minitaskTitle) {
 			errors.minitaskTitle = 'Required';
 		} else if (values.minitaskTitle.length > 40) {
 			errors.minitaskTitle = 'Must be 40 characters or less';
-		}
-		if (!values.description) {
-			errors.description = 'Required';
 		}
 		return errors;
 	};
@@ -202,6 +199,9 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 			});
 		},
 	});
+	const handledescription=(value: any)=>{
+		formik.setFieldValue('description',value)
+	}
 
 	return (
 		<Card stretch>
@@ -268,7 +268,14 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 								</div>
 								<div className='col-12 pt-3'>
 									<FormGroup id='description' label='Description'>
-										<Input
+										<ReactQuill
+											theme='snow'
+											value={formik.values.description}
+											onChange={(value) => {
+												handledescription(value);
+											}}
+										/>
+										{/* <Input
 											onChange={formik.handleChange}
 											onBlur={formik.handleBlur}
 											isValid={formik.isValid}
@@ -276,7 +283,7 @@ const MiniTasks: FC<IPropsValue> = ({ subTaskId, modalStatus, setModalStatus }) 
 											invalidFeedback={formik.errors.description}
 											validFeedback='Looks good!'
 											value={formik.values.description}
-										/>
+										/> */}
 									</FormGroup>
 								</div>
 								<div className='col-12 d-flex justify-content-center mt-3'>

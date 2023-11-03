@@ -3,8 +3,8 @@ import Badge from '../../../../components/bootstrap/Badge';
 import Button from '../../../../components/bootstrap/Button';
 import Modal, { ModalBody, ModalHeader } from '../../../../components/bootstrap/Modal';
 import SubTaskCard from './taskboard/SubTaskCard';
-import { pagesMenu } from '../../../../menu';
-import { useLocation, useNavigate } from 'react-router-dom';
+import parse from 'html-react-parser';
+import { useLocation } from 'react-router-dom';
 
 interface ITaskValue {
 	id: number;
@@ -47,7 +47,9 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 						</div>
 					</td>
 					<td>
-						{showMore ? `${task.description}` : `${task.description.substring(0, 50)}`}
+						{showMore
+							? (parse(task.description))
+							: parse(task.description.substring(0, 50))}
 						{task.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 								...
@@ -55,7 +57,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 						)}
 					</td>
 					<td>{task.subtask_count}</td>
-					{role != 'superadmin' && (
+					{role !== 'superadmin' && (
 						<>
 							<td>
 								<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>

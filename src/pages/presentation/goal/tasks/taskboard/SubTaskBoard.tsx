@@ -46,7 +46,7 @@ interface ISubtask {
 	task: string;
 	title: string;
 	updated_at: string;
-	user_assigned: string;
+	user_assigned?: string;
 }
 interface ICardsInColumn {
 	[key: string]: ISubtask[];

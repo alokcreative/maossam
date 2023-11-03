@@ -15,7 +15,6 @@ import Card, {
 	CardTitle,
 } from '../../../components/bootstrap/Card';
 import Page from '../../../layout/Page/Page';
-import Select from '../../../components/bootstrap/forms/Select';
 // eslint-disable-next-line import/no-named-as-default
 import PaginationButtons, {
 	dataPagination,
@@ -41,6 +40,8 @@ import { format } from 'date-fns';
 import Icon from '../../../components/icon/Icon';
 import showNotification from '../../../components/extras/showNotification';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
+import ReactQuill from 'react-quill';
+import parse from 'html-react-parser'
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -60,28 +61,6 @@ interface ITask {
 	expectedTime?: string;
 }
 
-interface IGoalValues {
-	id?: number;
-	name?: string;
-	description?: string;
-	timeline?: string;
-	status?: string;
-	task?: ITask[];
-}
-
-interface ITaskProps {
-	id: number;
-	dueDate: string;
-	name: string;
-	description: string;
-	category: string;
-	expected_time: string;
-	status: string;
-	assigned?: string | undefined;
-	edit: string;
-	goalId: number;
-}
-
 const GoalDescription: FC = () => {
 	const { id } = useParams();
 
@@ -90,7 +69,6 @@ const GoalDescription: FC = () => {
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const navigate = useNavigate();
 	const [modalState, setModalState] = useState('Add Task');
-	const [currTask, setCurrTask] = useState<ITask>();
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deleteId, setDeleteId] = useState<number>();
 	const { data, isLoading, isSuccess, refetch } = useGetTaskByGoalIdQuery(
@@ -105,22 +83,10 @@ const GoalDescription: FC = () => {
 	const [updateTask] = useUpdateTaskMutation({
 		fixedCacheKey: 'updateTask',
 	});
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [taskList, setTaskList] = useState(data && data.tasks);
 	const [date, setDate] = useState<Date>(new Date());
 	const role = localStorage?.getItem('role');
 
-
-	// const handleDelete = (id: number) => {
-	// 	const newGoals = goalList.filter((i) => i.id !== id);
-	// 	setGoalList(newGoals);
-	// };
-	// const handleEdit = (id: number) => {
-	// 	setIsOpen(true);
-	// };
-	// const handleView = (id: number) => {
-	// 	console.log('id', id);
-	// };
 	useEffect(() => {
 		refetch();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,56 +107,101 @@ const GoalDescription: FC = () => {
 		},
 		enableReinitialize: true,
 		onSubmit: (values, { resetForm }) => {
+			console.log('values', values);
+			console.log('modalState', modalState);
+			console.log('role', role);
 			if (modalState === 'Add Task') {
-				const parts = values.expectedTime.split(':');
-				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
-				createTask({
-					title: values.name,
-					description: values.description,
-					goal_id: String(id),
-					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: timeWithoutSeconds,
-					// status: values.status,
-				})
-					.unwrap()
-					.then((res) => {
-						refetch();
-						formiknewTask.resetForm();
-						setDate(new Date());
+				
+				if (role === 'superadmin') {
+					createTask({
+						title: values.name,
+						description: values.description,
+						goal_id: String(id),
+						// status: values.status,
 					})
-					.catch(() => {});
+						.unwrap()
+						.then((res) => {
+							refetch();
+							formiknewTask.resetForm();
+							setDate(new Date());
+						})
+						.catch(() => {});
+				} else {
+					const parts = values.expectedTime.split(':');
+					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+					createTask({
+						title: values.name,
+						description: values.description,
+						goal_id: String(id),
+						due_date: format(date, 'MM/dd/yyyy'),
+						expected_time: timeWithoutSeconds,
+						// status: values.status,
+					})
+						.unwrap()
+						.then((res) => {
+							refetch();
+							formiknewTask.resetForm();
+							setDate(new Date());
+						})
+						.catch(() => {});
+				}
 			}
 			if (modalState === 'Edit Task') {
-				const parts = values.expectedTime.split(':');
-				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
-				const taskData = {
-					title: values.name,
-					description: values.description,
-					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: timeWithoutSeconds,
-					// status: values.status,
-				};
-				updateTask({
-					taskData,
-					task_id: values.id,
-				})
-					.unwrap()
-					.then((res) => {
-						// console.log('response>>', res);
-						refetch();
-						formiknewTask.resetForm();
-						setDate(new Date());
+				if (role === 'superadmin') {
+					const taskData = {
+						title: values.name,
+						description: values.description,
+						// status: values.status,
+					};
+					updateTask({
+						taskData,
+						task_id: values.id,
 					})
-					.catch((res) => {
-						// console.log('error', res);
-					});
+						.unwrap()
+						.then((res) => {
+							// console.log('response>>', res);
+							refetch();
+							formiknewTask.resetForm();
+							setDate(new Date());
+						})
+						.catch((res) => {
+							// console.log('error', res);
+						});
+				} else {
+					const parts = values.expectedTime.split(':');
+					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+					const taskData = {
+						title: values.name,
+						description: values.description,
+						due_date: format(date, 'MM/dd/yyyy'),
+						expected_time: timeWithoutSeconds,
+						// status: values.status,
+					};
+					updateTask({
+						taskData,
+						task_id: values.id,
+					})
+						.unwrap()
+						.then((res) => {
+							// console.log('response>>', res);
+							refetch();
+							formiknewTask.resetForm();
+							setDate(new Date());
+						})
+						.catch((res) => {
+							// console.log('error', res);
+						});
+				}
 			}
 
 			// setTaskList([...taskList, newTask]);
-			setIsOpen(false);
-			resetForm();
+				setIsOpen(false);
+				resetForm();
 		},
 	});
+	const handledescription = (value: any) => {
+		formiknewTask.setFieldValue('description', value);
+	};
 
 	const handleDeleteAction = () => {
 		const taskId = deleteId;
@@ -222,7 +233,6 @@ const GoalDescription: FC = () => {
 		}
 	};
 	const handleEdit = (taskId: number) => {
-		setCurrTask(undefined);
 		setModalState(`Edit Task`);
 		const task = taskList.filter((i: ITask) => Number(i.id) === taskId);
 		formiknewTask.setFieldValue('name', task[0]?.title);
@@ -235,11 +245,7 @@ const GoalDescription: FC = () => {
 		setIsOpen(true);
 	};
 
-	const handleView = (taskId: number) => {
-		setIsModalOpen(true);
-	};
 	const handleAddTask = () => {
-		setCurrTask(undefined);
 		formiknewTask.setFieldValue('name', '');
 		formiknewTask.setFieldValue('description', '');
 		formiknewTask.setFieldValue('dueDate', '');
@@ -273,10 +279,10 @@ const GoalDescription: FC = () => {
 									</div>
 									<div>
 										<span className='display-7 fw-bold p-3'>Description :</span>
-										<span>
+										<span className='ml-2'>
 											{showMore
-												? `${data.goal?.description}`
-												: `${data.goal?.description.substring(0, 50)}`}
+												? parse(data.goal?.description)
+												: parse(data.goal?.description.substring(0, 50))}
 											{data.goal?.description.length > 50 && (
 												<span
 													aria-hidden='true'
@@ -293,7 +299,7 @@ const GoalDescription: FC = () => {
 									<div className='row col-12 d-flex'>
 										<CardLabel icon='Task' iconColor='success'>
 											<CardTitle tag='div' className='h5'>
-												List Of Tasks
+											Tasks List
 											</CardTitle>
 										</CardLabel>
 										<div>
@@ -342,7 +348,7 @@ const GoalDescription: FC = () => {
 															style={{ whiteSpace: 'nowrap' }}>
 															Status
 														</th>
-														{role != 'superadmin' && (
+														{role !== 'superadmin' && (
 															<>
 																<th
 																	scope='col'
@@ -369,7 +375,7 @@ const GoalDescription: FC = () => {
 													</tr>
 												</thead>
 												<tbody>
-													{taskList ? (
+													{taskList && taskList?.length !== 0 ? (
 														dataPagination(
 															taskList,
 															currentPage,
@@ -389,7 +395,7 @@ const GoalDescription: FC = () => {
 															/>
 														))
 													) : (
-														<div>No data</div>
+														<div>No task yet.</div>
 													)}
 												</tbody>
 											</table>
@@ -398,7 +404,7 @@ const GoalDescription: FC = () => {
 								</CardBody>
 								<CardFooter>
 									<PaginationButtons
-										data={data}
+										data={taskList}
 										label='items'
 										setCurrentPage={setCurrentPage}
 										currentPage={currentPage}
@@ -422,7 +428,7 @@ const GoalDescription: FC = () => {
 					<ModalBody>
 						<div className='row g-4'>
 							<div className='col-12 border-bottom' />
-							<div className='col-lg-6'>
+							<div className={role !== 'superadmin' ? 'col-lg-6' : 'col-lg-12'}>
 								<FormGroup id='name' label='Name'>
 									<Input
 										type='text'
@@ -431,33 +437,46 @@ const GoalDescription: FC = () => {
 									/>
 								</FormGroup>
 								<FormGroup id='description' label='Description' className='mt-3'>
-									<Input
+									<ReactQuill
+										theme='snow'
+										value={formiknewTask.values.description}
+										onChange={(value) => handledescription(value)}
+									/>
+									{/* <Input
 										type='text'
 										onChange={formiknewTask.handleChange}
 										value={formiknewTask.values.description}
-									/>
+									/> */}
 								</FormGroup>
-								<FormGroup id='expectedTime' label='Expected Time' className='mt-3'>
-									<Input
-										type='time'
-										onChange={formiknewTask.handleChange}
-										value={formiknewTask.values.expectedTime}
-									/>
-								</FormGroup>
-							</div>
-							<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
-								<div className='col-6'>
-									<div className='text-center mt-n4'>
-										<DatePicker
-											onChange={(item) => setDate(item)}
-											date={date}
-											minDate={new Date()}
-											color={process.env.REACT_APP_PRIMARY_COLOR}
-											shownDate={date}
+								{role !== 'superadmin' && (
+									<FormGroup
+										id='expectedTime'
+										label='Expected Time'
+										className='mt-3'>
+										<Input
+											type='time'
+											onChange={formiknewTask.handleChange}
+											value={formiknewTask.values.expectedTime}
 										/>
+									</FormGroup>
+								)}
+							</div>
+							{role !== 'superadmin' && (
+								<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
+									<div className='col-6'>
+										<div className='text-center mt-n4'>
+											<DatePicker
+												onChange={(item) => setDate(item)}
+												date={date}
+												minDate={new Date()}
+												color={process.env.REACT_APP_PRIMARY_COLOR}
+												shownDate={date}
+											/>
+										</div>
 									</div>
-								</div>
-							</FormGroup>
+								</FormGroup>
+							)}
+
 							{/* <FormGroup id='category' label='Enter Category'>
 									<Input
 										type='text'

@@ -18,6 +18,7 @@ import {
 	useCreateSubTaskMutation,
 	useGetSubTaskByTaskIdQuery,
 	useUpdateSubTaskMutation,
+	useUpdateSubTaskStatusMutation,
 } from '../../../../../features/auth/taskManagementApiSlice';
 
 import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
@@ -25,6 +26,9 @@ import { useEffectOnce } from 'react-use';
 import showNotification from '../../../../../components/extras/showNotification';
 import Icon from '../../../../../components/icon/Icon';
 
+type ApiResponse = {
+	detail: string[];
+  };
 interface ICardsInColumn {
 	[key: string]: ISubtask[];
 }
@@ -93,12 +97,18 @@ const TaskManagement = () => {
 	};
 
 	useEffect(() => {
-		if (data) setCardsData(data.subtasks);
+		if (data) {
+			const assignedSubtask = data?.subtasks.filter(
+				(item: any) => item.user_assigned !== null,
+			);
+			setCardsData(assignedSubtask);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id, data]);
 
 	const [taskStatusToColumnMapping, setTaskStatusToColumnMapping] = useState<ICardsInColumn>();
 	const [updateSubTask] = useUpdateSubTaskMutation({});
+	const [updateSubTaskStatus] = useUpdateSubTaskStatusMutation({});
 
 	useEffect(() => {
 		if (data) {
@@ -161,19 +171,21 @@ const TaskManagement = () => {
 			const taskData = {
 				status: columnsData[destination.droppableId].title,
 			};
-			updateSubTask({ subtaskId: String(taskToMove?.id), taskData })
+			updateSubTaskStatus({ subtaskId: String(taskToMove?.id), taskData })
 				.unwrap()
-				.then((res) => {
+				.then((res: ApiResponse) => {
+					console.log("res",res);
 					showNotification(
 						<span className='d-flex align-items-center'>
 							<Icon icon='Info' size='lg' className='me-1' />
-							<span>Task moved to {res.status}</span>
+							<span>{res.detail[0]}</span>
 						</span>,
 						``,
 					);
 					refetch();
 				})
-				.catch((res) => {
+				.catch((res: ApiResponse) => {
+					console.log("rescat",res);
 					showNotification(
 						<span className='d-flex align-items-center'>
 							<Icon icon='Info' size='lg' className='me-1' />

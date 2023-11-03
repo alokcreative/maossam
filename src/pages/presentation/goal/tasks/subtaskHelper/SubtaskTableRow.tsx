@@ -7,6 +7,7 @@ import Modal, {
 	ModalTitle,
 } from '../../../../../components/bootstrap/Modal';
 import MiniTasks from '../taskboard/MiniTasks';
+import parse from 'html-react-parser';
 
 interface ISubtask {
 	created_at: string;
@@ -16,7 +17,7 @@ interface ISubtask {
 	task: string;
 	title: string;
 	updated_at: string;
-	user_assigned: string;
+	user_assigned?: string;
 	minitask_count: string;
 }
 interface ITableRowProps {
@@ -29,6 +30,8 @@ interface ITableRowProps {
 const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }) => {
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [modalStatus, setModalStatus] = useState(false);
+	const [showMore, setShowMore] = useState<boolean>(false);
+
 	return (
 		<tr>
 			{subtask && (
@@ -37,7 +40,16 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 					<td>
 						<div>{subtask.title}</div>
 					</td>
-					<td>{subtask.description}</td>
+					<td>
+						{showMore
+							? (parse(subtask.description))
+							: parse(subtask.description.substring(0, 50))}
+						{subtask.description.length > 50 && (
+							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
+								...
+							</span>
+						)}
+					</td>
 					<td>{subtask.minitask_count}</td>
 					<td>
 						<div className='d-flex flex-nowrap'>

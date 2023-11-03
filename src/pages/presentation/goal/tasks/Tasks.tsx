@@ -45,6 +45,7 @@ import { format } from 'date-fns';
 import showNotification from '../../../../components/extras/showNotification';
 import Icon from '../../../../components/icon/Icon';
 import ConfirmationModal from '../../../documentation/components/ConfirmationModal';
+import ReactQuill from 'react-quill';
 
 interface IGoalValueData {
 	category: string;
@@ -110,7 +111,7 @@ const Tasks: FC = () => {
 		}
 	});
 	useEffect(() => {
-		if (role =='superadmin') {
+		if (role == 'superadmin') {
 			setTaskList(data);
 		} else {
 			const tempdata = data?.filter(
@@ -153,43 +154,77 @@ const Tasks: FC = () => {
 		enableReinitialize: true,
 		onSubmit: (values) => {
 			if (modalState === 'Add Task') {
-				createTask({
-					title: values.name,
-					description: values.description,
-					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: values.expectedTime,
-					// status: values.status,
-					goal_id: String(goalId || values.goalId),
-				})
-					.unwrap()
-					.then(() => {
-						refetch();
+				if (role == 'superadmin') {
+					createTask({
+						title: values.name,
+						description: values.description,
+						// status: values.status,
+						goal_id: String(goalId || values.goalId),
 					})
-					.catch(() => {
-						// console.log('error');
-					});
+						.unwrap()
+						.then(() => {
+							refetch();
+						})
+						.catch(() => {
+							// console.log('error');
+						});
+				} else {
+					createTask({
+						title: values.name,
+						description: values.description,
+						due_date: format(date, 'MM/dd/yyyy'),
+						expected_time: values.expectedTime,
+						// status: values.status,
+						goal_id: String(goalId || values.goalId),
+					})
+						.unwrap()
+						.then(() => {
+							refetch();
+						})
+						.catch(() => {
+							// console.log('error');
+						});
+				}
 			}
 			if (modalState === 'Edit Task') {
-				const parts = values.expectedTime.split(':');
-				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
-				const taskData = {
-					title: values.name,
-					description: values.description,
-					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: timeWithoutSeconds,
-					// status: values.status,
-				};
-				updateTask({
-					taskData,
-					task_id: values.taskId,
-				})
-					.unwrap()
-					.then(() => {
-						refetch();
+				if (role == 'superadmin') {
+					const taskData = {
+						title: values.name,
+						description: values.description,
+					};
+					updateTask({
+						taskData,
+						task_id: values.taskId,
 					})
-					.catch(() => {
-						// console.log('error', res);
-					});
+						.unwrap()
+						.then(() => {
+							refetch();
+						})
+						.catch(() => {
+							// console.log('error', res);
+						});
+				} else {
+					const parts = values.expectedTime.split(':');
+					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+					const taskData = {
+						title: values.name,
+						description: values.description,
+						due_date: format(date, 'MM/dd/yyyy'),
+						expected_time: timeWithoutSeconds,
+						// status: values.status,
+					};
+					updateTask({
+						taskData,
+						task_id: values.taskId,
+					})
+						.unwrap()
+						.then(() => {
+							refetch();
+						})
+						.catch(() => {
+							// console.log('error', res);
+						});
+				}
 			}
 			// setTaskList([...taskList, newTask]);
 			setIsOpen(false);
@@ -256,6 +291,10 @@ const Tasks: FC = () => {
 		setIsOpen(false);
 		navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
+	const handledescription = (value: any) => {
+		formiknewTask.setFieldValue('description', value);
+	};
+
 	return (
 		<PageWrapper title={dashboardPagesMenu.tasks.text}>
 			<SubHeader>
@@ -375,7 +414,7 @@ const Tasks: FC = () => {
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
-						<div className='col-lg-6'>
+						<div className={role != 'superadmin' ? 'col-lg-6' : 'col-lg-12'}>
 							{modalState !== 'Edit Task' &&
 								(newTask ? (
 									<div className='h4 fw-bold py-3'>Goal : {goalName} </div>
@@ -400,32 +439,42 @@ const Tasks: FC = () => {
 								/>
 							</FormGroup>
 							<FormGroup id='description' label='Description' className='mt-3'>
-								<Input
+								<ReactQuill
+									theme='snow'
+									value={formiknewTask.values.description}
+									onChange={(value) => handledescription(value)}
+								/>
+
+								{/* <Input
 									type='text'
 									onChange={formiknewTask.handleChange}
 									value={formiknewTask.values.description}
-								/>
+								/> */}
 							</FormGroup>
-							<FormGroup id='expectedTime' label='Expected Time' className='mt-3'>
-								<Input
-									type='time'
-									onChange={formiknewTask.handleChange}
-									value={formiknewTask.values.expectedTime}
-								/>
-							</FormGroup>
-						</div>
-						<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
-							<div>
-								<div className='text-center mt-n4'>
-									<DatePicker
-										onChange={(item) => setDate(item)}
-										date={date}
-										minDate={new Date()}
-										color={process.env.REACT_APP_PRIMARY_COLOR}
+							{role != 'superadmin' && (
+								<FormGroup id='expectedTime' label='Expected Time' className='mt-3'>
+									<Input
+										type='time'
+										onChange={formiknewTask.handleChange}
+										value={formiknewTask.values.expectedTime}
 									/>
+								</FormGroup>
+							)}
+						</div>
+						{role != 'superadmin' && (
+							<FormGroup id='dueDate' label='Due Date' className='col-lg-6'>
+								<div>
+									<div className='text-center mt-n4'>
+										<DatePicker
+											onChange={(item) => setDate(item)}
+											date={date}
+											minDate={new Date()}
+											color={process.env.REACT_APP_PRIMARY_COLOR}
+										/>
+									</div>
 								</div>
-							</div>
-						</FormGroup>
+							</FormGroup>
+						)}
 					</div>
 				</ModalBody>
 				<ModalFooter>

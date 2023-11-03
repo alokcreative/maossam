@@ -14,12 +14,18 @@ import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
 } from '../../../../../components/PaginationButtons';
-import { useGetSubTaskByTaskIdQuery } from '../../../../../features/auth/taskManagementApiSlice';
+import {
+	useAsignSubtaskMutation,
+	useGetSubTaskByTaskIdQuery,
+} from '../../../../../features/auth/taskManagementApiSlice';
 import { pagesMenu } from '../../../../../menu';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import SubTaskQuestion from './SubTaskQuestion';
 import { useEffectOnce } from 'react-use';
+import showNotification from '../../../../../components/extras/showNotification';
+import Icon from '../../../../../components/icon/Icon';
+import parse from 'html-react-parser';
 
 interface IValueProps {
 	subTaskId: number;
@@ -32,6 +38,7 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 		Number(id!),
 	);
 	const [currentPageSubtask, setCurrentPageSubtask] = useState(1);
+	const [asignSubtask] = useAsignSubtaskMutation();
 	const [perPageSubtask, setPerPageSubtask] = useState(PER_COUNT['1']);
 	const navigate = useNavigate();
 	const role = localStorage.getItem('role');
@@ -43,29 +50,62 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
-			secheduledate: '',
+			subtask_id: '',
+			scheduled_on: '',
 		},
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: (values, { resetForm }) => {
 			resetForm({
 				values: {
-					secheduledate: '',
+					scheduled_on: '',
+					subtask_id: '',
 				},
 			});
 		},
 	});
-	useEffect(() => {
-		formik.resetForm();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentPageSubtask]);
+	// useEffect(() => {
+	// 	formik.resetForm();
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [currentPageSubtask]);
 	useEffect(() => {
 		setErrMsg('');
-	}, [formik.values.secheduledate]);
-	const handleSubmit = (taskId: number) => {
-		if (formik.values.secheduledate === '') {
+	}, [formik.values.scheduled_on]);
+	const handleSubmit = (taskId: number, subtaskId: string) => {
+		formik.setFieldValue('subtask_id', subtaskId);
+		if (formik.values.scheduled_on === '') {
 			setErrMsg('Please select date to start the task');
 			return;
 		}
+		formik.handleSubmit();
+		const date = new Date(formik.values.scheduled_on);
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		const year = date.getFullYear();
+		const formattedDate = `${month}/${day}/${year}`;
+		const payload = {
+			subtask_id: subtaskId,
+			scheduled_on: formattedDate,
+		};
+		asignSubtask(payload)
+			.unwrap()
+			.then(() => {
+				showNotification(
+					<span className='d-flex align-items-center'>
+						<Icon icon='Info' size='lg' className='me-1' />
+						<span>Subtask assigned</span>
+					</span>,
+					``,
+				);
+			})
+			.catch(() => {
+				showNotification(
+					<span className='d-flex align-items-center'>
+						<Icon icon='Info' size='lg' className='me-1' />
+						<span>Something went wrong</span>
+					</span>,
+					``,
+				);
+			});
 		setIsModalOpen(false);
 		if (role !== 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		if (role === 'superadmin') navigate(`../${pagesMenu.subTasks.path}/${id}`);
@@ -145,8 +185,18 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																style={{
 																	paddingLeft: '1px',
 																}}>
-																{item.description}
+																{parse(item.description)}
 															</span>
+														</div>
+														<div>
+															{item.user_assigned.includes(Number(logUserId)) === true && (
+																<span
+																	style={{
+																		paddingLeft: '1px',
+																	}}>
+																	Already assigned
+																</span>
+															)}
 														</div>
 														<div className='row'>
 															<div className='col-8' />
@@ -162,31 +212,45 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																		}>
 																		View All
 																	</Button>
+																) : item.user_assigned.includes(Number(logUserId)) === true ? (
+																	<Button
+																		color='primary'
+																		className='mb-3 d-flex justify-content-end'
+																		onClick={() =>
+																			navigate(
+																				`../${pagesMenu.subTasks.path}/${id}/`,
+																			)
+																		}>
+																		View
+																	</Button>
 																) : (
 																	<div className='d-flex justify-content-between mt-3'>
 																		<Button
 																			color='primary'
 																			className='mb-3'
-																			onClick={() =>
-																				handleSubmit(id)
-																			}>
+																			onClick={() => {
+																				handleSubmit(
+																					id,
+																					item.id,
+																				);
+																			}}>
 																			START NOW
 																		</Button>
 																		<FormGroup>
 																			<Input
-																				id='secheduledate'
+																				id='scheduled_on'
 																				onChange={
 																					formik.handleChange
 																				}
 																				value={
 																					formik.values
-																						.secheduledate
+																						.scheduled_on
 																				}
 																				type='date'
-																				autoComplete='secheduledate'
+																				autoComplete='scheduled_on'
 																				isTouched={
 																					formik.touched
-																						.secheduledate
+																						.scheduled_on
 																				}
 																				isValid={
 																					formik.isValid

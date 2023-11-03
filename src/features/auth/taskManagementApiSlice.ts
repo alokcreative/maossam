@@ -5,8 +5,8 @@ interface ICreateTaskProps {
 	goal_id: string;
 	description: string;
 	title: string;
-	due_date: string;
-	expected_time: string;
+	due_date?: string;
+	expected_time?: string;
 	// status: string;
 }
 interface IUpdateTaskProps {
@@ -16,10 +16,10 @@ interface IUpdateTaskProps {
 interface IGoal {
 	title: string;
 	description: string;
-	due_date: string;
-	expected_time: string;
+	due_date?: string;
+	expected_time?: string;
 	// status: string;
-	category: string;
+	category?: string;
 }
 
 // interface Goal {
@@ -32,20 +32,24 @@ interface IGoalPayload {
 }
 interface FAQ {
 	// id: string;
-	
+
 	question: string;
 	answer: string;
 }
-interface IUpdateFAQ{
-	index?: number,
-	faq:FAQ,
+interface IUpdateFAQ {
+	index?: number;
+	faq: FAQ;
+}
+interface ISubtaskAssignProps {
+	subtask_id?: string;
+	scheduled_on: string;
 }
 interface ISubtaskPayload {
 	task_id: string;
 	title: string;
 	description: string;
-	due_date: string;
-	expected_time: string;
+	due_date?: string;
+	expected_time?: string;
 	faq_data?: FAQ[];
 }
 interface IUpdateSubaskPayload {
@@ -56,6 +60,12 @@ interface IUpdateSubaskPayload {
 		status?: string;
 		due_date?: string;
 		expected_time?: string;
+	};
+	subtaskId?: string;
+}
+interface IUpdateSubaskStatusPayload {
+	taskData: {
+		status?: string;
 	};
 	subtaskId?: string;
 }
@@ -229,6 +239,19 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: [`Goal`],
 		}),
+		// Update sub task
+		updateSubTaskStatus: builder.mutation({
+			query: (payload: IUpdateSubaskStatusPayload) => ({
+				url: `${apiEndpoints.updateSubTaskStatus}${payload.subtaskId}/`,
+				method: 'POST',
+				body: payload.taskData,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+			invalidatesTags: [`Goal`],
+		}),
 		// Get task by goal id
 		getTaskByGoalId: builder.query({
 			query: (id?: number) => ({
@@ -345,6 +368,17 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		asignSubtask: builder.mutation({
+			query: (payload: ISubtaskAssignProps) => ({
+				url: apiEndpoints.assignSubtask,
+				method: 'POST',
+				body: payload,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 	}),
 });
 
@@ -363,6 +397,7 @@ export const {
 	useCreateSubTaskwithFAQMutation,
 	useCreateSubTaskMutation,
 	useUpdateSubTaskMutation,
+	useUpdateSubTaskStatusMutation,
 	useDeleteSubTaskMutation,
 	useCreateMinitaskMutation,
 	useUpdateMinitaskMutation,
@@ -371,4 +406,5 @@ export const {
 	useGetSubTaskMutation,
 	useDeleteFAQMutation,
 	useUpdateFAQMutation,
+	useAsignSubtaskMutation,
 } = taskManagementApiSlice;

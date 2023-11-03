@@ -8,9 +8,6 @@ import Button from '../bootstrap/Button';
 import Dropdown, { DropdownItem, DropdownMenu, DropdownToggle } from '../bootstrap/Dropdown';
 import useDarkMode from '../../hooks/useDarkMode';
 import { TColor } from '../../type/color-type';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { Role } from '../../common/data/userDummyData';
 import {
 	useDeleteMinitaskMutation,
 	useUpdateMinitaskMutation,
@@ -22,6 +19,8 @@ import { useFormik } from 'formik';
 import showNotification from './showNotification';
 import Icon from '../icon/Icon';
 import ConfirmationModal from '../../pages/documentation/components/ConfirmationModal';
+import ReactQuill from 'react-quill';
+import parse from 'html-react-parser';
 
 /**
  * Prop Types
@@ -215,8 +214,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						);
 						refetch();
 					})
-					.catch((res) => {
-					});
+					.catch((res) => {});
 				setModalStatus(false);
 				resetForm({
 					values: {
@@ -226,6 +224,9 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 				});
 			},
 		});
+		const handledescription = (value: string) => {
+			formik.setFieldValue('description', value);
+		};
 		return (
 			<>
 				{/* eslint-disable-next-line react/jsx-props-no-spreading */}
@@ -259,7 +260,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						</div>
 						{itemData.description && (
 							<div className='todo-subtitle text-muted small'>
-								{itemData.description}
+								{parse(itemData.description)}
 							</div>
 						)}
 					</div>
@@ -336,7 +337,12 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 						</div>
 						<div className='col-12'>
 							<FormGroup id='description' label='Title'>
-								<Input
+								<ReactQuill
+									theme='snow'
+									value={formik.values.description}
+									onChange={(value) => handledescription(value)}
+								/>
+								{/* <Input
 									onChange={formik.handleChange}
 									onBlur={formik.handleBlur}
 									isValid={formik.isValid}
@@ -344,7 +350,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 									invalidFeedback={formik.errors.description}
 									validFeedback='Looks good!'
 									value={formik.values.description}
-								/>
+								/> */}
 							</FormGroup>
 						</div>
 						<div className='col' />

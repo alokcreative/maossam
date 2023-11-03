@@ -15,6 +15,7 @@ import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
 import { IUserData } from '../../../_layout/_asides/DefaultAside';
 import { useGetTaskByGoalIdQuery } from '../../../../features/auth/taskManagementApiSlice';
 import SubTask from '../tasks/taskboard/SubTaskCard';
+import parse from 'html-react-parser';
 
 type IAssetNameProps = {
 	id: number | undefined;
@@ -171,7 +172,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 														overflow: 'scroll',
 														msOverflowStyle: 'none',
 													}}>
-													{i.description}
+													{parse(i.description)}
 												</p>
 												<SubTask
 													setIsModalOpen={setIsModalOpen}

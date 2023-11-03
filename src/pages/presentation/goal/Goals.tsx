@@ -54,6 +54,8 @@ import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown
 import { dashboardPagesMenu } from '../../../menu';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
 import { useDashboard } from '../../../contexts/dashboardContext';
+import ReactQuill from 'react-quill';
+import GoalTableRows from './goalHelpher/GoalTableRows';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -90,7 +92,7 @@ interface IGoalProps {
 	description: string;
 	due_date?: string;
 	expected_time?: string;
-	// status?: string;
+	status?: string;
 	category?: string;
 	created_at?: string;
 	created_by?: string;
@@ -195,17 +197,28 @@ const Goals: FC = () => {
 			goalData.append('category', values.category);
 
 			if (Object.keys(formikNewGoal.errors).length === 0) {
-				createGoal({
-					title: values.name,
-					description: values.description,
-					category: values.category,
-					due_date: format(date, 'MM/dd/yyyy'),
-					expected_time: values.expected_time,
-					// status: values.status,
-				}).then((res) => {
-					setIsOpen(false);
-					refetch();
-				});
+				if (role == 'superadmin') {
+					createGoal({
+						title: values.name,
+						description: values.description,
+						category: values.category,
+					}).then((res) => {
+						setIsOpen(false);
+						refetch();
+					});
+				} else {
+					createGoal({
+						title: values.name,
+						description: values.description,
+						category: values.category,
+						due_date: format(date, 'MM/dd/yyyy'),
+						expected_time: values.expected_time,
+						// status: values.status,
+					}).then((res) => {
+						setIsOpen(false);
+						refetch();
+					});
+				}
 			}
 			setIsOpen(false);
 			resetForm();
@@ -224,8 +237,6 @@ const Goals: FC = () => {
 			description: '',
 			due_date: '',
 			expected_time: '14:25',
-			// status: '',
-			category: '',
 		},
 		enableReinitialize: true,
 		validate: (values) => {
@@ -245,51 +256,72 @@ const Goals: FC = () => {
 			if (!values.description) {
 				errors.description = 'Required';
 			}
-			if (!values.due_date) {
-				errors.due_date = 'Required';
-			}
-			if (!values.expected_time) {
-				errors.expected_time = 'Required';
+			if (role !== 'superadmin') {
+				if (!values.due_date) {
+					errors.due_date = 'Required';
+				}
+				if (!values.expected_time) {
+					errors.expected_time = 'Required';
+				}
 			}
 
-			// if (!values.status) {
-			// 	errors.status = 'Required';
-			// }
-			if (!values.category) {
-				errors.category = 'Required';
-			}
 			return errors;
 		},
 		onSubmit: (values, { resetForm }) => {
-			const parts = values.expected_time.split(':');
-			const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
-			const goalData = {
-				title: values.name,
-				description: values.description,
-				category: values.category,
-				due_date: format(date, 'MM/dd/yyyy'),
-				expected_time: timeWithoutSeconds,
-				// status: values.status,
-			};
+			if (role === 'superadmin') {
+				const goalData = {
+					title: values.name,
+					description: values.description,
+					due_date: format(date, 'MM/dd/yyyy'),
+				};
+				updateGoal({ id: updateGoalForm.values.id, goalData })
+					.unwrap()
+					.then((res) => {
+						setIsOpen(false);
+						refetch();
+						if (res) {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>Goal updated sucessfully.</span>
+								</span>,
+								``,
+							);
+						}
+					})
+					.catch((res) => {
+						// console.log(res);
+					});
+			} else {
+				const parts = values.expected_time.split(':');
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+				const goalData = {
+					title: values.name,
+					description: values.description,
+					due_date: format(date, 'MM/dd/yyyy'),
+					expected_time: timeWithoutSeconds,
+					// status: values.status,
+				};
 
-			updateGoal({ id: updateGoalForm.values.id, goalData })
-				.unwrap()
-				.then((res) => {
-					setIsOpen(false);
-					refetch();
-					if (res) {
-						showNotification(
-							<span className='d-flex align-items-center'>
-								<Icon icon='Info' size='lg' className='me-1' />
-								<span>Goal updated sucessfully.</span>
-							</span>,
-							``,
-						);
-					}
-				})
-				.catch((res) => {
-					// console.log(res);
-				});
+				updateGoal({ id: updateGoalForm.values.id, goalData })
+					.unwrap()
+					.then((res) => {
+						setIsOpen(false);
+						refetch();
+						if (res) {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>Goal updated sucessfully.</span>
+								</span>,
+								``,
+							);
+						}
+					})
+					.catch((res) => {
+						// console.log(res);
+					});
+			}
 		},
 	});
 	const handleDelete = () => {
@@ -356,7 +388,13 @@ const Goals: FC = () => {
 		setIsOpen(false);
 		// navigate(`../${dashboardPagesMenu.tasks.path}`);
 	};
-
+	const handledescription = (value: string) => {
+		if (modalHeader === 'New Goal') {
+			formikNewGoal.setFieldValue('description', value);
+		} else {
+			updateGoalForm.setFieldValue('description', value);
+		}
+	};
 	return (
 		<PageWrapper title={dashboardPagesMenu.goals.text}>
 			<SubHeader>
@@ -500,94 +538,18 @@ const Goals: FC = () => {
 																goalList,
 																currentPage,
 																perPage,
-															)?.map((i, index) => {
+															)?.map((i:IGoalProps, index) => {
 																return (
-																	<tr>
-																		<th scope='row'>
-																			{index + 1}
-																		</th>
-																		<th>{i.title}</th>
-																		<td>{i.description}</td>
-																		<td>{i.task_count}</td>
-																		{role != 'superadmin' && (
-																			<td>{i.due_date}</td>
-																		)}
-
-																		<td className='h5'>
-																			<Badge
-																				color={
-																					(i.status ===
-																						'Progress' &&
-																						'danger') ||
-																					(i.status ===
-																						'New' &&
-																						'warning') ||
-																					(i.status ===
-																						'Done' &&
-																						'success') ||
-																					'info'
-																				}>
-																				{i.status}
-																			</Badge>
-																		</td>
-																		<td>
-																			<div className='d-flex flex-nowrap'>
-																				<Button
-																					icon='Visibility'
-																					color='primary'
-																					isLight
-																					onClick={() => {
-																						if (
-																							role ===
-																							'superadmin'
-																						) {
-																							navigate(
-																								`../goal-details/${i.id}`,
-																							);
-																						} else {
-																							openModal(
-																								i.id,
-																							);
-																						}
-																					}}
-																					className='me-1'
-																				/>
-																				{Number(
-																					logUserId,
-																				) ===
-																					i.created_by ||
-																				role ==
-																					'superadmin' ? (
-																					<>
-																						<Button
-																							icon='Edit'
-																							color='success'
-																							isLight
-																							onClick={() =>
-																								handleEdit(
-																									i.id,
-																								)
-																							}
-																							className='me-1'
-																						/>
-																						<Button
-																							icon='Delete'
-																							color='danger'
-																							isLight
-																							onClick={() => {
-																								setShowConfirmation(
-																									true,
-																								);
-																								setDeleteId(
-																									i.id,
-																								);
-																							}}
-																						/>
-																					</>
-																				) : null}
-																			</div>
-																		</td>
-																	</tr>
+																	<GoalTableRows
+																		goalData={i}
+																		setDeleteId={setDeleteId}
+																		setShowConfirmation={
+																			setShowConfirmation
+																		}
+																		handleEdit={handleEdit}
+																		openModal={openModal}
+																		index={index}
+																	/>
 																);
 															})
 														) : (
@@ -600,7 +562,7 @@ const Goals: FC = () => {
 									</CardBody>
 									<CardFooter>
 										<PaginationButtons
-											data={data}
+											data={goalList}
 											label='items'
 											setCurrentPage={setCurrentPage}
 											currentPage={currentPage}
@@ -626,14 +588,14 @@ const Goals: FC = () => {
 			)}
 
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
-				<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
+				<ModalHeader setIsOpen={handleCloseClick}>
 					<ModalTitle id='new_task'>{modalHeader}</ModalTitle>
 				</ModalHeader>
 
-				<ModalBody className='px-4'>
-					<div className='row g-4'>
+				<ModalBody>
+					<div className='row g-4 px-4'>
 						<div className='col-12 border-bottom' />
-						<div className='col-6'>
+						<div className={role !== 'superadmin' ? 'col-lg-6' : 'col-lg-12'}>
 							<FormGroup id='name' label='Name'>
 								<Input
 									type='text'
@@ -654,7 +616,16 @@ const Goals: FC = () => {
 								/>
 							</FormGroup>
 							<FormGroup id='description' label='Description' className='mt-3'>
-								<Input
+								<ReactQuill
+									theme='snow'
+									value={
+										modalHeader === 'New Goal'
+											? formikNewGoal.values.description
+											: updateGoalForm.values.description
+									}
+									onChange={(value) => handledescription(value)}
+								/>
+								{/* <Input
 									type='text'
 									name='description'
 									onChange={
@@ -670,42 +641,39 @@ const Goals: FC = () => {
 									invalidFeedback={formikNewGoal.errors.description}
 									isValid={formikNewGoal.isValid}
 									isTouched={formikNewGoal.touched.description}
-								/>
+								/> */}
 							</FormGroup>
-							<FormGroup id='category' label='Category' className='mt-3'>
-								<Select
-									ariaLabel='Default select Category'
-									placeholder='Select One...'
-									name='category'
-									list={categoryEnum}
-									onChange={
-										modalHeader === 'New Goal'
-											? formikNewGoal.handleChange
-											: updateGoalForm.handleChange
-									}
-									value={
-										modalHeader === 'New Goal'
-											? formikNewGoal.values.category
-											: updateGoalForm.values.category
-									}
-									invalidFeedback={formikNewGoal.errors.category}
-									isValid={formikNewGoal.isValid}
-									isTouched={formikNewGoal.touched.category}
-								/>
-							</FormGroup>
-						</div>
-						<FormGroup id='due_date' label='Date' className='col-lg-6'>
-							<div>
-								<div className='text-center mt-n4'>
-									<DatePicker
-										onChange={(item) => setDate(item)}
-										date={date}
-										minDate={new Date()}
-										color={process.env.REACT_APP_PRIMARY_COLOR}
+							{modalHeader === 'New Goal' && (
+								<FormGroup id='category' label='Category' className='mt-3'>
+									<Select
+										ariaLabel='Default select Category'
+										placeholder='Select One...'
+										name='category'
+										list={categoryEnum}
+										onChange={formikNewGoal.handleChange}
+										value={formikNewGoal.values.category}
+										invalidFeedback={formikNewGoal.errors.category}
+										isValid={formikNewGoal.isValid}
+										isTouched={formikNewGoal.touched.category}
 									/>
+								</FormGroup>
+							)}
+						</div>
+						{role != 'superadmin' && (
+							<FormGroup id='due_date' label='Date' className='col-lg-6'>
+								<div>
+									<div className='text-center mt-n4'>
+										<DatePicker
+											onChange={(item) => setDate(item)}
+											date={date}
+											minDate={new Date()}
+											color={process.env.REACT_APP_PRIMARY_COLOR}
+										/>
+									</div>
 								</div>
-							</div>
-						</FormGroup>
+							</FormGroup>
+						)}
+
 						{/* <FormGroup id='expectedTime' label=' Expected Time' className='col-lg-6'>
 							<Input
 								type='time'

@@ -35,17 +35,7 @@ interface ITaskValue {
 	goalId: number;
 	ITask: ITask;
 }
-interface ISubtask {
-	created_at: string;
-	description: string;
-	id: number;
-	scheduled_on: string;
-	task: string;
-	title: string;
-	updated_at: string;
-	user_assigned: string;
-	minitask_count: string;
-}
+
 const SubTask: FC = () => {
 	const navigate = useNavigate();
 	const { taskId: id, addSubtask } = useParams();

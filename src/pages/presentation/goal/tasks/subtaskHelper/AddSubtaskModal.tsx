@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, HtmlHTMLAttributes, useEffect, useState } from 'react';
 import { Calendar as DatePicker } from 'react-date-range';
 import { useFormik } from 'formik';
 import ReactQuill from 'react-quill';
@@ -52,7 +52,7 @@ interface ITaskProps {
 	task: string;
 	title: string;
 	updated_at: string;
-	user_assigned: string;
+	user_assigned?: string;
 	faqs?: IFaq[];
 	subtask?: any;
 	subtask_faqs?: any;
@@ -73,7 +73,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 	const navigate = useNavigate();
 	const [faqs, setFaqs] = useState<IFaq[]>([{ question: '', answer: '' }]);
 	const [date, setDate] = useState<Date>(new Date());
-
+	const role = localStorage.getItem('role');
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -95,23 +95,14 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			if (!values.name) {
 				errors.name = 'Required';
 			}
-			if (!values.description) {
-				errors.description = 'Required';
+			if (role != 'superadmin') {
+				if (!values.description) {
+					errors.description = 'Required';
+				}
+				if (!values.expected_time) {
+					errors.expected_time = 'Required';
+				}
 			}
-			if (!values.expected_time) {
-				errors.expected_time = 'Required';
-			}
-
-			// if (!values.question) {
-			// 	errors.question = 'Required';
-			// }
-
-			// // if (!values.due_date) {
-			// // 	errors.due_date = 'Required';
-			// // }
-			// if (!values.answer) {
-			// 	errors.answer = 'Required';
-			// }
 
 			return errors;
 		},
@@ -119,56 +110,105 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		onSubmit: (values) => {
 			setIsOpen(false);
 			if (modalState === 'Add Sub Task') {
-				createSubTaskwithFAQ({
-					task_id: String(id),
-					title: values.name,
-					description: values.description,
-					due_date: String(format(date, 'MM/dd/yyyy')),
-					expected_time: values.expected_time,
-					faq_data: faqs,
-				})
-					.unwrap()
-					.then((res) => {
-						// console.log('Subtask Created', res);
-						refetch();
+				if (role == 'superadmin') {
+					createSubTaskwithFAQ({
+						task_id: String(id),
+						title: values.name,
+						description: values.description,
+						faq_data: faqs,
 					})
-					.catch((res) => {
-						// toast("All fields required");
-						refetch();
-					});
+						.unwrap()
+						.then((res) => {
+							// console.log('Subtask Created', res);
+							refetch();
+						})
+						.catch((res) => {
+							// toast("All fields required");
+							refetch();
+						});
+				} else {
+					createSubTaskwithFAQ({
+						task_id: String(id),
+						title: values.name,
+						description: values.description,
+						due_date: String(format(date, 'MM/dd/yyyy')),
+						expected_time: values.expected_time,
+						faq_data: faqs,
+					})
+						.unwrap()
+						.then((res) => {
+							// console.log('Subtask Created', res);
+							refetch();
+						})
+						.catch((res) => {
+							// toast("All fields required");
+							refetch();
+						});
+				}
 			} else if (modalState === 'Edit Sub Task') {
-				const parts = values.expected_time.split(':');
-				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
-				const taskData = {
-					expected_time: timeWithoutSeconds,
-					due_date: String(format(date, 'MM/dd/yyyy')),
-					description: values.description,
-					title: values.name,
-				};
+				if (role == 'superadmin') {
+					const taskData = {
+						description: values.description,
+						title: values.name,
+					};
 
-				const subtaskId = String(task?.subtask.id);
+					const subtaskId = String(task?.subtask.id);
 
-				updateSubTask({ subtaskId, taskData })
-					.unwrap()
-					.then((res) => {
-						showNotification(
-							<span className='d-flex align-items-center'>
-								<Icon icon='Info' size='lg' className='me-1' />
-								<span>Task updated sucessfully</span>
-							</span>,
-							``,
-						);
-						refetch();
-					})
-					.catch((res) => {
-						showNotification(
-							<span className='d-flex align-items-center'>
-								<Icon icon='Info' size='lg' className='me-1' />
-								<span>Something went wrong</span>
-							</span>,
-							``,
-						);
-					});
+					updateSubTask({ subtaskId, taskData })
+						.unwrap()
+						.then((res) => {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>Task updated sucessfully</span>
+								</span>,
+								``,
+							);
+							refetch();
+						})
+						.catch((res) => {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>Something went wrong</span>
+								</span>,
+								``,
+							);
+						});
+				} else {
+					const parts = values.expected_time.split(':');
+					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+					const taskData = {
+						expected_time: timeWithoutSeconds,
+						due_date: String(format(date, 'MM/dd/yyyy')),
+						description: values.description,
+						title: values.name,
+					};
+
+					const subtaskId = String(task?.subtask.id);
+
+					updateSubTask({ subtaskId, taskData })
+						.unwrap()
+						.then((res) => {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>Task updated sucessfully</span>
+								</span>,
+								``,
+							);
+							refetch();
+						})
+						.catch((res) => {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>Something went wrong</span>
+								</span>,
+								``,
+							);
+						});
+				}
 			}
 			navigate(`../${pagesMenu.subTasks.path}/${id}`);
 		},
@@ -199,7 +239,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				setDate(dueDateObject);
 			}
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [modalState, handleCloseClick]);
 	const handleAddFAQ = () => {
 		if (faqs[faqs.length - 1]?.question !== '' && faqs[faqs.length - 1]?.answer !== '') {
@@ -264,7 +304,9 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			})
 			.catch((res) => {});
 	};
-
+	const handledescription = (value: any) => {
+		formik.setFieldValue('description', value);
+	};
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 			<ModalHeader setIsOpen={handleCloseClick} className='p-4'>
@@ -274,7 +316,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12 border-bottom' />
-						<div className='col-lg-6'>
+						<div className={role != 'superadmin' ? 'col-lg-6' : 'col-lg-12'}>
 							<FormGroup id='name' label='Name'>
 								<Input
 									type='text'
@@ -289,7 +331,12 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 								/>
 							</FormGroup>
 							<FormGroup id='description' label='Description' className='mt-3'>
-								<Input
+								<ReactQuill
+									theme='snow'
+									value={formik.values.description}
+									onChange={(value) => handledescription(value)}
+								/>
+								{/* <Input
 									type='text'
 									onChange={formik.handleChange}
 									value={formik.values.description}
@@ -299,37 +346,44 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 									onFocus={() => {
 										formik.setErrors({});
 									}}
-								/>
+								/> */}
 							</FormGroup>
-							<FormGroup id='expected_time' label='Expected Time' className='mt-3'>
-								<Input
-									type='time'
-									onChange={formik.handleChange}
-									value={formik.values.expected_time}
-									isValid={formik.isValid}
-									isTouched={formik.touched.expected_time}
-									invalidFeedback={formik.errors.expected_time}
-									onFocus={() => {
-										formik.setErrors({});
-									}}
-								/>
-							</FormGroup>
+							{role != 'superadmin' && (
+								<FormGroup
+									id='expected_time'
+									label='Expected Time'
+									className='mt-3'>
+									<Input
+										type='time'
+										onChange={formik.handleChange}
+										value={formik.values.expected_time}
+										isValid={formik.isValid}
+										isTouched={formik.touched.expected_time}
+										invalidFeedback={formik.errors.expected_time}
+										onFocus={() => {
+											formik.setErrors({});
+										}}
+									/>
+								</FormGroup>
+							)}
 						</div>
-						<div className='col-6'>
-							<div>
-								{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-								<Label>Due Date</Label>
+						{role != 'superadmin' && (
+							<div className='col-6'>
+								<div>
+									{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+									<Label>Due Date</Label>
+								</div>
+								<div className='text-center mt-n4'>
+									<DatePicker
+										onChange={(item) => setDate(item)}
+										date={date || task?.subtask?.due_date}
+										minDate={new Date()}
+										color={process.env.REACT_APP_PRIMARY_COLOR}
+										shownDate={date}
+									/>
+								</div>
 							</div>
-							<div className='text-center mt-n4'>
-								<DatePicker
-									onChange={(item) => setDate(item)}
-									date={date || task?.subtask?.due_date}
-									minDate={new Date()}
-									color={process.env.REACT_APP_PRIMARY_COLOR}
-									shownDate={date}
-								/>
-							</div>
-						</div>
+						)}
 
 						{faqs &&
 							faqs?.map((faq, index) => {
