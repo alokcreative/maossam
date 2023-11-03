@@ -25,10 +25,10 @@ const OneTimeSlot: FC<ITimeSlotProps> = ({ weekdayname, getdata, ...props }) => 
 			return undefined;
 		},
 		initialValues: {
-			startWorkTime: '00:00',
-			endWorkTime: '10:30',
-			startBreakTime: '10:30',
-			endBreakTime: '10:30',
+			startWorkTime: '10:00',
+			endWorkTime: '06:00',
+			startBreakTime: '02:00',
+			endBreakTime: '03:00',
 		},
 	});
 	useEffect(() => {

@@ -229,75 +229,77 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 		};
 		return (
 			<>
-				{/* eslint-disable-next-line react/jsx-props-no-spreading */}
-				<div ref={ref} className={classNames('todo-item')} {...props}>
-					<div className='todo-bar'>
-						<div
-							className={classNames('h-100 w-100', 'rounded', {
-								[`bg-${itemData?.badge?.color}`]: itemData?.badge,
-							})}
-						/>
-					</div>
-					<div className='todo-check'>
-						<Checks
-							checked={list[index].status}
-							onChange={() =>
-								handleChange(
-									index,
-									Number(itemData.id),
-									Boolean(list[index].status),
-								)
-							}
-							ariaLabel={itemData.title as string}
-						/>
-					</div>
-					<div className='todo-content'>
-						<div
-							className={classNames('todo-title', {
-								'text-decoration-line-through': list[index].status,
-							})}>
-							{itemData.title}
+				<div>
+					{/* eslint-disable-next-line react/jsx-props-no-spreading */}
+					<div ref={ref} className={classNames('todo-item')} {...props}>
+						<div className='todo-bar'>
+							<div
+								className={classNames('h-100 w-100', 'rounded', {
+									[`bg-${itemData?.badge?.color}`]: itemData?.badge,
+								})}
+							/>
 						</div>
-						{itemData.description && (
-							<div className='todo-subtitle text-muted small'>
-								{parse(itemData.description)}
+						<div className='todo-check'>
+							<Checks
+								checked={list[index].status}
+								onChange={() =>
+									handleChange(
+										index,
+										Number(itemData.id),
+										Boolean(list[index].status),
+									)
+								}
+								ariaLabel={itemData.title as string}
+							/>
+						</div>
+						<div className='todo-content'>
+							<div
+								className={classNames('todo-title', {
+									'text-decoration-line-through': list[index].status,
+								})}>
+								{itemData.title}
 							</div>
-						)}
-					</div>
-					<div className='todo-extras'>
-						{logUserId == itemData.created_by || role == 'superadmin' ? (
-							<span>
-								<Dropdown>
-									<DropdownToggle hasIcon={false}>
-										<Button
-											color={themeStatus}
-											icon='MoreHoriz'
-											aria-label='More options'
-										/>
-									</DropdownToggle>
+							{itemData.description && (
+								<div className='todo-subtitle text-muted small'>
+									{parse(itemData.description)}
+								</div>
+							)}
+						</div>
+						<div className='todo-extras'>
+							{logUserId == itemData.created_by || role == 'superadmin' ? (
+								<span>
+									<Dropdown>
+										<DropdownToggle hasIcon={false}>
+											<Button
+												color={themeStatus}
+												icon='MoreHoriz'
+												aria-label='More options'
+											/>
+										</DropdownToggle>
 
-									<DropdownMenu isAlignmentEnd>
-										<DropdownItem>
-											<>
-												<Button
-													onClick={() => {
-														setShowConfirmation(true);
-														setDeleteId(Number(itemData.id!));
-													}}
-													icon='Delete'>
-													Delete
-												</Button>
-												<Button
-													onClick={() => updateTodo(itemData.id)}
-													icon='Edit'>
-													Update
-												</Button>
-											</>
-										</DropdownItem>
-									</DropdownMenu>
-								</Dropdown>
-							</span>
-						) : null}
+										<DropdownMenu isAlignmentEnd>
+											<DropdownItem>
+												<>
+													<Button
+														onClick={() => {
+															setShowConfirmation(true);
+															setDeleteId(Number(itemData.id!));
+														}}
+														icon='Delete'>
+														Delete
+													</Button>
+													<Button
+														onClick={() => updateTodo(itemData.id)}
+														icon='Edit'>
+														Update
+													</Button>
+												</>
+											</DropdownItem>
+										</DropdownMenu>
+									</Dropdown>
+								</span>
+							) : null}
+						</div>
 					</div>
 				</div>
 				<Modal

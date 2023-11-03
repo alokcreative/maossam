@@ -468,7 +468,7 @@ const Goals: FC = () => {
 									<CardHeader>
 										<CardLabel icon='TrackChanges' iconColor='success'>
 											<CardTitle tag='div' className='h5'>
-												List Of Goals
+												List of Goals
 											</CardTitle>
 										</CardLabel>
 									</CardHeader>

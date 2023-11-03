@@ -160,19 +160,39 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 												).map((item) => (
 													// eslint-disable-next-line react/jsx-props-no-spreading
 													<div>
-														<span
-															className='fw-bold'
-															style={{
-																paddingRight: '0px',
-															}}>
-															Sub Task Name :
-														</span>
-														<span
+														<div>
+															<span
+																className='fw-bold'
+																style={{
+																	paddingRight: '0px',
+																}}>
+																Sub Task Name :
+															</span>
+															<span
+																style={{
+																	paddingLeft: '1px',
+																}}>
+																{item.title}
+															</span>
+														</div>
+
+														<div
 															style={{
 																paddingLeft: '1px',
 															}}>
-															{item.title}
-														</span>
+															<span
+																style={{
+																	paddingLeft: '1px',
+																}}>
+																Introduction:
+															</span>
+															<span
+																style={{
+																	paddingLeft: '1px',
+																}}>
+																{item.intro}
+															</span>
+														</div>
 														<div>
 															<span
 																className='fw-bold'
@@ -189,7 +209,9 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 															</span>
 														</div>
 														<div>
-															{item.user_assigned.includes(Number(logUserId)) === true && (
+															{item.user_assigned.includes(
+																Number(logUserId),
+															) === true && (
 																<span
 																	style={{
 																		paddingLeft: '1px',
@@ -212,7 +234,9 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 																		}>
 																		View All
 																	</Button>
-																) : item.user_assigned.includes(Number(logUserId)) === true ? (
+																) : item.user_assigned.includes(
+																		Number(logUserId),
+																  ) === true ? (
 																	<Button
 																		color='primary'
 																		className='mb-3 d-flex justify-content-end'

@@ -174,7 +174,6 @@ const TaskManagement = () => {
 			updateSubTaskStatus({ subtaskId: String(taskToMove?.id), taskData })
 				.unwrap()
 				.then((res: ApiResponse) => {
-					console.log("res",res);
 					showNotification(
 						<span className='d-flex align-items-center'>
 							<Icon icon='Info' size='lg' className='me-1' />
@@ -185,7 +184,6 @@ const TaskManagement = () => {
 					refetch();
 				})
 				.catch((res: ApiResponse) => {
-					console.log("rescat",res);
 					showNotification(
 						<span className='d-flex align-items-center'>
 							<Icon icon='Info' size='lg' className='me-1' />

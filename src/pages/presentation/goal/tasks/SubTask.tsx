@@ -124,7 +124,7 @@ const SubTask: FC = () => {
 					<CardHeader>
 						<CardLabel icon='CalendarToday' iconColor='info'>
 							<CardTitle tag='div' className='h5'>
-								SubTasks List
+								Subtasks List
 							</CardTitle>
 						</CardLabel>
 					</CardHeader>

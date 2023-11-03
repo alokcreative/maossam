@@ -51,6 +51,7 @@ interface ITaskProps {
 	status: string;
 	task: string;
 	title: string;
+	intro?: string;
 	updated_at: string;
 	user_assigned?: string;
 	faqs?: IFaq[];
@@ -78,6 +79,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 		initialValues: {
 			name: '',
 			description: '',
+			intro:'',
 			question: '',
 			answer: '',
 			expected_time: '',
@@ -89,16 +91,20 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 				description?: string;
 				expected_time?: string;
 				question?: string;
+				intro?: string;
 				answer?: string;
 				due_date?: string;
 			} = {};
 			if (!values.name) {
 				errors.name = 'Required';
 			}
+			if (!values.description) {
+				errors.description = 'Required';
+			}
+			if (!values.intro) {
+				errors.intro = 'Required';
+			}
 			if (role != 'superadmin') {
-				if (!values.description) {
-					errors.description = 'Required';
-				}
 				if (!values.expected_time) {
 					errors.expected_time = 'Required';
 				}
@@ -115,6 +121,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						task_id: String(id),
 						title: values.name,
 						description: values.description,
+						intro: values.intro,
 						faq_data: faqs,
 					})
 						.unwrap()
@@ -131,6 +138,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						task_id: String(id),
 						title: values.name,
 						description: values.description,
+						intro: values.intro,
 						due_date: String(format(date, 'MM/dd/yyyy')),
 						expected_time: values.expected_time,
 						faq_data: faqs,
@@ -150,6 +158,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 					const taskData = {
 						description: values.description,
 						title: values.name,
+						intro: values.intro,
 					};
 
 					const subtaskId = String(task?.subtask.id);
@@ -183,6 +192,7 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 						due_date: String(format(date, 'MM/dd/yyyy')),
 						description: values.description,
 						title: values.name,
+						intro: values.intro,
 					};
 
 					const subtaskId = String(task?.subtask.id);
@@ -222,12 +232,14 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 			formik.setFieldValue('category', '');
 			formik.setFieldValue('status', '');
 			formik.setFieldValue('expected_time', '');
+			formik.setFieldValue('intro', '');
 			setFaqs([]);
 		} else if (modalState === 'Edit Sub Task' && task) {
 			setFaqs([{ question: '', answer: '' }]);
 			formik.setFieldValue('name', task?.subtask?.title || task?.title);
 			formik.setFieldValue('description', task?.subtask?.description || task?.description);
 			formik.setFieldValue('sub_id', task?.subtask?.id || task?.id);
+			formik.setFieldValue('intro', task?.subtask?.intro || task?.intro);
 			formik.setFieldValue(
 				'expected_time',
 				task?.subtask?.expected_time || task?.expected_time,
@@ -325,6 +337,19 @@ const AddSubtaskModal: FC<IAddSubtaskProps> = ({
 									isValid={formik.isValid}
 									isTouched={formik.touched.name}
 									invalidFeedback={formik.errors.name}
+									onFocus={() => {
+										formik.setErrors({});
+									}}
+								/>
+							</FormGroup>
+							<FormGroup id='intro' label='Introduction' className='mt-2'>
+								<Input
+									type='text'
+									onChange={formik.handleChange}
+									value={formik.values.intro}
+									isValid={formik.isValid}
+									isTouched={formik.touched.intro}
+									invalidFeedback={formik.errors.intro}
 									onFocus={() => {
 										formik.setErrors({});
 									}}

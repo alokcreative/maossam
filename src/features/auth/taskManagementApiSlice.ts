@@ -48,6 +48,7 @@ interface ISubtaskPayload {
 	task_id: string;
 	title: string;
 	description: string;
+	intro?: string;
 	due_date?: string;
 	expected_time?: string;
 	faq_data?: FAQ[];
