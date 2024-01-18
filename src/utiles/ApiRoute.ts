@@ -36,5 +36,6 @@ const apiEndpoints = {
 	deleteFAQ: 'task-manager/goals/tasks/sub-task/faq/delete/',
 	updateFAQ: 'task-manager/goals/tasks/sub-task/faq/update/',
 	assignSubtask: 'task-manager/goals/tasks/sub-task/assign/',
+	getCategoryList: 'task-manager/goals/category/list/'
 };
 export default apiEndpoints;

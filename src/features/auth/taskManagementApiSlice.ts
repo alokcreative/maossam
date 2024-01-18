@@ -380,6 +380,16 @@ export const taskManagementApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 		}),
+		getCategoryList: builder.query({
+			query: () => ({
+				url: apiEndpoints.getCategoryList,
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+				},
+			}),
+		}),
 	}),
 });
 
@@ -408,4 +418,5 @@ export const {
 	useDeleteFAQMutation,
 	useUpdateFAQMutation,
 	useAsignSubtaskMutation,
+	useGetCategoryListQuery,
 } = taskManagementApiSlice;

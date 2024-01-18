@@ -33,6 +33,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	const role = localStorage?.getItem('role');
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
+
 	return (
 		<tr>
 			{task && (

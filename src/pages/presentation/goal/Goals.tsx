@@ -36,6 +36,7 @@ import {
 	useGetGoalsQuery,
 	useCreateGoalMutation,
 	useUpdateGoalMutation,
+	useGetCategoryListQuery,
 } from '../../../features/auth/taskManagementApiSlice';
 import Modal, {
 	ModalBody,
@@ -49,7 +50,7 @@ import Select from '../../../components/bootstrap/forms/Select';
 import { Calendar as DatePicker } from 'react-date-range';
 import Label from '../../../components/bootstrap/forms/Label';
 import { format } from 'date-fns';
-import { categoryEnum, categoryStringValue } from '../../../utiles/helper';
+import { categoryEnum, categoryStringValue, formatCategory } from '../../../utiles/helper';
 import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
 import { dashboardPagesMenu } from '../../../menu';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
@@ -99,11 +100,31 @@ interface IGoalProps {
 	updated_at?: string;
 	task_count: string;
 }
+
+interface ICategoryList {
+	id: number;
+	goal_count: number;
+	created_at: string;
+	updated_at: string;
+	title: string;
+	slug: string;
+}
+
+interface ICategory {
+	value: number;
+	text: string;
+}
+
 const Goals: FC = () => {
 	const navigate = useNavigate();
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
 		fixedCacheKey: 'listTask',
 	});
+	const { data: categoryData } = useGetCategoryListQuery({
+		fixedCacheKey: 'categorylist',
+	});
+	console.log('categoryData>>>>', categoryData);
+
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
 	const { darkModeStatus } = useDarkMode();
@@ -122,6 +143,9 @@ const Goals: FC = () => {
 	const [date, setDate] = useState<Date>(new Date());
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deleteId, setDeleteId] = useState<number>();
+	const [categoryList, setCategoryList] = useState<ICategory[]>(
+		categoryData && formatCategory(categoryData),
+	);
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -539,7 +563,7 @@ const Goals: FC = () => {
 																goalList,
 																currentPage,
 																perPage,
-															)?.map((i:IGoalProps, index) => {
+															)?.map((i: IGoalProps, index) => {
 																return (
 																	<GoalTableRows
 																		goalData={i}
@@ -650,7 +674,7 @@ const Goals: FC = () => {
 										ariaLabel='Default select Category'
 										placeholder='Select One...'
 										name='category'
-										list={categoryEnum}
+										list={categoryList}
 										onChange={formikNewGoal.handleChange}
 										value={formikNewGoal.values.category}
 										invalidFeedback={formikNewGoal.errors.category}

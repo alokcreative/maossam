@@ -1,3 +1,12 @@
+interface ICategoryList {
+	id: number;
+	goal_count: number;
+	created_at: string;
+	updated_at: string;
+	title: string;
+	slug: string;
+}
+
 export const categoryEnum = [
 	{ value: 1, text: 'Category1' },
 	{ value: 2, text: 'Category2' },
@@ -11,4 +20,11 @@ export const categoryStringValue: { [key: string]: number } = {
 	Category2: 6,
 	Category1: 5,
 	Category3: 7,
+};
+
+export const formatCategory = (apiResponse: ICategoryList[]) => {
+	return apiResponse.map((category: ICategoryList) => ({
+		value: category.id,
+		text: category.title,
+	}));
 };
