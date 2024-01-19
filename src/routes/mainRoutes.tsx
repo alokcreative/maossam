@@ -23,6 +23,7 @@ import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManag
 
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
+import WebIndex from '../pages/presentation/dashboard/WebIndex';
 
 
 const LANDING = {
@@ -870,6 +871,10 @@ const documentation: RouteProps[] = [
 	{
 		path: pagesMenu.temslist.path,
 		element: <TEAMS.TEAMS_LIST />,
+	},
+	{
+		path: `${dashboardPagesMenu.webindex.path}`,
+		element: <WebIndex />,
 	},
 ];
 const contents = [...presentation, ...documentation];

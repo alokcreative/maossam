@@ -1,20 +1,19 @@
 import React, { FC, useState } from 'react';
-import Badge from '../../../../components/bootstrap/Badge';
-import Button from '../../../../components/bootstrap/Button';
-import Modal, { ModalBody, ModalHeader } from '../../../../components/bootstrap/Modal';
-import SubTaskCard from './taskboard/SubTaskCard';
+//
 import parse from 'html-react-parser';
 import { useLocation } from 'react-router-dom';
+import Button from '../../../../../components/bootstrap/Button';
+import Modal, { ModalBody, ModalHeader } from '../../../../../components/bootstrap/Modal';
+import SubTaskCard from '../../../goal/tasks/taskboard/SubTaskCard';
+import { Label } from '../../../../../components/icon/material-icons';
 
 interface ITaskValue {
 	id: number;
-	title: string;
+	name: string;
 	description: string;
-	status: string;
-	created_by: number;
-	expected_time: number;
-	due_date: number;
-	subtask_count: number;
+	websiteType: string;
+	websiteUrl: string;
+	isFree: boolean;
 }
 interface ITableRowProps {
 	id: number;
@@ -33,11 +32,6 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	const role = localStorage?.getItem('role');
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
-console.log("showMore>>>",showMore);
-console.log("parse(task.description)>>>",parse(task.description));
-console.log("parse(task.description.substring(0, 50))>>>",parse(task.description.substring(0, 50)));
-console.log("{task.description.length>>>",task.description.length);
-
 
 	return (
 		<tr>
@@ -46,7 +40,7 @@ console.log("{task.description.length>>>",task.description.length);
 					<th scope='row'>{id}</th>
 					<td>
 						<div className='line-clamp'>
-							{task.title}
+							{task.name}
 							{/* <div className='text-muted'>
 						<small>{category}</small>
 					</div> */}
@@ -55,15 +49,17 @@ console.log("{task.description.length>>>",task.description.length);
 					<td className='parent col-6'>
 						{showMore
 							? parse(task.description)
-							: parse(task.description.substring(0, 170))}
+							: parse(task.description.substring(0, 50))}
 						{task.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 								...
 							</span>
 						)}
 					</td>
-					<td>{task.subtask_count}</td>
-					{role !== 'superadmin' && (
+					<td>{task.websiteType}</td>
+					<td>{task.websiteUrl}</td>
+					<td>{task.isFree ? 'Free' : 'NotFree'}</td>
+					{/* {role !== 'superadmin' && (
 						<>
 							<td>
 								<span style={{ whiteSpace: 'nowrap' }}>{task.due_date}</span>
@@ -76,9 +72,9 @@ console.log("{task.description.length>>>",task.description.length);
 								</td>
 							)}
 						</>
-					)}
+					)} */}
 
-					<td className='h5'>
+					{/* <td className='h5'>
 						<Badge
 							color={
 								(task.status === 'Hold' && 'danger') ||
@@ -89,7 +85,7 @@ console.log("{task.description.length>>>",task.description.length);
 							}>
 							{task.status}
 						</Badge>
-					</td>
+					</td> */}
 					<td>
 						<div className='d-flex flex-nowrap'>
 							<Button
@@ -101,23 +97,27 @@ console.log("{task.description.length>>>",task.description.length);
 									setIsModalOpen(true);
 								}}
 							/>
-							{Number(logUserId) === task.created_by || role === 'superadmin' ? (
-								<>
-									<Button
-										icon='Edit'
-										color='success'
-										isLight
-										className='me-1'
-										onClick={() => edit(task.id)}
-									/>
-									<Button
-										icon='Delete'
-										color='danger'
-										isLight
-										onClick={() => deleteAction(task.id)}
-									/>
-								</>
-							) : null}
+							{
+								// Number(logUserId) === task.created_by ||
+
+								role === 'superadmin' ? (
+									<>
+										<Button
+											icon='Edit'
+											color='success'
+											isLight
+											className='me-1'
+											onClick={() => edit(task.id)}
+										/>
+										<Button
+											icon='Delete'
+											color='danger'
+											isLight
+											onClick={() => deleteAction(task.id)}
+										/>
+									</>
+								) : null
+							}
 
 							{isModalOpen && (
 								<Modal
@@ -133,10 +133,42 @@ console.log("{task.description.length>>>",task.description.length);
 										<div className='row'>
 											<div className='col-12'>
 												<div className='row g-4'>
-													<SubTaskCard
+													{/* <SubTaskCard
 														subTaskId={task.id}
 														setIsModalOpen={setIsModalOpen}
-													/>
+													/> */}
+													<div className='d-flex mt-3'>
+														<span>
+															<strong>Website Name :</strong>
+														</span>
+														<p className='mx-2'>{task.name}</p>
+													</div>
+													<div className='d-flex mt-3'>
+														<span>
+															<strong>Description :</strong>
+														</span>
+														<p className='mx-2'>{task.description}</p>
+													</div>
+													<div className='d-flex mt-3'>
+														<span>
+															<strong>Website Type :</strong>
+														</span>
+														<p className='mx-2'>{task.websiteType}</p>
+													</div>
+													<div className='d-flex mt-3'>
+														<span>
+															<strong>Website URL :</strong>
+														</span>
+														<p className='mx-2'>{task.websiteUrl}</p>
+													</div>
+													<div className='d-flex mt-3'>
+														<span>
+															<strong>Free/Not Free :</strong>
+														</span>
+														<p className='mx-2'>
+															{task.isFree ? 'Free' : 'Not Free'}
+														</p>
+													</div>
 												</div>
 											</div>
 										</div>

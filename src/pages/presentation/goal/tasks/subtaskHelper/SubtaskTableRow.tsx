@@ -27,10 +27,12 @@ interface ITableRowProps {
 	deleteAction(...args: unknown[]): unknown;
 }
 
+
 const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }) => {
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [modalStatus, setModalStatus] = useState(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
+	// console.log("subtask>>",subtask);
 
 	return (
 		<tr>
@@ -42,15 +44,15 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 					</td>
 					<td className='parent col-6'>
 						{showMore
-							? (parse(subtask.description))
-							: parse(subtask.description.substring(0, 50))}
+							? (parse(subtask?.description))
+							: parse(subtask?.description.substring(0, 50))}
 						{subtask.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 								...
 							</span>
 						)}
 					</td>
-					<td>{subtask.minitask_count}</td>
+					<td>{subtask?.minitask_count}</td>
 					<td>
 						<div className='d-flex flex-nowrap'>
 							<Button
