@@ -46,7 +46,7 @@ const GoalTableRows: FC<IProps> = ({
 			<th scope='row'>{index + 1}</th>
 			<th>{goalData.title}</th>
 			<td className='parent col-6'>
-				{showMore ? parse(goalData.description) : parse(goalData.description.substring(0, 50))}
+				{showMore ? parse(goalData.description) : parse(goalData.description.substring(0, 130))}
 				{goalData.description.length > 50 && (
 					<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 						...

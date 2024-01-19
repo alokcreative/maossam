@@ -81,6 +81,13 @@ export const dashboardPagesMenu = {
 		icon: 'contact_support',
 		subMenu: null,
 	},
+	webindex: {
+		id: 'webindex',
+		text: 'Web Index',
+		path: '/webindex',
+		icon: 'flag',
+		subMenu: null,
+	},
 };
 export const adminDashboardPagesMenu = {
 	dashboard: {
@@ -123,6 +130,13 @@ export const adminDashboardPagesMenu = {
 		text: 'Marketing Assets',
 		path: '/marketing-assets',
 		icon: 'Fact Check',
+		subMenu: null,
+	},
+	webindex: {
+		id: 'webindex',
+		text: 'Web Index',
+		path: '/webindex',
+		icon: 'flag',
 		subMenu: null,
 	},
 };

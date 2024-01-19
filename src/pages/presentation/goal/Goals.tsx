@@ -123,7 +123,7 @@ const Goals: FC = () => {
 	const { data: categoryData } = useGetCategoryListQuery({
 		fixedCacheKey: 'categorylist',
 	});
-	console.log('categoryData>>>>', categoryData);
+	// console.log('categoryData>>>>', categoryData);
 
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
@@ -143,9 +143,7 @@ const Goals: FC = () => {
 	const [date, setDate] = useState<Date>(new Date());
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deleteId, setDeleteId] = useState<number>();
-	const [categoryList, setCategoryList] = useState<ICategory[]>(
-		categoryData && formatCategory(categoryData),
-	);
+	const [categoryList, setCategoryList] = useState<ICategory[]>([]);
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -164,6 +162,10 @@ const Goals: FC = () => {
 				);
 				setGoalList(tempdata);
 			}
+		}
+		if (categoryData) {
+			const newCategoryList = formatCategory(categoryData);
+			setCategoryList(newCategoryList);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoading, data]);
@@ -419,6 +421,8 @@ const Goals: FC = () => {
 			updateGoalForm.setFieldValue('description', value);
 		}
 	};
+
+	
 	return (
 		<PageWrapper title={dashboardPagesMenu.goals.text}>
 			<SubHeader>
