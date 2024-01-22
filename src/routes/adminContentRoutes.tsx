@@ -12,6 +12,7 @@ import Goals from '../pages/presentation/goal/Goals';
 import GoalDescription from '../pages/presentation/goal/GoalDescription';
 import SubTask from '../pages/presentation/goal/tasks/SubTask';
 import WebIndex from "../pages/presentation/dashboard/WebIndex"
+import ToolBox from '../pages/presentation/toolbox/ToolBox';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -36,6 +37,10 @@ const APP = {
 	KNOWLEDGE: {
 		GRID: lazy(() => import('../pages/presentation/knowledge/KnowledgeGridPage')),
 		VIEW: lazy(() => import('../pages/presentation/knowledge/KnowledgeViewPage')),
+	},
+	TOOLS: {
+		GRID: lazy(() => import('../pages/presentation/tools/ToolsGridPage')),
+		VIEW: lazy(() => import('../pages/presentation/tools/ToolsViewPage')),
 	},
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
@@ -133,6 +138,18 @@ const documentation: RouteProps[] = [
 	{
 		path: `${adminDashboardPagesMenu.webindex.path}`,
 		element: <WebIndex />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.toolbox.path}`,
+		element: <ToolBox />,
+	},
+	{
+		path: pagesMenu.tools.subMenu.grid.path,
+		element: <APP.TOOLS.GRID />,
+	},
+	{
+		path: `${pagesMenu.tools.subMenu.itemID.path}/:id`,
+		element: <APP.TOOLS.VIEW />,
 	},
 ];
 const adminContents = [...presentation, ...documentation];

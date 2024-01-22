@@ -24,6 +24,7 @@ import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManag
 import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
 import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
 import WebIndex from '../pages/presentation/dashboard/WebIndex';
+import ToolBox from '../pages/presentation/toolbox/ToolBox';
 
 
 const LANDING = {
@@ -71,6 +72,10 @@ const APP = {
 	KNOWLEDGE: {
 		GRID: lazy(() => import('../pages/presentation/knowledge/KnowledgeGridPage')),
 		VIEW: lazy(() => import('../pages/presentation/knowledge/KnowledgeViewPage')),
+	},
+	TOOLS: {
+		GRID: lazy(() => import('../pages/presentation/tools/ToolsGridPage')),
+		VIEW: lazy(() => import('../pages/presentation/tools/ToolsViewPage')),
 	},
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
@@ -342,6 +347,15 @@ export const presentation: RouteProps[] = [
 	{
 		path: `${pagesMenu.knowledge.subMenu.itemID.path}/:id`,
 		element: <APP.KNOWLEDGE.VIEW />,
+	},
+
+	{
+		path: pagesMenu.tools.subMenu.grid.path,
+		element: <APP.TOOLS.GRID />,
+	},
+	{
+		path: `${pagesMenu.tools.subMenu.itemID.path}/:id`,
+		element: <APP.TOOLS.VIEW />,
 	},
 
 	/**
@@ -875,6 +889,10 @@ const documentation: RouteProps[] = [
 	{
 		path: `${dashboardPagesMenu.webindex.path}`,
 		element: <WebIndex />,
+	},
+	{
+		path: `${dashboardPagesMenu.toolbox.path}`,
+		element: <ToolBox />,
 	},
 ];
 const contents = [...presentation, ...documentation];
