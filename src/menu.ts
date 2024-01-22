@@ -88,6 +88,13 @@ export const dashboardPagesMenu = {
 		icon: 'flag',
 		subMenu: null,
 	},
+	toolbox: {
+		id: 'toolbox',
+		text: 'Tool Box',
+		path: '/toolbox',
+		icon: 'AreaChart',
+		subMenu: null,
+	},
 };
 export const adminDashboardPagesMenu = {
 	dashboard: {
@@ -137,6 +144,13 @@ export const adminDashboardPagesMenu = {
 		text: 'Web Index',
 		path: '/webindex',
 		icon: 'flag',
+		subMenu: null,
+	},
+	toolbox: {
+		id: 'toolbox',
+		text: 'Tool Box',
+		path: '/toolbox',
+		icon: 'AreaChart',
 		subMenu: null,
 	},
 };
@@ -375,6 +389,32 @@ export const pagesMenu = {
 				id: 'item',
 				text: 'Item',
 				path: 'knowledge/item/1',
+				icon: 'Book',
+			},
+		},
+	},
+	tools: {
+		id: 'tools',
+		text: 'Tools',
+		path: 'tools',
+		icon: 'AutoStories',
+		subMenu: {
+			grid: {
+				id: 'grid',
+				text: 'Tools Grid',
+				path: 'tools/grid',
+				icon: 'AutoStories',
+			},
+			itemID: {
+				id: 'itemID',
+				text: 'itemID',
+				path: 'tools/item',
+				hide: true,
+			},
+			item: {
+				id: 'item',
+				text: 'Item',
+				path: 'tools/item/1',
 				icon: 'Book',
 			},
 		},

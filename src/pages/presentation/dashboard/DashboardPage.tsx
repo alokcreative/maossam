@@ -108,6 +108,7 @@ interface IGoalProps {
 const DashboardPage = () => {
 	const { mobileDesign } = useContext(ThemeContext);
 	const { themeStatus } = useDarkMode();
+	const [activeTab, setActiveTab] = useState<TTabs>(TABS.YEARLY);
 	const navigate = useNavigate();
 	const [elementId, setElementId] = useState<number>();
 	const [elementName, setElementName] = useState<string>();
@@ -240,7 +241,7 @@ const DashboardPage = () => {
 	};
 	return (
 		<PageWrapper title={dashboardPagesMenu.dashboard.text}>
-			{/* <SubHeader>
+			<SubHeader>
 				<SubHeaderLeft>
 					<span className='h4 mb-0 fw-bold'>Overview</span>
 					<SubheaderSeparator />
@@ -249,7 +250,8 @@ const DashboardPage = () => {
 							<Button
 								key={key}
 								color={activeTab === TABS[key] ? 'success' : themeStatus}
-								onClick={() => setActiveTab(TABS[key])}>
+								onClick={() => setActiveTab(TABS[key])}
+								>
 								{TABS[key]}
 							</Button>
 						))}
@@ -260,13 +262,13 @@ const DashboardPage = () => {
 						<strong>Marketing</strong> Team
 					</CommonAvatarTeam>
 				</SubHeaderRight>
-			</SubHeader> */}
+			</SubHeader>
 
 			<Page container='fluid'>
 				<div className='row'>
-					{/* <div className='col-12'>
+					<div className='col-12'>
 						<CommonDashboardAlert />
-					</div> */}
+					</div>
 
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>

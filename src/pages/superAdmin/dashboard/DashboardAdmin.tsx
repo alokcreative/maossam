@@ -16,7 +16,7 @@ import useDarkMode from '../../../hooks/useDarkMode';
 import { useTranslation } from 'react-i18next';
 import goalData from '../../../common/data/dummyGoals';
 import Item from '../../presentation/dashboardHelper/GoalItems';
-import Button from '../../../components/bootstrap/Button';
+import Button, { ButtonGroup } from '../../../components/bootstrap/Button';
 import TaskOnHold from '../../presentation/dashboardHelper/TaskOnHold';
 import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
@@ -26,6 +26,10 @@ import MarketingAssetForms from '../../presentation/dashboard/Marketing/Marketin
 import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 import { dashboardPagesMenu } from '../../../menu';
 import showNotification from '../../../components/extras/showNotification';
+import CommonDashboardAlert from '../../presentation/dashboard/common/CommonDashboardAlert';
+import SubHeader, { SubHeaderLeft, SubHeaderRight, SubheaderSeparator } from '../../../layout/SubHeader/SubHeader';
+import { TABS, TTabs } from '../../presentation/dashboard/common/helper';
+import CommonAvatarTeam from '../../../common/other/CommonAvatarTeam';
 
 interface CardProp {
 	id: number;
@@ -54,6 +58,9 @@ interface IGoalProps {
 }
 const DashboardAdmin = () => {
 	const { darkModeStatus } = useDarkMode();
+	const { themeStatus } = useDarkMode();
+
+	const [activeTab, setActiveTab] = useState<TTabs>(TABS.YEARLY);
 	const { t } = useTranslation('menu');
 	const navigate = useNavigate();
 	const [elementId, setElementId] = useState<number>();
@@ -159,7 +166,32 @@ const DashboardAdmin = () => {
 
 	return (
 		<PageWrapper isProtected title={dashboardPagesMenu.dashboard.text}>
+					<SubHeader>
+				<SubHeaderLeft>
+					<span className='h4 mb-0 fw-bold'>Overview</span>
+					<SubheaderSeparator />
+					<ButtonGroup>
+						{Object.keys(TABS).map((key) => (
+							<Button
+								key={key}
+								color={activeTab === TABS[key] ? 'success' : themeStatus}
+								onClick={() => setActiveTab(TABS[key])}
+								>
+								{TABS[key]}
+							</Button>
+						))}
+					</ButtonGroup>
+				</SubHeaderLeft>
+				<SubHeaderRight>
+					<CommonAvatarTeam>
+						<strong>Marketing</strong> Team
+					</CommonAvatarTeam>
+				</SubHeaderRight>
+			</SubHeader>
 			<Page container='fluid'>
+			<div className='col-12'>
+						<CommonDashboardAlert />
+					</div>
 				<Card className='shadow-3d-info'>
 					<CardHeader>
 						<CardLabel icon='ShowChart' iconColor='secondary'>
