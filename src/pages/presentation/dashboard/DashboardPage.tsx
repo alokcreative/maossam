@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, HTMLAttributes, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTour } from '@reactour/tour';
 import useDarkMode from '../../../hooks/useDarkMode';
@@ -30,6 +30,11 @@ import TaskOnHold from '../dashboardHelper/TaskOnHold';
 import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
+import Card, { CardActions, CardBody, CardHeader, CardLabel, CardSubTitle, CardTitle } from '../../../components/bootstrap/Card';
+import Progress from '../../../components/bootstrap/Progress';
+import Avatar, { AvatarGroup } from '../../../components/Avatar';
+import USERS from '../../../common/data/userDummyData';
+import { useTranslation } from 'react-i18next';
 
 interface ITableRowProps {
 	id: number;
@@ -105,6 +110,117 @@ interface IGoalProps {
 	updated_at?: string;
 	task_count: string;
 }
+
+interface IItemProps extends HTMLAttributes<HTMLDivElement> {
+	name: string;
+	teamName: string;
+	attachCount: number;
+	taskCount: number;
+	percent: number;
+	dueDate: string;
+}
+
+const Items: FC<IItemProps> = ({
+	name,
+	teamName,
+	attachCount,
+	taskCount,
+	percent,
+	dueDate,
+	...props
+}) => {
+	const { darkModeStatus } = useDarkMode();
+	const navigate = useNavigate();
+	// const handleOnClickToProjectPage = useCallback(
+	// 	() => navigate(`../${demoPagesMenu.projectManagement.subMenu.itemID.path}/1`),
+	// 	[navigate],
+	// );
+	const { t, i18n } = useTranslation();
+
+	return (
+		// eslint-disable-next-line react/jsx-props-no-spreading
+		<div className='col-md-4' {...props}>
+			<Card
+				stretch
+				// onClick={handleOnClickToProjectPage}
+				className='shadow-none border border-1 cursor-pointer'>
+				<CardHeader>
+					<CardLabel icon='Ballot'>
+						<CardTitle>{t(`${name}`)}</CardTitle>
+						<CardSubTitle>{teamName}</CardSubTitle>
+					</CardLabel>
+					<CardActions>
+						<small className='border border-success border-2 text-success fw-bold px-2 py-1 rounded-1'>
+							{dueDate}
+						</small>
+					</CardActions>
+				</CardHeader>
+				<CardBody>
+					<div className='row g-2 mb-3'>
+						<div className='col-auto'>
+							<Badge color={darkModeStatus ? 'light' : 'dark'} >
+								<Icon icon='AttachFile' /> {attachCount}
+							</Badge>
+						</div>
+						<div className='col-auto'>
+							<Badge color={darkModeStatus ? 'light' : 'dark'} >
+								<Icon icon='TaskAlt' /> {taskCount}
+							</Badge>
+						</div>
+					</div>
+					<div className='row'>
+						<div className='col-md-6'>
+							{percent}%
+							<Progress isAutoColor value={percent} height={10} />
+						</div>
+						<div className='col-md-6 d-flex justify-content-end'>
+							<AvatarGroup>
+								<Avatar
+									// srcSet={USERS.GRACE.srcSet}
+									src={USERS.GRACE.src}
+									userName={`${USERS.GRACE.name} ${USERS.GRACE}`}
+									color='info'
+								/>
+								<Avatar
+									// srcSet={USERS.SAM.srcSet}
+									src={USERS.SAM.src}
+									userName={`${USERS.SAM.name} ${USERS.SAM}`}
+									color='info'
+								/>
+								<Avatar
+									// srcSet={USERS.CHLOE.srcSet}
+									src={USERS.CHLOE.src}
+									userName={`${USERS.CHLOE.name} ${USERS.CHLOE}`}
+									color='info'
+								/>
+
+								<Avatar
+									// srcSet={USERS.JANE.srcSet}
+									src={USERS.JANE.src}
+									userName={`${USERS.JANE.name} ${USERS.JANE}`}
+									color='info'
+								/>
+								<Avatar
+									// srcSet={USERS.JOHN}
+									src={USERS.JOHN.src}
+									userName={`${USERS.JOHN.name} ${USERS.JOHN}`}
+									color='info'
+								/>
+								<Avatar
+									// srcSet={USERS.RYAN.srcSet}
+									src={USERS.RYAN.src}
+									userName={`${USERS.RYAN.name} ${USERS.RYAN}`}
+									color='info'
+								/>
+							</AvatarGroup>
+						</div>
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+	);
+};
+
 const DashboardPage = () => {
 	const { mobileDesign } = useContext(ThemeContext);
 	const { themeStatus } = useDarkMode();
@@ -117,7 +233,7 @@ const DashboardPage = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
 	const [goalId, setGoalId] = useState<number>();
-	const { data, isLoading, isSuccess} = useGetGoalsQuery({
+	const { data, isLoading, isSuccess } = useGetGoalsQuery({
 		fixedCacheKey: 'listTask',
 	});
 	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
@@ -250,8 +366,7 @@ const DashboardPage = () => {
 							<Button
 								key={key}
 								color={activeTab === TABS[key] ? 'success' : themeStatus}
-								onClick={() => setActiveTab(TABS[key])}
-								>
+								onClick={() => setActiveTab(TABS[key])}>
 								{TABS[key]}
 							</Button>
 						))}
@@ -269,6 +384,45 @@ const DashboardPage = () => {
 					<div className='col-12'>
 						<CommonDashboardAlert />
 					</div>
+					<Card className='shadow-3d-info'>
+						<CardHeader>
+							<CardLabel icon='AutoStories' iconColor='primary'>
+								<CardTitle>Current Projects </CardTitle>
+							</CardLabel>
+							{/* <CardActions>
+							Only in <strong>{dayjs().format('MMM')}</strong>.
+						</CardActions> */}
+						</CardHeader>
+						<CardBody>
+							<div className='row'>
+								<Items
+									name='Theme'
+									teamName='Facit Team'
+									dueDate='3 days left'
+									attachCount={6}
+									taskCount={24}
+									percent={65}
+									data-tour='project-item'
+								/>
+								<Items
+									name='Plugin'
+									teamName='Code Team'
+									dueDate='14 days left'
+									attachCount={1}
+									taskCount={4}
+									percent={70}
+								/>
+								<Items
+									name='Website'
+									teamName='Facit Team'
+									dueDate='14 days left'
+									attachCount={12}
+									taskCount={34}
+									percent={78}
+								/>
+							</div>
+						</CardBody>
+					</Card>
 
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
@@ -278,7 +432,7 @@ const DashboardPage = () => {
 					) : isSuccess && data.length !== 0 ? (
 						data
 							?.slice(0, 6)
-							.map((i:IGoalProps) => (
+							.map((i: IGoalProps) => (
 								<Item
 									handleEdit={() => {}}
 									handleDelete={() => {}}
@@ -303,10 +457,11 @@ const DashboardPage = () => {
 							</Button>
 						)}
 					</div>
+
 					<TaskOnHold />
-					{/* <div className='col-xxl-3'>
+					<div className='col-xxl-3'>
 						<CommonDashboardRecentActivities />
-					</div> */}
+					</div>
 
 					<div className='col-12'>
 						<div className='display-5 fw-bold py-3'>

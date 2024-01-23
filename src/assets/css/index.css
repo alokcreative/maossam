@@ -20,3 +20,13 @@
 .richcontent > .todo-check {
     flex: 0.1;
 }
+
+.lineclamp{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 1; 
+    line-height: 1.5; 
+    max-height: 4.5em; 
+    width: 300px; 
+}

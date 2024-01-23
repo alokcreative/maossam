@@ -17,6 +17,11 @@ import TableRow from '../../../helpers/TableRow';
 import { useGetTaskListQuery } from '../../../features/auth/taskManagementApiSlice';
 import Loading from '../../../common/other/Loading';
 import TaskTableRow from '../goal/tasks/TaskTableRow';
+import Dropdown, { DropdownMenu, DropdownToggle } from '../../../components/bootstrap/Dropdown';
+import Button from '../../../components/bootstrap/Button';
+import Popovers from '../../../components/bootstrap/Popovers';
+import FormGroup from '../../../components/bootstrap/forms/FormGroup';
+import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
 
 interface ITaskValue {
 	created_at: string;
@@ -52,8 +57,10 @@ const TaskOnHold = () => {
 
 	const deleteAction = () => {};
 	const edit = () => {};
+	const filteredData = data && data?.filter((f:any) => formik.values.taskHoldFil.includes(f.category));
+
 	return (
-		<div className='col-xxl-12 mt-10'>
+		<div className='col-md-9 col-xxl-9 mt-12'>
 			<Card stretch>
 				<CardHeader>
 					<CardLabel icon='CalendarToday' iconColor='info'>
@@ -61,7 +68,7 @@ const TaskOnHold = () => {
 							Tasks on hold
 						</CardTitle>
 					</CardLabel>
-					{/* <CardActions>
+					<CardActions>
 						<div className='d-flex gap-4'>
 							<Dropdown>
 								<DropdownToggle hasIcon={false}>
@@ -71,7 +78,7 @@ const TaskOnHold = () => {
 										isLight
 										className='btn-only-icon position-relative'
 										aria-label='Filter'>
-										{data.length !== filteredData.length && (
+										{data?.length !== filteredData?.length && (
 											<Popovers desc='Filtering applied' trigger='hover'>
 												<span className='position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2'>
 													<span className='visually-hidden'>
@@ -136,7 +143,7 @@ const TaskOnHold = () => {
 								Export
 							</Button>
 						</div>
-					</CardActions> */}
+					</CardActions>
 				</CardHeader>
 				<CardBody className='table-responsive'>
 					{isLoading ? (
