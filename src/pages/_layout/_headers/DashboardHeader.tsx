@@ -1,16 +1,16 @@
 import React from 'react';
 import Header, { HeaderLeft } from '../../../layout/Header/Header';
 import CommonHeaderRight from './CommonHeaderRight';
+import CommonHeaderChat from './CommonHeaderChat';
+import Search from '../../../components/Search';
 
 const DashboardHeader = () => {
 	return (
 		<Header>
 			<HeaderLeft>
-				{/* <Search /> */}
-				{/* <div /> */}
+				<Search />
 			</HeaderLeft>
-			<CommonHeaderRight />
-			{/* afterChildren={<CommonHeaderChat />}  this is chat page attribute of CommonHeaderRight */}
+			<CommonHeaderRight afterChildren={<CommonHeaderChat />} />
 		</Header>
 	);
 };

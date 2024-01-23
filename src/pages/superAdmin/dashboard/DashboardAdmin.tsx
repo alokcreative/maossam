@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
+import '../../../assets/css/index.css';
+
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import Page from '../../../layout/Page/Page';
 import Icon from '../../../components/icon/Icon';
 import SalePerformance from '../dashboardhelper/SalePerformance';
 import Transactions from '../dashboardhelper/Transactions';
 import Card, {
+	CardActions,
 	CardBody,
 	CardHeader,
 	CardLabel,
+	CardSubTitle,
 	CardTitle,
 } from '../../../components/bootstrap/Card';
 import useDarkMode from '../../../hooks/useDarkMode';
@@ -27,9 +31,15 @@ import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice'
 import { dashboardPagesMenu } from '../../../menu';
 import showNotification from '../../../components/extras/showNotification';
 import CommonDashboardAlert from '../../presentation/dashboard/common/CommonDashboardAlert';
-import SubHeader, { SubHeaderLeft, SubHeaderRight, SubheaderSeparator } from '../../../layout/SubHeader/SubHeader';
+import SubHeader, {
+	SubHeaderLeft,
+	SubHeaderRight,
+	SubheaderSeparator,
+} from '../../../layout/SubHeader/SubHeader';
 import { TABS, TTabs } from '../../presentation/dashboard/common/helper';
 import CommonAvatarTeam from '../../../common/other/CommonAvatarTeam';
+import CommonDashboardRecentActivities from '../../presentation/dashboard/common/CommonDashboardRecentActivities';
+
 
 interface CardProp {
 	id: number;
@@ -54,8 +64,8 @@ interface IGoalProps {
 	created_by?: string;
 	updated_at?: string;
 	task_count: string;
-
 }
+
 const DashboardAdmin = () => {
 	const { darkModeStatus } = useDarkMode();
 	const { themeStatus } = useDarkMode();
@@ -166,7 +176,7 @@ const DashboardAdmin = () => {
 
 	return (
 		<PageWrapper isProtected title={dashboardPagesMenu.dashboard.text}>
-					<SubHeader>
+			<SubHeader>
 				<SubHeaderLeft>
 					<span className='h4 mb-0 fw-bold'>Overview</span>
 					<SubheaderSeparator />
@@ -175,8 +185,7 @@ const DashboardAdmin = () => {
 							<Button
 								key={key}
 								color={activeTab === TABS[key] ? 'success' : themeStatus}
-								onClick={() => setActiveTab(TABS[key])}
-								>
+								onClick={() => setActiveTab(TABS[key])}>
 								{TABS[key]}
 							</Button>
 						))}
@@ -189,148 +198,271 @@ const DashboardAdmin = () => {
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
-			<div className='col-12'>
-						<CommonDashboardAlert />
-					</div>
-				<Card className='shadow-3d-info'>
-					<CardHeader>
-						<CardLabel icon='ShowChart' iconColor='secondary'>
-							<CardTitle>{t("KPI's") as string}</CardTitle>
-						</CardLabel>
-					</CardHeader>
-					<CardBody>
-						<div className='row g-4 align-items-center'>
-							<div className='col-md-6 col-xl-3'>
-								<div
-									className={classNames(
-										'd-flex align-items-center rounded-2 p-3',
-										{
-											'bg-l10-warning': !darkModeStatus,
-											'bg-lo25-warning': darkModeStatus,
-										},
-									)}>
-									<div className='flex-shrink-0'>
-										<Icon icon='AutoStories' size='3x' color='warning' />
-									</div>
-									<div className='flex-grow-1 ms-3'>
-										<div className='fw-bold fs-3 mb-0'>0</div>
-										<div className='text-muted mt-n2'>Number of Users</div>
-									</div>
-								</div>
-							</div>
-							<div className='col-md-6 col-xl-3'>
-								<div
-									className={classNames(
-										'd-flex align-items-center rounded-2 p-3',
-										{
-											'bg-l10-info': !darkModeStatus,
-											'bg-lo25-info': darkModeStatus,
-										},
-									)}>
-									<div className='flex-shrink-0'>
-										<Icon icon='Group' size='3x' color='info' />
-									</div>
-									<div className='flex-grow-1 ms-3'>
-										<div className='fw-bold fs-3 mb-0'>0</div>
-										<div className='text-muted mt-n2'>Number of Products</div>
-									</div>
-								</div>
-							</div>
-							<div className='col-md-6 col-xl-3'>
-								<div
-									className={classNames(
-										'd-flex align-items-center rounded-2 p-3',
-										{
-											'bg-l10-primary': !darkModeStatus,
-											'bg-lo25-primary': darkModeStatus,
-										},
-									)}>
-									<div className='flex-shrink-0'>
-										<Icon icon='Flag' size='3x' color='primary' />
-									</div>
-									<div className='flex-grow-1 ms-3'>
-										<div className='fw-bold fs-3 mb-0'>0</div>
-										<div className='text-muted mt-n2'>Sales</div>
-									</div>
-								</div>
-							</div>
-							<div className='col-md-6 col-xl-3'>
-								<div
-									className={classNames(
-										'd-flex align-items-center rounded-2 p-3',
-										{
-											'bg-l10-success': !darkModeStatus,
-											'bg-lo25-success': darkModeStatus,
-										},
-									)}>
-									<div className='flex-shrink-0'>
-										<Icon icon='Group' size='3x' color='success' />
-									</div>
-									<div className='flex-grow-1 ms-3'>
-										<div className='fw-bold fs-3 mb-0'>0</div>
-										<div className='text-muted mt-n2'>Profit</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</CardBody>
-				</Card>
 				<div className='row'>
 					<div className='col-12'>
-						<div className='display-4 fw-bold py-3'>Current Goals</div>
+						<CommonDashboardAlert />
 					</div>
-					{isLoading ? (
-						<div>Loading...</div>
-					) : isSuccess && data.length !== 0 ? (
-						data
-							?.slice(0, 6)
-							.map((i:IGoalProps) => (
-								<Item
-									parent='dashboard'
-									handleEdit={() => {}}
-									handleDelete={() => {}}
-									handleView={(id) => navigate(`../goal-details/${id}`)}
-									created_by={i.created_by!}
-									key={i.id}
-									id={i.id}
-									name={i.title}
-									attributes={i.description}
-									timeline={i.expected_time!}
-									task_count={i?.task_count}
+
+					<Card className='shadow-3d-info'>
+						<CardHeader>
+							<CardLabel icon='ShowChart' iconColor='secondary'>
+								<CardTitle>{t("KPI's") as string}</CardTitle>
+							</CardLabel>
+						</CardHeader>
+						<CardBody>
+							<div className='row g-4 align-items-center'>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-warning': !darkModeStatus,
+												'bg-lo25-warning': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='AutoStories' size='3x' color='warning' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>Number of Users</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-info': !darkModeStatus,
+												'bg-lo25-info': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Group' size='3x' color='info' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>
+												Number of Products
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-primary': !darkModeStatus,
+												'bg-lo25-primary': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Flag' size='3x' color='primary' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>Sales</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-success': !darkModeStatus,
+												'bg-lo25-success': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Group' size='3x' color='success' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>Profit</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-warning': !darkModeStatus,
+												'bg-lo25-warning': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='AutoStories' size='3x' color='warning' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>Number of users on trial period</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-info': !darkModeStatus,
+												'bg-lo25-info': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Group' size='3x' color='info' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>
+											Number of free users (students)
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-primary': !darkModeStatus,
+												'bg-lo25-primary': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Flag' size='3x' color='primary' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>% of users on trial period that become paying users</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-success': !darkModeStatus,
+												'bg-lo25-success': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Group' size='3x' color='success' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>Different packages sales</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-success': !darkModeStatus,
+												'bg-lo25-success': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Group' size='3x' color='success' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div className='text-muted mt-n2 lineclamp'>Number of new users /day/week/month</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-6 col-xl-3'>
+									<div
+										className={classNames(
+											'd-flex align-items-center rounded-2 p-3',
+											{
+												'bg-l10-success': !darkModeStatus,
+												'bg-lo25-success': darkModeStatus,
+											},
+										)}>
+										<div className='flex-shrink-0'>
+											<Icon icon='Group' size='3x' color='success' />
+										</div>
+										<div className='flex-grow-1 ms-3'>
+											<div className='fw-bold fs-3 mb-0'>0</div>
+											<div title='Number of users/field activity / company size / job title' className='text-muted mt-n2 lineclamp'>Number of users/field activity / company size / job title</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</CardBody>
+					</Card>
+				
+					<div className='row'>
+						<div className='col-12'>
+							<div className='display-4 fw-bold py-3'>Current Goals</div>
+						</div>
+						{isLoading ? (
+							<div>Loading...</div>
+						) : isSuccess && data.length !== 0 ? (
+							data
+								?.slice(0, 6)
+								.map((i: IGoalProps) => (
+									<Item
+										parent='dashboard'
+										handleEdit={() => {}}
+										handleDelete={() => {}}
+										handleView={(id) => navigate(`../goal-details/${id}`)}
+										created_by={i.created_by!}
+										key={i.id}
+										id={i.id}
+										name={i.title}
+										attributes={i.description}
+										timeline={i.expected_time!}
+										task_count={i?.task_count}
+									/>
+								))
+						) : (
+							<div>No goals yet.</div>
+						)}
+						<div className='col-12 d-flex justify-content-end me-10 mb-3'>
+							{data && data?.length !== 0 && (
+								<Button color='primary' onClick={() => navigate('/goals')}>
+									See more...
+								</Button>
+							)}
+						</div>
+						<TaskOnHold />
+						<div className='col-md-3 col-xxl-3'>
+							<CommonDashboardRecentActivities />
+						</div>
+					</div>
+
+					<div className='col-12'>
+						<div className='display-5 fw-bold py-3'>
+							Display by media/marketing support
+						</div>
+					</div>
+					<div className='row'>
+						{cards.length === 0 ? (
+							<p>Not Found</p>
+						) : (
+							cards.map((card) => (
+								<SocialItem
+									onClick={() => openModal(card.id, card.name)}
+									key={card.id}
+									name={card.image}
+									teamName={card.teamName}
+									dueDate={card.dueDate}
+									attachCount={card.attachCount}
+									taskCount={card.taskCount}
+									percent={card.percent}
+									data-tour='project-item'
 								/>
 							))
-					) : (
-						<div>No goals yet.</div>
-					)}
-					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
-						{data && data?.length !== 0 && (
-							<Button color='primary' onClick={() => navigate('/goals')}>
-								See more...
-							</Button>
 						)}
 					</div>
-				</div>
-				<div className='col-12'>
-					<div className='display-5 fw-bold py-3'>Display by media/marketing support</div>
-				</div>
-				<div className='row'>
-					{cards.length === 0 ? (
-						<p>Not Found</p>
-					) : (
-						cards.map((card) => (
-							<SocialItem
-								onClick={() => openModal(card.id, card.name)}
-								key={card.id}
-								name={card.image}
-								teamName={card.teamName}
-								dueDate={card.dueDate}
-								attachCount={card.attachCount}
-								taskCount={card.taskCount}
-								percent={card.percent}
-								data-tour='project-item'
-							/>
-						))
-					)}
 				</div>
 				{isModalOpen ? (
 					<MarketingAssetForms
