@@ -384,14 +384,14 @@ const DashboardPage = () => {
 					<div className='col-12'>
 						<CommonDashboardAlert />
 					</div>
-					<Card className='shadow-3d-info'>
+					{/* <Card className='shadow-3d-info'>
 						<CardHeader>
 							<CardLabel icon='AutoStories' iconColor='primary'>
 								<CardTitle>Current Projects </CardTitle>
 							</CardLabel>
-							{/* <CardActions>
+							<CardActions>
 							Only in <strong>{dayjs().format('MMM')}</strong>.
-						</CardActions> */}
+						</CardActions>
 						</CardHeader>
 						<CardBody>
 							<div className='row'>
@@ -422,7 +422,66 @@ const DashboardPage = () => {
 								/>
 							</div>
 						</CardBody>
-					</Card>
+					</Card> */}
+
+<div className='col-12'>
+						<div className='display-4 fw-bold py-3'>Display on objective/product</div>
+					</div>
+					<Items
+						name='Theme'
+						teamName='Facit Team'
+						dueDate='3 days left'
+						attachCount={6}
+						taskCount={24}
+						percent={65}
+						data-tour='project-item'
+					/>
+					<Items
+						name='Plugin'
+						teamName='Code Team'
+						dueDate='14 days left'
+						attachCount={1}
+						taskCount={4}
+						percent={70}
+					/>
+					<Items
+						name='Website'
+						teamName='Facit Team'
+						dueDate='14 days left'
+						attachCount={12}
+						taskCount={34}
+						percent={78}
+					/>
+					<Items
+						name='UI Design'
+						teamName='Omtanke Taem'
+						dueDate='21 days left'
+						attachCount={4}
+						taskCount={18}
+						percent={43}
+					/>
+					<Items
+						name='Theme'
+						teamName='Facit Theme'
+						dueDate='21 days left'
+						attachCount={2}
+						taskCount={12}
+						percent={30}
+					/>
+					<div className='col-md-4'>
+						<Card stretch>
+							<CardBody className='d-flex align-items-center justify-content-center'>
+								<Button
+									color='info'
+									size='lg'
+									isLight
+									className='w-100 h-100'
+									icon='AddCircle'>
+									Add New
+								</Button>
+							</CardBody>
+						</Card>
+					</div>
 
 					<div className='col-12'>
 						<div className='display-4 fw-bold py-3'>Current Goals</div>
@@ -450,13 +509,13 @@ const DashboardPage = () => {
 					) : (
 						<div>No goals yet.</div>
 					)}
-					<div className='col-12 d-flex justify-content-end me-10 mb-3'>
+					{/* <div className='col-12 d-flex justify-content-end me-10 mb-3'>
 						{data && data?.length !== 0 && (
 							<Button color='primary' onClick={() => navigate('/goals')}>
 								See more...
 							</Button>
 						)}
-					</div>
+					</div> */}
 
 					<TaskOnHold />
 					<div className='col-xxl-3'>
@@ -486,6 +545,21 @@ const DashboardPage = () => {
 							/>
 						))
 					)}
+						<div className='col-md-3'>
+						<Card stretch>
+							<CardBody className='d-flex align-items-center justify-content-center'>
+								<Button
+									color='info'
+									size='lg'
+									isLight
+									className='w-100 h-100'
+									icon='AddCircle'
+									onClick={() => navigate('/setupbusiness')}>
+									Add New
+								</Button>
+							</CardBody>
+						</Card>
+					</div>
 				</div>
 				{/* {isModalOpen ? (
 					<MarketingAssetForms

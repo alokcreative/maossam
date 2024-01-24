@@ -13,6 +13,7 @@ import GoalDescription from '../pages/presentation/goal/GoalDescription';
 import SubTask from '../pages/presentation/goal/tasks/SubTask';
 import WebIndex from "../pages/presentation/dashboard/WebIndex"
 import ToolBox from '../pages/presentation/toolbox/ToolBox';
+import CalendarPage from '../pages/presentation/appointment/CalendarPage';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -150,6 +151,14 @@ const documentation: RouteProps[] = [
 	{
 		path: `${pagesMenu.tools.subMenu.itemID.path}/:id`,
 		element: <APP.TOOLS.VIEW />,
+	},
+	{
+		path: `${pagesMenu.tools.subMenu.itemID.path}/:id`,
+		element: <APP.TOOLS.VIEW />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.calendar.path}`,
+		element: <CalendarPage />,
 	},
 ];
 const adminContents = [...presentation, ...documentation];

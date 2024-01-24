@@ -25,6 +25,7 @@ import ProductDetailsPage from '../pages/presentation/products/productDetails/Pr
 import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
 import WebIndex from '../pages/presentation/dashboard/WebIndex';
 import ToolBox from '../pages/presentation/toolbox/ToolBox';
+import CalendarPage from '../pages/presentation/appointment/CalendarPage';
 
 
 const LANDING = {
@@ -893,6 +894,10 @@ const documentation: RouteProps[] = [
 	{
 		path: `${dashboardPagesMenu.toolbox.path}`,
 		element: <ToolBox />,
+	},
+	{
+		path: `${dashboardPagesMenu.calendar.path}`,
+		element: <CalendarPage />,
 	},
 ];
 const contents = [...presentation, ...documentation];

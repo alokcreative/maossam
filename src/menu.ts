@@ -95,6 +95,13 @@ export const dashboardPagesMenu = {
 		icon: 'AreaChart',
 		subMenu: null,
 	},
+	calendar: {
+		id: 'calendar',
+		text: 'Calendar',
+		path: '/calendar',
+		icon: 'analytics',
+		subMenu: null,
+	},
 };
 export const adminDashboardPagesMenu = {
 	dashboard: {
@@ -151,6 +158,13 @@ export const adminDashboardPagesMenu = {
 		text: 'Tool Box',
 		path: '/toolbox',
 		icon: 'AreaChart',
+		subMenu: null,
+	},
+	calendar: {
+		id: 'calendar',
+		text: 'Calendar',
+		path: '/calendar',
+		icon: 'analytics',
 		subMenu: null,
 	},
 };

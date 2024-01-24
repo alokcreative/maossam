@@ -31,7 +31,7 @@ const SocialItem: FC<IItemPropsSocial> = ({
 }) => {
 	return (
 		// eslint-disable-next-line react/jsx-props-no-spreading
-		<div className='col-md-4' {...props}>
+		<div className='col-md-3' {...props}>
 			<Card stretch className='cursor-pointer'>
 				<CardHeader>
 					<CardLabel>
