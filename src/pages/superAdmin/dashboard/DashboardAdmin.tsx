@@ -40,7 +40,6 @@ import { TABS, TTabs } from '../../presentation/dashboard/common/helper';
 import CommonAvatarTeam from '../../../common/other/CommonAvatarTeam';
 import CommonDashboardRecentActivities from '../../presentation/dashboard/common/CommonDashboardRecentActivities';
 
-
 interface CardProp {
 	id: number;
 	name: string;
@@ -225,7 +224,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>Number of Users</div>
+											<div
+												title='Number of Users'
+												className='text-muted mt-n2 lineclamp'>
+												Number of Users
+											</div>
 										</div>
 									</div>
 								</div>
@@ -243,7 +246,9 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>
+											<div
+												title='Number of Products'
+												className='text-muted mt-n2 lineclamp'>
 												Number of Products
 											</div>
 										</div>
@@ -263,7 +268,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>Sales</div>
+											<div
+												title='Sales'
+												className='text-muted mt-n2 lineclamp'>
+												Sales
+											</div>
 										</div>
 									</div>
 								</div>
@@ -281,7 +290,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>Profit</div>
+											<div
+												title='Profit'
+												className='text-muted mt-n2 lineclamp'>
+												Profit
+											</div>
 										</div>
 									</div>
 								</div>
@@ -299,7 +312,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>Number of users on trial period</div>
+											<div
+												title='Number of users on trial period'
+												className='text-muted mt-n2 lineclamp'>
+												Number of users on trial period
+											</div>
 										</div>
 									</div>
 								</div>
@@ -317,8 +334,10 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>
-											Number of free users (students)
+											<div
+												title='Number of free users (students)'
+												className='text-muted mt-n2 lineclamp'>
+												Number of free users (students)
 											</div>
 										</div>
 									</div>
@@ -337,7 +356,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>% of users on trial period that become paying users</div>
+											<div
+												title='% of users on trial period that become paying users'
+												className='text-muted mt-n2 lineclamp'>
+												% of users on trial period that become paying users
+											</div>
 										</div>
 									</div>
 								</div>
@@ -355,7 +378,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>Different packages sales</div>
+											<div
+												title='Different packages sales'
+												className='text-muted mt-n2 lineclamp'>
+												Different packages sales
+											</div>
 										</div>
 									</div>
 								</div>
@@ -373,7 +400,11 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div className='text-muted mt-n2 lineclamp'>Number of new users /day/week/month</div>
+											<div
+												title='Number of new users /day/week/month'
+												className='text-muted mt-n2 lineclamp'>
+												Number of new users /day/week/month
+											</div>
 										</div>
 									</div>
 								</div>
@@ -391,14 +422,19 @@ const DashboardAdmin = () => {
 										</div>
 										<div className='flex-grow-1 ms-3'>
 											<div className='fw-bold fs-3 mb-0'>0</div>
-											<div title='Number of users/field activity / company size / job title' className='text-muted mt-n2 lineclamp'>Number of users/field activity / company size / job title</div>
+											<div
+												title='Number of users/field activity / company size / job title'
+												className='text-muted mt-n2 lineclamp'>
+												Number of users/field activity / company size / job
+												title
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</CardBody>
 					</Card>
-				
+
 					<div className='row'>
 						<div className='col-12'>
 							<div className='display-4 fw-bold py-3'>Current Goals</div>
@@ -426,13 +462,13 @@ const DashboardAdmin = () => {
 						) : (
 							<div>No goals yet.</div>
 						)}
-						<div className='col-12 d-flex justify-content-end me-10 mb-3'>
+						{/* <div className='col-12 d-flex justify-content-end me-10 mb-3'>
 							{data && data?.length !== 0 && (
 								<Button color='primary' onClick={() => navigate('/goals')}>
 									See more...
 								</Button>
 							)}
-						</div>
+						</div> */}
 						<TaskOnHold />
 						<div className='col-md-3 col-xxl-3'>
 							<CommonDashboardRecentActivities />
@@ -462,6 +498,21 @@ const DashboardAdmin = () => {
 								/>
 							))
 						)}
+						<div className='col-md-3'>
+							<Card stretch>
+								<CardBody className='d-flex align-items-center justify-content-center'>
+									<Button
+										color='info'
+										size='lg'
+										isLight
+										className='w-100 h-100'
+										icon='AddCircle'
+										onClick={() => navigate('/setupbusiness')}>
+										Add New
+									</Button>
+								</CardBody>
+							</Card>
+						</div>
 					</div>
 				</div>
 				{isModalOpen ? (
