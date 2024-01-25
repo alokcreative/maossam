@@ -437,7 +437,7 @@ const DashboardAdmin = () => {
 
 					<div className='row'>
 						<div className='col-12'>
-							<div className='display-4 fw-bold py-3'>Current Goals</div>
+							<div className='display-6 fw-bold py-3'>Current Goals</div>
 						</div>
 						{isLoading ? (
 							<div>Loading...</div>
@@ -476,7 +476,7 @@ const DashboardAdmin = () => {
 					</div>
 
 					<div className='col-12'>
-						<div className='display-5 fw-bold py-3'>
+						<div className='display-6 fw-bold py-3'>
 							Display by media/marketing support
 						</div>
 					</div>

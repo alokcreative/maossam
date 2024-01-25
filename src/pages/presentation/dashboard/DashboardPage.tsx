@@ -20,6 +20,13 @@ import ThemeContext from '../../../contexts/themeContext';
 import googleBusiness from '../../../assets/logos/business.png';
 import facebook from '../../../assets/logos/facebook.png';
 import instagram from '../../../assets/logos/instagram.png';
+import BeveledCone from '../../../assets/img/abstract/beveled-cone.png';
+import CloudBall from '../../../assets/img/abstract/cloud-ball.png';
+import Quadrilateral from '../../../assets/img/abstract/quadrilateral.png';
+import HardSharpDonut from '../../../assets/img/abstract/hald-sharp-donut.png';
+import BendyRectangle from '../../../assets/img/abstract/bendy-rectangle.png';
+
+
 import { PER_COUNT } from '../../../components/PaginationButtons';
 // import data from '../../../common/data/dummyTaskHoldData';
 // import goalData from '../../../common/data/dummyGoals';
@@ -30,7 +37,14 @@ import TaskOnHold from '../dashboardHelper/TaskOnHold';
 import { useGetGoalsQuery } from '../../../features/auth/taskManagementApiSlice';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
-import Card, { CardActions, CardBody, CardHeader, CardLabel, CardSubTitle, CardTitle } from '../../../components/bootstrap/Card';
+import Card, {
+	CardActions,
+	CardBody,
+	CardHeader,
+	CardLabel,
+	CardSubTitle,
+	CardTitle,
+} from '../../../components/bootstrap/Card';
 import Progress from '../../../components/bootstrap/Progress';
 import Avatar, { AvatarGroup } from '../../../components/Avatar';
 import USERS from '../../../common/data/userDummyData';
@@ -118,6 +132,8 @@ interface IItemProps extends HTMLAttributes<HTMLDivElement> {
 	taskCount: number;
 	percent: number;
 	dueDate: string;
+	// eslint-disable-next-line react/require-default-props
+	imgSrc?: string;
 }
 
 const Items: FC<IItemProps> = ({
@@ -127,6 +143,7 @@ const Items: FC<IItemProps> = ({
 	taskCount,
 	percent,
 	dueDate,
+	imgSrc,
 	...props
 }) => {
 	const { darkModeStatus } = useDarkMode();
@@ -139,16 +156,29 @@ const Items: FC<IItemProps> = ({
 
 	return (
 		// eslint-disable-next-line react/jsx-props-no-spreading
-		<div className='col-md-4' {...props}>
+		<div className='col-md-3' {...props}>
 			<Card
 				stretch
 				// onClick={handleOnClickToProjectPage}
 				className='shadow-none border border-1 cursor-pointer'>
 				<CardHeader>
-					<CardLabel icon='Ballot'>
-						<CardTitle>{t(`${name}`)}</CardTitle>
-						<CardSubTitle>{teamName}</CardSubTitle>
-					</CardLabel>
+					<div className='d-flex justify-content-start'>
+						<CardTitle>
+							<img
+								src={imgSrc}
+								alt=''
+								width={50}
+								height={50}
+								className='d-block img-fluid'
+								style={{ marginRight: '5px' }}
+							/>
+						</CardTitle>
+						<CardLabel>
+							<CardTitle>{t(`${name}`)}</CardTitle>
+							{/* <CardSubTitle>{teamName}</CardSubTitle> */}
+						</CardLabel>
+					</div>
+
 					<CardActions>
 						<small className='border border-success border-2 text-success fw-bold px-2 py-1 rounded-1'>
 							{dueDate}
@@ -158,12 +188,12 @@ const Items: FC<IItemProps> = ({
 				<CardBody>
 					<div className='row g-2 mb-3'>
 						<div className='col-auto'>
-							<Badge color={darkModeStatus ? 'light' : 'dark'} >
+							<Badge color={darkModeStatus ? 'light' : 'dark'}>
 								<Icon icon='AttachFile' /> {attachCount}
 							</Badge>
 						</div>
 						<div className='col-auto'>
-							<Badge color={darkModeStatus ? 'light' : 'dark'} >
+							<Badge color={darkModeStatus ? 'light' : 'dark'}>
 								<Icon icon='TaskAlt' /> {taskCount}
 							</Badge>
 						</div>
@@ -424,51 +454,56 @@ const DashboardPage = () => {
 						</CardBody>
 					</Card> */}
 
-<div className='col-12'>
-						<div className='display-4 fw-bold py-3'>Display on objective/product</div>
+					<div className='col-12'>
+						<div className='display-6 fw-bold py-3'>Display on objective/product</div>
 					</div>
 					<Items
-						name='Theme'
+						name='Beveled Cone'
 						teamName='Facit Team'
 						dueDate='3 days left'
 						attachCount={6}
 						taskCount={24}
 						percent={65}
 						data-tour='project-item'
-					/>
+						imgSrc={BeveledCone}
+						/>
 					<Items
-						name='Plugin'
+						name='Cloud Ball'
 						teamName='Code Team'
 						dueDate='14 days left'
 						attachCount={1}
 						taskCount={4}
 						percent={70}
-					/>
+						imgSrc={CloudBall}
+						/>
 					<Items
-						name='Website'
+						name='Quadrilateral'
 						teamName='Facit Team'
 						dueDate='14 days left'
 						attachCount={12}
 						taskCount={34}
 						percent={78}
+						imgSrc={Quadrilateral}
 					/>
 					<Items
-						name='UI Design'
+						name='Bendy Rectangle'
 						teamName='Omtanke Taem'
 						dueDate='21 days left'
 						attachCount={4}
 						taskCount={18}
 						percent={43}
-					/>
+						imgSrc={HardSharpDonut}
+						/>
 					<Items
-						name='Theme'
+						name='Octahedron'
 						teamName='Facit Theme'
 						dueDate='21 days left'
 						attachCount={2}
 						taskCount={12}
 						percent={30}
+						imgSrc={BendyRectangle}
 					/>
-					<div className='col-md-4'>
+					<div className='col-md-3'>
 						<Card stretch>
 							<CardBody className='d-flex align-items-center justify-content-center'>
 								<Button
@@ -484,7 +519,7 @@ const DashboardPage = () => {
 					</div>
 
 					<div className='col-12'>
-						<div className='display-4 fw-bold py-3'>Current Goals</div>
+						<div className='display-6 fw-bold py-3'>Current Goals</div>
 					</div>
 					{isLoading ? (
 						<div>Loading..</div>
@@ -523,7 +558,7 @@ const DashboardPage = () => {
 					</div>
 
 					<div className='col-12'>
-						<div className='display-5 fw-bold py-3'>
+						<div className='display-6 fw-bold py-3'>
 							Display by media/marketing support
 						</div>
 					</div>
@@ -545,7 +580,7 @@ const DashboardPage = () => {
 							/>
 						))
 					)}
-						<div className='col-md-3'>
+					<div className='col-md-3'>
 						<Card stretch>
 							<CardBody className='d-flex align-items-center justify-content-center'>
 								<Button
