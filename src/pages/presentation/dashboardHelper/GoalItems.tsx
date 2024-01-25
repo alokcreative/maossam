@@ -132,12 +132,14 @@ const Item: FC<IItemProps> = ({
 					)}
 				</CardHeader>
 				<CardBody onClick={openModalHandler}>
-					<div className='row g-2 mb-3'>
+					<div className='row g-2 mb-1'>
 						<div className='col-auto'>
 							<p className='h6 fw-bold'>Description:</p>
 						</div>
-						<div className='col-12 parent'>
-							{showMore ? parse(attributes) : parse(attributes.substring(0, 100))}
+						<div className='col-12 parent d-flex'>
+							<span>
+								{showMore ? parse(attributes) : parse(attributes.substring(0, 100))}
+							</span>
 							{attributes.length > 30 && (
 								<span
 									aria-hidden='true'
@@ -151,7 +153,7 @@ const Item: FC<IItemProps> = ({
 							{/* <p className='text-muted'>{attributes}</p> */}
 						</div>
 					</div>
-					<p className='mt-3 mb-1'>No. of task: {task_count}</p>
+					<p className='mb-1'>No. of task: {task_count}</p>
 					<div className='row'>
 						<div className='col-md-12'>
 							{0}%
