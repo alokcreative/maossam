@@ -53,27 +53,19 @@ const DefaultAside = () => {
 	}, [token]);
 
 	return (
-		<>
-			{isLoading ? (
-				<div />
-			) : (
-				<Aside>
-					<AsideHead>
-						<Brand asideStatus={asideStatus} setAsideStatus={setAsideStatus} />
-					</AsideHead>
-					<AsideBody>
-						{userData && userData?.role === 'superadmin' ? (
-							<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
-						) : (
-							<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
-						)}
-					</AsideBody>
-					<User />
-				</Aside>
-			)}
-
-			<div />
-		</>
+		<Aside>
+			<AsideHead>
+				<Brand asideStatus={asideStatus} setAsideStatus={setAsideStatus} />
+			</AsideHead>
+			<AsideBody>
+				{userData && userData?.role === 'superadmin' ? (
+					<Navigation menu={adminDashboardPagesMenu} id='aside-dashboard' />
+				) : (
+					<Navigation menu={dashboardPagesMenu} id='aside-dashboard' />
+				)}
+			</AsideBody>
+			<User />
+		</Aside>
 	);
 };
 
