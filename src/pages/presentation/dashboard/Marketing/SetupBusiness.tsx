@@ -49,7 +49,7 @@ const SetupBusiness = () => {
 			<Page>
 				<div className='row'>
 					<div className='col-12'>
-						<div className='display-5 fw-bold py-3 text-center'>MA OSSIM</div>
+						<div className='display-5 fw-bold py-3 text-center'>SoSimple</div>
 					</div>
 				</div>
 				<div className='row'>

@@ -178,7 +178,7 @@ const ModalsStepForm: React.FC = () => {
 						<div className='col-12 col-lg-8 offset-lg-2'>
 							{steps[currentStep] === 'Step 1' ? (
 								<div>
-									<div className='text-center h1 my-3 fw-bold'>MA OSSIM</div>
+									<div className='text-center h1 my-3 fw-bold'>SoSimple</div>
 									<div className='text-center display-2 fw-bold mb-5 lh-1'>
 										START YOUR FREE TRIAL
 									</div>
@@ -213,7 +213,7 @@ const ModalsStepForm: React.FC = () => {
 							) : steps[currentStep] === 'Step 2' ? (
 								<div>
 									<div className='text-center h1 fw-bold mb-4'>
-										Welcome to MA OSSIM!
+										Welcome to SoSimple!
 									</div>
 									<div className='text-center h3 mb-2'>
 										Let’s set up your account
@@ -241,7 +241,7 @@ const ModalsStepForm: React.FC = () => {
 								</div>
 							) : steps[currentStep] === 'Step 3' ? (
 								<div>
-									<div className='text-center h1 fw-bold mb-4'>MA OSSIM</div>
+									<div className='text-center h1 fw-bold mb-4'>SoSimple</div>
 									<div className='text-center h4 mb-5'>
 										Where are you located?
 									</div>

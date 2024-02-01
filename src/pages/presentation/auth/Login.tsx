@@ -25,6 +25,8 @@ import Modal, {
 import Icon from '../../../components/icon/Icon';
 import showNotification from '../../../components/extras/showNotification';
 import { TInputTypes } from '../../../type/input-type';
+import logoD from '../../../assets/logos/logoDark.jpg';
+import logoL from '../../../assets/logos/logoLight.jpg';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -183,7 +185,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 					<div className='col-xl-4 col-lg-6 col-md-8 shadow-3d-container'>
 						<Card className='shadow-3d-dark' data-tour='login-page'>
 							<CardBody>
-								<div className='text-center my-5'>
+								<div className='text-center my-5 '>
 									<Link
 										to='/'
 										className={classNames(
@@ -193,10 +195,18 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												'text-light': darkModeStatus,
 											},
 										)}
-										aria-label='MA-OSSIM'>
-										<div className='text-center display-2 fw-bold mb-5 lh-1'>
-											MA OSSIM
-										</div>
+										aria-label='SoSimple'>
+										<img
+											src={darkModeStatus ? logoL : logoD}
+											alt='SoSimple'
+											width={50}
+											height={50}
+										/>
+										<span
+											className='ml-3 text-center display-2 fw-bold mb-5 lh-1'
+											style={{ marginLeft: '5px' }}>
+											SoSimple
+										</span>
 									</Link>
 								</div>
 								<div
