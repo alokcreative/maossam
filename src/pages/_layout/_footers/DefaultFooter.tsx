@@ -20,7 +20,7 @@ const DefaultFooter = () => {
 								'link-dark': !darkModeStatus,
 								'link-light': darkModeStatus,
 							})}>
-							<small className='fw-bold'>MA-OSSIM</small>
+							<small className='fw-bold'>SoSimple</small>
 						</a>
 					</div>
 				</div>
