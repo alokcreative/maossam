@@ -5,6 +5,8 @@ import Modal, { ModalBody, ModalHeader } from '../../../../components/bootstrap/
 import SubTaskCard from './taskboard/SubTaskCard';
 import parse from 'html-react-parser';
 import { useLocation } from 'react-router-dom';
+import { stringify } from 'querystring';
+import ReactQuill from 'react-quill';
 
 interface ITaskValue {
 	id: number;
@@ -33,11 +35,10 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 	const role = localStorage?.getItem('role');
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showMore, setShowMore] = useState<boolean>(false);
-// console.log("showMore>>>",showMore);
-// console.log("parse(task.description)>>>",parse(task.description).toString());
-// // console.log("parse(task.description.substring(0, 50))>>>",parse(task.description.substring(0, 50)));
-// console.log("{parse(task.description).toString().length>>>",parse(task.description).toString().length);
-
+	// console.log("showMore>>>",showMore);
+	// console.log("parse(task.description)>>>",parse(task.description).toString());
+	// // console.log("parse(task.description.substring(0, 50))>>>",parse(task.description.substring(0, 50)));
+	// console.log("{parse(task.description).toString().length>>>",parse(task.description).toString().length);
 
 	return (
 		<tr>
@@ -53,14 +54,16 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 						</div>
 					</td>
 					<td className='parent col-6'>
-						{showMore
-							? parse(task.description)
-							: parse(task.description.substring(0, 170))}
+						{/* {showMore ? task.description : parse(task.description.substring(0, 170))}
 						{task.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 								...
 							</span>
-						)}
+						)} */}
+						{
+							(<ReactQuill value={task.description} readOnly={true} theme='bubble' />)
+								.length
+						}
 					</td>
 					<td>{task.subtask_count}</td>
 					{role !== 'superadmin' && (
