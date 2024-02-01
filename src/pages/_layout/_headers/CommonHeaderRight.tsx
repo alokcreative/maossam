@@ -8,12 +8,20 @@ import Icon from '../../../components/icon/Icon';
 import ThemeContext from '../../../contexts/themeContext';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Popovers from '../../../components/bootstrap/Popovers';
-import Dropdown, { DropdownItem, DropdownMenu, DropdownToggle } from '../../../components/bootstrap/Dropdown';
+import Dropdown, {
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+} from '../../../components/bootstrap/Dropdown';
 import LANG, { ILang, getLangWithKey } from '../../../lang';
 import { changeLanguage } from 'i18next';
 import i18n from '../../../i18n';
 import Spinner from '../../../components/bootstrap/Spinner';
-import OffCanvas, { OffCanvasBody, OffCanvasHeader, OffCanvasTitle } from '../../../components/bootstrap/OffCanvas';
+import OffCanvas, {
+	OffCanvasBody,
+	OffCanvasHeader,
+	OffCanvasTitle,
+} from '../../../components/bootstrap/OffCanvas';
 import Alert from '../../../components/bootstrap/Alert';
 
 interface ICommonHeaderRightProps {
@@ -41,13 +49,13 @@ const CommonHeaderRight: FC<ICommonHeaderRightProps> = ({ beforeChildren, afterC
 				{/* Tour Modal */}
 				{localStorage.getItem('tourModalStarted') === 'shown' && (
 					<div className='col-auto position-relative'>
-						<Popovers trigger='hover' desc='Start the "MA-OSSIM" tour'>
+						<Popovers trigger='hover' desc='Start the "SoSimple" tour'>
 							<Button
 								// eslint-disable-next-line react/jsx-props-no-spreading
 								{...styledBtn}
 								icon='Tour'
 								onClick={() => setIsOpen(true)}
-								aria-label='Start the "MA-OSSIM" tour'
+								aria-label='Start the "SoSimple" tour'
 							/>
 						</Popovers>
 						<Icon
@@ -92,8 +100,8 @@ const CommonHeaderRight: FC<ICommonHeaderRightProps> = ({ beforeChildren, afterC
 						/>
 					</Popovers>
 				</div>
-					{/* Lang Selector */}
-					<div className='col-auto'>
+				{/* Lang Selector */}
+				<div className='col-auto'>
 					<Dropdown>
 						<DropdownToggle hasIcon={false}>
 							{typeof getLangWithKey(i18n.language as ILang['key']['lng'])?.icon ===
@@ -131,8 +139,8 @@ const CommonHeaderRight: FC<ICommonHeaderRightProps> = ({ beforeChildren, afterC
 						</DropdownMenu>
 					</Dropdown>
 				</div>
-					{/* Quick Panel */}
-					<div className='col-auto'>
+				{/* Quick Panel */}
+				<div className='col-auto'>
 					<Dropdown>
 						<DropdownToggle hasIcon={false}>
 							{/* eslint-disable-next-line react/jsx-props-no-spreading */}
@@ -202,8 +210,8 @@ const CommonHeaderRight: FC<ICommonHeaderRightProps> = ({ beforeChildren, afterC
 						</DropdownMenu>
 					</Dropdown>
 				</div>
-					{/*	Notifications */}
-					<div className='col-auto'>
+				{/*	Notifications */}
+				<div className='col-auto'>
 					<Button
 						// eslint-disable-next-line react/jsx-props-no-spreading
 						{...styledBtn}

@@ -82,9 +82,7 @@ const Item: FC<IItemProps> = ({
 							{percent}%
 							<Progress isAutoColor value={percent} height={10} />
 						</div>
-						<div className='col-md-6 d-flex justify-content-end'>
-						Avatar removed
-						</div>
+						<div className='col-md-6 d-flex justify-content-end'>Avatar removed</div>
 					</div>
 				</CardBody>
 			</Card>
@@ -122,7 +120,7 @@ const ProjectManagementsList = () => {
 				</SubHeaderLeft>
 				<SubHeaderRight>
 					<CommonAvatarTeam>
-						<strong>MA-OSSIM</strong> Team
+						<strong>SoSimple</strong> Team
 					</CommonAvatarTeam>
 				</SubHeaderRight>
 			</SubHeader>
@@ -176,9 +174,7 @@ const ProjectManagementsList = () => {
 								</CardActions>
 							</CardHeader>
 							<CardBody>
-								<div>
-									Project in progress...
-								</div>
+								<div>Project in progress...</div>
 							</CardBody>
 						</Card>
 					</div>
