@@ -30,3 +30,6 @@
     max-height: 4.5em; 
     width: 300px; 
 }
+.tabledesc> *{
+    display: contents   ;
+}

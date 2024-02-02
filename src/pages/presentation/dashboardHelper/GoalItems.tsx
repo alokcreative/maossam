@@ -90,7 +90,7 @@ const Item: FC<IItemProps> = ({
 			<Card stretch className='cursor-pointer'>
 				<CardHeader>
 					<CardLabel onClick={openModalHandler}>
-						<CardTitle>{name}</CardTitle>
+						<CardTitle className='mr-2'>{name}</CardTitle>
 					</CardLabel>
 					{(logUserId == created_by || role == 'superadmin') && (
 						<CardActions>
@@ -136,11 +136,10 @@ const Item: FC<IItemProps> = ({
 						<div className='col-auto'>
 							<p className='h6 fw-bold'>Description:</p>
 						</div>
-						<div className='col-12 parent d-flex'>
-							<span>
-								{showMore ? parse(attributes) : parse(attributes.substring(0, 100))}
-							</span>
-							{attributes.length > 30 && (
+						<div className='col-12 parent tabledesc'>
+							{showMore ? parse(attributes) : parse(attributes.substring(0, 100))}
+
+							{attributes.length > 50 && (
 								<span
 									aria-hidden='true'
 									onClick={(e) => {

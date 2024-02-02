@@ -27,7 +27,6 @@ interface ITableRowProps {
 	deleteAction(...args: unknown[]): unknown;
 }
 
-
 const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }) => {
 	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
 	const [modalStatus, setModalStatus] = useState(false);
@@ -42,9 +41,9 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 					<td>
 						<div className='line-clamp'>{subtask.title}</div>
 					</td>
-					<td className='parent col-6'>
+					<td className='parent col-6 tabledesc'>
 						{showMore
-							? (parse(subtask?.description))
+							? parse(subtask?.description)
 							: parse(subtask?.description.substring(0, 50))}
 						{subtask.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
@@ -101,6 +100,7 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 						}}>
 						Save
 					</Button> */}
+										<div />
 									</ModalFooter>
 								</Modal>
 							)}

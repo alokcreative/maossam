@@ -146,6 +146,13 @@ export const adminDashboardPagesMenu = {
 		icon: 'Fact Check',
 		subMenu: null,
 	},
+	faq: {
+		id: 'faq',
+		text: 'FAQ',
+		path: '/faq',
+		icon: 'contact_support',
+		subMenu: null,
+	},
 	webindex: {
 		id: 'webindex',
 		text: 'Web Index',

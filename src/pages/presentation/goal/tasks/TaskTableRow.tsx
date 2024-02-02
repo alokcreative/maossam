@@ -53,17 +53,16 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 					</div> */}
 						</div>
 					</td>
-					<td className='parent col-6'>
-						{showMore ? task.description : parse(task.description.substring(0, 170))}
+					<td className='parent col-6 tabledesc'>
+						{showMore
+							? parse(task.description)
+							: parse(task.description.substring(0, 170))}
 						{task.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
+								{' '}
 								...
 							</span>
 						)}
-						{/* {
-							(<ReactQuill value={task.description} readOnly={true} theme='bubble' />)
-								.length
-						} */}
 					</td>
 					<td>{task.subtask_count}</td>
 					{role !== 'superadmin' && (
