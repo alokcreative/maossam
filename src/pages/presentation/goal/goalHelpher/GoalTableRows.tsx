@@ -57,7 +57,7 @@ const GoalTableRows: FC<IProps> = ({
 			</td>
 			{/* <td>{parse(i.description)}</td> */}
 			<td>{goalData.task_count}</td>
-			{role != 'superadmin' && <td>{goalData.due_date}</td>}
+			{role != 'superadmin' && <td className='text-nowrap'>{goalData.due_date}</td>}
 
 			<td className='h5'>
 				<Badge
