@@ -94,7 +94,7 @@ const ProductPage = () => {
 	const { gridData, setGridData } = useProduct();
 
 	const [filterableData, setFilterableData] = useState(data);
-	const role = localStorage?.getItem("role")
+	const role = localStorage?.getItem('role');
 
 	const searchAndFilterData = (searchValue: string) => {
 		const tempData = data;
@@ -203,6 +203,7 @@ const ProductPage = () => {
 						<Input
 							id='search'
 							size='lg'
+							autoComplete='false'
 							placeholder='Search...'
 							className={classNames('rounded-1', {
 								'bg-white': !darkModeStatus,
@@ -238,7 +239,7 @@ const ProductPage = () => {
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
 						type='button'
-						className={`${gridData.view === 'list'  ? 'active' : ''}`}
+						className={`${gridData.view === 'list' ? 'active' : ''}`}
 						onClick={() => setGridData({ view: 'list' })}>
 						List View
 					</Button>

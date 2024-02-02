@@ -252,8 +252,8 @@ const UserList = () => {
 			if (!values.phone_number) {
 				errors.phone_number = 'Required';
 			}
-			if (values.phone_number.length !== 10) {
-				errors.phone_number = 'Must be 10 digit';
+			if (values.phone_number.length !== 9) {
+				errors.phone_number = 'Must be 9 digit';
 			}
 			if (!values.company_name) {
 				errors.company_name = 'Required';
@@ -446,7 +446,9 @@ const UserList = () => {
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
 			<SubHeader>
-				<SubHeaderLeft ><div/></SubHeaderLeft>
+				<SubHeaderLeft>
+					<div />
+				</SubHeaderLeft>
 				<SubHeaderRight>
 					<Button color='info' icon='Add' isLight onClick={newUser}>
 						Add User
