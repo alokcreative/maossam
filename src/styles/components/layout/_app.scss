@@ -11,3 +11,84 @@
 		overflow: hidden;
 	}
 }
+
+// convert to classic
+body .card[data-tour="login-page"]{
+	border-radius: 6.5px !important;
+}
+body .card[data-tour="login-page"] .btn {
+	border-radius: 3.25px !important;
+}
+
+body .card:not([data-tour="login-page"]) {
+	border-radius: 0.25rem !important;
+	border: 1px solid rgba(222, 226, 230, 0.5) !important;
+	box-shadow: 0 1.6rem 3rem #0000000d !important;
+	&::after {
+		display: none;
+	}
+	&::before {
+		display: none;
+	}
+}
+body .btn {
+	border-radius: 3.25px !important;
+}
+body .alert {
+	border-radius: 3.25px !important;
+}
+body .rounded-2 {
+	border-radius:  3.25px !important;
+}
+body .rounded-3 {
+	border-radius:  4.0625px !important;
+}
+body .rounded-1 {
+	border-radius:  2.84375px !important;
+}
+body .form-control {
+	border-radius: 3.25px !important;
+}
+body .btn-group {
+	border-radius: 3.25px !important;
+}
+.btn-group>.btn-group:not(:first-child) > .btn, 
+.btn-group>.btn:nth-child(n+3), 
+.btn-group>:not(.btn-check)+.btn {
+	border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+.table-modern > tbody > tr > :first-child, 
+.table-modern > thead > tr > :first-child {
+	border-bottom-left-radius: 0.25rem !important;
+    border-top-left-radius: 0.25rem !important;
+}
+.table-modern>tbody>tr>:last-child,
+.table-modern>thead>tr>:last-child {
+	border-bottom-right-radius: 0.25rem !important;
+    border-top-right-radius: 0.25rem !important;
+}
+.modal-content {
+	border-radius: 3.25px !important;
+}
+body .form-select-sm {
+    border-radius: .21875rem !important;
+}
+body .page-item:first-child .page-link{
+	border-bottom-left-radius: 3.25px !important;
+	border-top-left-radius: 3.25px !important;
+}
+body .page-item:last-child .page-link{
+	border-bottom-right-radius: 3.25px !important;
+	border-top-right-radius: 3.25px !important;
+}
+body .navigation .navigation-link-pill {
+	border-radius: 0.25rem !important;
+}
+body .badge {
+	border-radius: 3.25px !important;
+}
+body .rbc-month-view,
+body .rbc-time-view{
+	border-radius: 0.25rem !important;
+}
