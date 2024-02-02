@@ -92,3 +92,19 @@ body .rbc-month-view,
 body .rbc-time-view{
 	border-radius: 0.25rem !important;
 }
+body .rbc-day-slot .rbc-background-event, 
+body .rbc-event {
+	border-radius: 3.25px !important;
+}
+body .card-header:first-child {
+	border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+body .form-select-lg {
+    border-radius: 0.3125rem !important;
+}
+body .form-select {
+	border-radius: 0.25rem !important;
+}
+body .popover {
+	border-radius: 3.25px !important;
+}
