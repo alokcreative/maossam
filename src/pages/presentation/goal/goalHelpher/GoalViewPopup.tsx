@@ -146,7 +146,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 							<div className='d-flex align-items-center justify-content-between'>
 								<h5 className='mb-3 fw-bold'>Hi, {userData?.first_name}</h5>
 								{(Number(logUserId) === data.goal.created_by ||
-									role =='superadmin') && (
+									role == 'superadmin') && (
 									<Button
 										color='primary'
 										className='mb-3'
@@ -171,7 +171,8 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 														height: '100px',
 														overflow: 'scroll',
 														msOverflowStyle: 'none',
-													}}>
+													}}
+													className='tabledesc'>
 													{parse(i.description)}
 												</p>
 												<SubTask

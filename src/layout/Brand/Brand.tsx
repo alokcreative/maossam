@@ -3,20 +3,24 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Icon from '../../components/icon/Icon';
 import Logo from '../../components/Logo';
+import classNames from 'classnames';
+import useDarkMode from '../../hooks/useDarkMode';
 
 interface IBrandProps {
 	asideStatus: boolean;
 	setAsideStatus(...args: unknown[]): unknown;
 }
 const Brand: FC<IBrandProps> = ({ asideStatus, setAsideStatus }) => {
+	const { darkModeStatus } = useDarkMode();
+
 	return (
-		<div className='brand'>
+		<div className='brand d-flex align-items-center'>
 			<div className='brand-logo'>
-				<h1 className='brand-title '>
-					<Link to='/' aria-label='Logo'>
-						<Logo height={32} />
+				<div className='brand-title'>
+					<Link to='/' aria-label='Logo' className='d-flex'>
+						<Logo height={25} />
 					</Link>
-				</h1>
+				</div>
 			</div>
 			<button
 				type='button'

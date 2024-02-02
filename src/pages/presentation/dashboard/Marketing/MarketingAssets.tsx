@@ -231,7 +231,7 @@ const MarketingAssets = () => {
 			name: 'Google Business',
 			image: googleBusiness,
 			option: 'yes',
-			teamName: 'MA OSSIM Team',
+			teamName: 'SoSimple Team',
 			dueDate: '14 days left',
 			attachCount: 0,
 			taskCount: 0,
@@ -253,7 +253,7 @@ const MarketingAssets = () => {
 			name: 'Instagram',
 			image: instagram,
 			option: 'yes',
-			teamName: 'MA OSSIM Team',
+			teamName: 'SoSimple Team',
 			dueDate: '14 days left',
 			attachCount: 0,
 			taskCount: 0,
@@ -275,7 +275,7 @@ const MarketingAssets = () => {
 			name: 'Google Ads',
 			image: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg',
 			option: 'yes',
-			teamName: 'MA OSSIM Theme',
+			teamName: 'SoSimple Theme',
 			dueDate: '14 days left',
 			attachCount: 0,
 			taskCount: 0,
@@ -344,7 +344,7 @@ const MarketingAssets = () => {
 				</SubHeaderLeft>
 				{/* <SubHeaderRight>
 					<CommonAvatarTeam>
-						<strong>MA OSSIM</strong> Team
+						<strong>SoSimple</strong> Team
 					</CommonAvatarTeam>
 				</SubHeaderRight> */}
 			</SubHeader>

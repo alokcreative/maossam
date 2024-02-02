@@ -117,7 +117,7 @@ const CommonDashboardUserIssue = () => {
 	const addTodo = (title: string, date: dayjs.ConfigType, badge: any) => {
 		const newTodos: {
 			id?: string | number;
-			status?: boolean|string;
+			status?: boolean | string;
 			title?: string | number;
 			date?: dayjs.ConfigType;
 			badge?: {
@@ -299,7 +299,7 @@ const CommonDashboardUserIssue = () => {
 											validFeedback='Looks good!'
 											value={formik.values.marketingChannel}
 											list={[
-												{ value: 'value1', text: 'MA OSSIM Team' },
+												{ value: 'value1', text: 'SoSimple Team' },
 												{ value: 'value2', text: 'Code Team' },
 												{ value: 'value3', text: 'Omtanke Taem' },
 											]}
@@ -344,8 +344,8 @@ const CommonDashboardUserIssue = () => {
 					</Modal>
 				</CardActions>
 			</CardHeader>
-			<CardBody >
-				<Todo list={list} setList={setList} refetch={()=>{}}/>
+			<CardBody>
+				<Todo list={list} setList={setList} refetch={() => {}} />
 			</CardBody>
 		</Card>
 	);

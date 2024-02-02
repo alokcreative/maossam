@@ -11,9 +11,10 @@ import ProductDetailsPage from '../pages/presentation/products/productDetails/Pr
 import Goals from '../pages/presentation/goal/Goals';
 import GoalDescription from '../pages/presentation/goal/GoalDescription';
 import SubTask from '../pages/presentation/goal/tasks/SubTask';
-import WebIndex from "../pages/presentation/dashboard/WebIndex"
+import WebIndex from '../pages/presentation/dashboard/WebIndex';
 import ToolBox from '../pages/presentation/toolbox/ToolBox';
 import CalendarPage from '../pages/presentation/appointment/CalendarPage';
+import FaqPage from '../pages/presentation/faq-page/FaqPage';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -46,7 +47,9 @@ const APP = {
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
-		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/products/productDetails/ProductDetailsPage')),
+		PRODUCTS_VIEW: lazy(
+			() => import('../pages/presentation/products/productDetails/ProductDetailsPage'),
+		),
 	},
 	APPOINTMENT: {
 		CALENDAR: lazy(() => import('../pages/presentation/appointment/CalendarPage')),
@@ -159,6 +162,10 @@ const documentation: RouteProps[] = [
 	{
 		path: `${adminDashboardPagesMenu.calendar.path}`,
 		element: <CalendarPage />,
+	},
+	{
+		path: dashboardPagesMenu.faq.path,
+		element: <FaqPage />,
 	},
 ];
 const adminContents = [...presentation, ...documentation];

@@ -23,7 +23,7 @@ const PageWrapper = forwardRef<HTMLDivElement, IPageWrapperProps>(
 			// @ts-ignore
 			document.getElementsByTagName('TITLE')[0].text = `${
 				title ? `${title} | ` : ''
-			}${`Maossam`}`;
+			}${`SoSimple`}`;
 			// @ts-ignore
 			document
 				?.querySelector('meta[name="description"]')

@@ -70,7 +70,7 @@ const App = () => {
 	 * Modern Design
 	 */
 	useLayoutEffect(() => {
-		if (process.env.REACT_APP_MODERN_DESGIN === 'true') {
+		if (process.env.REACT_APP_MODERN_DESGIN === 'true' || false) {
 			document.body.classList.add('modern-design');
 		} else {
 			document.body.classList.remove('modern-design');

@@ -120,7 +120,7 @@ const Goals: FC = () => {
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
 		fixedCacheKey: 'listTask',
 	});
-	const { data: categoryData } = useGetCategoryListQuery({
+	const { data: categoryData, refetch: refetchCategory } = useGetCategoryListQuery({
 		fixedCacheKey: 'categorylist',
 	});
 	// console.log('categoryData>>>>', categoryData);
@@ -149,9 +149,7 @@ const Goals: FC = () => {
 		setGoalId(id);
 		setIsModalOpen(true);
 	};
-	// useEffect(() => {
-	// 	refetch();
-	// });
+
 	useEffect(() => {
 		if (data) {
 			if (logUserId == '1') {
@@ -166,9 +164,11 @@ const Goals: FC = () => {
 		if (categoryData) {
 			const newCategoryList = formatCategory(categoryData);
 			setCategoryList(newCategoryList);
+		} else {
+			refetchCategory();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isLoading, data]);
+	}, [isLoading, data, isOpen]);
 	const formikNewGoal = useFormik({
 		initialValues: {
 			name: '',
@@ -254,6 +254,7 @@ const Goals: FC = () => {
 	const newGoal = () => {
 		setIsOpen(true);
 		setModalHeader('New Goal');
+		refetchCategory();
 	};
 
 	const updateGoalForm = useFormik({
@@ -422,7 +423,6 @@ const Goals: FC = () => {
 		}
 	};
 
-	
 	return (
 		<PageWrapper title={dashboardPagesMenu.goals.text}>
 			<SubHeader>

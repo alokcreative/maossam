@@ -41,7 +41,7 @@ import Icon from '../../../components/icon/Icon';
 import showNotification from '../../../components/extras/showNotification';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
 import ReactQuill from 'react-quill';
-import parse from 'html-react-parser'
+import parse from 'html-react-parser';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -111,7 +111,6 @@ const GoalDescription: FC = () => {
 			console.log('modalState', modalState);
 			console.log('role', role);
 			if (modalState === 'Add Task') {
-				
 				if (role === 'superadmin') {
 					createTask({
 						title: values.name,
@@ -195,8 +194,8 @@ const GoalDescription: FC = () => {
 			}
 
 			// setTaskList([...taskList, newTask]);
-				setIsOpen(false);
-				resetForm();
+			setIsOpen(false);
+			resetForm();
 		},
 	});
 	const handledescription = (value: any) => {
@@ -277,9 +276,9 @@ const GoalDescription: FC = () => {
 										<span className='display-7 fw-bold p-3'>Name :</span>
 										<span>{data.goal?.title}</span>
 									</div>
-									<div  className='display-7 fw-bold p-3'>
+									<div className='display-7 fw-bold p-3'>
 										<span>Description :</span>
-										<span className='ml-5 parent'>
+										<span className='ml-5 parent tabledesc'>
 											{showMore
 												? parse(data.goal?.description)
 												: parse(data.goal?.description.substring(0, 100))}
@@ -299,7 +298,7 @@ const GoalDescription: FC = () => {
 									<div className='row col-12 d-flex'>
 										<CardLabel icon='Task' iconColor='success'>
 											<CardTitle tag='div' className='h5'>
-											Tasks List
+												Tasks List
 											</CardTitle>
 										</CardLabel>
 										<div>

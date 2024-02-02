@@ -26,7 +26,6 @@ import Quadrilateral from '../../../assets/img/abstract/quadrilateral.png';
 import HardSharpDonut from '../../../assets/img/abstract/hald-sharp-donut.png';
 import BendyRectangle from '../../../assets/img/abstract/bendy-rectangle.png';
 
-
 import { PER_COUNT } from '../../../components/PaginationButtons';
 // import data from '../../../common/data/dummyTaskHoldData';
 // import goalData from '../../../common/data/dummyGoals';
@@ -317,7 +316,7 @@ const DashboardPage = () => {
 			name: 'Google Business',
 			image: googleBusiness,
 			option: 'yes',
-			teamName: 'MA OSSIM Team',
+			teamName: 'SoSimple Team',
 			dueDate: '14 days left',
 			attachCount: 0,
 			taskCount: 0,
@@ -339,7 +338,7 @@ const DashboardPage = () => {
 			name: 'Instagram',
 			image: instagram,
 			option: 'yes',
-			teamName: 'MA OSSIM Team',
+			teamName: 'SoSimple Team',
 			dueDate: '14 days left',
 			attachCount: 0,
 			taskCount: 0,
@@ -466,7 +465,7 @@ const DashboardPage = () => {
 						percent={65}
 						data-tour='project-item'
 						imgSrc={BeveledCone}
-						/>
+					/>
 					<Items
 						name='Cloud Ball'
 						teamName='Code Team'
@@ -475,7 +474,7 @@ const DashboardPage = () => {
 						taskCount={4}
 						percent={70}
 						imgSrc={CloudBall}
-						/>
+					/>
 					<Items
 						name='Quadrilateral'
 						teamName='Facit Team'
@@ -493,7 +492,7 @@ const DashboardPage = () => {
 						taskCount={18}
 						percent={43}
 						imgSrc={HardSharpDonut}
-						/>
+					/>
 					<Items
 						name='Octahedron'
 						teamName='Facit Theme'
