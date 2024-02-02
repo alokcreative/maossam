@@ -51,7 +51,7 @@ import {
 import ConfirmationModal from '../../../../documentation/components/ConfirmationModal';
 import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
 import { useParams } from 'react-router-dom';
-import parse from 'html-react-parser'
+import parse from 'html-react-parser';
 
 interface IColumnCard {
 	columnKey: string;
@@ -158,7 +158,9 @@ const TaskBoardCard: FC<IColumnCard> = ({
 						</DropdownToggle>
 						<DropdownMenu isAlignmentEnd>
 							<DropdownItem>
-								<Button icon='Edit' onClick={handleEdit}>Edit</Button>
+								<Button icon='Edit' onClick={handleEdit}>
+									Edit
+								</Button>
 							</DropdownItem>
 							<DropdownItem isDivider />
 							<DropdownItem>
@@ -213,7 +215,9 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				)} */}
 				{/* {card.description} */}
 				<p className='mb-1'>{card.expectedTime}</p>
-				<p>{showMore ? parse(card.description) : parse(card.description.substring(0, 100))}</p>
+				<p className='tabledesc'>
+					{showMore ? parse(card.description) : parse(card.description.substring(0, 100))}
+				</p>
 				<Button className='p-0' onClick={() => setShowMore(!showMore)}>
 					{showMore ? 'Show less' : 'Show more'}
 				</Button>
@@ -275,7 +279,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				id={id}
 				refetch={refetch}
 				isOpen={isOpen}
-				handleCloseClick={()=>setIsOpen(false)}
+				handleCloseClick={() => setIsOpen(false)}
 				modalState={modalState}
 				currTask={currTask}
 			/>

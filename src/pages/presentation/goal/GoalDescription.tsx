@@ -278,7 +278,7 @@ const GoalDescription: FC = () => {
 									</div>
 									<div className='display-7 fw-bold p-3'>
 										<span>Description :</span>
-										<span className='ml-5 parent'>
+										<span className='ml-5 parent tabledesc'>
 											{showMore
 												? parse(data.goal?.description)
 												: parse(data.goal?.description.substring(0, 100))}

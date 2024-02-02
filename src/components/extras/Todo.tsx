@@ -253,7 +253,7 @@ export const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>(
 								{itemData.title}
 							</div>
 							{itemData.description && (
-								<div className='todo-subtitle text-muted small parent'>
+								<div className='todo-subtitle text-muted small parent tabledesc'>
 									{parse(itemData.description)}
 								</div>
 							)}

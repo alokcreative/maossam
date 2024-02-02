@@ -24,7 +24,7 @@ interface IProps {
 	setShowConfirmation(...args: unknown[]): unknown;
 	handleEdit(...args: unknown[]): unknown;
 	openModal(...args: unknown[]): unknown;
-    index:number;
+	index: number;
 }
 const GoalTableRows: FC<IProps> = ({
 	goalData,
@@ -32,7 +32,7 @@ const GoalTableRows: FC<IProps> = ({
 	setShowConfirmation,
 	handleEdit,
 	openModal,
-    index
+	index,
 }) => {
 	const role = localStorage.getItem('role');
 	const [currentPage, setCurrentPage] = useState(1);
@@ -45,8 +45,10 @@ const GoalTableRows: FC<IProps> = ({
 		<tr>
 			<th scope='row'>{index + 1}</th>
 			<th>{goalData.title}</th>
-			<td className='parent col-6'>
-				{showMore ? parse(goalData.description) : parse(goalData.description.substring(0, 130))}
+			<td className='parent col-6 tabledesc'>
+				{showMore
+					? parse(goalData.description)
+					: parse(goalData.description.substring(0, 130))}
 				{goalData.description.length > 50 && (
 					<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 						...

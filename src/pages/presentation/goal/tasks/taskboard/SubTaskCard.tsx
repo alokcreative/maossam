@@ -204,7 +204,8 @@ const SubTaskCard: FC<IValueProps> = (props) => {
 															<span
 																style={{
 																	paddingLeft: '1px',
-																}}>
+																}}
+																className='tabledesc'>
 																{parse(item.description)}
 															</span>
 														</div>
