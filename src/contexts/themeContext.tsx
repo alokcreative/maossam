@@ -41,6 +41,12 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 
 	const [leftMenuStatus, setLeftMenuStatus] = useState(false);
 	const [rightMenuStatus, setRightMenuStatus] = useState(false);
+	// const [asideStatus, setAsideStatus] = useState(
+	// 	localStorage.getItem('facit_asideStatus')
+	// 		? localStorage.getItem('facit_asideStatus') === 'true'
+	// 		: // @ts-ignore
+	// 		  deviceScreen?.width >= process.env.REACT_APP_ASIDE_MINIMIZE_BREAKPOINT_SIZE,
+	// );
 	const [asideStatus, setAsideStatus] = useState(true);
 	useLayoutEffect(() => {
 		localStorage.setItem('facit_asideStatus', asideStatus?.toString());
