@@ -46,6 +46,7 @@ import {
 } from '../../../features/auth/authApiSlice';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
+import ConfirmationModal from '../../documentation/components/ConfirmationModal';
 
 interface ITableRowProps {
 	index: number;
@@ -162,6 +163,9 @@ const UserList = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [deletingID, setDeletingID] = useState('');
+
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
 	// 	Object.keys(USERS).map((key) => ({
@@ -182,7 +186,12 @@ const UserList = () => {
 		// console.log('id>>>>', id);
 		// const updatedData = data.filter((user: IUserProps) => user.id !== id);
 		// setUserData(updatedData);
-		deleteProfile(id)
+		setShowConfirmation(true);
+		setDeletingID(id);
+	};
+	const handleDeleteConfirmation = () => {
+		setShowConfirmation(false);
+		deleteProfile(deletingID)
 			.unwrap()
 			.then(() => {
 				refetch().then((res) => {
@@ -744,6 +753,11 @@ const UserList = () => {
 					</CardFooterRight>
 				</ModalFooter>
 			</Modal>
+			<ConfirmationModal
+				isOpen={showConfirmation}
+				setIsOpen={() => setShowConfirmation(false)}
+				onConfirm={handleDeleteConfirmation}
+			/>
 		</PageWrapper>
 	);
 };
