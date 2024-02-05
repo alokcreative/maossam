@@ -196,7 +196,7 @@ const DashboardAdmin = () => {
 					</CommonAvatarTeam>
 				</SubHeaderRight>
 			</SubHeader>
-			<Page container='fluid'>
+			<Page container='fluid' className='overflow-hidden'>
 				<div className='row'>
 					<div className='col-12'>
 						<CommonDashboardAlert />

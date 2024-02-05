@@ -26,7 +26,7 @@ import Icon from '../../../components/icon/Icon';
 import showNotification from '../../../components/extras/showNotification';
 import { TInputTypes } from '../../../type/input-type';
 import logoD from '../../../assets/logos/logoDark.jpg';
-import logoL from '../../../assets/logos/logoLight.jpg';
+import logoL from '../../../assets/logos/logoLight.png';
 
 const Signup = lazy(() => import('./Signup'));
 
@@ -199,14 +199,8 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 										<img
 											src={darkModeStatus ? logoL : logoD}
 											alt='SoSimple'
-											width={50}
-											height={50}
+											height={80}
 										/>
-										<span
-											className='ml-3 text-center display-2 fw-bold mb-5 lh-1'
-											style={{ marginLeft: '5px' }}>
-											SoSimple
-										</span>
 									</Link>
 								</div>
 								<div
@@ -268,6 +262,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 													/>
 												</FormGroup>
 											</div>
+
 											<div className='col-12'>
 												<FormGroup
 													id='password'
@@ -275,21 +270,25 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 													label='Password'>
 													<Input
 														type={passwordType}
-														name='password'
-														autoComplete='current-password'
+														autoComplete='Password'
 														value={formik.values.password}
 														isTouched={formik.touched.password}
 														invalidFeedback={formik.errors.password}
 														isValid={formik.isValid}
 														onChange={formik.handleChange}
 														onBlur={formik.handleBlur}
+														onFocus={() => {
+															formik.setErrors({});
+														}}
 													/>
+												</FormGroup>
+												<div>
 													{formik.values.password !== '' ? (
 														<div
 															style={{
 																position: 'absolute',
-																right: '26px',
-																bottom: '12px',
+																right: '46px',
+																bottom: '212px',
 															}}>
 															<Icon
 																size='lg'
@@ -300,7 +299,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 													) : (
 														<div />
 													)}
-												</FormGroup>
+												</div>
 
 												<div
 													className='cursor-pointer me-3 mt-2'
