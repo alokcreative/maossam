@@ -193,19 +193,29 @@ const Signup: FC = () => {
 							formik.setErrors({});
 						}}
 					/>
-					{formik.values.password !== '' ? (
-						<div
-							style={{
-								position: 'absolute',
-								right: '26px',
-								bottom: `${formik.errors.password ? '33px' : '12px'}`,
-							}}>
-							<Icon size='lg' icon={passwordIcon} onClick={handlePasswordShow} />
-						</div>
-					) : (
-						<div />
-					)}
 				</FormGroup>
+				{formik.values.password !== '' ? (
+					<div
+						style={{
+							position: 'absolute',
+							right: '48px',
+							bottom: `${
+								formik.errors.password && formik.values.confirm_password == ''
+									? '278px'
+									: formik.errors.password && formik.errors.confirm_password
+									? '300px'
+									: formik.errors.confirm_password
+									? '278px'
+									: formik.errors.password
+									? '300px'
+									: '260px'
+							}`,
+						}}>
+						<Icon size='lg' icon={passwordIcon} onClick={handlePasswordShow} />
+					</div>
+				) : (
+					<div />
+				)}
 			</div>
 			<div className='col-12'>
 				<FormGroup id='confirm-password' isFloating label='Confirm password'>
