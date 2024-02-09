@@ -31,5 +31,8 @@
     width: 300px; 
 }
 .tabledesc> :first-child{
-    display: contents   ;
+    display: contents;
+}
+.line-clamp, .tabledesc > *{
+    font-size: 14px !important;
 }

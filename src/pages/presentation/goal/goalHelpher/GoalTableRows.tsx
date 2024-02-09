@@ -43,8 +43,10 @@ const GoalTableRows: FC<IProps> = ({
 
 	return (
 		<tr>
-			<th scope='row'>{index + 1}</th>
-			<th>{goalData.title}</th>
+			<td scope='row'>{index + 1}</td>
+			<td>
+				<div className='line-clamp'>{goalData.title}</div>
+			</td>
 			<td className='parent col-6 tabledesc'>
 				{showMore
 					? parse(goalData.description)

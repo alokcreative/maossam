@@ -42,6 +42,7 @@ import showNotification from '../../../components/extras/showNotification';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
 import ReactQuill from 'react-quill';
 import parse from 'html-react-parser';
+import useSortableData from '../../../hooks/useSortableData';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -254,6 +255,8 @@ const GoalDescription: FC = () => {
 		setModalState('Add Task');
 		setIsOpen(true);
 	};
+	const { items, requestSort, getClassNamesFor } = useSortableData(taskList || []);
+
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -267,17 +270,17 @@ const GoalDescription: FC = () => {
 				<Loading />
 			) : isSuccess && data ? (
 				<Page container='fluid'>
-					<div className='display-4 fw-bold py-3'> Goal Description</div>
+					{/* <div className='display-4 fw-bold py-3'> Goal Description</div> */}
 					<div className='row h-100'>
 						<div className='col-12'>
 							<Card>
 								<CardBody>
 									<div>
-										<span className='display-7 fw-bold p-3'>Name :</span>
-										<span>{data.goal?.title}</span>
+										{/* <span className='display-7 fw-bold p-3'>Name :</span> */}
+										<span className='h5 p-3'>{data.goal?.title}</span>
 									</div>
-									<div className='display-7 fw-bold p-3'>
-										<span>Description :</span>
+									<div className=' p-3'>
+										{/* <span>Description :</span> */}
 										<span className='ml-5 parent tabledesc'>
 											{showMore
 												? parse(data.goal?.description)
@@ -323,9 +326,16 @@ const GoalDescription: FC = () => {
 												<thead>
 													<tr>
 														<th
-															scope='col'
-															style={{ whiteSpace: 'nowrap' }}>
-															Sr No
+															className='cursor-pointer text-decoration-underline d-flex'
+															onClick={() => requestSort('id')}>
+															<span style={{ whiteSpace: 'nowrap' }}>
+																Sr No
+															</span>
+															<Icon
+																size='lg'
+																className={getClassNamesFor('id')}
+																icon='FilterList'
+															/>
 														</th>
 														<th
 															scope='col'
@@ -374,9 +384,9 @@ const GoalDescription: FC = () => {
 													</tr>
 												</thead>
 												<tbody>
-													{taskList && taskList?.length !== 0 ? (
+													{items && taskList && taskList?.length !== 0 ? (
 														dataPagination(
-															taskList,
+															items || taskList,
 															currentPage,
 															perPage,
 														).map((i, index) => (

@@ -44,7 +44,7 @@ const TaskTableRow: FC<ITableRowProps> = ({ id, task, edit, deleteAction }) => {
 		<tr>
 			{task && (
 				<>
-					<th scope='row'>{id}</th>
+					<td scope='row'>{id}</td>
 					<td>
 						<div className='line-clamp'>
 							{task.title}

@@ -30,6 +30,8 @@ import { pagesMenu } from '../../../../menu';
 import SubtaskTableRow from './subtaskHelper/SubtaskTableRow';
 import AddSubtaskModal from './subtaskHelper/AddSubtaskModal';
 import ConfirmationModal from '../../../documentation/components/ConfirmationModal';
+import useSortableData from '../../../../hooks/useSortableData';
+import Icon from '../../../../components/icon/Icon';
 
 interface ITaskValue {
 	goalId: number;
@@ -62,6 +64,7 @@ const SubTask: FC = () => {
 	const [deleteId, setDeleteId] = useState<number>();
 	const [currTask, setCurrTask] = useState();
 	const role = localStorage?.getItem('role');
+	const { items, requestSort, getClassNamesFor } = useSortableData(data.subtasks);
 
 	const handleDeleteAction = () => {
 		const subId = deleteId;
@@ -119,11 +122,11 @@ const SubTask: FC = () => {
 				</SubHeaderRight>
 			</SubHeader>
 			<Page container='fluid'>
-				<div className='display-4 fw-bold py-3'>SubTasks</div>
+				{/* <div className='display-4 fw-bold py-3'>SubTasks</div> */}
 				<Card stretch>
 					<CardHeader>
 						<CardLabel icon='CalendarToday' iconColor='info'>
-							<CardTitle tag='div' className='h5'>
+							<CardTitle tag='div' className='h4'>
 								Subtasks List
 							</CardTitle>
 						</CardLabel>
@@ -132,37 +135,40 @@ const SubTask: FC = () => {
 						<table className='table table-modern table-hover'>
 							<thead>
 								<tr>
-									<th scope='col' className='cursor-pointer'>
+									<th
+										className='cursor-pointer text-decoration-underline d-flex'
+										onClick={() => requestSort('id')}>
 										<span style={{ whiteSpace: 'nowrap' }}>Sr No</span>
+										<Icon
+											size='lg'
+											className={getClassNamesFor('id')}
+											icon='FilterList'
+										/>
 									</th>
-									<th scope='col' className='cursor-pointer'>
-										Name
-									</th>
+									<th scope='col'>Name</th>
 									<th scope='col'>Description</th>
-									<th scope='col'>Minitask Count</th>
-									<th scope='col' className='cursor-pointer'>
-										Action
+									<th scope='col' style={{ whiteSpace: 'nowrap' }}>
+										Minitask Count
 									</th>
+									<th scope='col'>Action</th>
 								</tr>
 							</thead>
 							<tbody>
-								{data && data.subtasks && data.subtasks.length !== 0 ? (
-									dataPagination(data.subtasks, currentPage, perPage).map(
-										(i, index) => (
-											<SubtaskTableRow
-												// eslint-disable-next-line react/no-array-index-key
-												key={index}
-												id={index + 1}
-												// eslint-disable-next-line react/jsx-props-no-spreading
-												subtask={i}
-												edit={handleEdit}
-												deleteAction={() => {
-													setShowConfirmation(true);
-													setDeleteId(i.id);
-												}}
-											/>
-										),
-									)
+								{items && data && data.subtasks && data.subtasks.length !== 0 ? (
+									dataPagination(items, currentPage, perPage).map((i, index) => (
+										<SubtaskTableRow
+											// eslint-disable-next-line react/no-array-index-key
+											key={index}
+											id={index + 1}
+											// eslint-disable-next-line react/jsx-props-no-spreading
+											subtask={i}
+											edit={handleEdit}
+											deleteAction={() => {
+												setShowConfirmation(true);
+												setDeleteId(i.id);
+											}}
+										/>
+									))
 								) : (
 									<div>No subtask yet.</div>
 								)}
