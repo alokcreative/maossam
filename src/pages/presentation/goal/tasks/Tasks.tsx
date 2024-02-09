@@ -319,7 +319,7 @@ const Tasks: FC = () => {
 				<Loading />
 			) : isSuccess && data ? (
 				<Page container='fluid'>
-					<div className='display-4 fw-bold py-3'>Tasks</div>
+					{/* <div className='display-4 fw-bold py-3'>Tasks</div> */}
 					<Card stretch>
 						<CardHeader>
 							<CardLabel icon='CalendarToday' iconColor='info'>
