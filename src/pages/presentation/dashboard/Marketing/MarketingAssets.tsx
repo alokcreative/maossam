@@ -21,21 +21,30 @@ import CommonAvatarTeam from '../../../../common/other/CommonAvatarTeam';
 import Page from '../../../../layout/Page/Page';
 import Button from '../../../../components/bootstrap/Button';
 import USERS from '../../../../common/data/userDummyData';
-import metaAds from '../../../../assets/logos/Meta_Ads_Manager__1.png';
-import linkedin from '../../../../assets/logos/linkedin-svgrepo-com.svg';
-import googleBusiness from '../../../../assets/logos/business.png';
-import facebook from '../../../../assets/logos/facebook.png';
-import instagram from '../../../../assets/logos/instagram.png';
-import pinterest from '../../../../assets/logos/pinterest.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MarketingAssetForms from './MarketingAssetForms/MarketingAssetForms';
 import Breadcrumb from '../../../../components/bootstrap/Breadcrumb';
 import { IUserData } from '../../../_layout/_asides/DefaultAside';
 import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
+import facebookADS from '../../../../assets/logos/FACEBOOK ADS.png';
+import facebook from '../../../../assets/logos/facebook.png';
+import googleADS from '../../../../assets/logos/GOOGLE ADS.png';
+import googleBusiness from '../../../../assets/logos/GOOGLE BUSINESS.png';
+import linkedin from '../../../../assets/logos/linkedin.png';
+import telegram from '../../../../assets/logos/telegram.png';
+import paterners from '../../../../assets/logos/PATERNERS.png';
+import pinterest from '../../../../assets/logos/pinterest.png';
+import podcast from '../../../../assets/logos/podcast.png';
+import tiktok from '../../../../assets/logos/tiktok.png';
+import twitter from '../../../../assets/logos/twitter.png';
+import webindex from '../../../../assets/logos/WEBINDEX.png';
+import website from '../../../../assets/logos/WEBSITE.png';
+import youtube from '../../../../assets/logos/yt_logo.png';
 
 interface IItemProps extends HTMLAttributes<HTMLDivElement> {
 	name: string;
+	image: string;
 	teamName: string;
 	attachCount: number;
 	taskCount: number;
@@ -44,6 +53,7 @@ interface IItemProps extends HTMLAttributes<HTMLDivElement> {
 }
 const Item: FC<IItemProps> = ({
 	name,
+	image,
 	teamName,
 	attachCount,
 	taskCount,
@@ -59,25 +69,26 @@ const Item: FC<IItemProps> = ({
 			<Card stretch className='cursor-pointer'>
 				<CardHeader>
 					<CardLabel>
-						<CardTitle>
+						<CardTitle className='d-flex gap-2'>
 							<img
-								src={name}
-								alt=''
-								width={100}
-								height={100}
-								className='mx-auto d-block img-fluid mb-3'
+								src={image}
+								alt={name}
+								width={70}
+								height={70}
+								className='mx-auto d-block img-fluid mb-1'
 							/>
+							<div className='mx-auto my-auto'>{name}</div>
 						</CardTitle>
 						<CardSubTitle>{teamName}</CardSubTitle>
 					</CardLabel>
-					<CardActions>
-						<small className='border border-success border-2 text-success fw-bold px-2 py-1 rounded-1'>
+					<div>
+						<small className='border border-success border-2 text-success fw-bold px-2 rounded-1'>
 							{dueDate}
 						</small>
-					</CardActions>
+					</div>
 				</CardHeader>
-				<CardBody>
-					<div className='row g-2 mb-3'>
+				<CardBody className='m-0'>
+					<div className='row g-2'>
 						<div className='col-auto'>
 							<Badge color={darkModeStatus ? 'light' : 'dark'}>
 								<Icon icon='AttachFile' /> {attachCount}
@@ -228,8 +239,8 @@ const MarketingAssets = () => {
 	const [cards, setCards] = useState<CardProp[]>([
 		{
 			id: 1,
-			name: 'Google Business',
-			image: googleBusiness,
+			name: 'Facebook ADS',
+			image: facebookADS,
 			option: 'yes',
 			teamName: 'SoSimple Team',
 			dueDate: '14 days left',
@@ -250,8 +261,8 @@ const MarketingAssets = () => {
 		},
 		{
 			id: 3,
-			name: 'Instagram',
-			image: instagram,
+			name: 'Google ADS',
+			image: googleADS,
 			option: 'yes',
 			teamName: 'SoSimple Team',
 			dueDate: '14 days left',
@@ -261,8 +272,8 @@ const MarketingAssets = () => {
 		},
 		{
 			id: 4,
-			name: 'Meta Ads',
-			image: metaAds,
+			name: 'Google Business',
+			image: googleBusiness,
 			option: 'yes',
 			teamName: 'Omtanke Taem',
 			dueDate: '14 days left',
@@ -272,8 +283,8 @@ const MarketingAssets = () => {
 		},
 		{
 			id: 5,
-			name: 'Google Ads',
-			image: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg',
+			name: 'Linkedin',
+			image: linkedin,
 			option: 'yes',
 			teamName: 'SoSimple Theme',
 			dueDate: '14 days left',
@@ -283,8 +294,8 @@ const MarketingAssets = () => {
 		},
 		{
 			id: 6,
-			name: 'Linkedin',
-			image: linkedin,
+			name: 'Telegram',
+			image: telegram,
 			option: 'yes',
 			teamName: 'Omtanke Taem',
 			dueDate: '14 days left',
@@ -294,8 +305,85 @@ const MarketingAssets = () => {
 		},
 		{
 			id: 7,
+			name: 'Paterners',
+			image: paterners,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 8,
 			name: 'Pinterest',
 			image: pinterest,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 9,
+			name: 'Podcast',
+			image: podcast,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 10,
+			name: 'Tiktok',
+			image: tiktok,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 11,
+			name: 'Twitter',
+			image: twitter,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 12,
+			name: 'Webindex',
+			image: webindex,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 13,
+			name: 'Website',
+			image: website,
+			option: 'yes',
+			teamName: 'Code Team',
+			dueDate: '14 days left',
+			attachCount: 0,
+			taskCount: 0,
+			percent: 0,
+		},
+		{
+			id: 14,
+			name: 'Youtube',
+			image: youtube,
 			option: 'yes',
 			teamName: 'Code Team',
 			dueDate: '14 days left',
@@ -337,7 +425,7 @@ const MarketingAssets = () => {
 				<SubHeaderLeft className='d-flex row mt-0'>
 					<Breadcrumb
 						list={[
-							{ title: 'Marketing Assets', to: '/' },
+							{ title: 'My Digital Presence', to: '/' },
 							// { title: 'Edit User', to: '/' },
 						]}
 					/>
@@ -350,7 +438,7 @@ const MarketingAssets = () => {
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='row mt-3'>
-					<div className='display-6 fw-bold py-3'>EXISTING MARKETING CHANNELS</div>
+					<div className='display-6 fw-bold py-3'>My Digital Presence</div>
 					{existingCards.length === 0 ? (
 						<p>Not Found</p>
 					) : (
@@ -358,7 +446,8 @@ const MarketingAssets = () => {
 							<Item
 								onClick={() => handleOnClickToProjectPage()}
 								key={card.id}
-								name={card.image}
+								name={card.name}
+								image={card.image}
 								teamName={card.teamName}
 								dueDate={card.dueDate}
 								attachCount={card.attachCount}
@@ -380,7 +469,8 @@ const MarketingAssets = () => {
 							<Item
 								onClick={() => openModal(card.id, card.name)}
 								key={card.id}
-								name={card.image}
+								name={card.name}
+								image={card.image}
 								teamName={card.teamName}
 								dueDate={card.dueDate}
 								attachCount={card.attachCount}
@@ -415,7 +505,8 @@ const MarketingAssets = () => {
 							<Item
 								// onClick={() => openModal(card.id)}
 								key={card.id}
-								name={card.image}
+								name={card.name}
+								image={card.image}
 								teamName={card.teamName}
 								dueDate={card.dueDate}
 								attachCount={card.attachCount}
@@ -435,7 +526,8 @@ const MarketingAssets = () => {
 							<Item
 								// onClick={() => openModal(card.id)}
 								key={card.id}
-								name={card.image}
+								name={card.name}
+								image={card.image}
 								teamName={card.teamName}
 								dueDate={card.dueDate}
 								attachCount={card.attachCount}

@@ -153,8 +153,8 @@ const ProfileTour = () => {
 				navigate(`../${pagesMenu.profile.path}/${userId}`);
 				setIsOpen(false);
 			}
-			if (values.tourLink === 'marketingAssets') {
-				navigate('marketing-assets');
+			if (values.tourLink === 'myDigitalPresence') {
+				navigate('my-digital-presence');
 				setIsOpen(false);
 			}
 			if (values.tourLink === 'productServices') {
@@ -189,7 +189,7 @@ const ProfileTour = () => {
 						<p>In just a few steps you’ll be ready to start your journey to success!</p>
 					</div>
 					<div>
-						{role =='superadmin' ? (
+						{role == 'superadmin' ? (
 							<ChecksGroup>
 								<Checks
 									id='users'
@@ -221,12 +221,12 @@ const ProfileTour = () => {
 								<Checks
 									type='radio'
 									name='tourLink'
-									value='marketingAssets'
+									value='myDigitalPresence'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Marketing Assets'
+									label='My Digital Presence'
 								/>
-								
+
 								<Checks
 									type='radio'
 									name='tourLink'
@@ -272,7 +272,7 @@ const ProfileTour = () => {
 									value='marketingAssets'
 									onChange={formik.handleChange}
 									checked={formik.values.tourLink}
-									label='Marketing Assets'
+									label='My Digital Presence'
 								/>
 								<Checks
 									type='radio'

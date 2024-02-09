@@ -277,7 +277,7 @@ const GoalDescription: FC = () => {
 								<CardBody>
 									<div>
 										{/* <span className='display-7 fw-bold p-3'>Name :</span> */}
-										<span className='h5 p-3'>{data.goal?.title}</span>
+										<span className='h5 p-3 fw-bold'>{data.goal?.title}</span>
 									</div>
 									<div className=' p-3'>
 										{/* <span>Description :</span> */}

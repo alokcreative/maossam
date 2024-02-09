@@ -159,7 +159,7 @@ const Goals: FC = () => {
 	useEffect(() => {
 		if (data) {
 			formik.resetForm();
-			setCategoryTitle('All Category');
+			setCategoryTitle('Category');
 			if (logUserId == '1') {
 				setGoalList(data);
 			} else {
@@ -171,6 +171,10 @@ const Goals: FC = () => {
 		}
 		if (categoryData) {
 			const newCategoryList = formatCategory(categoryData);
+			console.log(
+				'categoryData>>',
+				newCategoryList.unshift({ value: 0, text: 'All Category' }),
+			);
 			setCategoryList(newCategoryList);
 		} else {
 			refetchCategory();
@@ -435,6 +439,9 @@ const Goals: FC = () => {
 	const filterData = (category: number) => {
 		let tempData = data;
 		const tempCategory = categoryList.find((item) => item.value == category);
+		if (tempCategory?.value === 0) {
+			return tempData;
+		}
 		if (tempCategory) {
 			setCategoryTitle(tempCategory.text);
 			tempData = tempData.filter((item: any) => item.category === tempCategory?.text);
@@ -493,7 +500,7 @@ const Goals: FC = () => {
 										id='category'
 										size='lg'
 										ariaLabel='Category'
-										placeholder='All Category'
+										placeholder='Category'
 										list={categoryList}
 										className={classNames('rounded-1', {
 											'bg-white': !darkModeStatus,
