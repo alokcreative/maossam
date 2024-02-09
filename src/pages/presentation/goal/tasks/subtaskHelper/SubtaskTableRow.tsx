@@ -37,14 +37,14 @@ const SubtaskTableRow: FC<ITableRowProps> = ({ id, subtask, edit, deleteAction }
 		<tr>
 			{subtask && (
 				<>
-					<th scope='row'>{id}</th>
+					<td scope='row'>{id}</td>
 					<td>
-						<div className='line-clamp'>{subtask.title}</div>
+						<div className='line-clamp'>{subtask?.title}</div>
 					</td>
 					<td className='parent col-6 tabledesc'>
 						{showMore
 							? parse(subtask?.description)
-							: parse(subtask?.description.substring(0, 50))}
+							: parse(subtask?.description.substring(0, 150))}
 						{subtask.description.length > 50 && (
 							<span aria-hidden='true' onClick={() => setShowMore(!showMore)}>
 								...

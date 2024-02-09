@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
@@ -57,6 +57,8 @@ import ConfirmationModal from '../../documentation/components/ConfirmationModal'
 import { useDashboard } from '../../../contexts/dashboardContext';
 import ReactQuill from 'react-quill';
 import GoalTableRows from './goalHelpher/GoalTableRows';
+import classNames from 'classnames';
+import useSortableData from '../../../hooks/useSortableData';
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -120,11 +122,13 @@ const Goals: FC = () => {
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
 		fixedCacheKey: 'listTask',
 	});
-	const { data: categoryData, refetch: refetchCategory } = useGetCategoryListQuery({
+	const {
+		data: categoryData,
+		refetch: refetchCategory,
+		isLoading: isLoadingCategorydata,
+	} = useGetCategoryListQuery({
 		fixedCacheKey: 'categorylist',
 	});
-	// console.log('categoryData>>>>', categoryData);
-
 	const [createGoal] = useCreateGoalMutation();
 	const [updateGoal] = useUpdateGoalMutation();
 	const { darkModeStatus } = useDarkMode();
@@ -134,16 +138,18 @@ const Goals: FC = () => {
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const logUserId = localStorage.getItem('UserId');
 	const { gridData, setGridData } = useDashboard();
-	const [goalList, setGoalList] = useState<IGoalProps[]>(data);
+	const [goalList, setGoalList] = useState<IGoalProps[]>(data || null);
 	const role = localStorage?.getItem('role');
 	const [deleteGoal] = useDeleteGoalMutation();
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [goalId, setGoalId] = useState<number>();
-	const [showMore, setShowMore] = useState<boolean>(false);
 	const [date, setDate] = useState<Date>(new Date());
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deleteId, setDeleteId] = useState<number>();
 	const [categoryList, setCategoryList] = useState<ICategory[]>([]);
+	const [categoryTitle, setCategoryTitle] = useState<string>('All Category');
+	// const [filterableData, setFilterableData] = useState(goalList);
+
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
 		setGoalId(id);
@@ -152,6 +158,8 @@ const Goals: FC = () => {
 
 	useEffect(() => {
 		if (data) {
+			formik.resetForm();
+			setCategoryTitle('All Category');
 			if (logUserId == '1') {
 				setGoalList(data);
 			} else {
@@ -168,7 +176,8 @@ const Goals: FC = () => {
 			refetchCategory();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isLoading, data, isOpen]);
+	}, [isLoading, data, isOpen, isLoadingCategorydata]);
+
 	const formikNewGoal = useFormik({
 		initialValues: {
 			name: '',
@@ -423,18 +432,94 @@ const Goals: FC = () => {
 		}
 	};
 
+	const filterData = (category: number) => {
+		let tempData = data;
+		const tempCategory = categoryList.find((item) => item.value == category);
+		if (tempCategory) {
+			setCategoryTitle(tempCategory.text);
+			tempData = tempData.filter((item: any) => item.category === tempCategory?.text);
+		}
+
+		return tempData;
+	};
+	const onFormSubmit = (values: { category: any }) => {
+		const newData = filterData(values.category);
+
+		if (!values.category) {
+			setGoalList(goalList);
+		} else {
+			setGoalList(newData);
+		}
+	};
+	const debounce = (func: any, wait: number | undefined) => {
+		let timeout: string | number | NodeJS.Timeout | undefined;
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return function executedFunction(...args: any[]) {
+			const later = () => {
+				clearTimeout(timeout);
+				func(...args);
+			};
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+		};
+	};
+	const formik = useFormik({
+		initialValues: {
+			category: '',
+		},
+		onSubmit: onFormSubmit,
+		onReset: () => setGoalList(data),
+	});
+
+	const { items, requestSort, getClassNamesFor } = useSortableData(goalList || []);
+
 	return (
 		<PageWrapper title={dashboardPagesMenu.goals.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					<Breadcrumb
-						list={[
-							{ title: 'Goals', to: '/' },
-							// { title: 'Edit User', to: '/' },
-						]}
-					/>
+					<Breadcrumb list={[{ title: 'Goals', to: '/' }]} />
 				</SubHeaderLeft>
 				<SubHeaderRight>
+					<div className='row'>
+						{/* <div className='col-12 text-center my-5'>
+						<span className='display-5 fw-bold'>Hello, May I help you?</span>
+					</div> */}
+						<div className=' text-center' data-tour='knowledge-filter'>
+							<form onChange={formik.handleSubmit}>
+								<div className=''>
+									<Select
+										id='category'
+										size='lg'
+										ariaLabel='Category'
+										placeholder='All Category'
+										list={categoryList}
+										className={classNames('rounded-1', {
+											'bg-white': !darkModeStatus,
+										})}
+										// eslint-disable-next-line @typescript-eslint/no-explicit-any
+										onChange={(e: { target: { value: any } }) => {
+											formik.handleChange(e);
+
+											if (e.target.value) {
+												debounce(
+													() =>
+														onFormSubmit({
+															...formik.values,
+															category: e.target.value,
+														}),
+													1000,
+												)();
+												formik.handleSubmit();
+											}
+										}}
+										value={formik.values.category}
+									/>
+								</div>
+							</form>
+						</div>
+					</div>
 					<Button
 						color={darkModeStatus ? 'light' : 'dark'}
 						isLight
@@ -461,7 +546,7 @@ const Goals: FC = () => {
 				<div>Loading...</div>
 			) : isSuccess ? (
 				<Page container='fluid'>
-					<div className='display-4 fw-bold py-3'> Goals</div>
+					<div className='display-6 fw-bold py-3'>{categoryTitle}</div>
 					<div className='row h-100'>
 						<div className='col-12'>
 							{gridData.view === 'grid' ? (
@@ -495,7 +580,7 @@ const Goals: FC = () => {
 								<Card stretch>
 									<CardHeader>
 										<CardLabel icon='TrackChanges' iconColor='success'>
-											<CardTitle tag='div' className='h5'>
+											<CardTitle tag='div' className='h4'>
 												List of Goals
 											</CardTitle>
 										</CardLabel>
@@ -508,10 +593,23 @@ const Goals: FC = () => {
 														<tr>
 															<th
 																scope='col'
-																style={{
-																	whiteSpace: 'nowrap',
-																}}>
-																Sr No
+																className='cursor-pointer text-decoration-underline'
+																onClick={() => requestSort('id')}>
+																<div className='d-flex'>
+																	<span
+																		style={{
+																			whiteSpace: 'nowrap',
+																		}}>
+																		Sr No
+																	</span>
+																	<Icon
+																		size='lg'
+																		className={getClassNamesFor(
+																			'id',
+																		)}
+																		icon='FilterList'
+																	/>
+																</div>
 															</th>
 															<th
 																scope='col'
@@ -562,9 +660,9 @@ const Goals: FC = () => {
 														</tr>
 													</thead>
 													<tbody>
-														{goalList?.length !== 0 ? (
+														{items && goalList?.length !== 0 ? (
 															dataPagination(
-																goalList,
+																items || goalList,
 																currentPage,
 																perPage,
 															)?.map((i: IGoalProps, index) => {

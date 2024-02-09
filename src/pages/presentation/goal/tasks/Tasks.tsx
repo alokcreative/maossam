@@ -46,6 +46,7 @@ import showNotification from '../../../../components/extras/showNotification';
 import Icon from '../../../../components/icon/Icon';
 import ConfirmationModal from '../../../documentation/components/ConfirmationModal';
 import ReactQuill from 'react-quill';
+import useSortableData from '../../../../hooks/useSortableData';
 
 interface IGoalValueData {
 	category: string;
@@ -294,6 +295,7 @@ const Tasks: FC = () => {
 	const handledescription = (value: any) => {
 		formiknewTask.setFieldValue('description', value);
 	};
+	const { items, requestSort, getClassNamesFor } = useSortableData(taskList || []);
 
 	return (
 		<PageWrapper title={dashboardPagesMenu.tasks.text}>
@@ -330,8 +332,15 @@ const Tasks: FC = () => {
 							<table className='table table-modern table-hover'>
 								<thead>
 									<tr>
-										<th scope='col' className='cursor-pointer'>
+										<th
+											className='cursor-pointer text-decoration-underline d-flex'
+											onClick={() => requestSort('id')}>
 											<span style={{ whiteSpace: 'nowrap' }}>Sr No</span>
+											<Icon
+												size='lg'
+												className={getClassNamesFor('id')}
+												icon='FilterList'
+											/>
 										</th>
 										<th scope='col' className='cursor-pointer'>
 											Name
@@ -370,8 +379,8 @@ const Tasks: FC = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{taskList && taskList?.length !== 0 ? (
-										dataPagination(taskList, currentPage, perPage).map(
+									{items && taskList && taskList?.length !== 0 ? (
+										dataPagination(items || taskList, currentPage, perPage).map(
 											(i, index) => (
 												<TaskTableRow
 													// eslint-disable-next-line react/no-array-index-key
