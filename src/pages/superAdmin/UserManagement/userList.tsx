@@ -47,6 +47,8 @@ import {
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
 import ConfirmationModal from '../../documentation/components/ConfirmationModal';
+import classNames from 'classnames';
+import UserCard from './Usercard';
 
 interface ITableRowProps {
 	index: number;
@@ -61,6 +63,7 @@ interface ITableRowProps {
 	// services: IServiceProps[];
 	handleClick(...args: unknown[]): unknown;
 	handleEditUser(...args: unknown[]): unknown;
+	avatar: string | unknown;
 }
 const TableRow: FC<ITableRowProps> = ({
 	index,
@@ -74,6 +77,7 @@ const TableRow: FC<ITableRowProps> = ({
 	phone_number,
 	handleClick,
 	handleEditUser,
+	avatar,
 }) => {
 	return (
 		<tr>
@@ -165,6 +169,7 @@ const UserList = () => {
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deletingID, setDeletingID] = useState('');
+	const [filterableData, setFilterableData] = useState(data);
 
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
@@ -452,11 +457,82 @@ const UserList = () => {
 		setstateList(LIST);
 	}, [formik.values.country, updateUserForm.values.country]);
 
+	const debounce = (func: any, wait: number | undefined) => {
+		let timeout: string | number | NodeJS.Timeout | undefined;
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return function executedFunction(...args: any[]) {
+			const later = () => {
+				clearTimeout(timeout);
+				func(...args);
+			};
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+		};
+	};
+	const searchAndFilterData = (searchValue: string) => {
+		const tempData = data;
+
+		return tempData.filter((item: any) => {
+			return item.first_name?.toLowerCase().includes(searchValue);
+		});
+	};
+	const onFormSubmit = (values: { search: any }) => {
+		const searchValue = formikSearch.values.search.toString()?.toLowerCase();
+		const newData = searchAndFilterData(searchValue);
+		if (!values.search) {
+			setFilterableData(data);
+		} else {
+			setFilterableData(newData);
+		}
+	};
+	const formikSearch = useFormik({
+		initialValues: {
+			search: '',
+		},
+		onSubmit: onFormSubmit,
+		onReset: () => setFilterableData(data),
+	});
+	console.log('data>>', data);
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
 			<SubHeader>
 				<SubHeaderLeft>
-					<div />
+					<label
+						className='border-0 bg-transparent cursor-pointer me-0'
+						htmlFor='searchInput'>
+						<svg
+							viewBox='0 0 24 24'
+							fill='currentColor'
+							className='svg-icon--material svg-icon svg-icon-2x text-primary'
+							data-name='Material--Search'>
+							// eslint-disable-next-line react/self-closing-comp
+							<path d='M0 0h24v24H0V0z' fill='none' />
+							<path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+						</svg>
+					</label>
+					<input
+						id='search'
+						type='search'
+						className='form-control border-0 shadow-none bg-transparent'
+						placeholder='Search...'
+						onChange={(e: { target: { value: string | any[] } }) => {
+							formikSearch.handleChange(e);
+							if (e.target.value.length > 2)
+								debounce(
+									() =>
+										onFormSubmit({
+											...formikSearch.values,
+											search: e.target.value,
+										}),
+									1000,
+								)();
+
+							if (e.target.value.length === 0) formikSearch.resetForm();
+						}}
+						value={formikSearch.values.search}
+					/>
 				</SubHeaderLeft>
 				<SubHeaderRight>
 					<Button color='info' icon='Add' isLight onClick={newUser}>
@@ -466,7 +542,7 @@ const UserList = () => {
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='display-6 fw-bold py-3'>User Management</div>
-				<Card stretch>
+				{/* <Card stretch>
 					<CardBody className='table-responsive'>
 						<table className='table table-modern table-hover'>
 							<thead>
@@ -491,18 +567,7 @@ const UserList = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{isSuccess &&
-									data &&
-									dataPagination(data, currentPage, perPage).map((i, index) => (
-										<TableRow
-											key={i.id}
-											// eslint-disable-next-line react/jsx-props-no-spreading
-											{...i}
-											index={index + 1}
-											handleClick={handleData}
-											handleEditUser={handleEditUser}
-										/>
-									))}
+								
 							</tbody>
 						</table>
 					</CardBody>
@@ -516,7 +581,25 @@ const UserList = () => {
 							setPerPage={setPerPage}
 						/>
 					)}
-				</Card>
+				</Card> */}
+				<div className='row row-cols-xxl-3 row-cols-lg-3 row-cols-md-2'>
+					{isSuccess &&
+						(data || filterableData) &&
+						dataPagination(filterableData || data, currentPage, perPage).map(
+							(i, index) => (
+								<div key={i.id} className='col'>
+									<UserCard
+										key={i.id}
+										// eslint-disable-next-line react/jsx-props-no-spreading
+										{...i}
+										index={index + 1}
+										handleClick={handleData}
+										handleEditUser={handleEditUser}
+									/>
+								</div>
+							),
+						)}
+				</div>
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
