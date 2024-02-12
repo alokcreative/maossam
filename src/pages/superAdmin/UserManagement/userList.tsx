@@ -494,7 +494,9 @@ const UserList = () => {
 		onSubmit: onFormSubmit,
 		onReset: () => setFilterableData(data),
 	});
-	console.log('data>>', data);
+	useEffect(() => {
+		setFilterableData(data);
+	}, [data, isFetching]);
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
 			<SubHeader>
