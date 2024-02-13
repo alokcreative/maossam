@@ -386,7 +386,6 @@ const UserList = () => {
 		// 	return errors;
 		// },
 		onSubmit: (values, { resetForm }) => {
-			console.log('Values>>', values);
 			const userData = new FormData();
 			userData.append('first_name', values.first_name);
 			userData.append('last_name', values.last_name);
@@ -491,7 +490,13 @@ const UserList = () => {
 		const tempData = data;
 
 		return tempData.filter((item: any) => {
-			return item.first_name?.toLowerCase().includes(searchValue);
+			return (
+				item.first_name?.toLowerCase().includes(searchValue) ||
+				item.last_name?.toLowerCase().includes(searchValue) ||
+				item.email?.toLowerCase().includes(searchValue) ||
+				item.country?.toLowerCase().includes(searchValue) ||
+				item.state?.toLowerCase().includes(searchValue)
+			);
 		});
 	};
 	const onFormSubmit = (values: { search: any }) => {

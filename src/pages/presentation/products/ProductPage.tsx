@@ -100,7 +100,14 @@ const ProductPage = () => {
 		const tempData = data;
 
 		return tempData.filter((item) => {
-			return item.name.toLowerCase().includes(searchValue);
+			return (
+				item.name.toLowerCase().includes(searchValue) ||
+				item.category.toLowerCase().includes(searchValue) ||
+				item.id.toString().includes(searchValue) ||
+				item.description.toLowerCase().includes(searchValue) ||
+				item.price.toString().includes(searchValue) ||
+				item.stock.toString().includes(searchValue)
+			);
 		});
 	};
 	function handleRemove(id: number) {
@@ -195,36 +202,45 @@ const ProductPage = () => {
 		onSubmit: onFormSubmit,
 		onReset: () => setFilterableData(data),
 	});
+	console.log('filterableData>>', filterableData);
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.product.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					<div className='col-md-4'>
-						<Input
-							id='search'
-							size='lg'
-							autoComplete='false'
-							placeholder='Search...'
-							className={classNames('rounded-1', {
-								'bg-white': !darkModeStatus,
-							})}
-							onChange={(e: { target: { value: string | any[] } }) => {
-								formikSearch.handleChange(e);
-								if (e.target.value.length > 2)
-									debounce(
-										() =>
-											onFormSubmit({
-												...formikSearch.values,
-												search: e.target.value,
-											}),
-										1000,
-									)();
+					<label
+						className='border-0 bg-transparent cursor-pointer me-0'
+						htmlFor='searchInput'>
+						<svg
+							viewBox='0 0 24 24'
+							fill='currentColor'
+							className='svg-icon--material svg-icon svg-icon-2x text-primary'
+							data-name='Material--Search'>
+							// eslint-disable-next-line react/self-closing-comp
+							<path d='M0 0h24v24H0V0z' fill='none' />
+							<path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+						</svg>
+					</label>
+					<input
+						id='search'
+						type='search'
+						className='form-control border-0 shadow-none bg-transparent'
+						placeholder='Search...'
+						onChange={(e: { target: { value: string | any[] } }) => {
+							formikSearch.handleChange(e);
+							if (e.target.value.length > 2)
+								debounce(
+									() =>
+										onFormSubmit({
+											...formikSearch.values,
+											search: e.target.value,
+										}),
+									1000,
+								)();
 
-								if (e.target.value.length === 0) formikSearch.resetForm();
-							}}
-							value={formikSearch.values.search}
-						/>
-					</div>
+							if (e.target.value.length === 0) formikSearch.resetForm();
+						}}
+						value={formikSearch.values.search}
+					/>
 				</SubHeaderLeft>
 				<SubHeaderRight className='d-flex gap-3'>
 					<Button

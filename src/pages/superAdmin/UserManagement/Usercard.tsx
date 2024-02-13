@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Card, {
+	CardActions,
 	CardBody,
 	CardHeader,
 	CardLabel,
@@ -10,6 +11,12 @@ import Badge from '../../../components/bootstrap/Badge';
 import Button from '../../../components/bootstrap/Button';
 import classNames from 'classnames';
 import { TColor } from '../../../type/color-type';
+import Dropdown, {
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+} from '../../../components/bootstrap/Dropdown';
+import useDarkMode from '../../../hooks/useDarkMode';
 
 interface IUserProps {
 	index: number;
@@ -42,8 +49,20 @@ const UserCard: FC<IUserProps> = ({
 	avatar,
 	role,
 }) => {
+	const { themeStatus, darkModeStatus } = useDarkMode();
+
 	return (
 		<Card>
+			{/* <CardHeader>
+				<CardLabel>
+					<CardTitle>
+						<div />
+					</CardTitle>
+				</CardLabel>
+				<CardActions>
+					
+				</CardActions>
+			</CardHeader> */}
 			<CardBody>
 				<div className='row g-3'>
 					<div className='col d-flex'>
@@ -103,7 +122,7 @@ const UserCard: FC<IUserProps> = ({
 												data-tour={user.name}
 												aria-label='More info'
 											/> */}
-										<Button
+										{/* <Button
 											color='info'
 											icon='Edit'
 											className='me-2'
@@ -117,11 +136,38 @@ const UserCard: FC<IUserProps> = ({
 											color='danger'
 											isLight
 											onClick={() => handleClick(id)}
-										/>
+										/> */}
+										<Dropdown>
+											<DropdownToggle hasIcon={false}>
+												<Button
+													icon='MoreHoriz'
+													color={themeStatus}
+													shadow='default'
+													aria-label='Edit'
+												/>
+											</DropdownToggle>
+											<DropdownMenu isAlignmentEnd>
+												<DropdownItem>
+													<Button
+														icon='FileCopy'
+														onClick={() => handleEditUser(id)}>
+														Edit
+													</Button>
+												</DropdownItem>
+												<DropdownItem isDivider />
+												<DropdownItem>
+													<Button
+														icon='Delete'
+														onClick={() => handleClick(id)}>
+														Delete
+													</Button>
+												</DropdownItem>
+											</DropdownMenu>
+										</Dropdown>
 									</div>
 
 									<div className='text-muted col'>{email}</div>
-									<div className='text-muted'>{phone_number}</div>
+									{/* <div className='text-muted'>{phone_number}</div> */}
 								</div>
 								{/* {!!user?.services && (
 										<div className='row g-2 mt-3'>

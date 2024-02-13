@@ -317,7 +317,11 @@ const WebIndex: FC = () => {
 		const tempData = taskList;
 		if (taskList)
 			return taskList.filter((item: any) => {
-				return item.name?.toLowerCase().includes(searchValue);
+				return (
+					item.name?.toLowerCase().includes(searchValue) ||
+					item.websiteUrl?.toLowerCase().includes(searchValue) ||
+					item.description?.toLowerCase().includes(searchValue)
+				);
 			});
 		return taskList;
 	};
