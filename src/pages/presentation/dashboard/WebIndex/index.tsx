@@ -319,6 +319,7 @@ const WebIndex: FC = () => {
 			return taskList.filter((item: any) => {
 				return item.name?.toLowerCase().includes(searchValue);
 			});
+		return taskList;
 	};
 	const onFormSubmit = (values: { search: any }) => {
 		const searchValue = formikSearch.values.search.toString()?.toLowerCase();
