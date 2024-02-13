@@ -166,9 +166,10 @@ const UserCard: FC<IUserProps> = ({
 										</Dropdown>
 									</div>
 
-									<div className='text-muted col'>{email}</div>
 									{/* <div className='text-muted'>{phone_number}</div> */}
 								</div>
+								<div className='text-muted col'>{email}</div>
+
 								{/* {!!user?.services && (
 										<div className='row g-2 mt-3'>
 											{user?.services.map((service) => (
