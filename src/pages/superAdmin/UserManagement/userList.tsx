@@ -162,7 +162,7 @@ const UserList = () => {
 	// const [userList, setUserList] = useState(data);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [countryList, setcountryList] = useState<IOptionsProps[]>();
-	const [stateList, setstateList] = useState<IOptionsProps[]>();
+	const [stateList, setStateList] = useState<IOptionsProps[]>();
 	const [modalTitle, setmodalTitle] = useState<string>('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
@@ -337,61 +337,68 @@ const UserList = () => {
 		},
 		enableReinitialize: true,
 
-		validate: (values) => {
-			const errors: {
-				// id: string;
-				first_name?: string;
-				last_name?: string;
-				email?: string;
-				password?: string;
-				country?: string;
-				company_name?: string;
-				state?: string;
-				phone_number?: string;
-				gender?: string;
-			} = {};
+		// validate: (values) => {
+		// 	const errors: {
+		// 		// id: string;
+		// 		first_name?: string;
+		// 		last_name?: string;
+		// 		email?: string;
+		// 		password?: string;
+		// 		country?: string;
+		// 		company_name?: string;
+		// 		state?: string;
+		// 		phone_number?: string;
+		// 		gender?: string;
+		// 	} = {};
 
-			if (!values.first_name) {
-				errors.first_name = 'Required';
-			}
+		// 	if (!values.first_name) {
+		// 		errors.first_name = 'Required';
+		// 	}
 
-			if (!values.last_name) {
-				errors.last_name = 'Required';
-			}
-			if (!values.email) {
-				errors.email = 'Required';
-			}
+		// 	if (!values.last_name) {
+		// 		errors.last_name = 'Required';
+		// 	}
+		// 	if (!values.email) {
+		// 		errors.email = 'Required';
+		// 	}
 
-			if (!values.country) {
-				errors.country = 'Required';
-			}
-			if (!values.state) {
-				errors.state = 'Required';
-			}
+		// 	if (!values.country) {
+		// 		errors.country = 'Required';
+		// 	}
+		// 	// if (!values.state) {
+		// 	// 	errors.state = 'Required';
+		// 	// }
 
-			if (!values.gender) {
-				errors.gender = 'Required';
-			}
-			if (!values.phone_number) {
-				errors.phone_number = 'Required';
-			}
-			if (values?.phone_number?.length !== 10) {
-				errors.phone_number = 'Must be 10 digit';
-			}
+		// 	if (!values.gender) {
+		// 		errors.gender = 'Required';
+		// 	}
+		// 	if (!values.phone_number) {
+		// 		errors.phone_number = 'Required';
+		// 	}
+		// 	if (values?.phone_number?.length !== 10) {
+		// 		errors.phone_number = 'Must be 10 digit';
+		// 	}
 
-			if (!values.company_name) {
-				errors.company_name = 'Required';
-			}
+		// 	if (!values.company_name) {
+		// 		errors.company_name = 'Required';
+		// 	}
 
-			return errors;
-		},
+		// 	return errors;
+		// },
 		onSubmit: (values, { resetForm }) => {
+			console.log('Values>>', values);
 			const userData = new FormData();
 			userData.append('first_name', values.first_name);
 			userData.append('last_name', values.last_name);
 			userData.append('email', values.email);
 			userData.append('country', values.country);
 			userData.append('state', values.state);
+			setStateList([
+				{
+					value: values.state,
+					text: values.state,
+				},
+			]);
 			userData.append('gender', values.gender);
 			userData.append('phone_number', values.phone_number);
 			userData.append('company_name', values.company_name);
@@ -409,7 +416,8 @@ const UserList = () => {
 		setmodalTitle(`Update User`);
 		setIsOpen(true);
 		const user = data.find((i: IUser) => i.id === id);
-		updateUserForm.setFieldValue('id', user?.id);
+		// console.log('user>>', user);
+		if (user) updateUserForm.setFieldValue('id', user?.id);
 		updateUserForm.setFieldValue('avatar', user?.avatar);
 		updateUserForm.setFieldValue('first_name', user?.first_name);
 		updateUserForm.setFieldValue('last_name', user?.last_name);
@@ -419,6 +427,12 @@ const UserList = () => {
 		updateUserForm.setFieldValue('company_name', user?.company_name);
 		updateUserForm.setFieldValue('country', user?.country);
 		updateUserForm.setFieldValue('state', user?.state);
+		setStateList([
+			{
+				value: user?.state,
+				text: user?.state,
+			},
+		]);
 		updateUserForm.setFieldValue('gender', user?.gender);
 		// const user1 = data.find((item: any) => item.id === id);
 		setAvatar(user.avatar);
@@ -449,12 +463,14 @@ const UserList = () => {
 		}
 	};
 	useEffect(() => {
-		const stateListupdated = State.getStatesOfCountry(formik.values.country);
+		const stateListupdated = State.getStatesOfCountry(
+			formik.values.country || updateUserForm.values.country,
+		);
 		const LIST = stateListupdated.map(({ name }) => ({
 			value: name,
 			text: name,
 		}));
-		setstateList(LIST);
+		setStateList(LIST);
 	}, [formik.values.country, updateUserForm.values.country]);
 
 	const debounce = (func: any, wait: number | undefined) => {
@@ -817,15 +833,15 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
-						<Button
-							color='info'
-							onClick={
-								modalTitle === 'New User'
-									? formik.handleSubmit
-									: updateUserForm.handleSubmit
-							}>
-							{modalTitle === 'New User' ? 'Save' : 'Update'}
-						</Button>
+						{modalTitle === 'New User' ? (
+							<Button color='info' onClick={formik.handleSubmit}>
+								Save
+							</Button>
+						) : (
+							<Button color='info' onClick={updateUserForm.handleSubmit}>
+								Update
+							</Button>
+						)}
 					</CardFooterLeft>
 					<CardFooterRight>
 						<Button

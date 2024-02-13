@@ -86,9 +86,6 @@ const UserCard: FC<IUserProps> = ({
 												</small>
 											)}
 										</div>
-
-										<div className='text-muted'>{email}</div>
-										<div className='text-muted'>{phone_number}</div>
 									</div>
 									<div
 										className='position-absolute'
@@ -122,6 +119,9 @@ const UserCard: FC<IUserProps> = ({
 											onClick={() => handleClick(id)}
 										/>
 									</div>
+
+									<div className='text-muted col'>{email}</div>
+									<div className='text-muted'>{phone_number}</div>
 								</div>
 								{/* {!!user?.services && (
 										<div className='row g-2 mt-3'>

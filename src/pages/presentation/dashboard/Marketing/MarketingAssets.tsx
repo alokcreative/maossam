@@ -440,7 +440,8 @@ const MarketingAssets = () => {
 				<div className='row mt-3'>
 					<div className='display-6 fw-bold py-3'>My Digital Presence</div>
 					{existingCards.length === 0 ? (
-						<p>Not Found</p>
+						// <p>Not Found</p>
+						<div />
 					) : (
 						existingCards.map((card) => (
 							<Item
@@ -459,9 +460,9 @@ const MarketingAssets = () => {
 					)}
 				</div>
 				<div className='row mt-3'>
-					<div className='col-12'>
+					{/* <div className='col-12'>
 						<div className='display-6 fw-bold py-3'>MARKETING CHANNELS TO DO</div>
-					</div>
+					</div> */}
 					{cards.length === 0 ? (
 						<p>Not Found</p>
 					) : (

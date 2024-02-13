@@ -29,10 +29,11 @@ const Item: FC<IItemProps> = ({ id, image, title, description, tags, color }) =>
 	const { darkModeStatus } = useDarkMode();
 
 	const navigate = useNavigate();
-	const handleOnClick = useCallback(
-		() => navigate(`../${pagesMenu.knowledge.subMenu.itemID.path}/${id}`),
-		[navigate, id],
-	);
+	// const handleOnClick = useCallback(
+	// 	() => navigate(`../${pagesMenu.knowledge.subMenu.itemID.path}/${id}`),
+	// 	[navigate, id],
+	// );
+	const handleOnClick = () => {};
 	return (
 		<Card
 			className='cursor-pointer shadow-3d-primary shadow-3d-hover'

@@ -90,6 +90,8 @@ const WebIndex: FC = () => {
 	const [createTask] = useCreateTaskMutation();
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deleteId, setDeleteId] = useState<number>();
+	const [filterableData, setFilterableData] = useState(data);
+
 	const [deleteTask] = useDeleteTaskMutation({
 		fixedCacheKey: 'deleteTask',
 	});
@@ -297,12 +299,85 @@ const WebIndex: FC = () => {
 	const handledescription = (value: any) => {
 		formiknewTask.setFieldValue('description', value);
 	};
+	const debounce = (func: any, wait: number | undefined) => {
+		let timeout: string | number | NodeJS.Timeout | undefined;
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return function executedFunction(...args: any[]) {
+			const later = () => {
+				clearTimeout(timeout);
+				func(...args);
+			};
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+		};
+	};
+	const searchAndFilterData = (searchValue: string) => {
+		const tempData = taskList;
+		if (taskList)
+			return taskList.filter((item: any) => {
+				return item.name?.toLowerCase().includes(searchValue);
+			});
+	};
+	const onFormSubmit = (values: { search: any }) => {
+		const searchValue = formikSearch.values.search.toString()?.toLowerCase();
+		const newData = searchAndFilterData(searchValue);
+		if (!values.search) {
+			setFilterableData(taskList);
+		} else {
+			setFilterableData(newData);
+		}
+	};
+	const formikSearch = useFormik({
+		initialValues: {
+			search: '',
+		},
+		onSubmit: onFormSubmit,
+		onReset: () => setFilterableData(taskList),
+	});
+	useEffect(() => {
+		setFilterableData(taskList);
+	}, [taskList]);
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.webindex.text}>
 			<SubHeader>
 				<SubHeaderLeft>
-					<Breadcrumb list={[{ title: 'Web Index', to: '/' }]} />
+					{/* <Breadcrumb   list={[{ title: 'Web Index', to: '/' }]} /> */}
+					<label
+						className='border-0 bg-transparent cursor-pointer me-0'
+						htmlFor='searchInput'>
+						<svg
+							viewBox='0 0 24 24'
+							fill='currentColor'
+							className='svg-icon--material svg-icon svg-icon-2x text-primary'
+							data-name='Material--Search'>
+							// eslint-disable-next-line react/self-closing-comp
+							<path d='M0 0h24v24H0V0z' fill='none' />
+							<path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+						</svg>
+					</label>
+					<input
+						id='search'
+						type='search'
+						className='form-control border-0 shadow-none bg-transparent'
+						placeholder='Search...'
+						onChange={(e: { target: { value: string | any[] } }) => {
+							formikSearch.handleChange(e);
+							if (e.target.value.length > 2)
+								debounce(
+									() =>
+										onFormSubmit({
+											...formikSearch.values,
+											search: e.target.value,
+										}),
+									1000,
+								)();
+
+							if (e.target.value.length === 0) formikSearch.resetForm();
+						}}
+						value={formikSearch.values.search}
+					/>
 				</SubHeaderLeft>
 				{role === 'superadmin' && (
 					<SubHeaderRight>
@@ -322,7 +397,7 @@ const WebIndex: FC = () => {
 				<Loading />
 			) : isSuccess && data ? (
 				<Page container='fluid'>
-					<div className='display-4 fw-bold py-3'>Web Index</div>
+					{/* <div className='display-4 fw-bold py-3'>Web Index</div> */}
 					<Card stretch>
 						<CardHeader>
 							<CardLabel icon='CalendarToday' iconColor='info'>
@@ -379,22 +454,24 @@ const WebIndex: FC = () => {
 								</thead>
 								<tbody>
 									{taskList && taskList?.length !== 0 ? (
-										dataPagination(taskList, currentPage, perPage).map(
-											(i, index) => (
-												<WebTableRows
-													// eslint-disable-next-line react/no-array-index-key
-													key={index}
-													id={index + 1}
-													// eslint-disable-next-line react/jsx-props-no-spreading
-													task={i}
-													edit={handleEdit}
-													deleteAction={() => {
-														setShowConfirmation(true);
-														setDeleteId(i.id);
-													}}
-												/>
-											),
-										)
+										dataPagination(
+											filterableData || taskList,
+											currentPage,
+											perPage,
+										).map((i, index) => (
+											<WebTableRows
+												// eslint-disable-next-line react/no-array-index-key
+												key={index}
+												id={index + 1}
+												// eslint-disable-next-line react/jsx-props-no-spreading
+												task={i}
+												edit={handleEdit}
+												deleteAction={() => {
+													setShowConfirmation(true);
+													setDeleteId(i.id);
+												}}
+											/>
+										))
 									) : (
 										<div>Not task yet.</div>
 									)}
