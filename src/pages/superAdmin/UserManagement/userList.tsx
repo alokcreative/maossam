@@ -170,7 +170,22 @@ const UserList = () => {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deletingID, setDeletingID] = useState('');
 	const [filterableData, setFilterableData] = useState(data);
+	const searchAndFilterData = (searchValue: string) => {
+		const tempData = data;
 
+		return tempData.filter((item: any) => {
+			return (
+				item.first_name?.toLowerCase().includes(searchValue) ||
+				item.last_name?.toLowerCase().includes(searchValue) ||
+				item.email?.toLowerCase().includes(searchValue) ||
+				item.country?.toLowerCase().includes(searchValue) ||
+				item.state?.toLowerCase().includes(searchValue)
+			);
+		});
+	};
+	// useEffect(() => {
+	// 	setFilterableData(data);
+	// }, [data, isFetching]);
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
 	// 	Object.keys(USERS).map((key) => ({
@@ -486,19 +501,7 @@ const UserList = () => {
 			timeout = setTimeout(later, wait);
 		};
 	};
-	const searchAndFilterData = (searchValue: string) => {
-		const tempData = data;
 
-		return tempData.filter((item: any) => {
-			return (
-				item.first_name?.toLowerCase().includes(searchValue) ||
-				item.last_name?.toLowerCase().includes(searchValue) ||
-				item.email?.toLowerCase().includes(searchValue) ||
-				item.country?.toLowerCase().includes(searchValue) ||
-				item.state?.toLowerCase().includes(searchValue)
-			);
-		});
-	};
 	const onFormSubmit = (values: { search: any }) => {
 		const searchValue = formikSearch.values.search.toString()?.toLowerCase();
 		const newData = searchAndFilterData(searchValue);
@@ -515,9 +518,7 @@ const UserList = () => {
 		onSubmit: onFormSubmit,
 		onReset: () => setFilterableData(data),
 	});
-	useEffect(() => {
-		setFilterableData(data);
-	}, [data, isFetching]);
+
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
 			<SubHeader>
@@ -532,7 +533,7 @@ const UserList = () => {
 							data-name='Material--Search'>
 							// eslint-disable-next-line react/self-closing-comp
 							<path d='M0 0h24v24H0V0z' fill='none' />
-							<path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+							<path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.2	-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
 						</svg>
 					</label>
 					<input
@@ -549,7 +550,7 @@ const UserList = () => {
 											...formikSearch.values,
 											search: e.target.value,
 										}),
-									1000,
+									500,
 								)();
 
 							if (e.target.value.length === 0) formikSearch.resetForm();

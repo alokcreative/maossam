@@ -202,7 +202,6 @@ const ProductPage = () => {
 		onSubmit: onFormSubmit,
 		onReset: () => setFilterableData(data),
 	});
-	console.log('filterableData>>', filterableData);
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.product.text}>
 			<SubHeader>
@@ -227,14 +226,14 @@ const ProductPage = () => {
 						placeholder='Search...'
 						onChange={(e: { target: { value: string | any[] } }) => {
 							formikSearch.handleChange(e);
-							if (e.target.value.length > 2)
+							if (e.target.value)
 								debounce(
 									() =>
 										onFormSubmit({
 											...formikSearch.values,
 											search: e.target.value,
 										}),
-									1000,
+									500,
 								)();
 
 							if (e.target.value.length === 0) formikSearch.resetForm();

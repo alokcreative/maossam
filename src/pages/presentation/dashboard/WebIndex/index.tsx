@@ -369,14 +369,14 @@ const WebIndex: FC = () => {
 						placeholder='Search...'
 						onChange={(e: { target: { value: string | any[] } }) => {
 							formikSearch.handleChange(e);
-							if (e.target.value.length > 2)
+							if (e.target.value)
 								debounce(
 									() =>
 										onFormSubmit({
 											...formikSearch.values,
 											search: e.target.value,
 										}),
-									1000,
+									300,
 								)();
 
 							if (e.target.value.length === 0) formikSearch.resetForm();

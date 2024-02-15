@@ -189,7 +189,7 @@ const KnowledgeGridPage = () => {
 									onChange={(e: { target: { value: string | any[] } }) => {
 										formik.handleChange(e);
 
-										if (e.target.value.length > 2)
+										if (e.target.value)
 											debounce(
 												() =>
 													onFormSubmit({
