@@ -12,6 +12,7 @@ import Login from '../pages/presentation/auth/Login';
 import ModalsStepForm from '../pages/presentation/dashboard/ModalsStepForm';
 import WorkingTimeSlot from '../pages/presentation/project-management/component/WorkingTimeSlot';
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
+import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail';
 import AddTask from '../pages/presentation/project-management/component/AddTask';
 import ProductPage from '../pages/presentation/products/ProductPage';
 import Goals from '../pages/presentation/goal/Goals';
@@ -26,7 +27,6 @@ import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
 import WebIndex from '../pages/presentation/dashboard/WebIndex';
 import ToolBox from '../pages/presentation/toolbox/ToolBox';
 import CalendarPage from '../pages/presentation/appointment/CalendarPage';
-
 
 const LANDING = {
 	DASHBOARD: lazy(() => import('../pages/presentation/dashboard/DashboardPage')),
@@ -81,7 +81,9 @@ const APP = {
 	SALES: {
 		TRANSACTIONS: lazy(() => import('../pages/presentation/sales/TransActionsPage')),
 		PRODUCTS_GRID: lazy(() => import('../pages/presentation/sales/ProductsGridPage')),
-		PRODUCTS_VIEW: lazy(() => import('../pages/presentation/products/productDetails/ProductDetailsPage')),
+		PRODUCTS_VIEW: lazy(
+			() => import('../pages/presentation/products/productDetails/ProductDetailsPage'),
+		),
 	},
 	APPOINTMENT: {
 		CALENDAR: lazy(() => import('../pages/presentation/appointment/CalendarPage')),
@@ -854,6 +856,10 @@ const documentation: RouteProps[] = [
 	{
 		path: dashboardPagesMenu.marketingassets.path,
 		element: <MarketingAssets />,
+	},
+	{
+		path: `${dashboardPagesMenu.marketingassets.path}/:id`,
+		element: <AssetDetail />,
 	},
 	{
 		path: pagesMenu.addtask.path,

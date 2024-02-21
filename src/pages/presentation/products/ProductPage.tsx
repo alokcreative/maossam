@@ -233,7 +233,7 @@ const ProductPage = () => {
 											...formikSearch.values,
 											search: e.target.value,
 										}),
-									500,
+									100,
 								)();
 
 							if (e.target.value.length === 0) formikSearch.resetForm();

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import SubHeader, { SubHeaderLeft } from '../../../layout/SubHeader/SubHeader';
+import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
 import Button from '../../../components/bootstrap/Button';
 import Input from '../../../components/bootstrap/forms/Input';
 import FormGroup from '../../../components/bootstrap/forms/FormGroup';
@@ -265,6 +265,7 @@ const GoalDescription: FC = () => {
 						Back to Goals
 					</Button>
 				</SubHeaderLeft>
+				<SubHeaderRight className='h5'>{data && data.goal?.category}</SubHeaderRight>
 			</SubHeader>
 			{isLoading ? (
 				<Loading />

@@ -15,6 +15,7 @@ import WebIndex from '../pages/presentation/dashboard/WebIndex';
 import ToolBox from '../pages/presentation/toolbox/ToolBox';
 import CalendarPage from '../pages/presentation/appointment/CalendarPage';
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
+import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -114,6 +115,10 @@ const documentation: RouteProps[] = [
 	{
 		path: `${adminDashboardPagesMenu.marketing_assets.path}`,
 		element: <MarketingAssets />,
+	},
+	{
+		path: `${dashboardPagesMenu.marketingassets.path}/:id`,
+		element: <AssetDetail />,
 	},
 	{
 		path: `${pagesMenu.goalDesc.path}/:id`,

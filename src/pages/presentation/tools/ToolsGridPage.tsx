@@ -195,7 +195,7 @@ const ToolsGridPage = () => {
 														...formik.values,
 														search: e.target.value,
 													}),
-												1000,
+												100,
 											)();
 
 										if (e.target.value.length === 0) formik.resetForm();

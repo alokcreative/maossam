@@ -27,20 +27,12 @@ import MarketingAssetForms from './MarketingAssetForms/MarketingAssetForms';
 import Breadcrumb from '../../../../components/bootstrap/Breadcrumb';
 import { IUserData } from '../../../_layout/_asides/DefaultAside';
 import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
-import facebookADS from '../../../../assets/logos/FACEBOOK ADS.png';
-import facebook from '../../../../assets/logos/facebook.png';
-import googleADS from '../../../../assets/logos/GOOGLE ADS.png';
-import googleBusiness from '../../../../assets/logos/GOOGLE BUSINESS.png';
-import linkedin from '../../../../assets/logos/linkedin.png';
-import telegram from '../../../../assets/logos/telegram.png';
-import paterners from '../../../../assets/logos/PATERNERS.png';
-import pinterest from '../../../../assets/logos/pinterest.png';
-import podcast from '../../../../assets/logos/podcast.png';
-import tiktok from '../../../../assets/logos/tiktok.png';
-import twitter from '../../../../assets/logos/twitter.png';
-import webindex from '../../../../assets/logos/WEBINDEX.png';
-import website from '../../../../assets/logos/WEBSITE.png';
-import youtube from '../../../../assets/logos/yt_logo.png';
+import MarketingAssetData from '../../../../common/data/marketingAssetDummyData';
+import Dropdown, {
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+} from '../../../../components/bootstrap/Dropdown';
 
 interface IItemProps extends HTMLAttributes<HTMLDivElement> {
 	name: string;
@@ -50,6 +42,8 @@ interface IItemProps extends HTMLAttributes<HTMLDivElement> {
 	taskCount: number;
 	percent: number;
 	dueDate: string;
+	handleOpenModal(...args: unknown[]): unknown;
+	handleItemDesc(...args: unknown[]): unknown;
 }
 const Item: FC<IItemProps> = ({
 	name,
@@ -59,9 +53,11 @@ const Item: FC<IItemProps> = ({
 	taskCount,
 	percent,
 	dueDate,
+	handleOpenModal,
+	handleItemDesc,
 	...props
 }) => {
-	const { darkModeStatus } = useDarkMode();
+	const { themeStatus, darkModeStatus } = useDarkMode();
 
 	return (
 		// eslint-disable-next-line react/jsx-props-no-spreading
@@ -69,7 +65,7 @@ const Item: FC<IItemProps> = ({
 			<Card stretch className='cursor-pointer'>
 				<CardHeader>
 					<CardLabel>
-						<CardTitle className='d-flex gap-2'>
+						<CardTitle className='d-flex gap-2' onClick={handleOpenModal}>
 							<img
 								src={image}
 								alt={name}
@@ -79,15 +75,32 @@ const Item: FC<IItemProps> = ({
 							/>
 							<div className='mx-auto my-auto'>{name}</div>
 						</CardTitle>
-						<CardSubTitle>{teamName}</CardSubTitle>
+						<CardSubTitle onClick={handleOpenModal}>{teamName}</CardSubTitle>
+						<div className='position-absolute' style={{ top: '12px', right: '25px' }}>
+							<Dropdown>
+								<DropdownToggle hasIcon={false}>
+									<Button
+										icon='info'
+										color={themeStatus}
+										shadow='default'
+										aria-label='Edit'
+										onClick={handleItemDesc}
+									/>
+								</DropdownToggle>
+								<DropdownMenu>
+									<DropdownItem />
+								</DropdownMenu>
+							</Dropdown>
+						</div>
 					</CardLabel>
-					<div>
+
+					<div onClick={handleOpenModal}>
 						<small className='border border-success border-2 text-success fw-bold px-2 rounded-1'>
 							{dueDate}
 						</small>
 					</div>
 				</CardHeader>
-				<CardBody className='m-0'>
+				<CardBody className='m-0' onClick={handleOpenModal}>
 					<div className='row g-2'>
 						<div className='col-auto'>
 							<Badge color={darkModeStatus ? 'light' : 'dark'}>
@@ -236,162 +249,7 @@ const MarketingAssets = () => {
 		toast('– Ok, Good to know, no need to spend time and energy when not necessary ');
 
 	// Handle Card Moves
-	const [cards, setCards] = useState<CardProp[]>([
-		{
-			id: 1,
-			name: 'Facebook ADS',
-			image: facebookADS,
-			option: 'yes',
-			teamName: 'SoSimple Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 2,
-			name: 'Facebook',
-			image: facebook,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 3,
-			name: 'Google ADS',
-			image: googleADS,
-			option: 'yes',
-			teamName: 'SoSimple Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 4,
-			name: 'Google Business',
-			image: googleBusiness,
-			option: 'yes',
-			teamName: 'Omtanke Taem',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 5,
-			name: 'Linkedin',
-			image: linkedin,
-			option: 'yes',
-			teamName: 'SoSimple Theme',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 6,
-			name: 'Telegram',
-			image: telegram,
-			option: 'yes',
-			teamName: 'Omtanke Taem',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 7,
-			name: 'Paterners',
-			image: paterners,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 8,
-			name: 'Pinterest',
-			image: pinterest,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 9,
-			name: 'Podcast',
-			image: podcast,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 10,
-			name: 'Tiktok',
-			image: tiktok,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 11,
-			name: 'Twitter',
-			image: twitter,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 12,
-			name: 'Webindex',
-			image: webindex,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 13,
-			name: 'Website',
-			image: website,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-		{
-			id: 14,
-			name: 'Youtube',
-			image: youtube,
-			option: 'yes',
-			teamName: 'Code Team',
-			dueDate: '14 days left',
-			attachCount: 0,
-			taskCount: 0,
-			percent: 0,
-		},
-	]);
+	const [cards, setCards] = useState<CardProp[]>(MarketingAssetData);
 
 	const getFormValue = (isSocialMedia: string, isSocialMediaimportant: string) => {
 		const element: CardProp[] = cards.filter((card) => card.id === elementId);
@@ -412,7 +270,9 @@ const MarketingAssets = () => {
 			setCards(updatedCards);
 		}
 	};
-
+	const handleItemDesc = (card: CardProp) => {
+		navigate(`${dashboardPagesMenu.marketingassets.path}/${card.id}`);
+	};
 	return (
 		<PageWrapper title={dashboardPagesMenu.marketingassets.text}>
 			<SubHeader>
@@ -445,7 +305,8 @@ const MarketingAssets = () => {
 					) : (
 						existingCards.map((card) => (
 							<Item
-								onClick={() => handleOnClickToProjectPage()}
+								handleItemDesc={() => handleItemDesc(card)}
+								handleOpenModal={() => handleOnClickToProjectPage()}
 								key={card.id}
 								name={card.name}
 								image={card.image}
@@ -468,7 +329,7 @@ const MarketingAssets = () => {
 					) : (
 						cards.map((card) => (
 							<Item
-								onClick={() => openModal(card.id, card.name)}
+								handleOpenModal={() => openModal(card.id, card.name)}
 								key={card.id}
 								name={card.name}
 								image={card.image}
@@ -477,6 +338,7 @@ const MarketingAssets = () => {
 								attachCount={card.attachCount}
 								taskCount={card.taskCount}
 								percent={card.percent}
+								handleItemDesc={() => handleItemDesc(card)}
 								data-tour='project-item'
 							/>
 						))
@@ -504,7 +366,8 @@ const MarketingAssets = () => {
 					) : (
 						maybeCards.map((card) => (
 							<Item
-								// onClick={() => openModal(card.id)}
+								handleItemDesc={() => handleItemDesc(card)}
+								handleOpenModal={() => {}}
 								key={card.id}
 								name={card.name}
 								image={card.image}
@@ -525,7 +388,8 @@ const MarketingAssets = () => {
 					) : (
 						notInUseCards.map((card) => (
 							<Item
-								// onClick={() => openModal(card.id)}
+								handleItemDesc={() => handleItemDesc(card)}
+								handleOpenModal={() => {}}
 								key={card.id}
 								name={card.name}
 								image={card.image}

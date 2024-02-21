@@ -53,25 +53,32 @@ const ToolsViewPage = () => {
 				</SubHeaderRight>
 			</SubHeader>
 			<Page>
-				<div className='display-4 fw-bold pt-3 pb-5'>{item.title}</div>
+				<div className='d-flex gap-2'>
+					<img src={item.image} alt={item.title} width={100} className='img-fluid mb-1' />
+					<div className='my-auto display-4 fw-bold pt-3 pb-5'> {item.title}</div>
+				</div>
 				<div className='row g-4'>
-					<div className='col-12'>
+					{/* <div className='col-12 '>
 						<div
 							className={classNames(
-								'ratio ratio-21x9',
+								'',
 								'rounded-2',
 								`bg-l${darkModeStatus ? 'o25' : '10'}-${item.color}`,
 								'mb-3',
 							)}>
-							<img
-								src={item.image}
-								alt={item.title}
-								width='100%'
-								height='auto'
-								className='object-fit-contain p-5'
-							/>
+							<div className='row justify-content-center'>
+								<img
+									style={{ width: '280px', height: '280px' }}
+									src={item.image}
+									alt={item.title}
+									width='100%'
+									height='auto'
+									className='object-fit-contain p-5'
+								/>
+							</div>
 						</div>
-					</div>
+					</div> */}
+
 					<div className='col-12'>
 						<div className='h3 text-muted'>{item.description}</div>
 					</div>

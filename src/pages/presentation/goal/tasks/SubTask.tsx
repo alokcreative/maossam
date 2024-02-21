@@ -95,6 +95,7 @@ const SubTask: FC = () => {
 		setModalState(`Edit Sub Task`);
 		setIsOpen(true);
 	};
+	console.log('data>>', data);
 	return (
 		<PageWrapper>
 			<SubHeader>
@@ -107,6 +108,11 @@ const SubTask: FC = () => {
 						onClick={() => navigate(-1)}>
 						Back to list
 					</Button>
+					<div>
+						{data && data?.goal_category?.title} /{data && data.task.goal}/
+						{data && data.task.title}
+					</div>
+
 					{/* <Breadcrumb list={[{ title: 'Tasks', to: '/' }]} /> */}
 				</SubHeaderLeft>
 				<SubHeaderRight>
