@@ -99,18 +99,20 @@ const SubTask: FC = () => {
 	return (
 		<PageWrapper>
 			<SubHeader>
-				<SubHeaderLeft>
-					<Button
-						className=''
-						color='info'
-						isLink
-						icon='ArrowBack'
-						onClick={() => navigate(-1)}>
-						Back to list
-					</Button>
-					<div>
-						{data && data?.goal_category?.title} /{data && data.task.goal}/
-						{data && data.task.title}
+				<SubHeaderLeft className='block'>
+					<div style={{ display: 'block' }}>
+						<Button
+							className=''
+							color='info'
+							isLink
+							icon='ArrowBack'
+							onClick={() => navigate(-1)}>
+							Back to list
+						</Button>
+						<div className='h5 mt-2'>
+							{data && data?.goal_category?.title} /{data && data.task.goal}/
+							{data && data.task.title}
+						</div>
 					</div>
 
 					{/* <Breadcrumb list={[{ title: 'Tasks', to: '/' }]} /> */}
