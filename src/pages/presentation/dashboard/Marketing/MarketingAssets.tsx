@@ -94,7 +94,7 @@ const Item: FC<IItemProps> = ({
 						</div>
 					</CardLabel>
 
-					<div onClick={handleOpenModal}>
+					<div>
 						<small className='border border-success border-2 text-success fw-bold px-2 rounded-1'>
 							{dueDate}
 						</small>
