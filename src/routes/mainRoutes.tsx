@@ -348,7 +348,7 @@ export const presentation: RouteProps[] = [
 		element: <APP.KNOWLEDGE.GRID />,
 	},
 	{
-		path: `${pagesMenu.knowledge.subMenu.itemID.path}/:id`,
+		path: `${dashboardPagesMenu.faq.path}/:id`,
 		element: <APP.KNOWLEDGE.VIEW />,
 	},
 

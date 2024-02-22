@@ -46,7 +46,7 @@ const KnowledgeViewPage = () => {
 				<SubHeaderRight>
 					<span className='text-muted fst-italic'>Written by</span>
 					{/* eslint-disable-next-line react/jsx-props-no-spreading */}
-					
+
 					<span>
 						<strong>{`${USERS.GRACE.name} ${USERS.GRACE.lastname}`}</strong>
 					</span>
@@ -55,7 +55,7 @@ const KnowledgeViewPage = () => {
 			<Page>
 				<div className='display-4 fw-bold pt-3 pb-5'>{item.title}</div>
 				<div className='row g-4'>
-					<div className='col-12'>
+					{/* <div className='col-12'>
 						<div
 							className={classNames(
 								'ratio ratio-21x9',
@@ -71,7 +71,7 @@ const KnowledgeViewPage = () => {
 								className='object-fit-contain p-5'
 							/>
 						</div>
-					</div>
+					</div> */}
 					<div className='col-12'>
 						<div className='h3 text-muted'>{item.description}</div>
 					</div>

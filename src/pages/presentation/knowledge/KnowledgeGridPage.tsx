@@ -11,7 +11,7 @@ import Card, { CardBody, CardTitle } from '../../../components/bootstrap/Card';
 import Badge from '../../../components/bootstrap/Badge';
 
 import data, { CATEGORIES, TTags } from './helper/dummyKnowledgeData';
-import { pagesMenu } from '../../../menu';
+import { dashboardPagesMenu, pagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import useTourStep from '../../../hooks/useTourStep';
 import { TColor } from '../../../type/color-type';
@@ -29,11 +29,11 @@ const Item: FC<IItemProps> = ({ id, image, title, description, tags, color }) =>
 	const { darkModeStatus } = useDarkMode();
 
 	const navigate = useNavigate();
-	// const handleOnClick = useCallback(
-	// 	() => navigate(`../${pagesMenu.knowledge.subMenu.itemID.path}/${id}`),
-	// 	[navigate, id],
-	// );
-	const handleOnClick = () => {};
+	const handleOnClick = useCallback(
+		() => navigate(`../${dashboardPagesMenu.faq.path}/${id}`),
+		[navigate, id],
+	);
+	// const handleOnClick = () => {}      ;
 	return (
 		<Card
 			className='cursor-pointer shadow-3d-primary shadow-3d-hover'

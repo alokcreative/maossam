@@ -172,6 +172,10 @@ const documentation: RouteProps[] = [
 		path: dashboardPagesMenu.faq.path,
 		element: <FaqPage />,
 	},
+	{
+		path: `${dashboardPagesMenu.faq.path}/:id`,
+		element: <APP.KNOWLEDGE.VIEW />,
+	},
 ];
 const adminContents = [...presentation, ...documentation];
 

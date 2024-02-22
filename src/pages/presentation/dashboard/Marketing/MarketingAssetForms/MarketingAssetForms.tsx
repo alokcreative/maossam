@@ -101,7 +101,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 				</ModalHeader>
 				<ModalBody
 					className={isOpen ? 'opacity-0' : ''}
-					style={{ filter: isOpen ? 'brightness(0.1)' : 'none' }}>
+					style={{ filter: isOpen ? 'brightness(0.1  )' : 'none' }}>
 					<div className='row p-auto'>
 						<div className=' mb-4'>
 							<h5 className='mb-3 fw-bold'>Hi {userData?.first_name},</h5>
