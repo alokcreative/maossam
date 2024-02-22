@@ -34,7 +34,7 @@ type IAssetNameProps = {
 const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 	const { idOfBussiness = 0, nameOfBussiness = '', isModalOpen, setIsModalOpen } = props;
 	const navigate = useNavigate();
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpenModal, setIsOpenModal] = useState(false);
 	// User data
 	const token = localStorage?.getItem('access_token');
 	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
@@ -83,7 +83,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 		onSubmit(values, formikHelpers) {
 			// console.log(values.clickVal);
 			// navigate('/add-task');
-			setIsOpen(true);
+			setIsOpenModal(true);
 			// setIsModalOpen(false);
 		},
 	});
@@ -99,9 +99,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 				<ModalHeader setIsOpen={setIsModalOpen}>
 					<ModalTitle id='mks1' />
 				</ModalHeader>
-				<ModalBody
-					className={isOpen ? 'opacity-0' : ''}
-					style={{ filter: isOpen ? 'brightness(0.1  )' : 'none' }}>
+				<ModalBody className={isOpenModal ? 'opacity-25' : ''}>
 					<div className='row p-auto'>
 						<div className=' mb-4'>
 							<h5 className='mb-3 fw-bold'>Hi {userData?.first_name},</h5>
@@ -658,7 +656,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 														ex gravida ac. Nunc in molestie augue.
 													</AccordionItem>
 													<AccordionItem
-														id='faq2'
+														id='faq3'
 														title={`More info about ${nameOfBussiness} groups`}>
 														Nunc ex odio, fermentum dignissim urna eu,
 														suscipit vehicula magna. Vestibulum vel
@@ -709,7 +707,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 					</div>
 				</ModalBody>
 			</Modal>
-			<AddNewTaskModal isOpen={isOpen} setIsOpen={setIsOpen} />
+			<AddNewTaskModal isOpen={isOpenModal} setIsOpen={setIsOpenModal} />
 		</>
 	);
 };

@@ -46,6 +46,19 @@ const AddNewTaskModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 	});
 	return (
 		<Modal
+			style={{
+				position: isOpen ? 'fixed' : '',
+				top: isOpen ? 0 : '',
+				left: isOpen ? 0 : '',
+				width: isOpen ? '100%' : '',
+				height: isOpen ? '100%' : '',
+				background: isOpen ? 'rgba(0, 0, 0, 0.3)' : '',
+				display: isOpen ? 'flex' : '',
+				justifyContent: isOpen ? 'center' : '',
+				alignItems: isOpen ? 'center' : '',
+				zIndex: isOpen ? 9999 : '',
+				transition: isOpen ? 'background 0.2s ease' : '',
+			}}
 			id='sdmsk12'
 			setIsOpen={setIsOpen}
 			isOpen={isOpen}
