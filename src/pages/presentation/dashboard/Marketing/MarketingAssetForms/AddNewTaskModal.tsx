@@ -48,6 +48,7 @@ const AddNewTaskModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 		<Modal
 			style={{
 				position: isOpen ? 'fixed' : '',
+				padding: isOpen ? '250px 0 0 0' : '',
 				top: isOpen ? 0 : '',
 				left: isOpen ? 0 : '',
 				width: isOpen ? '100%' : '',
