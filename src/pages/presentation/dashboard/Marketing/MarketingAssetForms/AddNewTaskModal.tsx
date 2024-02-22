@@ -24,8 +24,9 @@ import Textarea from '../../../../../components/bootstrap/forms/Textarea';
 interface IProps {
 	isOpen: boolean;
 	setIsOpen(...args: unknown[]): unknown;
+	screenWidth: number;
 }
-const AddNewTaskModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
+const AddNewTaskModal: FC<IProps> = ({ isOpen, setIsOpen, screenWidth }) => {
 	// const [isOpen, setIsOpen] = useState<boolean>(false);
 	const handleCloseClick = () => {
 		setIsOpen(false);
@@ -48,7 +49,13 @@ const AddNewTaskModal: FC<IProps> = ({ isOpen, setIsOpen }) => {
 		<Modal
 			style={{
 				position: isOpen ? 'fixed' : '',
-				padding: isOpen ? '250px 0 0 0' : '',
+				padding: isOpen
+					? screenWidth > 1080
+						? '250px 0 0 0'
+						: screenWidth >= 768
+						? '150px 0 0 0'
+						: '0 0 0 0'
+					: '',
 				top: isOpen ? 0 : '',
 				left: isOpen ? 0 : '',
 				width: isOpen ? '100%' : '',

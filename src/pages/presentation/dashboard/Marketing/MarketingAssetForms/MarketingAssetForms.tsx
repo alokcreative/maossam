@@ -39,6 +39,7 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 	const token = localStorage?.getItem('access_token');
 	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
 	const [userData, setUserData] = useState<IUserData>();
+	const [screenWidth, setScreenWidth] = useState(window.innerHeight);
 	useEffect(() => {
 		if (token) {
 			GetUsersMutation(token)
@@ -59,6 +60,16 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setScreenWidth(window.innerWidth);
+		};
+		window.addEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	const handleSubmit = (isSocialMedia: string, isSocialMediaimportant: string) => {
 		// console.log(
@@ -707,7 +718,11 @@ const MarketingAssetForms: FC<IAssetNameProps> = (props) => {
 					</div>
 				</ModalBody>
 			</Modal>
-			<AddNewTaskModal isOpen={isOpenModal} setIsOpen={setIsOpenModal} />
+			<AddNewTaskModal
+				screenWidth={screenWidth}
+				isOpen={isOpenModal}
+				setIsOpen={setIsOpenModal}
+			/>
 		</>
 	);
 };
