@@ -16,6 +16,7 @@ import ToolBox from '../pages/presentation/toolbox/ToolBox';
 import CalendarPage from '../pages/presentation/appointment/CalendarPage';
 import FaqPage from '../pages/presentation/faq-page/FaqPage';
 import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail';
+import EditUser from '../pages/superAdmin/UserManagement/EditUser';
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
@@ -103,6 +104,10 @@ const documentation: RouteProps[] = [
 	{
 		path: adminDashboardPagesMenu.users.path,
 		element: <USERS.USERLIST />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.users.path}/:id`,
+		element: <EditUser />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.tasks.path}`,

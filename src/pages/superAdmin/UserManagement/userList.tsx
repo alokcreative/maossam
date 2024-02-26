@@ -163,13 +163,13 @@ const UserList = () => {
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [countryList, setcountryList] = useState<IOptionsProps[]>();
 	const [stateList, setStateList] = useState<IOptionsProps[]>();
-	const [modalTitle, setmodalTitle] = useState<string>('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deletingID, setDeletingID] = useState('');
 	const [filterableData, setFilterableData] = useState(data);
+	const navigate = useNavigate();
 	const searchAndFilterData = (searchValue: string) => {
 		const tempData = data;
 
@@ -332,7 +332,7 @@ const UserList = () => {
 
 	const newUser = () => {
 		setIsOpen(true);
-		setmodalTitle('New User');
+		// setmodalTitle('New User');
 		// setAvatar(UserImage);
 	};
 
@@ -427,8 +427,9 @@ const UserList = () => {
 	});
 	const handleEditUser = (id: string) => {
 		// console.log('id>>>>', id);
-		setmodalTitle(`Update User`);
-		setIsOpen(true);
+		// setmodalTitle(`Update User`);
+		// setIsOpen(true);
+		navigate(`${adminDashboardPagesMenu.users.path}/${id}`);
 		const user = data.find((i: IUser) => i.id === id);
 		// console.log('user>>', user);
 		if (user) updateUserForm.setFieldValue('id', user?.id);
@@ -627,18 +628,14 @@ const UserList = () => {
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='user'>{modalTitle}</ModalTitle>
+					<ModalTitle id='user'>New User</ModalTitle>
 				</ModalHeader>
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12'>
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
-									{modalTitle === 'New User' ? (
-										<Avatar src={src} color='storybook' />
-									) : (
-										<Avatar src={avatar} color='storybook' />
-									)}
+									<Avatar src={src} color='storybook' />
 								</div>
 								<div className='col-lg'>
 									<div className='row g-4'>
@@ -662,16 +659,8 @@ const UserList = () => {
 						<FormGroup id='first_name' label='First Name' className='col-lg-6'>
 							<Input
 								name='first_name'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.first_name
-										: updateUserForm.values.first_name
-								}
+								onChange={formik.handleChange}
+								value={formik.values.first_name}
 								invalidFeedback={formik.errors.first_name}
 								isValid={formik.isValid}
 								isTouched={formik.touched.first_name}
@@ -681,16 +670,8 @@ const UserList = () => {
 							<Input
 								name='last_name'
 								type='text'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.last_name
-										: updateUserForm.values.last_name
-								}
+								onChange={formik.handleChange}
+								value={formik.values.last_name}
 								invalidFeedback={formik.errors.last_name}
 								isValid={formik.isValid}
 								isTouched={formik.touched.last_name}
@@ -700,47 +681,31 @@ const UserList = () => {
 							<Input
 								type='email'
 								name='email'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.email
-										: updateUserForm.values.email
-								}
+								onChange={formik.handleChange}
+								value={formik.values.email}
 								invalidFeedback={formik.errors.email}
 								isValid={formik.isValid}
 								isTouched={formik.touched.email}
 							/>
 						</FormGroup>
-						{modalTitle === 'New User' && (
-							<FormGroup id='password' label='Password' className='col-lg-6'>
-								<Input
-									type='password'
-									onChange={formik.handleChange}
-									value={formik.values.password}
-									invalidFeedback={formik.errors.password}
-									isValid={formik.isValid}
-									isTouched={formik.touched.password}
-								/>
-							</FormGroup>
-						)}
+
+						<FormGroup id='password' label='Password' className='col-lg-6'>
+							<Input
+								type='password'
+								onChange={formik.handleChange}
+								value={formik.values.password}
+								invalidFeedback={formik.errors.password}
+								isValid={formik.isValid}
+								isTouched={formik.touched.password}
+							/>
+						</FormGroup>
+
 						<FormGroup id='phone_number' label='Phone Number' className='col-lg-6'>
 							<Input
 								type='text'
 								name='phone_number'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.phone_number
-										: updateUserForm.values.phone_number
-								}
+								onChange={formik.handleChange}
+								value={formik.values.phone_number}
 								invalidFeedback={formik.errors.phone_number}
 								isValid={formik.isValid}
 								isTouched={formik.touched.phone_number}
@@ -750,16 +715,8 @@ const UserList = () => {
 							<Input
 								type='text'
 								name='company_name'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.company_name
-										: updateUserForm.values.company_name
-								}
+								onChange={formik.handleChange}
+								value={formik.values.company_name}
 								invalidFeedback={formik.errors.company_name}
 								isValid={formik.isValid}
 								isTouched={formik.touched.company_name}
@@ -772,16 +729,8 @@ const UserList = () => {
 								required
 								list={countryList}
 								name='country'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.country
-										: updateUserForm.values.country
-								}
+								onChange={formik.handleChange}
+								value={formik.values.country}
 								invalidFeedback={formik.errors.country}
 								isValid={formik.isValid}
 								isTouched={formik.touched.country}
@@ -794,16 +743,8 @@ const UserList = () => {
 								required
 								name='state'
 								list={stateList}
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.state
-										: updateUserForm.values.state
-								}
+								onChange={formik.handleChange}
+								value={formik.values.state}
 								invalidFeedback={formik.errors.state}
 								isValid={formik.isValid}
 								isTouched={formik.touched.state}
@@ -820,16 +761,8 @@ const UserList = () => {
 									{ value: 'other', text: 'Other' },
 								]}
 								name='gender'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.gender
-										: updateUserForm.values.gender
-								}
+								onChange={formik.handleChange}
+								value={formik.values.gender}
 								invalidFeedback={formik.errors.gender}
 								isValid={formik.isValid}
 								isTouched={formik.touched.gender}
@@ -839,15 +772,9 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
-						{modalTitle === 'New User' ? (
-							<Button color='info' onClick={formik.handleSubmit}>
-								Save
-							</Button>
-						) : (
-							<Button color='info' onClick={updateUserForm.handleSubmit}>
-								Update
-							</Button>
-						)}
+						<Button color='info' onClick={formik.handleSubmit}>
+							Save
+						</Button>
 					</CardFooterLeft>
 					<CardFooterRight>
 						<Button
