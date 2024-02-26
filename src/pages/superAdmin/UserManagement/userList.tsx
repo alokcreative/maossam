@@ -11,18 +11,13 @@ import { adminDashboardPagesMenu } from '../../../menu';
 import useDarkMode from '../../../hooks/useDarkMode';
 import Button from '../../../components/bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import USERS, { Role } from '../../../common/data/userDummyData';
 import Card, {
 	CardBody,
 	CardFooterLeft,
 	CardFooterRight,
 } from '../../../components/bootstrap/Card';
-import PaginationButtons, {
-	dataPagination,
-	PER_COUNT,
-} from '../../../components/PaginationButtons';
+import { dataPagination, PER_COUNT } from '../../../components/PaginationButtons';
 import { TColor } from '../../../type/color-type';
-import Badge from '../../../components/bootstrap/Badge';
 import Modal, {
 	ModalBody,
 	ModalFooter,
@@ -33,11 +28,9 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup';
 import Input from '../../../components/bootstrap/forms/Input';
 import Avatar from '../../../components/Avatar';
 import Select from '../../../components/bootstrap/forms/Select';
-import Label from '../../../components/bootstrap/forms/Label';
 import UserImage from '../../../assets/img/wanna/wanna1.png';
 import { Country, State, City } from 'country-state-city';
 import { useEffectOnce } from 'react-use';
-import { IServiceProps } from '../../../common/data/serviceDummyData';
 import {
 	useGetAllUserQuery,
 	useDeleteProfileMutation,
@@ -149,7 +142,7 @@ interface IOptionsProps {
 }
 
 const UserList = () => {
-	const { data, error, isLoading, isSuccess, isFetching, refetch } = useGetAllUserQuery({});
+	const { data, isSuccess, refetch } = useGetAllUserQuery({ fixedCacheKey: 'user-data' });
 	const [deleteProfile] = useDeleteProfileMutation();
 	const [updateProfile] = useUpdateProfileMutation();
 	const [createProfile] = useCreateProfileMutation();
@@ -158,13 +151,18 @@ const UserList = () => {
 	// const [userList, setUserList] = useState(data);
 	const [perPage, setPerPage] = useState(PER_COUNT['10']);
 	const [countryList, setcountryList] = useState<IOptionsProps[]>();
+<<<<<<< Updated upstream
 	const [stateList, setstateList] = useState<IOptionsProps[]>();
 	const [modalTitle, setmodalTitle] = useState<string>('');
+=======
+	const [stateList, setStateList] = useState<IOptionsProps[]>();
+>>>>>>> Stashed changes
 	const [isOpen, setIsOpen] = useState(false);
 	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
 	const [src, setSrc] = useState(data ? data.avatar : UserImage);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [deletingID, setDeletingID] = useState('');
+<<<<<<< Updated upstream
 
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
@@ -174,6 +172,27 @@ const UserList = () => {
 	// );
 	// console.log(userData);
 
+=======
+	const [filterableData, setFilterableData] = useState(data);
+	const navigate = useNavigate();
+	const searchAndFilterData = (searchValue: string) => {
+		const tempData = data;
+
+		return tempData.filter((item: any) => {
+			return (
+				item.first_name?.toLowerCase().includes(searchValue) ||
+				item.last_name?.toLowerCase().includes(searchValue) ||
+				item.email?.toLowerCase().includes(searchValue) ||
+				item.country?.toLowerCase().includes(searchValue) ||
+				item.state?.toLowerCase().includes(searchValue)
+			);
+		});
+	};
+	console.log('data>>', data);
+	useEffect(() => {
+		refetch();
+	}, [data, refetch]);
+>>>>>>> Stashed changes
 	useEffectOnce(() => {
 		const countryListDetails = Country.getAllCountries();
 		const LIST = countryListDetails.map(({ name, isoCode }) => ({
@@ -194,9 +213,7 @@ const UserList = () => {
 		deleteProfile(deletingID)
 			.unwrap()
 			.then(() => {
-				refetch().then((res) => {
-					// setUserList(res.data);
-				});
+				refetch();
 				showNotification(
 					<span className='d-flex align-items-center'>
 						<Icon icon='Info' size='lg' className='me-1' />
@@ -299,10 +316,27 @@ const UserList = () => {
 			// });
 
 			if (Object.keys(formik.errors).length === 0) {
-				createProfile({ userData }).then((res) => {
-					setIsOpen(false);
-					refetch();
-				});
+				createProfile({ userData })
+					.then((res) => {
+						setIsOpen(false);
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>User Added Sucessfully</span>
+							</span>,
+							``,
+						);
+						refetch().then(() => {});
+					})
+					.catch(() => {
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>User Not added</span>
+							</span>,
+							``,
+						);
+					});
 			}
 			setSrc(UserImage);
 			setIsOpen(false);
@@ -312,7 +346,6 @@ const UserList = () => {
 
 	const newUser = () => {
 		setIsOpen(true);
-		setmodalTitle('New User');
 		// setAvatar(UserImage);
 	};
 
@@ -401,8 +434,9 @@ const UserList = () => {
 	});
 	const handleEditUser = (id: string) => {
 		// console.log('id>>>>', id);
-		setmodalTitle(`Update User`);
-		setIsOpen(true);
+		// setmodalTitle(`Update User`);
+		// setIsOpen(true);
+		navigate(`${adminDashboardPagesMenu.users.path}/${id}`);
 		const user = data.find((i: IUser) => i.id === id);
 		updateUserForm.setFieldValue('id', user?.id);
 		updateUserForm.setFieldValue('avatar', user?.avatar);
@@ -520,18 +554,14 @@ const UserList = () => {
 			</Page>
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
 				<ModalHeader setIsOpen={setIsOpen} className='p-4'>
-					<ModalTitle id='user'>{modalTitle}</ModalTitle>
+					<ModalTitle id='user'>New User</ModalTitle>
 				</ModalHeader>
 				<ModalBody className='px-4'>
 					<div className='row g-4'>
 						<div className='col-12'>
 							<div className='row g-4 align-items-center'>
 								<div className='col-lg-auto'>
-									{modalTitle === 'New User' ? (
-										<Avatar src={src} color='storybook' />
-									) : (
-										<Avatar src={avatar} color='storybook' />
-									)}
+									<Avatar src={src} color='storybook' />
 								</div>
 								<div className='col-lg'>
 									<div className='row g-4'>
@@ -555,16 +585,8 @@ const UserList = () => {
 						<FormGroup id='first_name' label='First Name' className='col-lg-6'>
 							<Input
 								name='first_name'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.first_name
-										: updateUserForm.values.first_name
-								}
+								onChange={formik.handleChange}
+								value={formik.values.first_name}
 								invalidFeedback={formik.errors.first_name}
 								isValid={formik.isValid}
 								isTouched={formik.touched.first_name}
@@ -574,16 +596,8 @@ const UserList = () => {
 							<Input
 								name='last_name'
 								type='text'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.last_name
-										: updateUserForm.values.last_name
-								}
+								onChange={formik.handleChange}
+								value={formik.values.last_name}
 								invalidFeedback={formik.errors.last_name}
 								isValid={formik.isValid}
 								isTouched={formik.touched.last_name}
@@ -593,47 +607,31 @@ const UserList = () => {
 							<Input
 								type='email'
 								name='email'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.email
-										: updateUserForm.values.email
-								}
+								onChange={formik.handleChange}
+								value={formik.values.email}
 								invalidFeedback={formik.errors.email}
 								isValid={formik.isValid}
 								isTouched={formik.touched.email}
 							/>
 						</FormGroup>
-						{modalTitle === 'New User' && (
-							<FormGroup id='password' label='Password' className='col-lg-6'>
-								<Input
-									type='password'
-									onChange={formik.handleChange}
-									value={formik.values.password}
-									invalidFeedback={formik.errors.password}
-									isValid={formik.isValid}
-									isTouched={formik.touched.password}
-								/>
-							</FormGroup>
-						)}
+
+						<FormGroup id='password' label='Password' className='col-lg-6'>
+							<Input
+								type='password'
+								onChange={formik.handleChange}
+								value={formik.values.password}
+								invalidFeedback={formik.errors.password}
+								isValid={formik.isValid}
+								isTouched={formik.touched.password}
+							/>
+						</FormGroup>
+
 						<FormGroup id='phone_number' label='Phone Number' className='col-lg-6'>
 							<Input
 								type='text'
 								name='phone_number'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.phone_number
-										: updateUserForm.values.phone_number
-								}
+								onChange={formik.handleChange}
+								value={formik.values.phone_number}
 								invalidFeedback={formik.errors.phone_number}
 								isValid={formik.isValid}
 								isTouched={formik.touched.phone_number}
@@ -643,16 +641,8 @@ const UserList = () => {
 							<Input
 								type='text'
 								name='company_name'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.company_name
-										: updateUserForm.values.company_name
-								}
+								onChange={formik.handleChange}
+								value={formik.values.company_name}
 								invalidFeedback={formik.errors.company_name}
 								isValid={formik.isValid}
 								isTouched={formik.touched.company_name}
@@ -665,16 +655,8 @@ const UserList = () => {
 								required
 								list={countryList}
 								name='country'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.country
-										: updateUserForm.values.country
-								}
+								onChange={formik.handleChange}
+								value={formik.values.country}
 								invalidFeedback={formik.errors.country}
 								isValid={formik.isValid}
 								isTouched={formik.touched.country}
@@ -687,16 +669,8 @@ const UserList = () => {
 								required
 								name='state'
 								list={stateList}
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.state
-										: updateUserForm.values.state
-								}
+								onChange={formik.handleChange}
+								value={formik.values.state}
 								invalidFeedback={formik.errors.state}
 								isValid={formik.isValid}
 								isTouched={formik.touched.state}
@@ -713,16 +687,8 @@ const UserList = () => {
 									{ value: 'other', text: 'Other' },
 								]}
 								name='gender'
-								onChange={
-									modalTitle === 'New User'
-										? formik.handleChange
-										: updateUserForm.handleChange
-								}
-								value={
-									modalTitle === 'New User'
-										? formik.values.gender
-										: updateUserForm.values.gender
-								}
+								onChange={formik.handleChange}
+								value={formik.values.gender}
 								invalidFeedback={formik.errors.gender}
 								isValid={formik.isValid}
 								isTouched={formik.touched.gender}
@@ -732,6 +698,7 @@ const UserList = () => {
 				</ModalBody>
 				<ModalFooter>
 					<CardFooterLeft>
+<<<<<<< Updated upstream
 						<Button
 							color='info'
 							onClick={
@@ -740,6 +707,10 @@ const UserList = () => {
 									: updateUserForm.handleSubmit
 							}>
 							{modalTitle === 'New User' ? 'Save' : 'Update'}
+=======
+						<Button color='info' onClick={formik.handleSubmit}>
+							Save
+>>>>>>> Stashed changes
 						</Button>
 					</CardFooterLeft>
 					<CardFooterRight>
