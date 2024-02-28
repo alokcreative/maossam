@@ -1,69 +1,62 @@
-import React, { FC, useEffect, useState } from 'react';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import { useFormik } from 'formik';
+import React, { FC, useEffect, useState } from 'react'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
+import { useFormik } from 'formik'
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../layout/SubHeader/SubHeader';
-import Page, { IPageProps } from '../../../layout/Page/Page';
-import { adminDashboardPagesMenu } from '../../../menu';
-import useDarkMode from '../../../hooks/useDarkMode';
-import Button from '../../../components/bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
-import USERS, { Role } from '../../../common/data/userDummyData';
-import Card, {
-	CardBody,
-	CardFooterLeft,
-	CardFooterRight,
-} from '../../../components/bootstrap/Card';
-import PaginationButtons, {
-	dataPagination,
-	PER_COUNT,
-} from '../../../components/PaginationButtons';
-import { TColor } from '../../../type/color-type';
-import Badge from '../../../components/bootstrap/Badge';
+} from '../../../layout/SubHeader/SubHeader'
+import Page, { IPageProps } from '../../../layout/Page/Page'
+import { adminDashboardPagesMenu } from '../../../menu'
+import useDarkMode from '../../../hooks/useDarkMode'
+import Button from '../../../components/bootstrap/Button'
+import { useNavigate } from 'react-router-dom'
+import USERS, { Role } from '../../../common/data/userDummyData'
+import Card, { CardBody, CardFooterLeft, CardFooterRight } from '../../../components/bootstrap/Card'
+import PaginationButtons, { dataPagination, PER_COUNT } from '../../../components/PaginationButtons'
+import { TColor } from '../../../type/color-type'
+import Badge from '../../../components/bootstrap/Badge'
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../components/bootstrap/Modal';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../components/bootstrap/forms/Input';
-import Avatar from '../../../components/Avatar';
-import Select from '../../../components/bootstrap/forms/Select';
-import Label from '../../../components/bootstrap/forms/Label';
-import UserImage from '../../../assets/img/wanna/wanna1.png';
-import { Country, State, City } from 'country-state-city';
-import { useEffectOnce } from 'react-use';
-import { IServiceProps } from '../../../common/data/serviceDummyData';
+} from '../../../components/bootstrap/Modal'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
+import Input from '../../../components/bootstrap/forms/Input'
+import Avatar from '../../../components/Avatar'
+import Select from '../../../components/bootstrap/forms/Select'
+import Label from '../../../components/bootstrap/forms/Label'
+import UserImage from '../../../assets/img/wanna/wanna1.png'
+import { Country, State, City } from 'country-state-city'
+import { useEffectOnce } from 'react-use'
+import { IServiceProps } from '../../../common/data/serviceDummyData'
 import {
 	useGetAllUserQuery,
 	useDeleteProfileMutation,
 	useUpdateProfileMutation,
 	useCreateProfileMutation,
-} from '../../../features/auth/authApiSlice';
-import showNotification from '../../../components/extras/showNotification';
-import Icon from '../../../components/icon/Icon';
-import ConfirmationModal from '../../documentation/components/ConfirmationModal';
-import classNames from 'classnames';
-import UserCard from './Usercard';
+} from '../../../features/auth/authApiSlice'
+import showNotification from '../../../components/extras/showNotification'
+import Icon from '../../../components/icon/Icon'
+import ConfirmationModal from '../../documentation/components/ConfirmationModal'
+import classNames from 'classnames'
+import UserCard from './Usercard'
 
 interface ITableRowProps {
-	index: number;
-	id: string;
-	first_name: string;
-	last_name: string;
-	position: string;
-	email: string;
-	company_name: string;
-	phone_number: number;
-	color: TColor;
+	index: number
+	id: string
+	first_name: string
+	last_name: string
+	position: string
+	email: string
+	company_name: string
+	phone_number: number
+	color: TColor
 	// services: IServiceProps[];
-	handleClick(...args: unknown[]): unknown;
-	handleEditUser(...args: unknown[]): unknown;
-	avatar: string | unknown;
+	handleClick(...args: unknown[]): unknown
+	handleEditUser(...args: unknown[]): unknown
+	avatar: string | unknown
 }
 const TableRow: FC<ITableRowProps> = ({
 	index,
@@ -113,65 +106,67 @@ const TableRow: FC<ITableRowProps> = ({
 				/>
 			</td>
 		</tr>
-	);
-};
+	)
+}
 
 export interface IUserProps {
-	first_name: string;
-	last_name: string;
-	email: string;
+	first_name: string
+	last_name: string
+	email: string
 	// teamMember?: string;
-	country?: string;
-	company_name?: string;
-	state?: string;
-	phone_number?: string;
-	gender?: string;
-	avatar?: FormData;
-	password?: string;
+	country?: string
+	company_name?: string
+	state?: string
+	phone_number?: string
+	gender?: string
+	avatar?: FormData
+	password?: string
 	// about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
 
 export interface IUser {
-	id: string;
-	first_name: string;
-	last_name: string;
-	email: string;
-	password: string;
+	id: string
+	first_name: string
+	last_name: string
+	email: string
+	password: string
 	// teamMember?: string;
-	country?: string;
-	company_name?: string;
-	state?: string;
-	phone_number?: string;
-	gender?: string;
-	avatar?: object;
+	country?: string
+	company_name?: string
+	state?: string
+	phone_number?: string
+	gender?: string
+	avatar?: object
 	// about?: { type?: string; exp?: string; FeieldActivity?: string };
 }
 
 interface IOptionsProps {
-	value?: string | number;
-	text?: string | number;
+	value?: string | number
+	text?: string | number
 }
 
 const UserList = () => {
-	const { data, error, isLoading, isSuccess, isFetching, refetch } = useGetAllUserQuery({});
-	const [deleteProfile] = useDeleteProfileMutation();
-	const [updateProfile] = useUpdateProfileMutation();
-	const [createProfile] = useCreateProfileMutation();
-	const { themeStatus, darkModeStatus } = useDarkMode();
-	const [currentPage, setCurrentPage] = useState(1);
+	const { data, error, isLoading, isSuccess, isFetching, refetch } = useGetAllUserQuery({
+		fixedCacheKey: 'user-data',
+	})
+	const [deleteProfile] = useDeleteProfileMutation()
+	const [updateProfile] = useUpdateProfileMutation()
+	const [createProfile] = useCreateProfileMutation()
+	const { themeStatus, darkModeStatus } = useDarkMode()
+	const [currentPage, setCurrentPage] = useState(1)
 	// const [userList, setUserList] = useState(data);
-	const [perPage, setPerPage] = useState(PER_COUNT['10']);
-	const [countryList, setcountryList] = useState<IOptionsProps[]>();
-	const [stateList, setStateList] = useState<IOptionsProps[]>();
-	const [isOpen, setIsOpen] = useState(false);
-	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
-	const [src, setSrc] = useState(data ? data.avatar : UserImage);
-	const [showConfirmation, setShowConfirmation] = useState(false);
-	const [deletingID, setDeletingID] = useState('');
-	const [filterableData, setFilterableData] = useState([]);
-	const navigate = useNavigate();
+	const [perPage, setPerPage] = useState(PER_COUNT['10'])
+	const [countryList, setcountryList] = useState<IOptionsProps[]>()
+	const [stateList, setStateList] = useState<IOptionsProps[]>()
+	const [isOpen, setIsOpen] = useState(false)
+	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage)
+	const [src, setSrc] = useState(data ? data.avatar : UserImage)
+	const [showConfirmation, setShowConfirmation] = useState(false)
+	const [deletingID, setDeletingID] = useState('')
+	const [filterableData, setFilterableData] = useState([])
+	const navigate = useNavigate()
 	const searchAndFilterData = (searchValue: string) => {
-		const tempData = data;
+		const tempData = data
 
 		return tempData.filter((item: any) => {
 			return (
@@ -180,14 +175,14 @@ const UserList = () => {
 				item.email?.toLowerCase().includes(searchValue) ||
 				item.country?.toLowerCase().includes(searchValue) ||
 				item.state?.toLowerCase().includes(searchValue)
-			);
-		});
-	};
+			)
+		})
+	}
 	useEffect(() => {
 		if (data) {
-			setFilterableData(data);
+			setFilterableData(data)
 		}
-	}, [data]);
+	}, [data])
 	// const [userData, setUserData] = useState();
 	// const [userData, setUserData] = useState(
 	// 	Object.keys(USERS).map((key) => ({
@@ -197,37 +192,37 @@ const UserList = () => {
 	// console.log(userData);
 
 	useEffectOnce(() => {
-		const countryListDetails = Country.getAllCountries();
+		const countryListDetails = Country.getAllCountries()
 		const LIST = countryListDetails.map(({ name, isoCode }) => ({
 			value: isoCode,
 			text: name,
-		}));
-		setcountryList(LIST);
-	});
+		}))
+		setcountryList(LIST)
+	})
 	const handleData = (id: string) => {
 		// console.log('id>>>>', id);
 		// const updatedData = data.filter((user: IUserProps) => user.id !== id);
 		// setUserData(updatedData);
-		setShowConfirmation(true);
-		setDeletingID(id);
-	};
+		setShowConfirmation(true)
+		setDeletingID(id)
+	}
 	const handleDeleteConfirmation = () => {
-		setShowConfirmation(false);
+		setShowConfirmation(false)
 		deleteProfile(deletingID)
 			.unwrap()
 			.then(() => {
 				refetch().then((res) => {
 					// setUserList(res.data);
-				});
+				})
 				showNotification(
 					<span className='d-flex align-items-center'>
 						<Icon icon='Info' size='lg' className='me-1' />
 						<span>User Deleted Sucessfully</span>
 					</span>,
 					``,
-				);
-			});
-	};
+				)
+			})
+	}
 
 	const formik = useFormik({
 		initialValues: {
@@ -247,73 +242,73 @@ const UserList = () => {
 		validate: (values) => {
 			const errors: {
 				// id: string;
-				first_name?: string;
-				last_name?: string;
-				email?: string;
-				password?: string;
-				country?: string;
-				company_name?: string;
-				state?: string;
-				phone_number?: string;
-				gender?: string;
-				avatar?: string;
-			} = {};
+				first_name?: string
+				last_name?: string
+				email?: string
+				password?: string
+				country?: string
+				company_name?: string
+				state?: string
+				phone_number?: string
+				gender?: string
+				avatar?: string
+			} = {}
 
 			if (!values.first_name) {
-				errors.first_name = 'Required';
+				errors.first_name = 'Required'
 			}
 
 			if (!values.last_name) {
-				errors.last_name = 'Required';
+				errors.last_name = 'Required'
 			}
 			if (!values.email) {
-				errors.email = 'Required';
+				errors.email = 'Required'
 			}
 
 			if (!values.country) {
-				errors.country = 'Required';
+				errors.country = 'Required'
 			}
 			if (!values.state) {
-				errors.state = 'Required';
+				errors.state = 'Required'
 			}
 
 			if (!values.gender) {
-				errors.gender = 'Required';
+				errors.gender = 'Required'
 			}
 			if (!values.phone_number) {
-				errors.phone_number = 'Required';
+				errors.phone_number = 'Required'
 			}
 			if (values.phone_number.length !== 9) {
-				errors.phone_number = 'Must be 9 digit';
+				errors.phone_number = 'Must be 9 digit'
 			}
 			if (!values.company_name) {
-				errors.company_name = 'Required';
+				errors.company_name = 'Required'
 			}
 			if (!values.password) {
-				errors.password = 'Required';
+				errors.password = 'Required'
 			}
 			// if (!values.avatar) {
 			// 	errors.avatar = 'Required'; // Add error message for the avatar field
 			// }
 
-			return errors;
+			return errors
 		},
 
 		onSubmit: (values, { resetForm }) => {
 			// console.log('NewUser>>>>', values);
 
-			const userData = new FormData();
-			userData.append('first_name', values.first_name);
-			userData.append('last_name', values.last_name);
-			userData.append('email', values.email);
-			userData.append('country', values.country);
-			userData.append('state', values.state);
-			userData.append('gender', values.gender);
-			userData.append('phone_number', values.phone_number);
-			userData.append('company_name', values.company_name);
-			userData.append('password', values.password);
+			const userData = new FormData()
+			userData.append('first_name', values.first_name)
+			userData.append('last_name', values.last_name)
+			userData.append('email', values.email)
+			userData.append('country', values.country)
+			userData.append('state', values.state)
+			userData.append('gender', values.gender)
+			userData.append('phone_number', values.phone_number)
+			userData.append('company_name', values.company_name)
+			userData.append('password', values.password)
 			if (avatar instanceof File) {
-				userData.append('avatar', avatar, avatar.name);
+				userData.append('avatar', avatar, avatar.name)
 			}
 			// createProfile({ userData }).then((res) => {
 			// 	setIsOpen(false);
@@ -322,21 +317,21 @@ const UserList = () => {
 
 			if (Object.keys(formik.errors).length === 0) {
 				createProfile({ userData }).then((res) => {
-					setIsOpen(false);
-					refetch();
-				});
+					setIsOpen(false)
+					refetch()
+				})
 			}
-			setSrc(UserImage);
-			setIsOpen(false);
-			resetForm();
+			setSrc(UserImage)
+			setIsOpen(false)
+			resetForm()
 		},
-	});
+	})
 
 	const newUser = () => {
-		setIsOpen(true);
+		setIsOpen(true)
 		// setmodalTitle('New User');
 		// setAvatar(UserImage);
-	};
+	}
 
 	const updateUserForm = useFormik({
 		initialValues: {
@@ -403,61 +398,61 @@ const UserList = () => {
 		// 	return errors;
 		// },
 		onSubmit: (values, { resetForm }) => {
-			const userData = new FormData();
-			userData.append('first_name', values.first_name);
-			userData.append('last_name', values.last_name);
-			userData.append('email', values.email);
-			userData.append('country', values.country);
-			userData.append('state', values.state);
+			const userData = new FormData()
+			userData.append('first_name', values.first_name)
+			userData.append('last_name', values.last_name)
+			userData.append('email', values.email)
+			userData.append('country', values.country)
+			userData.append('state', values.state)
 			setStateList([
 				{
 					value: values.state,
 					text: values.state,
 				},
-			]);
-			userData.append('gender', values.gender);
-			userData.append('phone_number', values.phone_number);
-			userData.append('company_name', values.company_name);
+			])
+			userData.append('gender', values.gender)
+			userData.append('phone_number', values.phone_number)
+			userData.append('company_name', values.company_name)
 			if (avatar instanceof File) {
-				userData.append('avatar', avatar, avatar.name);
+				userData.append('avatar', avatar, avatar.name)
 			}
 			updateProfile({ id: updateUserForm.values.id, userData }).then((res) => {
-				setIsOpen(false);
-				refetch();
-			});
+				setIsOpen(false)
+				refetch()
+			})
 		},
-	});
+	})
 	const handleEditUser = (id: string) => {
 		// console.log('id>>>>', id);
 		// setmodalTitle(`Update User`);
 		// setIsOpen(true);
-		navigate(`${adminDashboardPagesMenu.users.path}/${id}`);
-		const user = data.find((i: IUser) => i.id === id);
+		navigate(`${adminDashboardPagesMenu.users.path}/${id}`)
+		const user = data.find((i: IUser) => i.id === id)
 		// console.log('user>>', user);
-		if (user) updateUserForm.setFieldValue('id', user?.id);
-		updateUserForm.setFieldValue('avatar', user?.avatar);
-		updateUserForm.setFieldValue('first_name', user?.first_name);
-		updateUserForm.setFieldValue('last_name', user?.last_name);
-		updateUserForm.setFieldValue('email', user?.email);
+		if (user) updateUserForm.setFieldValue('id', user?.id)
+		updateUserForm.setFieldValue('avatar', user?.avatar)
+		updateUserForm.setFieldValue('first_name', user?.first_name)
+		updateUserForm.setFieldValue('last_name', user?.last_name)
+		updateUserForm.setFieldValue('email', user?.email)
 		// updateUserForm.setFieldValue('password', user?.password);
-		updateUserForm.setFieldValue('phone_number', user?.phone_number);
-		updateUserForm.setFieldValue('company_name', user?.company_name);
-		updateUserForm.setFieldValue('country', user?.country);
-		updateUserForm.setFieldValue('state', user?.state);
+		updateUserForm.setFieldValue('phone_number', user?.phone_number)
+		updateUserForm.setFieldValue('company_name', user?.company_name)
+		updateUserForm.setFieldValue('country', user?.country)
+		updateUserForm.setFieldValue('state', user?.state)
 		setStateList([
 			{
 				value: user?.state,
 				text: user?.state,
 			},
-		]);
-		updateUserForm.setFieldValue('gender', user?.gender);
+		])
+		updateUserForm.setFieldValue('gender', user?.gender)
 		// const user1 = data.find((item: any) => item.id === id);
-		setAvatar(user.avatar);
-	};
+		setAvatar(user.avatar)
+	}
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleImageChange = (event: any) => {
-		event.preventDefault();
-		const file = event.target.files[0];
+		event.preventDefault()
+		const file = event.target.files[0]
 
 		// updateUserForm.setFieldValue('avatar', file);
 		// console.log('file >>', file);
@@ -465,9 +460,9 @@ const UserList = () => {
 		// setAvatar(file);
 
 		if (file && (file.type.includes('png') || file.type.includes('jpeg'))) {
-			setAvatar(file);
-			const imageURL = URL.createObjectURL(file);
-			setSrc(imageURL);
+			setAvatar(file)
+			const imageURL = URL.createObjectURL(file)
+			setSrc(imageURL)
 		} else {
 			showNotification(
 				<span className='d-flex align-items-center'>
@@ -475,52 +470,52 @@ const UserList = () => {
 					<span>Only PNG and JPEG Allowed</span>
 				</span>,
 				``,
-			);
-			event.target.value = '';
+			)
+			event.target.value = ''
 		}
-	};
+	}
 	useEffect(() => {
 		const stateListupdated = State.getStatesOfCountry(
 			formik.values.country || updateUserForm.values.country,
-		);
+		)
 		const LIST = stateListupdated.map(({ name }) => ({
 			value: name,
 			text: name,
-		}));
-		setStateList(LIST);
-	}, [formik.values.country, updateUserForm.values.country]);
+		}))
+		setStateList(LIST)
+	}, [formik.values.country, updateUserForm.values.country])
 
 	const debounce = (func: any, wait: number | undefined) => {
-		let timeout: string | number | NodeJS.Timeout | undefined;
+		let timeout: string | number | NodeJS.Timeout | undefined
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		return function executedFunction(...args: any[]) {
+		return function executedFunction (...args: any[]) {
 			const later = () => {
-				clearTimeout(timeout);
-				func(...args);
-			};
+				clearTimeout(timeout)
+				func(...args)
+			}
 
-			clearTimeout(timeout);
-			timeout = setTimeout(later, wait);
-		};
-	};
+			clearTimeout(timeout)
+			timeout = setTimeout(later, wait)
+		}
+	}
 
 	const onFormSubmit = (values: { search: any }) => {
-		const searchValue = formikSearch.values.search.toString()?.toLowerCase();
-		const newData = searchAndFilterData(searchValue);
+		const searchValue = formikSearch.values.search.toString()?.toLowerCase()
+		const newData = searchAndFilterData(searchValue)
 		if (!values.search) {
-			setFilterableData(data);
+			setFilterableData(data)
 		} else {
-			setFilterableData(newData);
+			setFilterableData(newData)
 		}
-	};
+	}
 	const formikSearch = useFormik({
 		initialValues: {
 			search: '',
 		},
 		onSubmit: onFormSubmit,
 		onReset: () => setFilterableData(data),
-	});
+	})
 
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.users.text} isProtected>
@@ -545,7 +540,7 @@ const UserList = () => {
 						className='form-control border-0 shadow-none bg-transparent'
 						placeholder='Search...'
 						onChange={(e: { target: { value: string | any[] } }) => {
-							formikSearch.handleChange(e);
+							formikSearch.handleChange(e)
 							if (e.target.value)
 								debounce(
 									() =>
@@ -554,9 +549,9 @@ const UserList = () => {
 											search: e.target.value,
 										}),
 									100,
-								)();
+								)()
 
-							if (e.target.value.length === 0) formikSearch.resetForm();
+							if (e.target.value.length === 0) formikSearch.resetForm()
 						}}
 						value={formikSearch.values.search}
 					/>
@@ -782,7 +777,7 @@ const UserList = () => {
 						<Button
 							color='danger'
 							onClick={() => {
-								setIsOpen(false);
+								setIsOpen(false)
 							}}>
 							Cancel
 						</Button>
@@ -795,7 +790,7 @@ const UserList = () => {
 				onConfirm={handleDeleteConfirmation}
 			/>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default UserList;
+export default UserList
