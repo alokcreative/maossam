@@ -307,13 +307,13 @@ const EditUser = () => {
 	const handleDeleteConfirmation = () => {
 		setShowConfirmation(false);
 		deleteProfile(data?.id || id)
-			// .unwrap()
-			.then(() => {
+			.unwrap()
+			.then((res) => {
+				console.log("response>>",res);
+
 				// refetch().then((res) => {
 				// 	// setUserList(res.data);
 				// });
-				refetch();
-				reloadData();
 				showNotification(
 					<span className='d-flex align-items-center'>
 						<Icon icon='Info' size='lg' className='me-1' />
