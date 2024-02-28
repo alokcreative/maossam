@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { FC, useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import { useNavigate, useParams } from 'react-router-dom'
 import Card, {
 	CardBody,
 	CardFooter,
@@ -9,49 +9,49 @@ import Card, {
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import Button from '../../../components/bootstrap/Button';
-import Wizard, { WizardItem } from '../../../components/Wizard';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../components/bootstrap/forms/Input';
-import Select from '../../../components/bootstrap/forms/Select';
-import Label from '../../../components/bootstrap/forms/Label';
-import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import Page from '../../../layout/Page/Page';
+} from '../../../components/bootstrap/Card'
+import Button from '../../../components/bootstrap/Button'
+import Wizard, { WizardItem } from '../../../components/Wizard'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
+import Input from '../../../components/bootstrap/forms/Input'
+import Select from '../../../components/bootstrap/forms/Select'
+import Label from '../../../components/bootstrap/forms/Label'
+import Checks, { ChecksGroup } from '../../../components/bootstrap/forms/Checks'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
+import Page from '../../../layout/Page/Page'
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../layout/SubHeader/SubHeader';
-import Avatar from '../../../components/Avatar';
-import User1Webp from '../../../assets/img/wanna/wanna2.webp';
-import User1Img from '../../../assets/img/wanna/wanna2.png';
-import CommonMyWallet from '../../_common/CommonMyWallet';
-import editPasswordValidate from '../../presentation/demo-pages/helper/editPasswordValidate';
-import showNotification from '../../../components/extras/showNotification';
-import Icon from '../../../components/icon/Icon';
-import { pagesMenu } from '../../../menu';
+} from '../../../layout/SubHeader/SubHeader'
+import Avatar from '../../../components/Avatar'
+import User1Webp from '../../../assets/img/wanna/wanna2.webp'
+import User1Img from '../../../assets/img/wanna/wanna2.png'
+import CommonMyWallet from '../../_common/CommonMyWallet'
+import editPasswordValidate from '../../presentation/demo-pages/helper/editPasswordValidate'
+import showNotification from '../../../components/extras/showNotification'
+import Icon from '../../../components/icon/Icon'
+import { pagesMenu } from '../../../menu'
 import {
 	useGetProfileQuery,
 	useUpdateProfileMutation,
 	useDeleteProfileMutation,
 	useGetAllUserQuery,
-} from '../../../features/auth/authApiSlice';
-import { IUser } from './userList';
-import UserImage from '../../../assets/img/wanna/wanna1.png';
-import { Country, State, City } from 'country-state-city';
-import { useEffectOnce } from 'react-use';
-import ConfirmationModal from '../../documentation/components/ConfirmationModal';
+} from '../../../features/auth/authApiSlice'
+import { IUser } from './userList'
+import UserImage from '../../../assets/img/wanna/wanna1.png'
+import { Country, State, City } from 'country-state-city'
+import { useEffectOnce } from 'react-use'
+import ConfirmationModal from '../../documentation/components/ConfirmationModal'
 
 interface IOptionsProps {
-	value?: string | number;
-	text?: string | number;
+	value?: string | number
+	text?: string | number
 }
 interface IPreviewItemProps {
-	title: string;
+	title: string
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	value: any | any[];
+	value: any | any[]
 }
 const PreviewItem: FC<IPreviewItemProps> = ({ title, value }) => {
 	return (
@@ -59,25 +59,25 @@ const PreviewItem: FC<IPreviewItemProps> = ({ title, value }) => {
 			<div className='col-3 text-end'>{title}</div>
 			<div className='col-9 fw-bold'>{value || '-'}</div>
 		</>
-	);
-};
+	)
+}
 
 interface IValues {
-	firstName: string;
-	lastName: string;
-	displayName: string;
-	emailAddress: string;
-	addressLine: string;
-	phoneNumber: string;
-	addressLine2: string;
-	city: string;
-	state: string;
-	zip: string;
-	emailNotification: string[];
-	pushNotification: string[];
-	currentPassword?: string;
-	newPassword?: string;
-	confirmPassword?: string;
+	firstName: string
+	lastName: string
+	displayName: string
+	emailAddress: string
+	addressLine: string
+	phoneNumber: string
+	addressLine2: string
+	city: string
+	state: string
+	zip: string
+	emailNotification: string[]
+	pushNotification: string[]
+	currentPassword?: string
+	newPassword?: string
+	confirmPassword?: string
 }
 const validate = (values: IValues) => {
 	const errors: IValues = {
@@ -96,110 +96,110 @@ const validate = (values: IValues) => {
 		zip: '',
 		emailNotification: [],
 		pushNotification: [],
-	};
+	}
 	if (!values.firstName) {
-		errors.firstName = 'Required';
+		errors.firstName = 'Required'
 	} else if (values.firstName.length < 3) {
-		errors.firstName = 'Must be 3 characters or more';
+		errors.firstName = 'Must be 3 characters or more'
 	} else if (values.firstName.length > 20) {
-		errors.firstName = 'Must be 20 characters or less';
+		errors.firstName = 'Must be 20 characters or less'
 	}
 
 	if (!values.lastName) {
-		errors.lastName = 'Required';
+		errors.lastName = 'Required'
 	} else if (values.lastName.length < 3) {
-		errors.lastName = 'Must be 3 characters or more';
+		errors.lastName = 'Must be 3 characters or more'
 	} else if (values.lastName.length > 20) {
-		errors.lastName = 'Must be 20 characters or less';
+		errors.lastName = 'Must be 20 characters or less'
 	}
 
 	if (!values.displayName) {
-		errors.displayName = 'Required';
+		errors.displayName = 'Required'
 	} else if (values.displayName.length > 30) {
-		errors.displayName = 'Must be 20 characters or less';
+		errors.displayName = 'Must be 20 characters or less'
 	}
 
 	if (!values.emailAddress) {
-		errors.emailAddress = 'Required';
+		errors.emailAddress = 'Required'
 	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.emailAddress)) {
-		errors.emailAddress = 'Invalid email address';
+		errors.emailAddress = 'Invalid email address'
 	}
 
 	if (values.currentPassword) {
 		if (!values.newPassword) {
-			errors.newPassword = 'Please provide a valid password.';
+			errors.newPassword = 'Please provide a valid password.'
 		} else {
-			errors.newPassword = '';
+			errors.newPassword = ''
 
 			if (values.newPassword.length < 8 || values.newPassword.length > 32) {
 				errors.newPassword +=
-					'The password must be at least 8 characters long, but no more than 32. ';
+					'The password must be at least 8 characters long, but no more than 32. '
 			}
 			if (!/[0-9]/g.test(values.newPassword)) {
 				errors.newPassword +=
-					'Require that at least one digit appear anywhere in the string. ';
+					'Require that at least one digit appear anywhere in the string. '
 			}
 			if (!/[a-z]/g.test(values.newPassword)) {
 				errors.newPassword +=
-					'Require that at least one lowercase letter appear anywhere in the string. ';
+					'Require that at least one lowercase letter appear anywhere in the string. '
 			}
 			if (!/[A-Z]/g.test(values.newPassword)) {
 				errors.newPassword +=
-					'Require that at least one uppercase letter appear anywhere in the string. ';
+					'Require that at least one uppercase letter appear anywhere in the string. '
 			}
 			if (!/[!@#$%^&*)(+=._-]+$/g.test(values.newPassword)) {
 				errors.newPassword +=
-					'Require that at least one special character appear anywhere in the string. ';
+					'Require that at least one special character appear anywhere in the string. '
 			}
 		}
 
 		if (!values.confirmPassword) {
-			errors.confirmPassword = 'Please provide a valid password.';
+			errors.confirmPassword = 'Please provide a valid password.'
 		} else if (values.newPassword !== values.confirmPassword) {
-			errors.confirmPassword = 'Passwords do not match.';
+			errors.confirmPassword = 'Passwords do not match.'
 		}
 	}
 
-	return errors;
-};
+	return errors
+}
 const EditUser = () => {
-	const navigate = useNavigate();
-	const { id } = useParams();
+	const navigate = useNavigate()
+	const { id } = useParams()
 
-	const { isSuccess, refetch: reloadData } = useGetAllUserQuery({ fixedCacheKey: 'user-data' });
-	const { data, refetch } = useGetProfileQuery(id);
-	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage);
-	const [src, setSrc] = useState(data ? data.avatar : UserImage);
-	const [showConfirmation, setShowConfirmation] = useState(false);
+	const { isSuccess, refetch: reloadData } = useGetAllUserQuery({ fixedCacheKey: 'user-data' })
+	const { data, refetch } = useGetProfileQuery(id)
+	const [avatar, setAvatar] = useState(data ? data.avatar : UserImage)
+	const [src, setSrc] = useState(data ? data.avatar : UserImage)
+	const [showConfirmation, setShowConfirmation] = useState(false)
 
 	const [countryList, setcountryList] = useState<IOptionsProps[]>([
 		{
 			value: data?.country,
 			text: data?.country,
 		},
-	]);
+	])
 	const [stateList, setStateList] = useState<IOptionsProps[]>([
 		{
 			value: data?.state,
 			text: data?.state,
 		},
-	]);
-	const [deleteProfile] = useDeleteProfileMutation();
-	const [updateProfile] = useUpdateProfileMutation();
+	])
+	const [deleteProfile] = useDeleteProfileMutation()
+	const [updateProfile] = useUpdateProfileMutation()
 	useEffectOnce(() => {
-		const countryListDetails = Country.getAllCountries();
+		const countryListDetails = Country.getAllCountries()
 		const LIST = countryListDetails.map(({ name, isoCode }) => ({
 			value: isoCode,
 			text: name,
-		}));
-		setcountryList(LIST);
-	});
+		}))
+		setcountryList(LIST)
+	})
 	const TABS = {
 		ACCOUNT_DETAIL: 'Account Details',
 		PASSWORD: 'Password',
 		MY_WALLET: 'My Wallet',
-	};
-	const [activeTab, setActiveTab] = useState(TABS.ACCOUNT_DETAIL);
+	}
+	const [activeTab, setActiveTab] = useState(TABS.ACCOUNT_DETAIL)
 	const updateUserForm = useFormik({
 		initialValues: {
 			id: data?.id || '',
@@ -219,16 +219,16 @@ const EditUser = () => {
 		validate: (values) => {
 			const errors: {
 				// id: string;
-				first_name?: string;
-				last_name?: string;
-				email?: string;
-				password?: string;
-				country?: string;
-				company_name?: string;
-				state?: string;
-				phone_number?: string;
-				gender?: string;
-			} = {};
+				first_name?: string
+				last_name?: string
+				email?: string
+				password?: string
+				country?: string
+				company_name?: string
+				state?: string
+				phone_number?: string
+				gender?: string
+			} = {}
 
 			// 	if (!values.first_name) {
 			// 		errors.first_name = 'Required';
@@ -262,66 +262,69 @@ const EditUser = () => {
 			// 		errors.company_name = 'Required';
 			// 	}
 
-			return errors;
+			return errors
 		},
 		onSubmit: (values, { resetForm }) => {
-			const userData = new FormData();
-			userData.append('first_name', values.first_name);
-			userData.append('last_name', values.last_name);
-			userData.append('email', values.email);
-			userData.append('country', values.country);
-			userData.append('state', values.state);
+			const userData = new FormData()
+			userData.append('first_name', values.first_name)
+			userData.append('last_name', values.last_name)
+			userData.append('email', values.email)
+			userData.append('country', values.country)
+			userData.append('state', values.state)
 			setStateList([
 				{
 					value: values.state,
 					text: values.state,
 				},
-			]);
-			userData.append('gender', values.gender);
-			userData.append('phone_number', values.phone_number);
-			userData.append('company_name', values.company_name);
+			])
+			userData.append('gender', values.gender)
+			userData.append('phone_number', values.phone_number)
+			userData.append('company_name', values.company_name)
 			if (avatar instanceof File) {
-				userData.append('avatar', avatar, avatar.name);
+				userData.append('avatar', avatar, avatar.name)
 			}
 			updateProfile({ id: updateUserForm.values.id, userData }).then((res) => {
-				refetch();
-				reloadData();
+				refetch()
+				reloadData()
 				showNotification(
 					<span className='d-flex align-items-center'>
 						<Icon icon='Info' size='lg' className='me-1' />
 						<span>User Updated Sucessfully</span>
 					</span>,
 					``,
-				);
+				)
+				navigate(-1)
 				// refetch();
-			});
+			})
 		},
-	});
+	})
 	const handleData = (uid: string) => {
 		// console.log('id>>>>', id);
 		// const updatedData = data.filter((user: IUserProps) => user.id !== id);
 		// setUserData(updatedData);
-		setShowConfirmation(true);
+		setShowConfirmation(true)
 		// setDeletingID(uid);
-	};
+	}
 	const handleDeleteConfirmation = () => {
-		setShowConfirmation(false);
+		setShowConfirmation(false)
 		deleteProfile(data?.id || id)
 			.unwrap()
 			.then((res) => {
-				console.log("response>>",res);
+				console.log('response>>', res)
 
 				// refetch().then((res) => {
 				// 	// setUserList(res.data);
 				// });
+				// refetch()
+				reloadData()
 				showNotification(
 					<span className='d-flex align-items-center'>
 						<Icon icon='Info' size='lg' className='me-1' />
 						<span>User Deleted Sucessfully</span>
 					</span>,
 					``,
-				);
-				navigate(-1);
+				)
+				navigate(-1)
 			})
 			.catch(() => {
 				showNotification(
@@ -330,29 +333,29 @@ const EditUser = () => {
 						<span>Error!!</span>
 					</span>,
 					``,
-				);
-			});
-	};
+				)
+			})
+	}
 	useEffect(() => {
-		setSrc(data && data.avatar);
-	}, [data]);
+		setSrc(data && data.avatar)
+	}, [data])
 	useEffect(() => {
-		const stateListupdated = State.getStatesOfCountry(updateUserForm.values.country);
+		const stateListupdated = State.getStatesOfCountry(updateUserForm.values.country)
 		const LIST = stateListupdated.map(({ name }) => ({
 			value: name,
 			text: name,
-		}));
-		setStateList(LIST);
-	}, [updateUserForm.values.country]);
+		}))
+		setStateList(LIST)
+	}, [updateUserForm.values.country])
 	const notificationTypes = [
 		{ id: 1, name: 'New Order' },
 		{ id: 2, name: 'New Customer' },
 		{ id: 3, name: 'Order Status' },
-	];
+	]
 
 	const handleImageChange = (event: any) => {
-		event.preventDefault();
-		const file = event.target.files[0];
+		event.preventDefault()
+		const file = event.target.files[0]
 
 		// updateUserForm.setFieldValue('avatar', file);
 		// console.log('file >>', file);
@@ -360,9 +363,9 @@ const EditUser = () => {
 		// setAvatar(file);
 
 		if (file && (file.type.includes('png') || file.type.includes('jpeg'))) {
-			setAvatar(file);
-			const imageURL = URL.createObjectURL(file);
-			setSrc(imageURL);
+			setAvatar(file)
+			const imageURL = URL.createObjectURL(file)
+			setSrc(imageURL)
 		} else {
 			showNotification(
 				<span className='d-flex align-items-center'>
@@ -370,10 +373,10 @@ const EditUser = () => {
 					<span>Only PNG and JPEG Allowed</span>
 				</span>,
 				``,
-			);
-			event.target.value = '';
+			)
+			event.target.value = ''
 		}
-	};
+	}
 
 	return (
 		<PageWrapper title={data?.first_name}>
@@ -1021,7 +1024,7 @@ const EditUser = () => {
 				onConfirm={handleDeleteConfirmation}
 			/>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default EditUser;
+export default EditUser
