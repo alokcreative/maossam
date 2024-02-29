@@ -1,12 +1,12 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
-import Button from '../../../components/bootstrap/Button';
-import Icon from '../../../components/icon/Icon';
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
+import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader'
+import Button from '../../../components/bootstrap/Button'
+import Icon from '../../../components/icon/Icon'
 
-import PAYMENTS from '../../../common/data/enumPaymentMethod';
-import { Role } from '../../../common/data/userDummyData';
+import PAYMENTS from '../../../common/data/enumPaymentMethod'
+import { Role } from '../../../common/data/userDummyData'
 import Card, {
 	CardBody,
 	CardFooter,
@@ -15,21 +15,18 @@ import Card, {
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import useDarkMode from '../../../hooks/useDarkMode';
-import Page from '../../../layout/Page/Page';
-import showNotification from '../../../components/extras/showNotification';
-import validate from '../demo-pages/helper/editPagesValidate';
-import Breadcrumb from '../../../components/bootstrap/Breadcrumb';
-import data1 from '../../../common/data/dummyGoals';
-import PaginationButtons, {
-	dataPagination,
-	PER_COUNT,
-} from '../../../components/PaginationButtons';
-import Badge from '../../../components/bootstrap/Badge';
-import { useNavigate } from 'react-router-dom';
-import GoalViewPopup from './goalHelpher/GoalViewPopup';
-import Item from '../dashboardHelper/GoalItems';
+} from '../../../components/bootstrap/Card'
+import useDarkMode from '../../../hooks/useDarkMode'
+import Page from '../../../layout/Page/Page'
+import showNotification from '../../../components/extras/showNotification'
+import validate from '../demo-pages/helper/editPagesValidate'
+import Breadcrumb from '../../../components/bootstrap/Breadcrumb'
+import data1 from '../../../common/data/dummyGoals'
+import PaginationButtons, { dataPagination, PER_COUNT } from '../../../components/PaginationButtons'
+import Badge from '../../../components/bootstrap/Badge'
+import { useNavigate } from 'react-router-dom'
+import GoalViewPopup from './goalHelpher/GoalViewPopup'
+import Item from '../dashboardHelper/GoalItems'
 
 import {
 	useDeleteGoalMutation,
@@ -37,28 +34,28 @@ import {
 	useCreateGoalMutation,
 	useUpdateGoalMutation,
 	useGetCategoryListQuery,
-} from '../../../features/auth/taskManagementApiSlice';
+} from '../../../features/auth/taskManagementApiSlice'
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../components/bootstrap/Modal';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../components/bootstrap/forms/Input';
-import Select from '../../../components/bootstrap/forms/Select';
-import { Calendar as DatePicker } from 'react-date-range';
-import Label from '../../../components/bootstrap/forms/Label';
-import { format } from 'date-fns';
-import { categoryEnum, categoryStringValue, formatCategory } from '../../../utiles/helper';
-import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown';
-import { dashboardPagesMenu } from '../../../menu';
-import ConfirmationModal from '../../documentation/components/ConfirmationModal';
-import { useDashboard } from '../../../contexts/dashboardContext';
-import ReactQuill from 'react-quill';
-import GoalTableRows from './goalHelpher/GoalTableRows';
-import classNames from 'classnames';
-import useSortableData from '../../../hooks/useSortableData';
+} from '../../../components/bootstrap/Modal'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
+import Input from '../../../components/bootstrap/forms/Input'
+import Select from '../../../components/bootstrap/forms/Select'
+import { Calendar as DatePicker } from 'react-date-range'
+import Label from '../../../components/bootstrap/forms/Label'
+import { format } from 'date-fns'
+import { categoryEnum, categoryStringValue, formatCategory } from '../../../utiles/helper'
+import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown'
+import { dashboardPagesMenu } from '../../../menu'
+import ConfirmationModal from '../../documentation/components/ConfirmationModal'
+import { useDashboard } from '../../../contexts/dashboardContext'
+import ReactQuill from 'react-quill'
+import GoalTableRows from './goalHelpher/GoalTableRows'
+import classNames from 'classnames'
+import useSortableData from '../../../hooks/useSortableData'
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -67,7 +64,7 @@ export const SELECT_OPTIONS = [
 	{ value: 4, text: 'Product Four' },
 	{ value: 5, text: 'Product Five' },
 	{ value: 6, text: 'Product Six' },
-];
+]
 
 // interface IValues {
 // 	id: number;
@@ -90,97 +87,97 @@ export const SELECT_OPTIONS = [
 // 	percent: number;
 // }
 interface IGoalProps {
-	id: number;
-	title: string;
-	description: string;
-	due_date?: string;
-	expected_time?: string;
-	status?: string;
-	category?: string;
-	created_at?: string;
-	created_by?: string;
-	updated_at?: string;
-	task_count: string;
+	id: number
+	title: string
+	description: string
+	due_date?: string
+	expected_time?: string
+	status?: string
+	category?: string
+	created_at?: string
+	created_by?: string
+	updated_at?: string
+	task_count: string
 }
 
 interface ICategoryList {
-	id: number;
-	goal_count: number;
-	created_at: string;
-	updated_at: string;
-	title: string;
-	slug: string;
+	id: number
+	goal_count: number
+	created_at: string
+	updated_at: string
+	title: string
+	slug: string
 }
 
 interface ICategory {
-	value: number;
-	text: string;
+	value: number
+	text: string
 }
 
 const Goals: FC = () => {
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	const { data, isLoading, isSuccess, isError, refetch } = useGetGoalsQuery({
 		fixedCacheKey: 'listTask',
-	});
+	})
 	const {
 		data: categoryData,
 		refetch: refetchCategory,
 		isLoading: isLoadingCategorydata,
 	} = useGetCategoryListQuery({
 		fixedCacheKey: 'categorylist',
-	});
-	const [createGoal] = useCreateGoalMutation();
-	const [updateGoal] = useUpdateGoalMutation();
-	const { darkModeStatus } = useDarkMode();
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [modalHeader, setModalHeader] = useState<string>('Add Goal');
-	const [currentPage, setCurrentPage] = useState(1);
-	const [perPage, setPerPage] = useState(PER_COUNT['10']);
-	const logUserId = localStorage.getItem('UserId');
-	const { gridData, setGridData } = useDashboard();
-	const [goalList, setGoalList] = useState<IGoalProps[]>(data || null);
-	const role = localStorage?.getItem('role');
-	const [deleteGoal] = useDeleteGoalMutation();
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const [goalId, setGoalId] = useState<number>();
-	const [date, setDate] = useState<Date>(new Date());
-	const [showConfirmation, setShowConfirmation] = useState(false);
-	const [deleteId, setDeleteId] = useState<number>();
-	const [categoryList, setCategoryList] = useState<ICategory[]>([]);
-	const [categoryTitle, setCategoryTitle] = useState<string>('All Category');
+	})
+	const [createGoal] = useCreateGoalMutation()
+	const [updateGoal] = useUpdateGoalMutation()
+	const { darkModeStatus } = useDarkMode()
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [modalHeader, setModalHeader] = useState<string>('Add Goal')
+	const [currentPage, setCurrentPage] = useState(1)
+	const [perPage, setPerPage] = useState(PER_COUNT['10'])
+	const logUserId = localStorage.getItem('UserId')
+	const { gridData, setGridData } = useDashboard()
+	const [goalList, setGoalList] = useState<IGoalProps[]>(data || null)
+	const role = localStorage?.getItem('role')
+	const [deleteGoal] = useDeleteGoalMutation()
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+	const [goalId, setGoalId] = useState<number>()
+	const [date, setDate] = useState<Date>(new Date())
+	const [showConfirmation, setShowConfirmation] = useState(false)
+	const [deleteId, setDeleteId] = useState<number>()
+	const [categoryList, setCategoryList] = useState<ICategory[]>([])
+	const [categoryTitle, setCategoryTitle] = useState<string>('All Category')
 	// const [filterableData, setFilterableData] = useState(goalList);
 
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
-		setGoalId(id);
-		setIsModalOpen(true);
-	};
+		setGoalId(id)
+		setIsModalOpen(true)
+	}
 
 	useEffect(() => {
 		if (data) {
-			formik.resetForm();
-			setCategoryTitle('Category');
+			formik.resetForm()
+			setCategoryTitle('Category')
 			if (logUserId == '1') {
-				setGoalList(data);
+				setGoalList(data)
 			} else {
 				const tempdata = data?.filter(
 					(item: IGoalProps) => logUserId == item.created_by || item.created_by == '1',
-				);
-				setGoalList(tempdata);
+				)
+				setGoalList(tempdata)
 			}
 		}
 		if (categoryData) {
-			const newCategoryList = formatCategory(categoryData);
+			const newCategoryList = formatCategory(categoryData)
 			console.log(
 				'categoryData>>',
 				newCategoryList.unshift({ value: 0, text: 'All Category' }),
-			);
-			setCategoryList(newCategoryList);
+			)
+			setCategoryList(newCategoryList)
 		} else {
-			refetchCategory();
+			refetchCategory()
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isLoading, data, isOpen, isLoadingCategorydata]);
+	}, [isLoading, data, isOpen, isLoadingCategorydata])
 
 	const formikNewGoal = useFormik({
 		initialValues: {
@@ -195,45 +192,45 @@ const Goals: FC = () => {
 		validate: (values) => {
 			const errors: {
 				// id: string;
-				name?: string;
-				description?: string;
-				due_date?: string;
-				expected_time?: string;
+				name?: string
+				description?: string
+				due_date?: string
+				expected_time?: string
 				// status?: string;
-				category?: string;
-			} = {};
+				category?: string
+			} = {}
 
 			if (!values.name) {
-				errors.name = 'Required';
+				errors.name = 'Required'
 			}
 
 			if (!values.description) {
-				errors.description = 'Required';
+				errors.description = 'Required'
 			}
 			// if (!values.due_date) {
 			// 	errors.due_date = 'Required';
 			// }
 			if (!values.expected_time) {
-				errors.expected_time = 'Required';
+				errors.expected_time = 'Required'
 			}
 
 			// if (!values.status) {
 			// 	errors.status = 'Required';
 			// }
 			if (!values.category) {
-				errors.category = 'Required';
+				errors.category = 'Required'
 			}
-			return errors;
+			return errors
 		},
 
 		onSubmit: (values, { resetForm }) => {
-			const goalData = new FormData();
-			goalData.append('title', values.name);
-			goalData.append('description', values.description);
-			goalData.append('due_date', format(date, 'MM/dd/yyyy'));
-			goalData.append('expected_time', values.expected_time);
+			const goalData = new FormData()
+			goalData.append('title', values.name)
+			goalData.append('description', values.description)
+			goalData.append('due_date', format(date, 'MM/dd/yyyy'))
+			goalData.append('expected_time', values.expected_time)
 			// goalData.append('status', values.status);
-			goalData.append('category', values.category);
+			goalData.append('category', values.category)
 
 			if (Object.keys(formikNewGoal.errors).length === 0) {
 				if (role == 'superadmin') {
@@ -242,9 +239,9 @@ const Goals: FC = () => {
 						description: values.description,
 						category: values.category,
 					}).then((res) => {
-						setIsOpen(false);
-						refetch();
-					});
+						setIsOpen(false)
+						refetch()
+					})
 				} else {
 					createGoal({
 						title: values.name,
@@ -254,21 +251,21 @@ const Goals: FC = () => {
 						expected_time: values.expected_time,
 						// status: values.status,
 					}).then((res) => {
-						setIsOpen(false);
-						refetch();
-					});
+						setIsOpen(false)
+						refetch()
+					})
 				}
 			}
-			setIsOpen(false);
-			resetForm();
+			setIsOpen(false)
+			resetForm()
 		},
-	});
+	})
 
 	const newGoal = () => {
-		setIsOpen(true);
-		setModalHeader('New Goal');
-		refetchCategory();
-	};
+		setIsOpen(true)
+		setModalHeader('New Goal')
+		refetchCategory()
+	}
 
 	const updateGoalForm = useFormik({
 		initialValues: {
@@ -281,31 +278,31 @@ const Goals: FC = () => {
 		enableReinitialize: true,
 		validate: (values) => {
 			const errors: {
-				name?: string;
-				description?: string;
-				due_date?: string;
-				expected_time?: string;
+				name?: string
+				description?: string
+				due_date?: string
+				expected_time?: string
 				// status?: string;
-				category?: string;
-			} = {};
+				category?: string
+			} = {}
 
 			if (!values.name) {
-				errors.name = 'Required';
+				errors.name = 'Required'
 			}
 
 			if (!values.description) {
-				errors.description = 'Required';
+				errors.description = 'Required'
 			}
 			if (role !== 'superadmin') {
 				if (!values.due_date) {
-					errors.due_date = 'Required';
+					errors.due_date = 'Required'
 				}
 				if (!values.expected_time) {
-					errors.expected_time = 'Required';
+					errors.expected_time = 'Required'
 				}
 			}
 
-			return errors;
+			return errors
 		},
 		onSubmit: (values, { resetForm }) => {
 			if (role === 'superadmin') {
@@ -313,12 +310,12 @@ const Goals: FC = () => {
 					title: values.name,
 					description: values.description,
 					due_date: format(date, 'MM/dd/yyyy'),
-				};
+				}
 				updateGoal({ id: updateGoalForm.values.id, goalData })
 					.unwrap()
 					.then((res) => {
-						setIsOpen(false);
-						refetch();
+						setIsOpen(false)
+						refetch()
 						if (res) {
 							showNotification(
 								<span className='d-flex align-items-center'>
@@ -326,28 +323,28 @@ const Goals: FC = () => {
 									<span>Goal updated sucessfully.</span>
 								</span>,
 								``,
-							);
+							)
 						}
 					})
 					.catch((res) => {
 						// console.log(res);
-					});
+					})
 			} else {
-				const parts = values.expected_time.split(':');
-				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+				const parts = values.expected_time.split(':')
+				const timeWithoutSeconds = `${parts[0]}:${parts[1]}`
 				const goalData = {
 					title: values.name,
 					description: values.description,
 					due_date: format(date, 'MM/dd/yyyy'),
 					expected_time: timeWithoutSeconds,
 					// status: values.status,
-				};
+				}
 
 				updateGoal({ id: updateGoalForm.values.id, goalData })
 					.unwrap()
 					.then((res) => {
-						setIsOpen(false);
-						refetch();
+						setIsOpen(false)
+						refetch()
 						if (res) {
 							showNotification(
 								<span className='d-flex align-items-center'>
@@ -355,21 +352,21 @@ const Goals: FC = () => {
 									<span>Goal updated sucessfully.</span>
 								</span>,
 								``,
-							);
+							)
 						}
 					})
 					.catch((res) => {
 						// console.log(res);
-					});
+					})
 			}
 		},
-	});
+	})
 	const handleDelete = () => {
-		const id = deleteId;
-		setShowConfirmation(false);
+		const id = deleteId
+		setShowConfirmation(false)
 		if (data && id) {
-			const newGoals = data.filter((i: IGoalProps) => i.id !== id);
-			setGoalList(newGoals);
+			const newGoals = data.filter((i: IGoalProps) => i.id !== id)
+			setGoalList(newGoals)
 
 			deleteGoal(id)
 				.unwrap()
@@ -381,8 +378,8 @@ const Goals: FC = () => {
 							<span>Goal deleted sucessfully.</span>
 						</span>,
 						``,
-					);
-					refetch().then((res) => {});
+					)
+					refetch().then((res) => {})
 				})
 				.catch((response1) => {
 					// console.log("rescatch>>",response1.data.detail[0]);
@@ -392,22 +389,22 @@ const Goals: FC = () => {
 							<span>{response1.data.detail[0]}</span>
 						</span>,
 						``,
-					);
+					)
 					showNotification(
 						<span className='d-flex align-items-center'>
 							<Icon icon='Info' size='lg' className='me-1' />
 							<span>{response1.data.detail[0]}</span>
 						</span>,
 						``,
-					);
-				});
+					)
+				})
 		}
-	};
+	}
 	const handleEdit = (id: number) => {
-		setModalHeader('Update Goal');
-		setIsOpen(true);
+		setModalHeader('Update Goal')
+		setIsOpen(true)
 
-		const goal = data.find((i: IGoalProps) => i.id === id);
+		const goal = data.find((i: IGoalProps) => i.id === id)
 		// console.log('goal>>>',   categoryStringValue[goal.category]);
 		// const formatedDate = formatDate(goal &&  goal?.date)
 		// let category;
@@ -415,72 +412,72 @@ const Goals: FC = () => {
 		// 	category = 2;
 		// }
 
-		updateGoalForm.setFieldValue('id', goal?.id);
-		updateGoalForm.setFieldValue('name', goal?.title);
-		updateGoalForm.setFieldValue('description', goal?.description);
-		updateGoalForm.setFieldValue('due_date', goal?.due_date);
-		updateGoalForm.setFieldValue('expected_time', goal?.expected_time);
+		updateGoalForm.setFieldValue('id', goal?.id)
+		updateGoalForm.setFieldValue('name', goal?.title)
+		updateGoalForm.setFieldValue('description', goal?.description)
+		updateGoalForm.setFieldValue('due_date', goal?.due_date)
+		updateGoalForm.setFieldValue('expected_time', goal?.expected_time)
 		// updateGoalForm.setFieldValue('status', goal?.status);
-		updateGoalForm.setFieldValue('category', categoryStringValue[goal.category]);
-	};
+		updateGoalForm.setFieldValue('category', categoryStringValue[goal.category])
+	}
 
 	const handleCloseClick = () => {
-		setIsOpen(false);
+		setIsOpen(false)
 		// navigate(`../${dashboardPagesMenu.tasks.path}`);
-	};
+	}
 	const handledescription = (value: string) => {
 		if (modalHeader === 'New Goal') {
-			formikNewGoal.setFieldValue('description', value);
+			formikNewGoal.setFieldValue('description', value)
 		} else {
-			updateGoalForm.setFieldValue('description', value);
+			updateGoalForm.setFieldValue('description', value)
 		}
-	};
+	}
 
 	const filterData = (category: number) => {
-		let tempData = data;
-		const tempCategory = categoryList.find((item) => item.value == category);
+		let tempData = data
+		const tempCategory = categoryList.find((item) => item.value == category)
 		if (tempCategory?.value === 0) {
-			return tempData;
+			return tempData
 		}
 		if (tempCategory) {
-			setCategoryTitle(tempCategory.text);
-			tempData = tempData.filter((item: any) => item.category === tempCategory?.text);
+			setCategoryTitle(tempCategory.text)
+			tempData = tempData.filter((item: any) => item.category === tempCategory?.text)
 		}
 
-		return tempData;
-	};
+		return tempData
+	}
 	const onFormSubmit = (values: { category: any }) => {
-		const newData = filterData(values.category);
+		const newData = filterData(values.category)
 
 		if (!values.category) {
-			setGoalList(goalList);
+			setGoalList(goalList)
 		} else {
-			setGoalList(newData);
+			setGoalList(newData)
 		}
-	};
+	}
 	const debounce = (func: any, wait: number | undefined) => {
-		let timeout: string | number | NodeJS.Timeout | undefined;
+		let timeout: string | number | NodeJS.Timeout | undefined
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		return function executedFunction(...args: any[]) {
+		return function executedFunction (...args: any[]) {
 			const later = () => {
-				clearTimeout(timeout);
-				func(...args);
-			};
+				clearTimeout(timeout)
+				func(...args)
+			}
 
-			clearTimeout(timeout);
-			timeout = setTimeout(later, wait);
-		};
-	};
+			clearTimeout(timeout)
+			timeout = setTimeout(later, wait)
+		}
+	}
 	const formik = useFormik({
 		initialValues: {
 			category: '',
 		},
 		onSubmit: onFormSubmit,
 		onReset: () => setGoalList(data),
-	});
+	})
 
-	const { items, requestSort, getClassNamesFor } = useSortableData(goalList || []);
+	const { items, requestSort, getClassNamesFor } = useSortableData(goalList || [])
 
 	return (
 		<PageWrapper title={dashboardPagesMenu.goals.text}>
@@ -499,6 +496,7 @@ const Goals: FC = () => {
 									<Select
 										id='category'
 										size='lg'
+										style={{ width: '200px', fontSize: '12px' }}
 										ariaLabel='Category'
 										placeholder='Category'
 										list={categoryList}
@@ -507,7 +505,7 @@ const Goals: FC = () => {
 										})}
 										// eslint-disable-next-line @typescript-eslint/no-explicit-any
 										onChange={(e: { target: { value: any } }) => {
-											formik.handleChange(e);
+											formik.handleChange(e)
 
 											if (e.target.value) {
 												debounce(
@@ -517,8 +515,8 @@ const Goals: FC = () => {
 															category: e.target.value,
 														}),
 													1000,
-												)();
-												formik.handleSubmit();
+												)()
+												formik.handleSubmit()
 											}
 										}}
 										value={formik.values.category}
@@ -563,8 +561,8 @@ const Goals: FC = () => {
 											<Item
 												parent='main'
 												handleDelete={() => {
-													setShowConfirmation(true);
-													setDeleteId(item.id);
+													setShowConfirmation(true)
+													setDeleteId(item.id)
 												}}
 												handleEdit={handleEdit}
 												handleView={(id) =>
@@ -684,7 +682,7 @@ const Goals: FC = () => {
 																		openModal={openModal}
 																		index={index}
 																	/>
-																);
+																)
 															})
 														) : (
 															<div>No goals yet.</div>
@@ -845,7 +843,7 @@ const Goals: FC = () => {
 						<Button
 							color='danger'
 							onClick={() => {
-								handleCloseClick();
+								handleCloseClick()
 							}}>
 							Cancel
 						</Button>
@@ -858,7 +856,7 @@ const Goals: FC = () => {
 				onConfirm={handleDelete}
 			/>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default Goals;
+export default Goals

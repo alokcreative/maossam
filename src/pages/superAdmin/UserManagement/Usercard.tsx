@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC } from 'react'
 import Card, {
 	CardActions,
 	CardBody,
@@ -6,33 +6,33 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import Badge from '../../../components/bootstrap/Badge';
-import Button from '../../../components/bootstrap/Button';
-import classNames from 'classnames';
-import { TColor } from '../../../type/color-type';
+} from '../../../components/bootstrap/Card'
+import Badge from '../../../components/bootstrap/Badge'
+import Button from '../../../components/bootstrap/Button'
+import classNames from 'classnames'
+import { TColor } from '../../../type/color-type'
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../../components/bootstrap/Dropdown';
-import useDarkMode from '../../../hooks/useDarkMode';
+} from '../../../components/bootstrap/Dropdown'
+import useDarkMode from '../../../hooks/useDarkMode'
 
 interface IUserProps {
-	index: number;
-	id: string;
-	first_name: string;
-	last_name: string;
-	position: string;
-	email: string;
-	company_name: string;
-	phone_number: number;
-	color: TColor;
+	index: number
+	id: string
+	first_name: string
+	last_name: string
+	position: string
+	email: string
+	company_name: string
+	phone_number: number
+	color: TColor
 	// services: IServiceProps[];
-	handleClick(...args: unknown[]): unknown;
-	handleEditUser(...args: unknown[]): unknown;
-	avatar: string;
-	role: string;
+	handleClick(...args: unknown[]): unknown
+	handleEditUser(...args: unknown[]): unknown
+	avatar: string
+	role: string
 }
 const UserCard: FC<IUserProps> = ({
 	index,
@@ -49,7 +49,7 @@ const UserCard: FC<IUserProps> = ({
 	avatar,
 	role,
 }) => {
-	const { themeStatus, darkModeStatus } = useDarkMode();
+	const { themeStatus, darkModeStatus } = useDarkMode()
 
 	return (
 		<Card>
@@ -99,11 +99,11 @@ const UserCard: FC<IUserProps> = ({
 											<div className='fw-bold fs-5 me-2'>
 												{`${first_name} ${last_name}`}
 											</div>
-											{role && (
+											{/* {role && (
 												<small className='border border-success border-2 text-success fw-bold px-2 py-1 rounded-1'>
 													{role}
 												</small>
-											)}
+											)} */}
 										</div>
 									</div>
 									<div
@@ -195,7 +195,7 @@ const UserCard: FC<IUserProps> = ({
 				</div>
 			</CardBody>
 		</Card>
-	);
-};
+	)
+}
 
-export default UserCard;
+export default UserCard

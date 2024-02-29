@@ -32,7 +32,7 @@ const editPasswordValidate = (values: IValues) => {
 				errors.newPassword +=
 					'Require that at least one uppercase letter appear anywhere in the string. ';
 			}
-			if (!/[!@#$%^&*)(+=._-]+$/g.test(values.newPassword)) {
+			if (!/[!@#$%^&*)(+=._-]/g.test(values.newPassword)) {
 				errors.newPassword +=
 					'Require that at least one special character appear anywhere in the string. ';
 			}

@@ -37,6 +37,7 @@ import {
 	useUpdateProfileMutation,
 	useDeleteProfileMutation,
 	useGetAllUserQuery,
+	useChangePasswordMutation,
 } from '../../../features/auth/authApiSlice'
 import { IUser } from './userList'
 import UserImage from '../../../assets/img/wanna/wanna1.png'
@@ -186,6 +187,8 @@ const EditUser = () => {
 	])
 	const [deleteProfile] = useDeleteProfileMutation()
 	const [updateProfile] = useUpdateProfileMutation()
+	const [ChangePasswordMutation] = useChangePasswordMutation()
+
 	useEffectOnce(() => {
 		const countryListDetails = Country.getAllCountries()
 		const LIST = countryListDetails.map(({ name, isoCode }) => ({
@@ -378,6 +381,75 @@ const EditUser = () => {
 		}
 	}
 
+	const formikPassword = useFormik({
+		initialValues: {
+			currentPassword: '',
+			newPassword: '',
+			confirmPassword: '',
+		},
+		onSubmit: (values) => {
+			console.log('Values>>', values)
+			const payload = JSON.stringify({
+				current_password: values.currentPassword,
+				new_password: values.newPassword,
+				confirm_password: values.confirmPassword,
+			})
+			console.log('payload>>', payload)
+			ChangePasswordMutation(payload)
+				.unwrap()
+				.then(
+					(res: {
+						detail: any[]
+						data: {
+							detail: (
+								| string
+								| number
+								| boolean
+								| React.ReactElement<any, string | React.JSXElementConstructor<any>>
+								| React.ReactFragment
+								| React.ReactPortal
+								| null
+								| undefined
+							)[]
+						}
+					}) => {
+						if (res?.detail[0]) {
+							showNotification(
+								<span className='d-flex align-items-center'>
+									<Icon icon='Info' size='lg' className='me-1' />
+									<span>{res.data?.detail[0]}</span>
+								</span>,
+								``,
+							)
+						}
+					},
+				)
+				.catch(
+					(res: {
+						data: {
+							detail: (
+								| string
+								| number
+								| boolean
+								| React.ReactElement<any, string | React.JSXElementConstructor<any>>
+								| React.ReactFragment
+								| React.ReactPortal
+								| null
+								| undefined
+							)[]
+						}
+					}) => {
+						showNotification(
+							<span className='d-flex align-items-center'>
+								<Icon icon='Info' size='lg' className='me-1' />
+								<span>{res.data?.detail[0]}</span>
+							</span>,
+							``,
+						)
+					},
+				)
+		},
+	})
 	return (
 		<PageWrapper title={data?.first_name}>
 			<SubHeader>
@@ -441,7 +513,7 @@ const EditUser = () => {
 											{TABS.ACCOUNT_DETAIL}
 										</Button>
 									</div>
-									{/* <div className='col-12'>
+									<div className='col-12'>
 										<Button
 											icon='LocalPolice'
 											color='info'
@@ -451,7 +523,7 @@ const EditUser = () => {
 											{TABS.PASSWORD}
 										</Button>
 									</div>
-									<div className='col-12'>
+									{/* <div className='col-12'>
 										<Button
 											icon='Style'
 											color='info'
@@ -794,7 +866,7 @@ const EditUser = () => {
 										</div> */}
 									</div>
 								</WizardItem>
-								{/* <WizardItem id='step3' title='Notifications'>
+								<WizardItem id='step3' title='Notifications'>
 									<div className='row g-4'>
 										<div className='col-12'>
 											<FormGroup>
@@ -810,10 +882,10 @@ const EditUser = () => {
 															name='emailNotification'
 															label={cat.name}
 															value={cat.id}
-															onChange={formik.handleChange}
-															checked={formik.values.emailNotification.includes(
-																cat.id.toString(),
-															)}
+															// onChange={formik.handleChange}
+															// checked={formik.values.emailNotification.includes(
+															// 	cat.id.toString(),
+															// )}
 														/>
 													))}
 												</ChecksGroup>
@@ -833,17 +905,17 @@ const EditUser = () => {
 															name='pushNotification'
 															label={cat.name}
 															value={cat.id}
-															onChange={formik.handleChange}
-															checked={formik.values.pushNotification.includes(
-																cat.id.toString(),
-															)}
+															// onChange={formik.handleChange}
+															// checked={formik.values.pushNotification.includes(
+															// 	cat.id.toString(),
+															// )}
 														/>
 													))}
 												</ChecksGroup>
 											</FormGroup>
 										</div>
 									</div>
-								</WizardItem> */}
+								</WizardItem>
 								<WizardItem id='step3' title='Preview'>
 									<div className='row g-3'>
 										<div className='col-9 offset-3'>
@@ -918,7 +990,7 @@ const EditUser = () => {
 								</WizardItem>
 							</Wizard>
 						)}
-						{/* {TABS.PASSWORD === activeTab && (
+						{TABS.PASSWORD === activeTab && (
 							<Card
 								stretch
 								tag='form'
@@ -1004,17 +1076,18 @@ const EditUser = () => {
 									<CardFooterRight>
 										<Button
 											type='submit'
-											icon='Save'
+											icon=''
 											color='info'
 											isOutline
-											onClick={updateUserForm.handleSubmit}>
+											onClick={formikPassword.handleSubmit}>
 											Save
 										</Button>
 									</CardFooterRight>
 								</CardFooter>
 							</Card>
 						)}
-						{TABS.MY_WALLET === activeTab && <CommonMyWallet />} */}
+
+						{/*{TABS.MY_WALLET === activeTab && <CommonMyWallet />} */}
 					</div>
 				</div>
 			</Page>
