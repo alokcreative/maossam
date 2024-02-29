@@ -1086,8 +1086,6 @@ const EditUser = () => {
 								</CardFooter>
 							</Card>
 						)}
-
-						{/*{TABS.MY_WALLET === activeTab && <CommonMyWallet />} */}
 					</div>
 				</div>
 			</Page>
