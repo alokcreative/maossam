@@ -407,7 +407,7 @@ const ModalsStepForm: React.FC = () => {
 										First things first, tell us a bit about your activity This
 										will help us adapt the platform to fit your needs.
 									</div>
-									{activeRolePerTab === ROLE_PER_TAB.Student && (
+									{/* {activeRolePerTab === ROLE_PER_TAB.Student && (
 										<div className='mb-3'>
 											<FormGroup
 												id='state'
@@ -428,7 +428,7 @@ const ModalsStepForm: React.FC = () => {
 												/>
 											</FormGroup>
 										</div>
-									)}
+									)} */}
 								</div>
 							) : (
 								<div>
