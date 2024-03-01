@@ -352,18 +352,26 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 						<div className='text-center mb-3'>
 							By proceeding, you agree to the{' '}
 							<animateMotion
-								className={classNames('text-underline link-light ', {
-									'link-light': darkModeStatus,
-									'link-dark': !darkModeStatus,
-								})}>
+								style={{ cursor: 'pointer' }}
+								className={classNames(
+									'pointer-events text-decoration-underline link-light ',
+									{
+										'link-light': darkModeStatus,
+										'link-dark': !darkModeStatus,
+									},
+								)}>
 								Terms of use
 							</animateMotion>{' '}
 							and{' '}
 							<animateMotion
-								className={classNames('text-underline me-3', {
-									'link-light': darkModeStatus,
-									'link-dark': !darkModeStatus,
-								})}
+								style={{ cursor: 'pointer' }}
+								className={classNames(
+									'pointer-events text-decoration-underline me-3',
+									{
+										'link-light': darkModeStatus,
+										'link-dark': !darkModeStatus,
+									},
+								)}
 								onClick={handleLinkClick}>
 								Privacy policy
 							</animateMotion>
@@ -372,10 +380,14 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 							<div className='text-center mb-3'>
 								Already have an account?{' '}
 								<animateMotion
-									className={classNames('link-light ', {
-										'link-light': darkModeStatus,
-										'link-dark': !darkModeStatus,
-									})}
+									style={{ cursor: 'pointer' }}
+									className={classNames(
+										'pointer-events text-decoration-underline link-light ',
+										{
+											'link-light': darkModeStatus,
+											'link-dark': !darkModeStatus,
+										},
+									)}
 									onClick={() => {
 										setSingUpStatus(false)
 									}}>
