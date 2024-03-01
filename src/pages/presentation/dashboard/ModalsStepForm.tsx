@@ -1,91 +1,97 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-import { useTour } from '@reactour/tour';
-import Page from '../../../layout/Page/Page';
-import Modal, { ModalBody, ModalFooter } from '../../../components/bootstrap/Modal';
-import Input from '../../../components/bootstrap/forms/Input';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import Checks from '../../../components/bootstrap/forms/Checks';
-import Select from '../../../components/bootstrap/forms/Select';
-import DashboardScreen from '../../../assets/let-start.png';
-import { Country, State, City } from 'country-state-city';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
-import Button from '../../../components/bootstrap/Button';
-import { useGetUsersMutation, useUpdateProfileMutation } from '../../../features/auth/authApiSlice';
+import React, { useCallback, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { useTour } from '@reactour/tour'
+import Page from '../../../layout/Page/Page'
+import Modal, { ModalBody, ModalFooter } from '../../../components/bootstrap/Modal'
+import Input from '../../../components/bootstrap/forms/Input'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
+import Checks from '../../../components/bootstrap/forms/Checks'
+import Select from '../../../components/bootstrap/forms/Select'
+import DashboardScreen from '../../../assets/let-start.png'
+import { Country, State, City } from 'country-state-city'
+import useEffectOnce from 'react-use/lib/useEffectOnce'
+import Button from '../../../components/bootstrap/Button'
+import { useGetUsersMutation, useUpdateProfileMutation } from '../../../features/auth/authApiSlice'
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 
 interface IOptionsProps {
-	value?: string | number;
-	text?: string | number;
+	value?: string | number
+	text?: string | number
 }
 
 interface IUserData {
-	id: number;
-	avatar: string | unknown;
-	first_name: string;
-	last_name: string;
-	email: string;
-	phone_number: number;
-	country: string;
-	state: string;
-	gender: string;
-	is_active: boolean;
-	role: string;
-	date_of_birth: string;
-	created_at: string;
-	updated_at: string;
+	id: number
+	avatar: string | unknown
+	first_name: string
+	last_name: string
+	email: string
+	phone_number: number
+	country: string
+	state: string
+	gender: string
+	is_active: boolean
+	role: string
+	date_of_birth: string
+	created_at: string
+	updated_at: string
 }
-
+interface IButtonPerTab {
+	[key: string]: 'Freelancer' | 'Business Owner' | 'Team Manager' | 'Team Member' | 'Student'
+}
 const ModalsStepForm: React.FC = () => {
-	const [countryList, setcountryList] = useState<IOptionsProps[]>();
-	const [stateList, setstateList] = useState<IOptionsProps[]>();
-	const [activeBtn, setActiveBtn] = useState('');
-	const [data, setData] = useState<any>();
-	const [selectedValue, setSelectedValue] = useState('');
-	const [UpdateProfileMutation] = useUpdateProfileMutation();
-	const [GetUsersMutation, { isLoading, isSuccess }] = useGetUsersMutation();
-	const token = localStorage.getItem('access_token');
-
+	const [countryList, setCountryList] = useState<IOptionsProps[]>()
+	const [stateList, setstateList] = useState<IOptionsProps[]>()
+	const [activeBtn, setActiveBtn] = useState('')
+	const [value, setValue] = useState<any>()
+	const [data, setData] = useState<any>()
+	const [selectedValue, setSelectedValue] = useState('')
+	const [UpdateProfileMutation] = useUpdateProfileMutation()
+	const [GetUsersMutation, { isLoading, isSuccess }] = useGetUsersMutation()
+	const token = localStorage.getItem('access_token')
+	console.log('ata>>', data)
+	console.log('value>>', value)
 	useEffect(() => {
 		if (!token) {
-			navigate('/auth-pages/login');
+			navigate('/auth-pages/login')
 		} else {
 			GetUsersMutation(token)
 				.unwrap()
 				.then((user: IUserData) => {
-					setData(user);
+					setData(user)
 				})
 				.catch(() => {
-					localStorage.removeItem('refresh_token');
-					localStorage.removeItem('access_token');
-					localStorage.removeItem('tourModalStarted');
-					localStorage.removeItem('role');
-					localStorage.removeItem('i18nextLng');
-					localStorage.removeItem('facit_asideStatus');
-					localStorage.removeItem('user');
-					navigate('/auth-pages/login');
-				});
+					localStorage.removeItem('refresh_token')
+					localStorage.removeItem('access_token')
+					localStorage.removeItem('tourModalStarted')
+					localStorage.removeItem('role')
+					localStorage.removeItem('i18nextLng')
+					localStorage.removeItem('facit_asideStatus')
+					localStorage.removeItem('user')
+					navigate('/auth-pages/login')
+				})
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [token]);
+	}, [token])
 
 	// const onToggleBtn = (value: string) => {
 	// 	setActiveBtn(value);
 	// 	setSelectedValue(value);
 	// };
 	useEffectOnce(() => {
-		const countryListDetails = Country.getAllCountries();
+		const countryListDetails = Country.getAllCountries()
 		// const stateList = State.getAllStates();
 		// console.log(countryListDetails);
 		const LIST = countryListDetails.map(({ name, isoCode }) => ({
 			value: isoCode,
 			text: name,
-		}));
-		setcountryList(LIST);
-	});
-
-	const navigate = useNavigate();
-	const handleOnClick = useCallback(() => navigate('/'), [navigate]);
+		}))
+		setCountryList(LIST)
+	})
+	console.log('countryList>>', countryList)
+	const navigate = useNavigate()
+	const handleOnClick = useCallback(() => navigate('/'), [navigate])
 	// Formik uses
 
 	const formik = useFormik({
@@ -97,73 +103,84 @@ const ModalsStepForm: React.FC = () => {
 		},
 		validate: (values) => {
 			const errors: {
-				phone_number?: string;
-				country?: string;
-				state?: string;
-				companyName?: string;
-			} = {};
+				phone_number?: string
+				country?: string
+				state?: string
+				companyName?: string
+			} = {}
 			if (!values.phone_number) {
-				errors.phone_number = 'Required';
+				errors.phone_number = 'Required'
 			}
 			if (values.phone_number && values.phone_number.length !== 9) {
-				errors.phone_number = 'Characters must be 9';
+				errors.phone_number = 'Characters must be 9'
 			}
 			if (values.companyName === '') {
-				errors.companyName = 'Field Required';
+				errors.companyName = 'Field Required'
 			}
 			if (!values.companyName) {
-				errors.companyName = 'Field Required';
+				errors.companyName = 'Field Required'
 			}
 			if (values.country === '') {
-				errors.country = 'Field Required';
+				errors.country = 'Field Required'
 			}
 			if (values.state === '') {
-				errors.state = 'Field Required';
+				errors.state = 'Field Required'
 			}
 
-			return errors;
+			return errors
 		},
 		validateOnChange: false,
 		onSubmit: (values) => {
 			// console.log('Validated');
-			nextStep();
+			nextStep()
 			const userdetails = {
 				country: values.country,
 				state: values.state,
 				phone_number: values.phone_number,
-			};
-			UpdateProfileMutation({ id: data.id, userdetails });
+			}
+			UpdateProfileMutation({ id: data.id, userdetails })
 		},
-	});
+	})
 	useEffect(() => {
-		const stateListupdated = State.getStatesOfCountry(formik.values.country);
+		const stateListupdated = State.getStatesOfCountry(formik.values.country)
 		// console.log(formik.values.country);
 		const LIST = stateListupdated.map(({ name }) => ({
 			value: name,
 			text: name,
-		}));
-		setstateList(LIST);
-	}, [formik.values.country]);
+		}))
+		setstateList(LIST)
+	}, [formik.values.country])
+	useEffect(() => {
+		formik.setFieldValue('phone_number', value)
+	}, [value])
 	// console.log(formik.values.CountryName);
 	// Steps forms
-	const [isOpen, setIsOpenParentModal] = useState(true);
-	const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
-	const [currentStep, setCurrentStep] = useState(0);
+	const [isOpen, setIsOpenParentModal] = useState(true)
+	const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4']
+	const [currentStep, setCurrentStep] = useState(0)
 
 	const nextStep = () => {
-		setCurrentStep(currentStep + 1);
-	};
+		setCurrentStep(currentStep + 1)
+	}
 
 	const previousStep = () => {
-		setCurrentStep(currentStep - 1);
-	};
-	const { setIsOpen } = useTour();
+		setCurrentStep(currentStep - 1)
+	}
+	const { setIsOpen } = useTour()
 
 	const closeModal = () => {
-		setIsOpenParentModal(false);
-		setIsOpen(true);
-		navigate('/');
-	};
+		setIsOpenParentModal(false)
+		setIsOpen(true)
+		navigate('/')
+	}
+	const ROLE_PER_TAB: { [key: string]: IButtonPerTab['key'] } = {
+		Freelancer: 'Freelancer',
+		Business_Owner: 'Business Owner',
+		Team_Manager: 'Team Manager',
+		Team_Member: 'Team Member',
+		Student: 'Student',
+	}
+	const [activeRolePerTab, setActiveRolePerTab] = useState<String>('')
 
 	return (
 		<Page className='w-100 mt-10'>
@@ -179,72 +196,32 @@ const ModalsStepForm: React.FC = () => {
 							{steps[currentStep] === 'Step 1' ? (
 								<div>
 									<div className='text-center h1 my-3 fw-bold'>SoSimple</div>
-									<div className='text-center display-2 fw-bold mb-5 lh-1'>
+									<div className='text-center display-4 fw-bold mb-5 lh-1'>
 										START YOUR FREE TRIAL
 									</div>
+
 									<div className='text-center text-muted h5 mb-5'>
-										{/* Try all the features -{' '}
 										<span className='text-danger'>
-											No credit card required??
-										</span> */}
-									</div>
-									<div className='mb-3'>
-										<FormGroup
-											id='signup-telephone'
-											isFloating
-											label='Phone Number'>
-											<Input
-												type='tel'
-												name='phone_number'
-												onChange={formik.handleChange}
-												value={formik.values.phone_number}
-												onBlur={formik.handleBlur}
-												onFocus={() => {
-													formik.setErrors({});
-												}}
-												isValid={formik.isValid}
-												isTouched={formik.touched.phone_number}
-												invalidFeedback={formik.errors.phone_number}
-												validFeedback='Looks good!'
-											/>
-										</FormGroup>
+											Free 14-day trial. No credit card required. Cancel
+											anytime
+										</span>
 									</div>
 								</div>
 							) : steps[currentStep] === 'Step 2' ? (
 								<div>
-									<div className='text-center h1 fw-bold mb-4'>
-										Welcome to SoSimple!
+									<div className='text-center h3 fw-bold mb-4'>
+										Hi {data?.first_name},Welcome to SoSimple!
 									</div>
-									<div className='text-center h3 mb-2'>
-										Let’s set up your account
+									<div className='text-center h5 mb-2'>
+										First things first, tell us a bit about your activity This
+										will help us adapt the platform to fit your needs.
 									</div>
 									{/* <div className='text-center mb-5 fst-italic'>
 										(You can always change it later)
 									</div> */}
-									<div className='mb-3'>
-										<FormGroup id='signup-company' isFloating label='COMPANY'>
-											<Input
-												type='text'
-												name='companyName'
-												onChange={formik.handleChange}
-												value={formik.values.companyName}
-												isValid={formik.isValid}
-												isTouched={formik.touched.companyName}
-												invalidFeedback={formik.errors.companyName}
-												validFeedback='Looks good!'
-												onFocus={() => {
-													formik.setErrors({});
-												}}
-											/>
-										</FormGroup>
-									</div>
-								</div>
-							) : steps[currentStep] === 'Step 3' ? (
-								<div>
-									<div className='text-center h1 fw-bold mb-4'>SoSimple</div>
-									<div className='text-center h4 mb-5'>
+									{/* <div className='text-center h4 mb-5'>
 										Where are you located?
-									</div>
+									</div> */}
 									{/* <div className='text-center h5 mb-5'>
 										This will help us adapt the platform to fit your business
 										needs.
@@ -252,7 +229,8 @@ const ModalsStepForm: React.FC = () => {
 									<div className='mb-3'>
 										<FormGroup
 											id='country'
-											label='Countries'
+											label='What’s your country of residence*
+											'
 											//   isFloating
 										>
 											<Select
@@ -288,6 +266,146 @@ const ModalsStepForm: React.FC = () => {
 												validFeedback='Looks good!'
 											/>
 										</FormGroup>
+									</div>
+									{/* Phone number field */}
+									<div className='mb-3'>
+										<FormGroup
+											id='signup-telephone'
+											label='What’s your phone number*'>
+											{/* <Input
+												type='tel'
+												name='phone_number'
+												onChange={formik.handleChange}
+												value={formik.values.phone_number}
+												onBlur={formik.handleBlur}
+												onFocus={() => {
+													formik.setErrors({})
+												}}
+												isValid={formik.isValid}
+												isTouched={formik.touched.phone_number}
+												invalidFeedback={formik.errors.phone_number}
+												validFeedback='Looks good!'
+											/> */}
+											<PhoneInput
+												placeholder='Enter phone number'
+												value={value}
+												onChange={setValue}
+											/>
+										</FormGroup>
+									</div>
+									{/* Company name fields */}
+									{/* <div className='mb-3'>
+										<FormGroup id='signup-company' isFloating label='COMPANY'>
+											<Input
+												type='text'
+												name='companyName'
+												onChange={formik.handleChange}
+												value={formik.values.companyName}
+												isValid={formik.isValid}
+												isTouched={formik.touched.companyName}
+												invalidFeedback={formik.errors.companyName}
+												validFeedback='Looks good!'
+												onFocus={() => {
+													formik.setErrors({})
+												}}
+											/>
+										</FormGroup>
+									</div> */}
+									<div className='mb-3'>
+										<FormGroup
+											id='signup-telephone'
+											label='What best describes your current role?*
+											'>
+											<div>
+												<Button
+													color='info'
+													onClick={() => {
+														setActiveRolePerTab(ROLE_PER_TAB.Freelancer)
+													}}
+													isLink={
+														activeRolePerTab !== ROLE_PER_TAB.Freelancer
+													}
+													isLight={
+														activeRolePerTab === ROLE_PER_TAB.Freelancer
+													}>
+													Freelancer
+												</Button>
+												<Button
+													color='info'
+													onClick={() => {
+														setActiveRolePerTab(
+															ROLE_PER_TAB.Business_Owner,
+														)
+													}}
+													isLink={
+														activeRolePerTab !==
+														ROLE_PER_TAB.Business_Owner
+													}
+													isLight={
+														activeRolePerTab ===
+														ROLE_PER_TAB.Business_Owner
+													}>
+													Business Owner
+												</Button>
+												<Button
+													color='info'
+													onClick={() => {
+														setActiveRolePerTab(
+															ROLE_PER_TAB.Team_Manager,
+														)
+													}}
+													isLink={
+														activeRolePerTab !==
+														ROLE_PER_TAB.Team_Manager
+													}
+													isLight={
+														activeRolePerTab ===
+														ROLE_PER_TAB.Team_Manager
+													}>
+													Team Manager
+												</Button>
+												<Button
+													color='info'
+													onClick={() => {
+														setActiveRolePerTab(
+															ROLE_PER_TAB.Team_Member,
+														)
+													}}
+													isLink={
+														activeRolePerTab !==
+														ROLE_PER_TAB.Team_Member
+													}
+													isLight={
+														activeRolePerTab ===
+														ROLE_PER_TAB.Team_Member
+													}>
+													Team Member
+												</Button>
+												<Button
+													color='info'
+													onClick={() => {
+														setActiveRolePerTab(ROLE_PER_TAB.Student)
+													}}
+													isLink={
+														activeRolePerTab !== ROLE_PER_TAB.Student
+													}
+													isLight={
+														activeRolePerTab === ROLE_PER_TAB.Student
+													}>
+													Student
+												</Button>
+											</div>
+										</FormGroup>
+									</div>
+								</div>
+							) : steps[currentStep] === 'Step 3' ? (
+								<div>
+									<div className='text-center h3 fw-bold mb-4'>
+										Hi {data?.first_name},Welcome to SoSimple!
+									</div>
+									<div className='text-center h5 mb-2'>
+										First things first, tell us a bit about your activity This
+										will help us adapt the platform to fit your needs.
 									</div>
 								</div>
 							) : (
@@ -358,8 +476,8 @@ const ModalsStepForm: React.FC = () => {
 							<button
 								type='button'
 								onClick={() => {
-									closeModal();
-									handleOnClick();
+									closeModal()
+									handleOnClick()
 								}}
 								className='btn btn-info px-4 mx-1'>
 								Let's Start
@@ -369,7 +487,7 @@ const ModalsStepForm: React.FC = () => {
 				</ModalFooter>
 			</Modal>
 		</Page>
-	);
-};
+	)
+}
 
-export default ModalsStepForm;
+export default ModalsStepForm

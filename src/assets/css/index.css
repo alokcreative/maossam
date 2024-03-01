@@ -36,3 +36,39 @@
 .line-clamp, .tabledesc > *{
     font-size: 14px !important;
 }
+.PhoneInputCountry>:first-child{
+
+    background-clip: padding-box;
+    background-color: #f8f9fa !important;
+    border: 1px solid #f8f9fa !important;
+    border: var(--bs-border-width) solid #f8f9fa !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.075) !important;
+    color: #323232 !important;
+
+
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 0.5rem 1rem;
+
+    width: 100%;
+    border-radius: 3.25px !important;
+}
+.PhoneInputCountry> input{
+    appearance: none;
+    background-clip: padding-box;
+    background-color: #f8f9fa !important;
+    border: 1px solid #f8f9fa !important;
+    border: var(--bs-border-width) solid #f8f9fa !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.075) !important;
+    color: #323232 !important;
+    color: var(--bs-body-color);
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 0.5rem 1rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    width: 100%;
+    border-radius: 3.25px !important;
+}

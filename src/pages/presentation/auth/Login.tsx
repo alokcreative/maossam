@@ -1,37 +1,37 @@
-import React, { FC, useState, lazy, startTransition } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { useFormik } from 'formik';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import Page from '../../../layout/Page/Page';
-import Card, { CardBody } from '../../../components/bootstrap/Card';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../components/bootstrap/forms/Input';
-import Button from '../../../components/bootstrap/Button';
-import useDarkMode from '../../../hooks/useDarkMode';
-import Spinner from '../../../components/bootstrap/Spinner';
-import { useGoogleLogin } from '@react-oauth/google';
+import React, { FC, useState, lazy, startTransition } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+import { useFormik } from 'formik'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
+import Page from '../../../layout/Page/Page'
+import Card, { CardBody } from '../../../components/bootstrap/Card'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
+import Input from '../../../components/bootstrap/forms/Input'
+import Button from '../../../components/bootstrap/Button'
+import useDarkMode from '../../../hooks/useDarkMode'
+import Spinner from '../../../components/bootstrap/Spinner'
+import { useGoogleLogin } from '@react-oauth/google'
 import {
 	useForgetPasswordMutation,
 	useLoginUserMutation,
-} from '../../../features/auth/authApiSlice';
+} from '../../../features/auth/authApiSlice'
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../components/bootstrap/Modal';
-import Icon from '../../../components/icon/Icon';
-import showNotification from '../../../components/extras/showNotification';
-import { TInputTypes } from '../../../type/input-type';
-import logoD from '../../../assets/logos/logoDark.jpg';
-import logoL from '../../../assets/logos/logoLight.png';
+} from '../../../components/bootstrap/Modal'
+import Icon from '../../../components/icon/Icon'
+import showNotification from '../../../components/extras/showNotification'
+import { TInputTypes } from '../../../type/input-type'
+import logoD from '../../../assets/logos/logoLighthome.png'
+import logoL from '../../../assets/logos/logoLight.png'
 
-const Signup = lazy(() => import('./Signup'));
+const Signup = lazy(() => import('./Signup'))
 
 interface ILoginHeaderProps {
-	isNewUser?: boolean;
+	isNewUser?: boolean
 }
 const LoginHeader: FC<ILoginHeaderProps> = ({ isNewUser }) => {
 	if (isNewUser) {
@@ -40,33 +40,33 @@ const LoginHeader: FC<ILoginHeaderProps> = ({ isNewUser }) => {
 				<div className='text-center h1 fw-bold mt-5'>Create Account,</div>
 				<div className='text-center h4 text-muted mb-5'>Sign up to get started!</div>
 			</>
-		);
+		)
 	}
 	return (
 		<>
 			<div className='text-center h1 fw-bold mt-5'>Welcome,</div>
 			<div className='text-center h4 text-muted mb-5'>Sign in to continue!</div>
 		</>
-	);
-};
+	)
+}
 LoginHeader.defaultProps = {
 	isNewUser: false,
-};
+}
 
 interface ILoginProps {
-	isSignUp?: boolean;
+	isSignUp?: boolean
 }
 
 const Login: FC<ILoginProps> = ({ isSignUp }) => {
-	const { darkModeStatus } = useDarkMode();
-	const [singUpStatus, setSingUpStatus] = useState<boolean>(!!isSignUp);
-	const [LoginUserMutation, { isLoading }] = useLoginUserMutation();
-	const [ForgetPasswordMutation, { isLoading: loading }] = useForgetPasswordMutation();
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [passwordType, setPasswordType] = useState<TInputTypes>('password');
-	const [passwordIcon, setPasswordIcon] = useState('VisibilityOff');
+	const { darkModeStatus } = useDarkMode()
+	const [singUpStatus, setSingUpStatus] = useState<boolean>(!!isSignUp)
+	const [LoginUserMutation, { isLoading }] = useLoginUserMutation()
+	const [ForgetPasswordMutation, { isLoading: loading }] = useForgetPasswordMutation()
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [passwordType, setPasswordType] = useState<TInputTypes>('password')
+	const [passwordIcon, setPasswordIcon] = useState('VisibilityOff')
 
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -75,17 +75,17 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 			password: '',
 		},
 		validate: (values) => {
-			const errors: { email?: string; password?: string } = {};
+			const errors: { email?: string; password?: string } = {}
 
 			if (!values.email) {
-				errors.email = 'Required';
+				errors.email = 'Required'
 			}
 
 			if (!values.password) {
-				errors.password = 'Required';
+				errors.password = 'Required'
 			}
 
-			return errors;
+			return errors
 		},
 		validateOnChange: true,
 		onSubmit: async (values) => {
@@ -94,9 +94,9 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 					LoginUserMutation(values)
 						.unwrap()
 						.then((data1: { access: string; refresh: string }) => {
-							localStorage.setItem('access_token', data1.access);
-							localStorage.setItem('refresh_token', data1.refresh);
-							navigate('/');
+							localStorage.setItem('access_token', data1.access)
+							localStorage.setItem('refresh_token', data1.refresh)
+							navigate('/')
 						})
 						.catch((rejected) => {
 							showNotification(
@@ -105,22 +105,22 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 									<span>{rejected.data?.detail}</span>
 								</span>,
 								``,
-							);
-							formik.setFieldValue('email', '');
-							formik.setFieldValue('password', '');
-						});
-				});
+							)
+							formik.setFieldValue('email', '')
+							formik.setFieldValue('password', '')
+						})
+				})
 			}
 		},
-	});
+	})
 
 	const handleLoginWithGoogle = useGoogleLogin({
 		// onSuccess: (tokenResponse) => setToken(tokenResponse.access_token),
 		// onError: (error) => console.log('Login Failed:', error),
-	});
+	})
 	const handleLinkClick = (e: React.FormEvent) => {
-		e.preventDefault(); // Prevent the default browser behavior
-	};
+		e.preventDefault() // Prevent the default browser behavior
+	}
 
 	const formikLink = useFormik({
 		enableReinitialize: true,
@@ -128,12 +128,12 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 			email: '',
 		},
 		validate: (values) => {
-			const errors: { email?: string } = {};
+			const errors: { email?: string } = {}
 
 			if (!values.email) {
-				errors.email = 'Required';
+				errors.email = 'Required'
 			}
-			return errors;
+			return errors
 		},
 		validateOnChange: false,
 		onSubmit: async (values) => {
@@ -153,7 +153,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 									<span>{res.message}</span>
 								</span>,
 								``,
-							);
+							)
 						})
 						.catch((res) => {
 							showNotification(
@@ -162,22 +162,22 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 									<span>{res.data?.email[0]}</span>
 								</span>,
 								``,
-							);
-						});
-				});
+							)
+						})
+				})
 			}
 		},
-	});
+	})
 	const handlePasswordShow = () => {
 		if (passwordType === 'password') {
-			setPasswordType('text');
-			setPasswordIcon('VisibilityOff');
+			setPasswordType('text')
+			setPasswordIcon('VisibilityOff')
 		}
 		if (passwordType === 'text') {
-			setPasswordType('password');
-			setPasswordIcon('Visibility');
+			setPasswordType('password')
+			setPasswordIcon('Visibility')
 		}
-	};
+	}
 	return (
 		<PageWrapper isProtected={false} title={singUpStatus ? 'Sign Up' : 'Login'}>
 			<Page className='p-0'>
@@ -216,8 +216,8 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												className='rounded-1 w-100'
 												size='lg'
 												onClick={() => {
-													setSingUpStatus(false);
-													setSingUpStatus(!singUpStatus);
+													setSingUpStatus(false)
+													setSingUpStatus(!singUpStatus)
 												}}>
 												Login
 											</Button>
@@ -229,7 +229,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 												className='rounded-1 w-100'
 												size='lg'
 												onClick={() => {
-													setSingUpStatus(!singUpStatus);
+													setSingUpStatus(!singUpStatus)
 												}}>
 												Sign Up
 											</Button>
@@ -257,7 +257,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 														onChange={formik.handleChange}
 														onBlur={formik.handleBlur}
 														onFocus={() => {
-															formik.setErrors({});
+															formik.setErrors({})
 														}}
 													/>
 												</FormGroup>
@@ -278,7 +278,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 														onChange={formik.handleChange}
 														onBlur={formik.handleBlur}
 														onFocus={() => {
-															formik.setErrors({});
+															formik.setErrors({})
 														}}
 													/>
 												</FormGroup>
@@ -349,26 +349,41 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 								</form>
 							</CardBody>
 						</Card>
-						<div className='text-center'>
+						<div className='text-center mb-3'>
+							By proceeding, you agree to the{' '}
 							<a
-								href='/'
-								className={classNames('text-decoration-none me-3', {
+								className={classNames('link-light ', {
+									'link-light': darkModeStatus,
+									'link-dark': !darkModeStatus,
+								})}
+								onClick={handleLinkClick}>
+								Terms of use
+							</a>{' '}
+							and{' '}
+							<a
+								className={classNames(' me-3', {
 									'link-light': darkModeStatus,
 									'link-dark': !darkModeStatus,
 								})}
 								onClick={handleLinkClick}>
 								Privacy policy
 							</a>
-							<a
-								href='/'
-								className={classNames('link-light text-decoration-none', {
-									'link-light': darkModeStatus,
-									'link-dark': !darkModeStatus,
-								})}
-								onClick={handleLinkClick}>
-								Terms of use
-							</a>
 						</div>
+						{singUpStatus && (
+							<div className='text-center mb-3'>
+								Already have an account?{' '}
+								<a
+									className={classNames('link-light ', {
+										'link-light': darkModeStatus,
+										'link-dark': !darkModeStatus,
+									})}
+									onClick={() => {
+										setSingUpStatus(false)
+									}}>
+									Log in
+								</a>
+							</div>
+						)}
 					</div>
 				</div>
 			</Page>
@@ -388,7 +403,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 								onChange={formikLink.handleChange}
 								onBlur={formikLink.handleBlur}
 								onFocus={() => {
-									formikLink.setErrors({});
+									formikLink.setErrors({})
 								}}
 							/>
 						</FormGroup>
@@ -414,13 +429,13 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 				</ModalFooter>
 			</Modal>
 		</PageWrapper>
-	);
-};
+	)
+}
 Login.propTypes = {
 	isSignUp: PropTypes.bool,
-};
+}
 Login.defaultProps = {
 	isSignUp: false,
-};
+}
 
-export default Login;
+export default Login

@@ -98,6 +98,7 @@
 		"react-modern-calendar-datepicker": "^3.1.6",
 		"react-notifications-component": "^4.0.1",
 		"react-number-format": "^5.2.1",
+		"react-phone-number-input": "^3.3.9",
 		"react-popper": "^2.3.0",
 		"react-quill": "^2.0.0",
 		"react-redux": "^8.1.2",
