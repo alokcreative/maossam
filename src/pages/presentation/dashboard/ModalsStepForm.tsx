@@ -152,7 +152,7 @@ const ModalsStepForm: React.FC = () => {
 	}, [formik.values.country])
 	useEffect(() => {
 		formik.setFieldValue('phone_number', value)
-	}, [value])
+	}, [value, formik])
 	// console.log(formik.values.CountryName);
 	// Steps forms
 	const [isOpen, setIsOpenParentModal] = useState(true)
@@ -180,7 +180,7 @@ const ModalsStepForm: React.FC = () => {
 		Team_Member: 'Team Member',
 		Student: 'Student',
 	}
-	const [activeRolePerTab, setActiveRolePerTab] = useState<String>('')
+	const [activeRolePerTab, setActiveRolePerTab] = useState<string>('')
 
 	return (
 		<Page className='w-100 mt-10'>
@@ -407,6 +407,28 @@ const ModalsStepForm: React.FC = () => {
 										First things first, tell us a bit about your activity This
 										will help us adapt the platform to fit your needs.
 									</div>
+									{/* {activeRolePerTab === ROLE_PER_TAB.Student && (
+										<div className='mb-3'>
+											<FormGroup
+												id='state'
+												label='State'
+												//   isFloating
+											>
+												<Select
+													ariaLabel='State'
+													placeholder='Choose from list of State'
+													required
+													list={stateList}
+													onChange={formik.handleChange}
+													value={formik.values.state}
+													isValid={formik.isValid}
+													isTouched={formik.touched.state}
+													invalidFeedback={formik.errors.state}
+													validFeedback='Looks good!'
+												/>
+											</FormGroup>
+										</div>
+									)} */}
 								</div>
 							) : (
 								<div>

@@ -351,28 +351,27 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 						</Card>
 						<div className='text-center mb-3'>
 							By proceeding, you agree to the{' '}
-							<a
-								className={classNames('link-light ', {
+							<animateMotion
+								className={classNames('text-underline link-light ', {
 									'link-light': darkModeStatus,
 									'link-dark': !darkModeStatus,
-								})}
-								onClick={handleLinkClick}>
+								})}>
 								Terms of use
-							</a>{' '}
+							</animateMotion>{' '}
 							and{' '}
-							<a
-								className={classNames(' me-3', {
+							<animateMotion
+								className={classNames('text-underline me-3', {
 									'link-light': darkModeStatus,
 									'link-dark': !darkModeStatus,
 								})}
 								onClick={handleLinkClick}>
 								Privacy policy
-							</a>
+							</animateMotion>
 						</div>
 						{singUpStatus && (
 							<div className='text-center mb-3'>
 								Already have an account?{' '}
-								<a
+								<animateMotion
 									className={classNames('link-light ', {
 										'link-light': darkModeStatus,
 										'link-dark': !darkModeStatus,
@@ -381,7 +380,7 @@ const Login: FC<ILoginProps> = ({ isSignUp }) => {
 										setSingUpStatus(false)
 									}}>
 									Log in
-								</a>
+								</animateMotion>
 							</div>
 						)}
 					</div>
