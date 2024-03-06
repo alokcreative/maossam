@@ -129,27 +129,27 @@ const ModalsStepForm: React.FC = () => {
 				state?: string
 				companyName?: string
 			} = {}
-			if (!values.phone_number) {
-				errors.phone_number = 'Required'
-			}
-			if (values.phone_number && values.phone_number.length !== 9) {
-				errors.phone_number = 'Characters must be 9'
-			}
-			if (values.companyName === '') {
-				errors.companyName = 'Field Required'
-			}
-			if (!values.companyName) {
-				errors.companyName = 'Field Required'
-			}
-			if (values.country === '') {
-				errors.country = 'Field Required'
-			}
-			if (values.state === '') {
-				errors.state = 'Field Required'
-			}
-			if (values.numberOfYear < 0) {
-				errors.state = 'Not Less than 0'
-			}
+			// if (!values.phone_number) {
+			// 	errors.phone_number = 'Required'
+			// }
+			// if (values.phone_number && values.phone_number.length !== 9) {
+			// 	errors.phone_number = 'Characters must be 9'
+			// }
+			// if (values.companyName === '') {
+			// 	errors.companyName = 'Field Required'
+			// }
+			// if (!values.companyName) {
+			// 	errors.companyName = 'Field Required'
+			// }
+			// if (values.country === '') {
+			// 	errors.country = 'Field Required'
+			// }
+			// if (values.state === '') {
+			// 	errors.state = 'Field Required'
+			// }
+			// if (values.numberOfYear < 0) {
+			// 	errors.state = 'Not Less than 0'
+			// }
 
 			return errors
 		},
