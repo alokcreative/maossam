@@ -1,5 +1,5 @@
-import React, { lazy } from 'react';
-import { RouteProps } from 'react-router-dom';
+import React, { lazy } from 'react'
+import { RouteProps } from 'react-router-dom'
 import {
 	componentPagesMenu,
 	dashboardPagesMenu,
@@ -7,42 +7,42 @@ import {
 	gettingStartedPagesMenu,
 	pageLayoutTypesPagesMenu,
 	modalPages,
-} from '../menu';
-import Login from '../pages/presentation/auth/Login';
-import ModalsStepForm from '../pages/presentation/dashboard/ModalsStepForm';
-import WorkingTimeSlot from '../pages/presentation/project-management/component/WorkingTimeSlot';
-import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
-import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail';
-import AddTask from '../pages/presentation/project-management/component/AddTask';
-import ProductPage from '../pages/presentation/products/ProductPage';
-import Goals from '../pages/presentation/goal/Goals';
-import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusiness';
-import FaqPage from '../pages/presentation/faq-page/FaqPage';
-import Tasks from '../pages/presentation/goal/tasks/Tasks';
-import Profile from '../pages/presentation/profile/Profile';
-import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManagement';
+} from '../menu'
+import Login from '../pages/presentation/auth/Login'
+import ModalsStepForm from '../pages/presentation/auth/signupModal/ModalsStepForm'
+import WorkingTimeSlot from '../pages/presentation/project-management/component/WorkingTimeSlot'
+import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets'
+import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail'
+import AddTask from '../pages/presentation/project-management/component/AddTask'
+import ProductPage from '../pages/presentation/products/ProductPage'
+import Goals from '../pages/presentation/goal/Goals'
+import SetupBusiness from '../pages/presentation/dashboard/Marketing/SetupBusiness'
+import FaqPage from '../pages/presentation/faq-page/FaqPage'
+import Tasks from '../pages/presentation/goal/tasks/Tasks'
+import Profile from '../pages/presentation/profile/Profile'
+import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManagement'
 
-import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
-import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage';
-import WebIndex from '../pages/presentation/dashboard/WebIndex';
-import ToolBox from '../pages/presentation/toolbox/ToolBox';
-import CalendarPage from '../pages/presentation/appointment/CalendarPage';
+import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage'
+import ResetPasswordPage from '../pages/presentation/auth/ResetPasswordPage'
+import WebIndex from '../pages/presentation/dashboard/WebIndex'
+import ToolBox from '../pages/presentation/toolbox/ToolBox'
+import CalendarPage from '../pages/presentation/appointment/CalendarPage'
 
 const LANDING = {
 	DASHBOARD: lazy(() => import('../pages/presentation/dashboard/DashboardPage')),
-};
+}
 const SINGLE = {
 	BOXED: lazy(() => import('../pages/presentation/single-pages/SingleBoxedPage')),
 	FLUID: lazy(() => import('../pages/presentation/single-pages/SingleFluidPage')),
-};
+}
 const LIST = {
 	BOXED: lazy(() => import('../pages/presentation/demo-pages/ListBoxedPage')),
 	FLUID: lazy(() => import('../pages/presentation/demo-pages/ListFluidPage')),
-};
+}
 const GRID = {
 	BOXED: lazy(() => import('../pages/presentation/demo-pages/GridBoxedPage')),
 	FLUID: lazy(() => import('../pages/presentation/demo-pages/GridFluidPage')),
-};
+}
 const EDIT = {
 	MODERN: lazy(() => import('../pages/presentation/demo-pages/EditModernPage')),
 	BOXED: lazy(() => import('../pages/presentation/demo-pages/EditBoxedPage')),
@@ -50,17 +50,17 @@ const EDIT = {
 	WIZARD: lazy(() => import('../pages/presentation/demo-pages/EditWizardPage')),
 	IN_CANVAS: lazy(() => import('../pages/presentation/demo-pages/EditInCanvasPage')),
 	IN_MODAL: lazy(() => import('../pages/presentation/demo-pages/EditInModalPage')),
-};
+}
 const PRICING = {
 	PRICING_TABLE: lazy(() => import('../pages/presentation/pricing/PricingTablePage')),
-};
+}
 
 const AUTH = {
 	PAGE_404: lazy(() => import('../pages/presentation/auth/Page404')),
-};
+}
 const TEAMS = {
 	TEAMS_LIST: lazy(() => import('../pages/presentation/dashboard/Teams/Teams')),
-};
+}
 const APP = {
 	PROJECT_MANAGEMENT: {
 		PROJECTS_LIST: lazy(
@@ -100,7 +100,7 @@ const APP = {
 		WITH_LIST: lazy(() => import('../pages/presentation/chat/WithListChatPage')),
 		ONLY_LIST: lazy(() => import('../pages/presentation/chat/OnlyListChatPage')),
 	},
-};
+}
 const PAGE_LAYOUTS = {
 	HEADER_SUBHEADER: lazy(() => import('../pages/presentation/page-layouts/HeaderAndSubheader')),
 	HEADER: lazy(() => import('../pages/presentation/page-layouts/OnlyHeader')),
@@ -109,7 +109,7 @@ const PAGE_LAYOUTS = {
 	BLANK: lazy(() => import('../pages/presentation/page-layouts/Blank')),
 	ASIDE: lazy(() => import('../pages/presentation/aside-types/DefaultAsidePage')),
 	MINIMIZE_ASIDE: lazy(() => import('../pages/presentation/aside-types/MinimizeAsidePage')),
-};
+}
 
 const CONTENT = {
 	CONTENTS: lazy(() => import('../pages/documentation/content/ContentListPage')),
@@ -117,7 +117,7 @@ const CONTENT = {
 	IMAGES: lazy(() => import('../pages/documentation/content/ImagesPage')),
 	TABLES: lazy(() => import('../pages/documentation/content/TablesPage')),
 	FIGURES: lazy(() => import('../pages/documentation/content/FiguresPage')),
-};
+}
 const FORMS_PAGE = {
 	FORMS: lazy(() => import('../pages/documentation/forms/FormsListPage')),
 	FORM_GROUP: lazy(() => import('../pages/documentation/forms/FormGroupPage')),
@@ -128,17 +128,17 @@ const FORMS_PAGE = {
 	INPUT_GROUP: lazy(() => import('../pages/documentation/forms/InputGroupPage')),
 	VALIDATION: lazy(() => import('../pages/documentation/forms/ValidationPage')),
 	WIZARD: lazy(() => import('../pages/documentation/forms/WizardPage')),
-};
+}
 const GETTING_STARTED = {
 	INSTALLATION: lazy(() => import('../pages/documentation/getting-started/InstallationPage')),
 	DEVELOPMENT: lazy(() => import('../pages/documentation/getting-started/DevelopmentPage')),
 	FOLDER: lazy(() => import('../pages/documentation/getting-started/FolderStructurePage')),
 	BOOTSTRAP: lazy(() => import('../pages/documentation/getting-started/BootstrapVariablesPage')),
 	PROJECT: lazy(() => import('../pages/documentation/getting-started/ProjectStructurePage')),
-};
+}
 const ROUTES = {
 	ROUTER: lazy(() => import('../pages/documentation/routes/RouterPage')),
-};
+}
 const COMPONENTS_PAGE = {
 	COMPONENTS: lazy(() => import('../pages/documentation/components/ComponentsListPage')),
 	ACCORDION: lazy(() => import('../pages/documentation/components/AccordionPage')),
@@ -163,7 +163,7 @@ const COMPONENTS_PAGE = {
 	TABLE: lazy(() => import('../pages/documentation/components/TablePage')),
 	TOASTS: lazy(() => import('../pages/documentation/components/ToastsPage')),
 	TOOLTIP: lazy(() => import('../pages/documentation/components/TooltipPage')),
-};
+}
 const UTILITIES = {
 	UTILITIES: lazy(() => import('../pages/documentation/utilities/UtilitiesListPage')),
 	API: lazy(() => import('../pages/documentation/utilities/ApiPage')),
@@ -182,12 +182,12 @@ const UTILITIES = {
 	TEXT: lazy(() => import('../pages/documentation/utilities/TextPage')),
 	VERTICAL_ALIGN: lazy(() => import('../pages/documentation/utilities/VerticalAlignPage')),
 	VISIBILITY: lazy(() => import('../pages/documentation/utilities/VisibilityPage')),
-};
+}
 const ICONS = {
 	ICONS_LIST: lazy(() => import('../pages/documentation/icons/IconsListPage')),
 	ICON: lazy(() => import('../pages/documentation/icons/IconPage')),
 	MATERIAL: lazy(() => import('../pages/documentation/icons/MaterialPage')),
-};
+}
 const CHARTS_PAGE = {
 	CHART_LIST: lazy(() => import('../pages/documentation/charts/ChartsListPage')),
 	GENERAL_USAGE: lazy(() => import('../pages/documentation/charts/ChartGeneralUsagePage')),
@@ -208,7 +208,7 @@ const CHARTS_PAGE = {
 	SCATTER: lazy(() => import('../pages/documentation/charts/ChartScatterPage')),
 	HEAT_MAP: lazy(() => import('../pages/documentation/charts/ChartHeatMapPage')),
 	TREE_MAP: lazy(() => import('../pages/documentation/charts/ChartTreeMapPage')),
-};
+}
 // const EXTRA = {
 // 	NOTIFICATION: lazy(() => import('../pages/documentation/extras/NotificationPage')),
 // 	HOOKS: lazy(() => import('../pages/documentation/extras/HooksPage')),
@@ -470,7 +470,7 @@ export const presentation: RouteProps[] = [
 		path: pageLayoutTypesPagesMenu.asideTypes.subMenu.minimizeAside.path,
 		element: <PAGE_LAYOUTS.MINIMIZE_ASIDE />,
 	},
-];
+]
 const documentation: RouteProps[] = [
 	/**
 	 * Getting Started
@@ -905,7 +905,7 @@ const documentation: RouteProps[] = [
 		path: `${dashboardPagesMenu.calendar.path}`,
 		element: <CalendarPage />,
 	},
-];
-const contents = [...presentation, ...documentation];
+]
+const contents = [...presentation, ...documentation]
 
-export default contents;
+export default contents
