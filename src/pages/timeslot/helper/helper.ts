@@ -1,4 +1,4 @@
-import { TCard } from '../type/types';
+import { TCard } from '../../presentation/project-management/type/types';
 
 /**
  * A little function to help us with reordering the result

@@ -638,13 +638,14 @@ const Goals: FC = () => {
 																}}>
 																No. of task
 															</th>
+
 															{role != 'superadmin' && (
 																<th
 																	scope='col'
 																	style={{
 																		whiteSpace: 'nowrap',
 																	}}>
-																	Date
+																	Deadline
 																</th>
 															)}
 

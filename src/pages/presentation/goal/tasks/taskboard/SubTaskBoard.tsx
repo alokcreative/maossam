@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import classNames from 'classnames';
-import { Droppable, DroppableProvided, DroppableStateSnapshot } from '@hello-pangea/dnd';
-import useDarkMode from '../../../../../hooks/useDarkMode';
+import React, { FC, useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import classNames from 'classnames'
+import { Droppable, DroppableProvided, DroppableStateSnapshot } from '@hello-pangea/dnd'
+import useDarkMode from '../../../../../hooks/useDarkMode'
 import Card, {
 	CardActions,
 	CardBody,
@@ -11,57 +11,57 @@ import Card, {
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../../../components/bootstrap/Card';
-import Badge from '../../../../../components/bootstrap/Badge';
+} from '../../../../../components/bootstrap/Card'
+import Badge from '../../../../../components/bootstrap/Badge'
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../../../../components/bootstrap/Dropdown';
-import Button from '../../../../../components/bootstrap/Button';
-import { getListStyle } from '../../../project-management/helper/style';
+} from '../../../../../components/bootstrap/Dropdown'
+import Button from '../../../../../components/bootstrap/Button'
+import { getListStyle } from '../../../../timeslot/helper/style'
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../../../components/bootstrap/Modal';
-import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../../components/bootstrap/forms/Input';
-import Textarea from '../../../../../components/bootstrap/forms/Textarea';
-import Select from '../../../../../components/bootstrap/forms/Select';
-import Option from '../../../../../components/bootstrap/Option';
-import USERS from '../../../../../common/data/userDummyData';
-import TAGS from '../../../../../common/data/boardTagsData';
-import { TCards, TColumnData, TColumnsData } from '../../../project-management/type/types';
-import ColumnCardWrapper from '../../../project-management/component/ColumnCardWrapper';
-import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
-import SubTaskBoardData from './SubTaskBoardData';
+} from '../../../../../components/bootstrap/Modal'
+import FormGroup from '../../../../../components/bootstrap/forms/FormGroup'
+import Input from '../../../../../components/bootstrap/forms/Input'
+import Textarea from '../../../../../components/bootstrap/forms/Textarea'
+import Select from '../../../../../components/bootstrap/forms/Select'
+import Option from '../../../../../components/bootstrap/Option'
+import USERS from '../../../../../common/data/userDummyData'
+import TAGS from '../../../../../common/data/boardTagsData'
+import { TCards, TColumnData, TColumnsData } from '../../../project-management/type/types'
+import ColumnCardWrapper from '../../../project-management/component/ColumnCardWrapper'
+import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue'
+import SubTaskBoardData from './SubTaskBoardData'
 
 interface ISubtask {
-	created_at: string;
-	description: string;
-	id: number;
-	scheduled_on: string;
-	task: string;
-	title: string;
-	updated_at: string;
-	user_assigned?: string;
+	created_at: string
+	description: string
+	id: number
+	scheduled_on: string
+	task: string
+	title: string
+	updated_at: string
+	user_assigned?: string
 }
 interface ICardsInColumn {
-	[key: string]: ISubtask[];
+	[key: string]: ISubtask[]
 }
 interface IColumns {
-	cardsData: ICardsInColumn;
-	columnsData: TColumnsData;
-	setCardsData(...args: unknown[]): unknown;
-	refetch(...args: unknown[]): unknown;
+	cardsData: ICardsInColumn
+	columnsData: TColumnsData
+	setCardsData(...args: unknown[]): unknown
+	refetch(...args: unknown[]): unknown
 }
 
-const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData,refetch }) => {
-	const { darkModeStatus } = useDarkMode();
+const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData, refetch }) => {
+	const { darkModeStatus } = useDarkMode()
 
-	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
+	const [editModalStatus, setEditModalStatus] = useState<boolean>(false)
 
 	const formik = useFormik({
 		initialValues: {
@@ -74,15 +74,15 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData,refet
 		},
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: (values) => {
-			setEditModalStatus(false);
+			setEditModalStatus(false)
 		},
-	});
+	})
 
 	// console.log("cardsInTheColumn",cardsInTheColumn)
 	return (
 		<>
 			{Object.keys(columnsData).map((columnKey) => {
-				const columnData: TColumnData = columnsData[columnKey];
+				const columnData: TColumnData = columnsData[columnKey]
 				// console.log("taskStatusToColumnMapping",taskStatusToColumnMapping)
 				return (
 					<div key={columnKey} className='col-auto'>
@@ -131,7 +131,7 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData,refet
 							</CardFooter> */}
 						</Card>
 					</div>
-				);
+				)
 			})}
 			{/* <Modal setIsOpen={setEditModalStatus} isOpen={editModalStatus} size='lg' isScrollable>
 				<ModalHeader className='px-4' setIsOpen={setEditModalStatus}>
@@ -237,7 +237,7 @@ const SubTaskBoard: FC<IColumns> = ({ cardsData, columnsData, setCardsData,refet
 				</ModalFooter>
 			</Modal> */}
 		</>
-	);
-};
+	)
+}
 
-export default SubTaskBoard;
+export default SubTaskBoard
