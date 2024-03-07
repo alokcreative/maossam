@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup'
-import Select from '../../../../components/bootstrap/forms/Select'
-import Button from '../../../../components/bootstrap/Button'
+import FormGroup from '../bootstrap/forms/FormGroup'
+import Select from '../bootstrap/forms/Select'
+import Button from '../bootstrap/Button'
 import PhoneInput from 'react-phone-number-input'
 import { FormikProps, useFormik } from 'formik'
 
