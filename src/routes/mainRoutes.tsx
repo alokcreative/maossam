@@ -10,7 +10,7 @@ import {
 } from '../menu'
 import Login from '../pages/presentation/auth/Login'
 import ModalsStepForm from '../pages/presentation/auth/signupModal/ModalsStepForm'
-import WorkingTimeSlot from '../pages/presentation/project-management/component/WorkingTimeSlot'
+import WorkingTimeSlot from '../pages/timeslot/WorkingTimeSlot'
 import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets'
 import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail'
 import AddTask from '../pages/presentation/project-management/component/AddTask'

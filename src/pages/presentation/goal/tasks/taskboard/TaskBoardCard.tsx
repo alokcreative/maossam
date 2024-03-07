@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
-import { useFormik } from 'formik';
-import classNames from 'classnames';
-import useDarkMode from '../../../../../hooks/useDarkMode';
+import React, { FC, useState } from 'react'
+import { useFormik } from 'formik'
+import classNames from 'classnames'
+import useDarkMode from '../../../../../hooks/useDarkMode'
 import Card, {
 	CardActions,
 	CardBody,
@@ -11,56 +11,56 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../../../components/bootstrap/Card';
-import Avatar from '../../../../../components/Avatar';
-import Icon from '../../../../../components/icon/Icon';
-import Badge from '../../../../../components/bootstrap/Badge';
+} from '../../../../../components/bootstrap/Card'
+import Avatar from '../../../../../components/Avatar'
+import Icon from '../../../../../components/icon/Icon'
+import Badge from '../../../../../components/bootstrap/Badge'
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../../../components/bootstrap/Modal';
-import FormGroup from '../../../../../components/bootstrap/forms/FormGroup';
-import Input from '../../../../../components/bootstrap/forms/Input';
-import Textarea from '../../../../../components/bootstrap/forms/Textarea';
-import Button from '../../../../../components/bootstrap/Button';
-import Checks, { ChecksGroup } from '../../../../../components/bootstrap/forms/Checks';
-import Chat, { ChatGroup } from '../../../../../components/Chat';
-import CHATS from '../../../../../common/data/chatDummyData';
-import InputGroup from '../../../../../components/bootstrap/forms/InputGroup';
-import Select from '../../../../../components/bootstrap/forms/Select';
-import Option from '../../../../../components/bootstrap/Option';
-import USERS from '../../../../../common/data/userDummyData';
-import TAGS from '../../../../../common/data/boardTagsData';
-import { TCard, TCards, TColumnsData } from '../../../project-management/type/types';
-import { move } from '../../../project-management/helper/helper';
-import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue';
-import { ISubTask } from '../../../../../common/data/dummyGoals';
-import MiniTasks from './MiniTasks';
+} from '../../../../../components/bootstrap/Modal'
+import FormGroup from '../../../../../components/bootstrap/forms/FormGroup'
+import Input from '../../../../../components/bootstrap/forms/Input'
+import Textarea from '../../../../../components/bootstrap/forms/Textarea'
+import Button from '../../../../../components/bootstrap/Button'
+import Checks, { ChecksGroup } from '../../../../../components/bootstrap/forms/Checks'
+import Chat, { ChatGroup } from '../../../../../components/Chat'
+import CHATS from '../../../../../common/data/chatDummyData'
+import InputGroup from '../../../../../components/bootstrap/forms/InputGroup'
+import Select from '../../../../../components/bootstrap/forms/Select'
+import Option from '../../../../../components/bootstrap/Option'
+import USERS from '../../../../../common/data/userDummyData'
+import TAGS from '../../../../../common/data/boardTagsData'
+import { TCard, TCards, TColumnsData } from '../../../project-management/type/types'
+import { move } from '../../../../timeslot/helper/helper'
+import CommonDashboardUserIssue from '../../../dashboard/common/CommonDashboardUserIssue'
+import { ISubTask } from '../../../../../common/data/dummyGoals'
+import MiniTasks from './MiniTasks'
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../../../../components/bootstrap/Dropdown';
+} from '../../../../../components/bootstrap/Dropdown'
 import {
 	useDeleteSubTaskMutation,
 	useGetSubTaskMutation,
 	useUpdateSubTaskMutation,
-} from '../../../../../features/auth/taskManagementApiSlice';
-import ConfirmationModal from '../../../../documentation/components/ConfirmationModal';
-import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal';
-import { useParams } from 'react-router-dom';
-import parse from 'html-react-parser';
+} from '../../../../../features/auth/taskManagementApiSlice'
+import ConfirmationModal from '../../../../documentation/components/ConfirmationModal'
+import AddSubtaskModal from '../subtaskHelper/AddSubtaskModal'
+import { useParams } from 'react-router-dom'
+import parse from 'html-react-parser'
 
 interface IColumnCard {
-	columnKey: string;
-	columnsData: TColumnsData;
-	card: any;
-	cardsData: any;
-	setCardsData(...args: unknown[]): unknown;
-	refetch(...args: unknown[]): unknown;
-	index: number;
+	columnKey: string
+	columnsData: TColumnsData
+	card: any
+	cardsData: any
+	setCardsData(...args: unknown[]): unknown
+	refetch(...args: unknown[]): unknown
+	index: number
 }
 const TaskBoardCard: FC<IColumnCard> = ({
 	columnKey,
@@ -71,19 +71,19 @@ const TaskBoardCard: FC<IColumnCard> = ({
 	index,
 	refetch,
 }) => {
-	const { taskId: id } = useParams();
-	const { darkModeStatus } = useDarkMode();
-	const [showMore, setShowMore] = useState<boolean>(false);
-	const [editModalStatus, setEditModalStatus] = useState<boolean>(false);
-	const [modalStatus, setModalStatus] = useState(false);
-	const [showConfirmation, setShowConfirmation] = useState(false);
-	const [deleteId, setDeleteId] = useState<number>();
-	const [updateSubTask] = useUpdateSubTaskMutation();
-	const [deleteSubTask] = useDeleteSubTaskMutation();
-	const [modalState, setModalState] = useState('Edit Sub Task');
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [getSubtask] = useGetSubTaskMutation();
-	const [currTask, setCurrTask] = useState();
+	const { taskId: id } = useParams()
+	const { darkModeStatus } = useDarkMode()
+	const [showMore, setShowMore] = useState<boolean>(false)
+	const [editModalStatus, setEditModalStatus] = useState<boolean>(false)
+	const [modalStatus, setModalStatus] = useState(false)
+	const [showConfirmation, setShowConfirmation] = useState(false)
+	const [deleteId, setDeleteId] = useState<number>()
+	const [updateSubTask] = useUpdateSubTaskMutation()
+	const [deleteSubTask] = useDeleteSubTaskMutation()
+	const [modalState, setModalState] = useState('Edit Sub Task')
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [getSubtask] = useGetSubTaskMutation()
+	const [currTask, setCurrTask] = useState()
 
 	const formik = useFormik({
 		initialValues: {
@@ -105,31 +105,31 @@ const TaskBoardCard: FC<IColumnCard> = ({
 					droppableId: columnKey,
 				},
 				{ index: 0, droppableId: values.groupId },
-			);
-			setCardsData({ ...cardsData, ...RESULT });
-			setEditModalStatus(false);
+			)
+			setCardsData({ ...cardsData, ...RESULT })
+			setEditModalStatus(false)
 		},
-	});
+	})
 	const handleDeleteAction = () => {
-		const subId = deleteId;
-		setShowConfirmation(false);
+		const subId = deleteId
+		setShowConfirmation(false)
 		if (subId) {
 			deleteSubTask(subId)
 				.unwrap()
 				.then((res: unknown) => {
-					refetch();
-				});
+					refetch()
+				})
 		}
-	};
+	}
 	const handleEdit = () => {
 		getSubtask(cardsData?.id)
 			.unwrap()
 			.then((res) => {
-				setCurrTask(res);
-			});
-		setModalState(`Edit Sub Task`);
-		setIsOpen(true);
-	};
+				setCurrTask(res)
+			})
+		setModalState(`Edit Sub Task`)
+		setIsOpen(true)
+	}
 
 	return (
 		<>
@@ -167,8 +167,8 @@ const TaskBoardCard: FC<IColumnCard> = ({
 								<Button
 									icon='Delete'
 									onClick={() => {
-										setShowConfirmation(true);
-										setDeleteId(card.id);
+										setShowConfirmation(true)
+										setDeleteId(card.id)
 									}}>
 									Delete
 								</Button>
@@ -262,8 +262,8 @@ const TaskBoardCard: FC<IColumnCard> = ({
 						className='w-100'
 						type='submit'
 						onClick={() => {
-							formik.handleSubmit();
-							setEditModalStatus(false);
+							formik.handleSubmit()
+							setEditModalStatus(false)
 						}}>
 						Save
 					</Button>
@@ -284,7 +284,7 @@ const TaskBoardCard: FC<IColumnCard> = ({
 				currTask={currTask}
 			/>
 		</>
-	);
-};
+	)
+}
 
-export default TaskBoardCard;
+export default TaskBoardCard

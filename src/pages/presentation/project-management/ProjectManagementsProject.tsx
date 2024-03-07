@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import { pagesMenu } from '../../../menu';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { DragDropContext, DropResult } from '@hello-pangea/dnd'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
+import { pagesMenu } from '../../../menu'
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../layout/SubHeader/SubHeader';
-import Page from '../../../layout/Page/Page';
-import Badge from '../../../components/bootstrap/Badge';
-import COLORS from '../../../common/data/enumColors';
-import USERS from '../../../common/data/userDummyData';
+} from '../../../layout/SubHeader/SubHeader'
+import Page from '../../../layout/Page/Page'
+import Badge from '../../../components/bootstrap/Badge'
+import COLORS from '../../../common/data/enumColors'
+import USERS from '../../../common/data/userDummyData'
 
-import Slide2 from '../../../assets/img/wanna/slide/scene-2.png';
-import Slide4 from '../../../assets/img/wanna/slide/scene-4.png';
-import Slide6 from '../../../assets/img/wanna/slide/scene-6.png';
-import TAGS from '../../../common/data/boardTagsData';
-import CommonAvatarTeam from '../../../common/other/CommonAvatarTeam';
-import Button from '../../../components/bootstrap/Button';
-import useDarkMode from '../../../hooks/useDarkMode';
-import { TCards, TColumnsData } from './type/types';
-import { move, reorder } from './helper/helper';
-import Board from './component/Board';
-import Columns from './component/Columns';
+import Slide2 from '../../../assets/img/wanna/slide/scene-2.png'
+import Slide4 from '../../../assets/img/wanna/slide/scene-4.png'
+import Slide6 from '../../../assets/img/wanna/slide/scene-6.png'
+import TAGS from '../../../common/data/boardTagsData'
+import CommonAvatarTeam from '../../../common/other/CommonAvatarTeam'
+import Button from '../../../components/bootstrap/Button'
+import useDarkMode from '../../../hooks/useDarkMode'
+import { TCards, TColumnsData } from './type/types'
+import { move, reorder } from '../../timeslot/helper/helper'
+import Board from './component/Board'
+import Columns from './component/Columns'
 
 const ProjectManagementsProject = () => {
-	const { darkModeStatus } = useDarkMode();
-	const navigate = useNavigate();
+	const { darkModeStatus } = useDarkMode()
+	const navigate = useNavigate()
 	const columnsData: TColumnsData = {
 		column1: {
 			id: 'column1',
@@ -59,7 +59,7 @@ const ProjectManagementsProject = () => {
 			color: darkModeStatus ? 'info' : 'warning',
 			icon: 'Verified',
 		},
-	};
+	}
 
 	const [state, setState] = useState<TCards>({
 		column1: [
@@ -170,35 +170,35 @@ const ProjectManagementsProject = () => {
 				],
 			},
 		],
-	});
+	})
 
 	const onDragEnd = (result: DropResult) => {
-		const { source, destination } = result;
+		const { source, destination } = result
 
 		// dropped outside the list
 		if (!destination) {
-			return;
+			return
 		}
 
 		if (source.droppableId === destination.droppableId) {
-			const ITEMS = reorder(state[source.droppableId], source.index, destination.index);
+			const ITEMS = reorder(state[source.droppableId], source.index, destination.index)
 
-			const sourceList = source.droppableId;
-			setState({ ...state, [sourceList]: ITEMS });
+			const sourceList = source.droppableId
+			setState({ ...state, [sourceList]: ITEMS })
 		} else {
 			const RESULT = move(
 				state[source.droppableId],
 				state[destination.droppableId],
 				source,
 				destination,
-			);
+			)
 
 			setState({
 				...state,
 				...RESULT,
-			});
+			})
 		}
-	};
+	}
 
 	return (
 		<PageWrapper title={pagesMenu.projectManagement.subMenu.item.text}>
@@ -238,7 +238,7 @@ const ProjectManagementsProject = () => {
 				</DragDropContext>
 			</Page>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default ProjectManagementsProject;
+export default ProjectManagementsProject
