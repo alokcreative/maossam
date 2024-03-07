@@ -180,7 +180,7 @@ export const modalPages = {
 	modal: {
 		id: 'modal',
 		text: 'modal',
-		path: 'modals-step-form',
+		path: 'user-info',
 		icon: 'ReportGmailerrorred',
 	},
 };

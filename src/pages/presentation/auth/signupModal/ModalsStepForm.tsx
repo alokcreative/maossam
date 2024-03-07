@@ -8,7 +8,7 @@ import Input from '../../../../components/bootstrap/forms/Input'
 import FormGroup from '../../../../components/bootstrap/forms/FormGroup'
 import Select from '../../../../components/bootstrap/forms/Select'
 import DashboardScreen from '../../../../assets/let-start.png'
-import { Country, State, City } from 'country-state-city'
+import { Country, State } from 'country-state-city'
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import Button from '../../../../components/bootstrap/Button'
 import {
@@ -17,7 +17,9 @@ import {
 } from '../../../../features/auth/authApiSlice'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
-import FirstStep from './FirstStep'
+import FirstStep from '../../../../components/modelform/FirstStep'
+import SellingButtons from '../../../../components/modelform/SellingButtons'
+import NumOfPeopleButtons from '../../../../components/modelform/NumOfPeopleButtons'
 
 interface IOptionsProps {
 	value?: string | number
@@ -46,7 +48,6 @@ interface IButtonPerTab {
 const ModalsStepForm: React.FC = () => {
 	const [countryList, setCountryList] = useState<IOptionsProps[]>()
 	const [stateList, setstateList] = useState<IOptionsProps[]>()
-	const [yearList, setYearList] = useState<IOptionsProps[]>()
 	const [fieldOfStudy, setFieldOfStudy] = useState<IOptionsProps[]>([
 		{
 			value: 'Computer_Science',
@@ -174,9 +175,7 @@ const ModalsStepForm: React.FC = () => {
 		}))
 		setstateList(LIST)
 	}, [formik.values.country])
-	useEffect(() => {
-		formik.setFieldValue('phone_number', value)
-	}, [value, formik])
+
 	// console.log(formik.values.CountryName);
 	// Steps forms
 	const [isOpen, setIsOpenParentModal] = useState(true)
@@ -249,16 +248,6 @@ const ModalsStepForm: React.FC = () => {
 										First things first, tell us a bit about your activity This
 										will help us adapt the platform to fit your needs.
 									</div>
-									{/* <div className='text-center mb-5 fst-italic'>
-										(You can always change it later)
-									</div> */}
-									{/* <div className='text-center h4 mb-5'>
-										Where are you located?
-									</div> */}
-									{/* <div className='text-center h5 mb-5'>
-										This will help us adapt the platform to fit your business
-										needs.
-									</div> */}
 									<div className='mb-3'>
 										<FormGroup
 											id='country'
@@ -322,7 +311,15 @@ const ModalsStepForm: React.FC = () => {
 											<PhoneInput
 												placeholder='Enter phone number'
 												value={value}
-												onChange={setValue}
+												className='form-control'
+												onChange={(e) => {
+													// formik.setFieldValue(
+													// 	'phone_number',
+													// 	e?.target?.values,
+													// )
+													// setValue(e?.target?.values)
+													console.log('e>>', e)
+												}}
 											/>
 										</FormGroup>
 									</div>
@@ -330,86 +327,21 @@ const ModalsStepForm: React.FC = () => {
 									<div className='mb-3'>
 										<FormGroup
 											id='signup-telephone'
-											label='What best describes your current role?*
-											'>
+											label='What best describes your current role?'>
 											<div>
-												<Button
-													color='info'
-													onClick={() => {
-														setActiveRolePerTab(ROLE_PER_TAB.Freelancer)
-													}}
-													isLink={
-														activeRolePerTab !== ROLE_PER_TAB.Freelancer
-													}
-													isLight={
-														activeRolePerTab === ROLE_PER_TAB.Freelancer
-													}>
-													Freelancer
-												</Button>
-												<Button
-													color='info'
-													onClick={() => {
-														setActiveRolePerTab(
-															ROLE_PER_TAB.Business_Owner,
-														)
-													}}
-													isLink={
-														activeRolePerTab !==
-														ROLE_PER_TAB.Business_Owner
-													}
-													isLight={
-														activeRolePerTab ===
-														ROLE_PER_TAB.Business_Owner
-													}>
-													Business Owner
-												</Button>
-												<Button
-													color='info'
-													onClick={() => {
-														setActiveRolePerTab(
-															ROLE_PER_TAB.Team_Manager,
-														)
-													}}
-													isLink={
-														activeRolePerTab !==
-														ROLE_PER_TAB.Team_Manager
-													}
-													isLight={
-														activeRolePerTab ===
-														ROLE_PER_TAB.Team_Manager
-													}>
-													Team Manager
-												</Button>
-												<Button
-													color='info'
-													onClick={() => {
-														setActiveRolePerTab(
-															ROLE_PER_TAB.Team_Member,
-														)
-													}}
-													isLink={
-														activeRolePerTab !==
-														ROLE_PER_TAB.Team_Member
-													}
-													isLight={
-														activeRolePerTab ===
-														ROLE_PER_TAB.Team_Member
-													}>
-													Team Member
-												</Button>
-												<Button
-													color='info'
-													onClick={() => {
-														setActiveRolePerTab(ROLE_PER_TAB.Student)
-													}}
-													isLink={
-														activeRolePerTab !== ROLE_PER_TAB.Student
-													}
-													isLight={
-														activeRolePerTab === ROLE_PER_TAB.Student
-													}>
-													Student
-												</Button>
+												{Object.values(ROLE_PER_TAB).map((role, index) => (
+													<Button
+														key={Number(index)}
+														color='info'
+														className='btn-outline-dark rounded-pill mx-2 my-2 py-3 px-2'
+														onClick={() => {
+															setActiveRolePerTab(role)
+														}}
+														isLink={activeRolePerTab !== role}
+														isLight={activeRolePerTab === role}>
+														{role}
+													</Button>
+												))}
 											</div>
 										</FormGroup>
 									</div>
@@ -558,110 +490,18 @@ const ModalsStepForm: React.FC = () => {
 													/>
 												</FormGroup>
 											</div>
-											<div className='mb-3'>
-												<FormGroup
-													id='selling'
-													label='Are you currently selling or intending to sell in the future?*
-													'>
-													<div>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveSellingPerTab('Services')
-															}}
-															isLink={
-																activeSellingPerTab !== 'Services'
-															}
-															isLight={
-																activeSellingPerTab === 'Services'
-															}>
-															Services
-														</Button>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveSellingPerTab('Products')
-															}}
-															isLink={
-																activeSellingPerTab !== 'Products'
-															}
-															isLight={
-																activeSellingPerTab === 'Products'
-															}>
-															Products
-														</Button>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveSellingPerTab('Both')
-															}}
-															isLink={activeSellingPerTab !== 'Both'}
-															isLight={
-																activeSellingPerTab === 'Both'
-															}>
-															Both
-														</Button>
-													</div>
-												</FormGroup>
-											</div>
-											<div className='mb-3'>
-												<FormGroup
-													id='noOfPeople'
-													label='How many people work at your company*'>
-													<div>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveTabForNumOfPeople('1')
-															}}
-															isLink={activeTabForNumOfPeople !== '1'}
-															isLight={
-																activeTabForNumOfPeople === '1'
-															}>
-															Just me
-														</Button>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveTabForNumOfPeople('2_4')
-															}}
-															isLink={
-																activeTabForNumOfPeople !== '2_4'
-															}
-															isLight={
-																activeTabForNumOfPeople === '2_4'
-															}>
-															2-4
-														</Button>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveTabForNumOfPeople('5_10')
-															}}
-															isLink={
-																activeTabForNumOfPeople !== '5_10'
-															}
-															isLight={
-																activeTabForNumOfPeople === '5_10'
-															}>
-															5-10
-														</Button>
-														<Button
-															color='info'
-															onClick={() => {
-																setActiveTabForNumOfPeople('10+')
-															}}
-															isLink={
-																activeTabForNumOfPeople !== '10+'
-															}
-															isLight={
-																activeTabForNumOfPeople === '10+'
-															}>
-															10+
-														</Button>
-													</div>
-												</FormGroup>
-											</div>
+
+											<SellingButtons
+												activeSellingPerTab={activeSellingPerTab}
+												setActiveSellingPerTab={setActiveSellingPerTab}
+											/>
+
+											<NumOfPeopleButtons
+												activeTabForNumOfPeople={activeTabForNumOfPeople}
+												setActiveTabForNumOfPeople={
+													setActiveTabForNumOfPeople
+												}
+											/>
 											<div className='mb-3'>
 												<FormGroup
 													id='establishYear'
@@ -705,7 +545,7 @@ const ModalsStepForm: React.FC = () => {
 												{categoryList.map((i) => (
 													<Button
 														color='info'
-														className='me-1'
+														className='btn-outline-dark rounded-pill mx-2 my-2 py-3 px-3'
 														onClick={() => {
 															setActiveCategory(i.id)
 														}}
@@ -728,18 +568,20 @@ const ModalsStepForm: React.FC = () => {
 									</div>
 									<div className='mb-3 mt-2'>
 										<FormGroup id='category'>
-											<div>
+											<div className='row'>
 												{sourceList.map((i) => (
-													<Button
-														color='info'
-														className='w-100 mb-1'
-														onClick={() => {
-															setActiveSource(i.id)
-														}}
-														isLink={activeSource !== i.id}
-														isLight={activeSource === i.id}>
-														{i.lable}
-													</Button>
+													<div key={i.id} className='col-md-6'>
+														<Button
+															color='info'
+															className='btn btn-outline-dark rounded-pill my-2 py-3 px-3 w-100 '
+															onClick={() => {
+																setActiveSource(i.id)
+															}}
+															isLink={activeSource !== i.id}
+															isLight={activeSource === i.id}>
+															{i.lable}
+														</Button>
+													</div>
 												))}
 											</div>
 										</FormGroup>
@@ -788,15 +630,15 @@ const ModalsStepForm: React.FC = () => {
 				</ModalBody>
 				<ModalFooter className='justify-content-center'>
 					<div className='steps-action'>
-						{currentStep > 0 && currentStep < steps.length - 1 && (
+						{currentStep > 0 && currentStep < steps.length - 2 && (
 							<button
 								type='button'
 								onClick={previousStep}
 								className='btn btn-light-info border-transparent px-4 mx-1'>
-								Previous
+								Back
 							</button>
 						)}
-						{currentStep < steps.length - 2 && (
+						{currentStep < steps.length - 3 && (
 							<Button
 								onClick={nextStep}
 								isDisable={
@@ -808,7 +650,7 @@ const ModalsStepForm: React.FC = () => {
 								Next
 							</Button>
 						)}
-						{currentStep === steps.length - 2 && (
+						{currentStep === steps.length - 3 && (
 							<Button
 								color='success'
 								icon='save'
@@ -822,7 +664,7 @@ const ModalsStepForm: React.FC = () => {
 								Submit
 							</Button>
 						)}
-						{currentStep === steps.length - 1 && (
+						{currentStep === steps.length - 2 && (
 							<button
 								type='button'
 								onClick={() => {
