@@ -185,6 +185,7 @@ const CustomersList = () => {
 													icon='FilterList'
 												/>
 											</th>
+											<th>Renewal date</th>
 											<th
 												onClick={() => requestSort('payout')}
 												className='cursor-pointer text-decoration-underline'>
@@ -254,6 +255,7 @@ const CustomersList = () => {
 													</div>
 												</td>
 												<td>{priceFormat(i.balance)}</td>
+												<td>05/04/2024</td>
 												<td>
 													<Icon
 														size='lg'
