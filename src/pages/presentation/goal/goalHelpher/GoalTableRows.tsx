@@ -69,7 +69,7 @@ const GoalTableRows: FC<IProps> = ({
 						(goalData.status === 'Done' && 'success') ||
 						'info'
 					}>
-					{goalData.status}
+					{`0/${goalData.task_count}`}
 				</Badge>
 			</td>
 			<td>

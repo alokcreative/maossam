@@ -69,8 +69,8 @@ export const dashboardPagesMenu = {
 
 	marketingassets: {
 		id: 'marketingassets',
-		text: 'My Digital Presence',
-		path: '/my-digital-presence',
+		text: 'Profile Hub',
+		path: '/profile-hub',
 		icon: 'analytics',
 		subMenu: null,
 	},
@@ -141,8 +141,8 @@ export const adminDashboardPagesMenu = {
 	},
 	marketing_assets: {
 		id: 'projects',
-		text: 'My Digital Presence',
-		path: '/my-digital-presence',
+		text: 'Profile Hub',
+		path: '/profile-hub',
 		icon: 'Fact Check',
 		subMenu: null,
 	},

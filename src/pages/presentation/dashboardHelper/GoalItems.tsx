@@ -1,41 +1,41 @@
-import React, { FC, ReactNode, useCallback, useState } from 'react';
-import useDarkMode from '../../../hooks/useDarkMode';
-import { useNavigate, useParams } from 'react-router-dom';
-import { pagesMenu } from '../../../menu';
+import React, { FC, ReactNode, useCallback, useState } from 'react'
+import useDarkMode from '../../../hooks/useDarkMode'
+import { useNavigate, useParams } from 'react-router-dom'
+import { pagesMenu } from '../../../menu'
 import Card, {
 	CardActions,
 	CardBody,
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import Badge from '../../../components/bootstrap/Badge';
-import Progress from '../../../components/bootstrap/Progress';
-import GoalViewPopup from '../goal/goalHelpher/GoalViewPopup';
-import { useGetTaskByGoalIdQuery } from '../../../features/auth/taskManagementApiSlice';
+} from '../../../components/bootstrap/Card'
+import Badge from '../../../components/bootstrap/Badge'
+import Progress from '../../../components/bootstrap/Progress'
+import GoalViewPopup from '../goal/goalHelpher/GoalViewPopup'
+import { useGetTaskByGoalIdQuery } from '../../../features/auth/taskManagementApiSlice'
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../../components/bootstrap/Dropdown';
-import Button from '../../../components/bootstrap/Button';
-import { useTranslation } from 'react-i18next';
-import showNotification from '../../../components/extras/showNotification';
-import Icon from '../../../components/icon/Icon';
-import { useEffectOnce } from 'react-use';
-import parse from 'html-react-parser';
+} from '../../../components/bootstrap/Dropdown'
+import Button from '../../../components/bootstrap/Button'
+import { useTranslation } from 'react-i18next'
+import showNotification from '../../../components/extras/showNotification'
+import Icon from '../../../components/icon/Icon'
+import { useEffectOnce } from 'react-use'
+import parse from 'html-react-parser'
 
 interface IItemProps {
-	id: number;
-	name: string;
-	attributes: string;
-	timeline: string;
-	created_by: string;
-	handleDelete(...args: unknown[]): unknown;
-	handleEdit(...args: unknown[]): unknown;
-	handleView(...args: unknown[]): unknown;
-	parent: string;
-	task_count: string;
+	id: number
+	name: string
+	attributes: string
+	timeline: string
+	created_by: string
+	handleDelete(...args: unknown[]): unknown
+	handleEdit(...args: unknown[]): unknown
+	handleView(...args: unknown[]): unknown
+	parent: string
+	task_count: string
 }
 const Item: FC<IItemProps> = ({
 	name,
@@ -49,42 +49,42 @@ const Item: FC<IItemProps> = ({
 	parent,
 	task_count,
 }) => {
-	const navigate = useNavigate();
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [showMore, setShowMore] = useState<boolean>(false);
-	const role = localStorage.getItem('role');
-	const logUserId = localStorage.getItem('UserId');
+	const navigate = useNavigate()
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [showMore, setShowMore] = useState<boolean>(false)
+	const role = localStorage.getItem('role')
+	const logUserId = localStorage.getItem('UserId')
 
-	const { themeStatus, darkModeStatus } = useDarkMode();
-	const { t } = useTranslation(['translation', 'menu']);
+	const { themeStatus, darkModeStatus } = useDarkMode()
+	const { t } = useTranslation(['translation', 'menu'])
 	const { data, refetch } = useGetTaskByGoalIdQuery(
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		Number(id!),
-	);
+	)
 	useEffectOnce(() => {
-		refetch();
-	});
+		refetch()
+	})
 	const openModalHandler = () => {
 		if (role === 'superadmin') {
-			navigate(`../goal-details/${id}`);
+			navigate(`../goal-details/${id}`)
 		} else {
-			setIsModalOpen(true);
+			setIsModalOpen(true)
 		}
-	};
+	}
 	const deleteHandler = (id1: number) => {
-		handleDelete(id1);
-	};
+		handleDelete(id1)
+	}
 
 	const viewHandler = (id1: number) => {
 		if (role === 'superadmin') {
-			handleView(id1);
+			handleView(id1)
 		} else {
-			setIsModalOpen(true);
+			setIsModalOpen(true)
 		}
-	};
+	}
 	const editHandler = (id1: number) => {
-		handleEdit(id1);
-	};
+		handleEdit(id1, created_by)
+	}
 	return (
 		<div className='col-md-4'>
 			<Card stretch className='cursor-pointer'>
@@ -143,8 +143,8 @@ const Item: FC<IItemProps> = ({
 								<span
 									aria-hidden='true'
 									onClick={(e) => {
-										e.stopPropagation();
-										setShowMore(!showMore);
+										e.stopPropagation()
+										setShowMore(!showMore)
 									}}>
 									...
 								</span>
@@ -168,6 +168,6 @@ const Item: FC<IItemProps> = ({
 				<GoalViewPopup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} id={id} />
 			) : null}
 		</div>
-	);
-};
-export default Item;
+	)
+}
+export default Item
