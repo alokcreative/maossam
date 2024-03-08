@@ -293,7 +293,7 @@ const MarketingAssets = () => {
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='row mt-3'>
-					<div className='display-6 fw-bold py-3'>Proile Hub</div>
+					<div className='display-6 fw-bold py-3'>Digital Profile Hub</div>
 					{existingCards.length === 0 ? (
 						// <p>Not Found</p>
 						<div />
