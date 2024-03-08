@@ -4,9 +4,6 @@ import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
 import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader'
 import Button from '../../../components/bootstrap/Button'
 import Icon from '../../../components/icon/Icon'
-
-import PAYMENTS from '../../../common/data/enumPaymentMethod'
-import { Role } from '../../../common/data/userDummyData'
 import Card, {
 	CardBody,
 	CardFooter,
@@ -45,7 +42,6 @@ import FormGroup from '../../../components/bootstrap/forms/FormGroup'
 import Input from '../../../components/bootstrap/forms/Input'
 import Select from '../../../components/bootstrap/forms/Select'
 import { Calendar as DatePicker } from 'react-date-range'
-import Label from '../../../components/bootstrap/forms/Label'
 import { format } from 'date-fns'
 import { categoryEnum, categoryStringValue, formatCategory } from '../../../utiles/helper'
 import Dropdown, { DropdownToggle } from '../../../components/bootstrap/Dropdown'
@@ -56,6 +52,14 @@ import ReactQuill from 'react-quill'
 import GoalTableRows from './goalHelpher/GoalTableRows'
 import classNames from 'classnames'
 import useSortableData from '../../../hooks/useSortableData'
+import OffCanvas, {
+	OffCanvasBody,
+	OffCanvasHeader,
+	OffCanvasTitle,
+} from '../../../components/bootstrap/OffCanvas'
+import dayjs from 'dayjs'
+import Popovers from '../../../components/bootstrap/Popovers'
+import Checks from '../../../components/bootstrap/forms/Checks'
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Product One' },
@@ -66,26 +70,6 @@ export const SELECT_OPTIONS = [
 	{ value: 6, text: 'Product Six' },
 ]
 
-// interface IValues {
-// 	id: number;
-// 	name: string;
-// 	description: string;
-// 	date: string;
-// 	status: string;
-// 	category: string;
-// }
-
-// interface CardProp {
-// 	id: number;
-// 	name: string;
-// 	image: string;
-// 	option: string;
-// 	teamName: string;
-// 	dueDate: string;
-// 	attachCount: number;
-// 	taskCount: number;
-// 	percent: number;
-// }
 interface IGoalProps {
 	id: number
 	title: string
@@ -130,6 +114,7 @@ const Goals: FC = () => {
 	const [updateGoal] = useUpdateGoalMutation()
 	const { darkModeStatus } = useDarkMode()
 	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [isOffCanvasOpen, setIsOffCanvasOpen] = useState<boolean>(false)
 	const [modalHeader, setModalHeader] = useState<string>('Add Goal')
 	const [currentPage, setCurrentPage] = useState(1)
 	const [perPage, setPerPage] = useState(PER_COUNT['10'])
@@ -145,7 +130,7 @@ const Goals: FC = () => {
 	const [deleteId, setDeleteId] = useState<number>()
 	const [categoryList, setCategoryList] = useState<ICategory[]>([])
 	const [categoryTitle, setCategoryTitle] = useState<string>('All Category')
-	// const [filterableData, setFilterableData] = useState(goalList);
+	const [createdBy, setcreatedBy] = useState('')
 
 	const openModal = (id: number) => {
 		// console.log('Id og goal', id);
@@ -274,6 +259,13 @@ const Goals: FC = () => {
 			description: '',
 			due_date: '',
 			expected_time: '14:25',
+			customerName: 'Alison Berry',
+			service: 'Exercise Bike',
+			employee: '',
+			location: 'Maryland',
+			date: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+			time: '10:30',
+			notify: true,
 		},
 		enableReinitialize: true,
 		validate: (values) => {
@@ -314,7 +306,7 @@ const Goals: FC = () => {
 				updateGoal({ id: updateGoalForm.values.id, goalData })
 					.unwrap()
 					.then((res) => {
-						setIsOpen(false)
+						setIsOffCanvasOpen(false)
 						refetch()
 						if (res) {
 							showNotification(
@@ -361,6 +353,7 @@ const Goals: FC = () => {
 			}
 		},
 	})
+
 	const handleDelete = () => {
 		const id = deleteId
 		setShowConfirmation(false)
@@ -400,9 +393,10 @@ const Goals: FC = () => {
 				})
 		}
 	}
-	const handleEdit = (id: number) => {
-		setModalHeader('Update Goal')
-		setIsOpen(true)
+	const handleEdit = (id: number, created_by: string) => {
+		// setModalHeader('Update Goal')
+		setIsOffCanvasOpen(true)
+		setcreatedBy(created_by)
 
 		const goal = data.find((i: IGoalProps) => i.id === id)
 		// console.log('goal>>>',   categoryStringValue[goal.category]);
@@ -806,26 +800,6 @@ const Goals: FC = () => {
 								</div>
 							</FormGroup>
 						)}
-
-						{/* <FormGroup id='expectedTime' label=' Expected Time' className='col-lg-6'>
-							<Input
-								type='time'
-								name='expected_time'
-								onChange={
-									modalHeader === 'New Goal'
-										? formikNewGoal.handleChange
-										: updateGoalForm.handleChange
-								}
-								value={
-									modalHeader === 'New Goal'
-										? formikNewGoal.values.expected_time
-										: updateGoalForm.values.expected_time
-								}
-								invalidFeedback={formikNewGoal.errors.expected_time}
-								isValid={formikNewGoal.isValid}
-								isTouched={formikNewGoal.touched.expected_time}
-							/>
-						</FormGroup> */}
 					</div>
 				</ModalBody>
 				<ModalFooter>
@@ -856,6 +830,146 @@ const Goals: FC = () => {
 				setIsOpen={() => setShowConfirmation(false)}
 				onConfirm={handleDelete}
 			/>
+			<OffCanvas setOpen={setIsOffCanvasOpen} isOpen={isOffCanvasOpen} titleId='canvas-title'>
+				<OffCanvasHeader setOpen={setIsOffCanvasOpen} className='p-4'>
+					<OffCanvasTitle id='canvas-title'>
+						{logUserId == createdBy || role == 'superadmin'
+							? 'Edit Goal'
+							: 'Set Deadline'}
+					</OffCanvasTitle>
+				</OffCanvasHeader>
+				<OffCanvasBody tag='form' onSubmit={updateGoalForm.handleSubmit} className='p-4'>
+					<div className='row g-4'>
+						<div className='col-12'>
+							<FormGroup id='customerName' label='Customer'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.customerName}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-12'>
+							<FormGroup id='service' label='Service'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.service}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-12'>
+							<FormGroup id='employee' label='Employee'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.employee}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-12'>
+							<FormGroup id='location' label='Location'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.location}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-6'>
+							<FormGroup id='date' label='Date'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.date}
+									type='date'
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-6'>
+							<FormGroup id='time' label='time'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.time}
+									type='time'
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-12'>
+							<FormGroup id='name' label='Name'>
+								<Input
+									type='text'
+									name='name'
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.name}
+									invalidFeedback={updateGoalForm.errors.name}
+									isValid={updateGoalForm.isValid}
+									isTouched={updateGoalForm.touched.name}
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-12'>
+							<Card isCompact borderSize={2} shadow='none' className='mb-0'>
+								<CardHeader>
+									<CardLabel>
+										<CardTitle>Extras</CardTitle>
+									</CardLabel>
+								</CardHeader>
+								<CardBody>
+									<FormGroup
+										id='description'
+										label='Description'
+										className='mt-3'>
+										<ReactQuill
+											theme='snow'
+											value={
+												modalHeader === 'New Goal'
+													? formikNewGoal.values.description
+													: updateGoalForm.values.description
+											}
+											onChange={(value) => handledescription(value)}
+										/>
+									</FormGroup>
+								</CardBody>
+							</Card>
+						</div>
+						<div className='col-12'>
+							<Card isCompact borderSize={2} shadow='none' className='mb-0'>
+								<CardHeader>
+									<CardLabel>
+										<CardTitle>Notification</CardTitle>
+									</CardLabel>
+								</CardHeader>
+								<CardBody>
+									<FormGroup>
+										<Checks
+											id='notify'
+											type='switch'
+											label={
+												<>
+													Notify the Customer
+													<Popovers
+														trigger='hover'
+														desc='Check this checkbox if you want your customer to receive an email about the scheduled appointment'>
+														<Icon
+															icon='Help'
+															size='lg'
+															className='ms-1 cursor-help'
+														/>
+													</Popovers>
+												</>
+											}
+											onChange={updateGoalForm.handleChange}
+											checked={updateGoalForm.values.notify}
+										/>
+									</FormGroup>
+								</CardBody>
+							</Card>
+						</div>
+
+						<div className='col'>
+							<Button color='info' type='submit'>
+								Save
+							</Button>
+						</div>
+					</div>
+				</OffCanvasBody>
+			</OffCanvas>
 		</PageWrapper>
 	)
 }

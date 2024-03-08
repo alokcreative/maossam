@@ -1,116 +1,116 @@
-import React, { FC, useEffect, useState } from 'react';
-import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../../components/bootstrap/Modal';
-import { useFormik } from 'formik';
-import Button from '../../../../components/bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
-import { dashboardPagesMenu } from '../../../../menu';
+import React, { FC, useEffect, useState } from 'react'
+import Modal, { ModalBody, ModalHeader, ModalTitle } from '../../../../components/bootstrap/Modal'
+import { useFormik } from 'formik'
+import Button from '../../../../components/bootstrap/Button'
+import { useNavigate } from 'react-router-dom'
+import { dashboardPagesMenu } from '../../../../menu'
 // eslint-disable-next-line import/no-named-as-default
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import PaginationButtons, {
 	dataPagination,
 	PER_COUNT,
-} from '../../../../components/PaginationButtons';
-import { TColor } from '../../../../type/color-type';
-import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
-import { IUserData } from '../../../_layout/_asides/DefaultAside';
-import { useGetTaskByGoalIdQuery } from '../../../../features/auth/taskManagementApiSlice';
-import SubTask from '../tasks/taskboard/SubTaskCard';
-import parse from 'html-react-parser';
+} from '../../../../components/PaginationButtons'
+import { TColor } from '../../../../type/color-type'
+import { useGetUsersMutation } from '../../../../features/auth/authApiSlice'
+import { IUserData } from '../../../_layout/_asides/DefaultAside'
+import { useGetTaskByGoalIdQuery } from '../../../../features/auth/taskManagementApiSlice'
+import SubTask from '../tasks/taskboard/SubTaskCard'
+import parse from 'html-react-parser'
 
 type IAssetNameProps = {
-	id: number | undefined;
-	isModalOpen: boolean;
-	setIsModalOpen: (item: boolean) => void;
-};
+	id: number | undefined
+	isModalOpen: boolean
+	setIsModalOpen: (item: boolean) => void
+}
 interface IMiniTask {
-	id?: string | number;
-	title?: string | number;
-	status?: boolean;
-	date?: dayjs.ConfigType;
+	id?: string | number
+	title?: string | number
+	status?: boolean
+	date?: dayjs.ConfigType
 	badge?: {
-		text?: string;
-		color?: TColor;
-	};
+		text?: string
+		color?: TColor
+	}
 }
 interface ISubTask {
-	id: number;
-	name: string;
-	description: string;
-	status: string;
-	expectedTime: string;
-	secheduledate: dayjs.ConfigType;
-	miniTasks?: IMiniTask[] | undefined;
+	id: number
+	name: string
+	description: string
+	status: string
+	expectedTime: string
+	secheduledate: dayjs.ConfigType
+	miniTasks?: IMiniTask[] | undefined
 }
 interface ITask {
-	id: number;
-	name: string;
-	title: string;
-	description: string;
-	status: string;
-	expectedTime: string;
-	dueDate?: string | undefined;
-	subtaskIntro: string;
-	subTask?: ISubTask[] | undefined;
+	id: number
+	name: string
+	title: string
+	description: string
+	status: string
+	expectedTime: string
+	dueDate?: string | undefined
+	subtaskIntro: string
+	subTask?: ISubTask[] | undefined
 }
 interface IGoal {
-	id: number;
-	name: string;
-	description: string;
-	timeline: string;
-	status: string;
-	task?: ITask[] | undefined;
+	id: number
+	name: string
+	description: string
+	timeline: string
+	status: string
+	task?: ITask[] | undefined
 }
 const GoalViewPopup: FC<IAssetNameProps> = (props) => {
-	const { isModalOpen, setIsModalOpen, id } = props;
+	const { isModalOpen, setIsModalOpen, id } = props
 	const {
 		data,
 		isLoading: loading,
 		isSuccess,
 		isFetching,
 		refetch,
-	} = useGetTaskByGoalIdQuery(id!);
-	const navigate = useNavigate();
+	} = useGetTaskByGoalIdQuery(id!)
+	const navigate = useNavigate()
 	// User data
-	const token = localStorage?.getItem('access_token');
-	const logUserId = localStorage.getItem('UserId');
-	const role = localStorage.getItem('role');
-	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
-	const [userData, setUserData] = useState<IUserData>();
+	const token = localStorage?.getItem('access_token')
+	const logUserId = localStorage.getItem('UserId')
+	const role = localStorage.getItem('role')
+	const [GetUsersMutation, { isLoading }] = useGetUsersMutation()
+	const [userData, setUserData] = useState<IUserData>()
 	useEffect(() => {
 		if (token) {
 			GetUsersMutation(token)
 				.unwrap()
 				.then((res) => {
-					setUserData(res);
+					setUserData(res)
 				})
 				.catch(() => {
-					localStorage.removeItem('refresh_token');
-					localStorage.removeItem('access_token');
-					localStorage.removeItem('tourModalStarted');
-					localStorage.removeItem('role');
-					localStorage.removeItem('i18nextLng');
-					localStorage.removeItem('facit_asideStatus');
-					localStorage.removeItem('user');
-					navigate('/auth-pages/login');
-				});
+					localStorage.removeItem('refresh_token')
+					localStorage.removeItem('access_token')
+					localStorage.removeItem('tourModalStarted')
+					localStorage.removeItem('role')
+					localStorage.removeItem('i18nextLng')
+					localStorage.removeItem('facit_asideStatus')
+					localStorage.removeItem('user')
+					navigate('/auth-pages/login')
+				})
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [token]);
-	const [taskData, setTaskData] = useState<ITask[] | undefined>();
-	const [currentPage, setCurrentPage] = useState(1);
-	const [perPage, setPerPage] = useState(PER_COUNT['1']);
+	}, [token])
+	const [taskData, setTaskData] = useState<ITask[] | undefined>()
+	const [currentPage, setCurrentPage] = useState(1)
+	const [perPage, setPerPage] = useState(PER_COUNT['1'])
 	useEffect(() => {
-		refetch();
+		refetch()
 		if (data) {
-			const { tasks } = data;
+			const { tasks } = data
 			// console.log('Tasks>>', tasks);
 			if (tasks) {
-				setTaskData(tasks);
+				setTaskData(tasks)
 			}
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id, loading, isSuccess]);
+	}, [id, loading, isSuccess])
 	const formik = useFormik({
 		initialValues: {
 			secheduledate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
@@ -118,12 +118,12 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 		onSubmit: (values) => {
 			// console.log(values.secheduledate);
 		},
-	});
+	})
 
 	const handleAddSubtask = (goalId: number) => {
-		setIsModalOpen(false);
-		navigate(`../${dashboardPagesMenu.tasks.path}/${goalId}/add-task`);
-	};
+		setIsModalOpen(false)
+		navigate(`../${dashboardPagesMenu.tasks.path}/${goalId}/add-task`)
+	}
 	return (
 		<Modal
 			isOpen={isModalOpen}
@@ -203,7 +203,7 @@ const GoalViewPopup: FC<IAssetNameProps> = (props) => {
 				) : null}
 			</ModalBody>
 		</Modal>
-	);
-};
+	)
+}
 
-export default GoalViewPopup;
+export default GoalViewPopup

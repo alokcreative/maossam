@@ -1,5 +1,5 @@
-import React from 'react';
-import { RouteProps } from 'react-router-dom';
+import React from 'react'
+import { RouteProps } from 'react-router-dom'
 import {
 	adminDashboardPagesMenu,
 	componentPagesMenu,
@@ -7,23 +7,24 @@ import {
 	pagesMenu,
 	gettingStartedPagesMenu,
 	pageLayoutTypesPagesMenu,
-} from '../menu';
+} from '../menu'
 
-import DashboardHeader from '../pages/_layout/_headers/DashboardHeader';
-import DashboardBookingHeader from '../pages/_layout/_headers/DashboardBookingHeader';
-import ProfilePageHeader from '../pages/_layout/_headers/ProfilePageHeader';
+import DashboardHeader from '../pages/_layout/_headers/DashboardHeader'
+import DashboardBookingHeader from '../pages/_layout/_headers/DashboardBookingHeader'
+import ProfilePageHeader from '../pages/_layout/_headers/ProfilePageHeader'
 // import SummaryHeader from '../pages/_layout/_headers/SummaryHeader';
-import ProductsHeader from '../pages/_layout/_headers/ProductsHeader';
-import ProductListHeader from '../pages/_layout/_headers/ProductListHeader';
-import PageLayoutHeader from '../pages/_layout/_headers/PageLayoutHeader';
-import ComponentsHeader from '../pages/_layout/_headers/ComponentsHeader';
-import FormHeader from '../pages/_layout/_headers/FormHeader';
-import ChartsHeader from '../pages/_layout/_headers/ChartsHeader';
-import ContentHeader from '../pages/_layout/_headers/ContentHeader';
-import UtilitiesHeader from '../pages/_layout/_headers/UtilitiesHeader';
-import IconHeader from '../pages/_layout/_headers/IconHeader';
-import DefaultHeader from '../pages/_layout/_headers/DefaultHeader';
-import DocumentationHeader from '../pages/_layout/_headers/DocumentationHeader';
+import ProductsHeader from '../pages/_layout/_headers/ProductsHeader'
+import ProductListHeader from '../pages/_layout/_headers/ProductListHeader'
+import PageLayoutHeader from '../pages/_layout/_headers/PageLayoutHeader'
+import ComponentsHeader from '../pages/_layout/_headers/ComponentsHeader'
+import FormHeader from '../pages/_layout/_headers/FormHeader'
+import ChartsHeader from '../pages/_layout/_headers/ChartsHeader'
+import ContentHeader from '../pages/_layout/_headers/ContentHeader'
+import UtilitiesHeader from '../pages/_layout/_headers/UtilitiesHeader'
+import IconHeader from '../pages/_layout/_headers/IconHeader'
+import DefaultHeader from '../pages/_layout/_headers/DefaultHeader'
+import DocumentationHeader from '../pages/_layout/_headers/DocumentationHeader'
+import WorkingTimeSlotHeader from '../pages/_layout/_headers/WorkingTimeSlotHeader'
 
 const headers: RouteProps[] = [
 	{ path: pageLayoutTypesPagesMenu.pageLayout.subMenu.onlySubheader.path, element: null },
@@ -33,15 +34,14 @@ const headers: RouteProps[] = [
 	{ path: pagesMenu.signUp.path, element: null },
 	{ path: pagesMenu.page404.path, element: null },
 	{ path: pagesMenu.knowledge.subMenu.grid.path, element: null },
-	{ path: dashboardPagesMenu.dashboard.path,
-		 element: <DashboardHeader /> 
-		},
+	{ path: dashboardPagesMenu.dashboard.path, element: <DashboardHeader /> },
 	{
 		path: pagesMenu.projectManagement.subMenu.list.path,
 		element: <DashboardHeader />,
 	},
-	{ path: pagesMenu.pricingTable.path, 
-		// element: <DashboardHeader /> 
+	{
+		path: pagesMenu.pricingTable.path,
+		// element: <DashboardHeader />
 	},
 	{
 		path: pagesMenu.appointment.subMenu.calendar.path,
@@ -103,10 +103,10 @@ const headers: RouteProps[] = [
 		path: `${pagesMenu.crm.subMenu.customerID.path}/:id`,
 		element: <ProfilePageHeader />,
 	},
-	// {
-	// 	path: dashboardPagesMenu.summary.path,
-	// 	element: <SummaryHeader />,
-	// },
+	{
+		path: dashboardPagesMenu.workingslot.path,
+		element: <WorkingTimeSlotHeader />,
+	},
 	{
 		path: pagesMenu.gridPages.subMenu.gridBoxed.path,
 		element: <ProductsHeader />,
@@ -179,6 +179,6 @@ const headers: RouteProps[] = [
 		path: `*`,
 		element: <DefaultHeader />,
 	},
-];
+]
 
-export default headers;
+export default headers

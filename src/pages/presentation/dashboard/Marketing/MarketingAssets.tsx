@@ -1,9 +1,9 @@
-import React, { FC, HTMLAttributes, useCallback, useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
-import { dashboardPagesMenu, pagesMenu } from '../../../../menu';
-import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../../layout/SubHeader/SubHeader';
-import useDarkMode from '../../../../hooks/useDarkMode';
+import React, { FC, HTMLAttributes, useCallback, useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import PageWrapper from '../../../../layout/PageWrapper/PageWrapper'
+import { dashboardPagesMenu, pagesMenu } from '../../../../menu'
+import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../../layout/SubHeader/SubHeader'
+import useDarkMode from '../../../../hooks/useDarkMode'
 import Card, {
 	CardActions,
 	CardBody,
@@ -11,39 +11,39 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import { Badge } from '../../../../components/icon/material-icons';
-import Icon from '../../../../components/icon/Icon';
-import Progress from '../../../../components/bootstrap/Progress';
-import Avatar, { AvatarGroup } from '../../../../components/Avatar';
-import useTourStep from '../../../../hooks/useTourStep';
-import CommonAvatarTeam from '../../../../common/other/CommonAvatarTeam';
-import Page from '../../../../layout/Page/Page';
-import Button from '../../../../components/bootstrap/Button';
-import USERS from '../../../../common/data/userDummyData';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import MarketingAssetForms from './MarketingAssetForms/MarketingAssetForms';
-import Breadcrumb from '../../../../components/bootstrap/Breadcrumb';
-import { IUserData } from '../../../_layout/_asides/DefaultAside';
-import { useGetUsersMutation } from '../../../../features/auth/authApiSlice';
-import MarketingAssetData from '../../../../common/data/marketingAssetDummyData';
+} from '../../../../components/bootstrap/Card'
+import { Badge } from '../../../../components/icon/material-icons'
+import Icon from '../../../../components/icon/Icon'
+import Progress from '../../../../components/bootstrap/Progress'
+import Avatar, { AvatarGroup } from '../../../../components/Avatar'
+import useTourStep from '../../../../hooks/useTourStep'
+import CommonAvatarTeam from '../../../../common/other/CommonAvatarTeam'
+import Page from '../../../../layout/Page/Page'
+import Button from '../../../../components/bootstrap/Button'
+import USERS from '../../../../common/data/userDummyData'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import MarketingAssetForms from './MarketingAssetForms/MarketingAssetForms'
+import Breadcrumb from '../../../../components/bootstrap/Breadcrumb'
+import { IUserData } from '../../../_layout/_asides/DefaultAside'
+import { useGetUsersMutation } from '../../../../features/auth/authApiSlice'
+import MarketingAssetData from '../../../../common/data/marketingAssetDummyData'
 import Dropdown, {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-} from '../../../../components/bootstrap/Dropdown';
+} from '../../../../components/bootstrap/Dropdown'
 
 interface IItemProps extends HTMLAttributes<HTMLDivElement> {
-	name: string;
-	image: string;
-	teamName: string;
-	attachCount: number;
-	taskCount: number;
-	percent: number;
-	dueDate: string;
-	handleOpenModal(...args: unknown[]): unknown;
-	handleItemDesc(...args: unknown[]): unknown;
+	name: string
+	image: string
+	teamName: string
+	attachCount: number
+	taskCount: number
+	percent: number
+	dueDate: string
+	handleOpenModal(...args: unknown[]): unknown
+	handleItemDesc(...args: unknown[]): unknown
 }
 const Item: FC<IItemProps> = ({
 	name,
@@ -57,7 +57,7 @@ const Item: FC<IItemProps> = ({
 	handleItemDesc,
 	...props
 }) => {
-	const { themeStatus, darkModeStatus } = useDarkMode();
+	const { themeStatus, darkModeStatus } = useDarkMode()
 
 	return (
 		// eslint-disable-next-line react/jsx-props-no-spreading
@@ -180,39 +180,39 @@ const Item: FC<IItemProps> = ({
 				</CardBody>
 			</Card>
 		</div>
-	);
-};
+	)
+}
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 interface CardProp {
-	id: number;
-	name: string;
-	image: string;
-	option: string;
-	teamName: string;
-	dueDate: string;
-	attachCount: number;
-	taskCount: number;
-	percent: number;
+	id: number
+	name: string
+	image: string
+	option: string
+	teamName: string
+	dueDate: string
+	attachCount: number
+	taskCount: number
+	percent: number
 }
 
 const MarketingAssets = () => {
-	useTourStep(12);
-	const navigate = useNavigate();
+	useTourStep(12)
+	const navigate = useNavigate()
 	const handleOnClickToProjectPage = useCallback(
 		() => navigate(`../${pagesMenu.projectManagement.subMenu.itemID.path}/1`),
 		[navigate],
-	);
+	)
 
-	const token = localStorage?.getItem('access_token');
-	const [GetUsersMutation, { isLoading }] = useGetUsersMutation();
-	const [userData, setUserData] = useState<IUserData>();
+	const token = localStorage?.getItem('access_token')
+	const [GetUsersMutation, { isLoading }] = useGetUsersMutation()
+	const [userData, setUserData] = useState<IUserData>()
 	useEffect(() => {
 		if (token) {
 			GetUsersMutation(token)
 				.unwrap()
 				.then((res) => {
-					setUserData(res);
+					setUserData(res)
 				})
 				.catch(() => {
 					// localStorage.removeItem('refresh_token');
@@ -223,56 +223,56 @@ const MarketingAssets = () => {
 					// localStorage.removeItem('facit_asideStatus');
 					// localStorage.removeItem('user');
 					// navigate('/auth-pages/login');
-				});
+				})
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [token]);
-	const [elementId, setElementId] = useState<number>();
-	const [elementName, setElementName] = useState<string>();
-	const [existingCards, setExistingCards] = useState<CardProp[]>([]);
-	const [maybeCards, setMaybeCards] = useState<CardProp[]>([]);
-	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([]);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	}, [token])
+	const [elementId, setElementId] = useState<number>()
+	const [elementName, setElementName] = useState<string>()
+	const [existingCards, setExistingCards] = useState<CardProp[]>([])
+	const [maybeCards, setMaybeCards] = useState<CardProp[]>([])
+	const [notInUseCards, setNotInUseCards] = useState<CardProp[]>([])
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
 	const openModal = (id: number, nameOfBussiness: string) => {
-		setElementId(id);
-		setElementName(nameOfBussiness);
-		setIsModalOpen(true);
-	};
+		setElementId(id)
+		setElementName(nameOfBussiness)
+		setIsModalOpen(true)
+	}
 	// Function to handle closing the modal
-	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !');
+	const notifyOnYes = () => toast('Great! We’ll check out the best set up for you !')
 	const notifyOnNoAndNotSure = () =>
 		toast(
 			'I guess we’ll need to check that out – will send you more info on this media and add it to media to check!',
-		);
+		)
 	const notifyOnNoAndNope = () =>
-		toast('– Ok, Good to know, no need to spend time and energy when not necessary ');
+		toast('– Ok, Good to know, no need to spend time and energy when not necessary ')
 
 	// Handle Card Moves
-	const [cards, setCards] = useState<CardProp[]>(MarketingAssetData);
+	const [cards, setCards] = useState<CardProp[]>(MarketingAssetData)
 
 	const getFormValue = (isSocialMedia: string, isSocialMediaimportant: string) => {
-		const element: CardProp[] = cards.filter((card) => card.id === elementId);
+		const element: CardProp[] = cards.filter((card) => card.id === elementId)
 		if (isSocialMedia === 'yes' && isSocialMediaimportant === 'yes') {
-			notifyOnYes();
-			setExistingCards((elements) => [...elements, element[0]]);
-			const updatedCards = cards.filter((card) => card.id !== elementId);
-			setCards(updatedCards);
+			notifyOnYes()
+			setExistingCards((elements) => [...elements, element[0]])
+			const updatedCards = cards.filter((card) => card.id !== elementId)
+			setCards(updatedCards)
 		} else if (isSocialMedia === 'no' && isSocialMediaimportant === 'maybe') {
-			notifyOnNoAndNotSure();
-			setMaybeCards((elements) => [...elements, element[0]]);
-			const updatedCards = cards.filter((card) => card.id !== elementId);
-			setCards(updatedCards);
+			notifyOnNoAndNotSure()
+			setMaybeCards((elements) => [...elements, element[0]])
+			const updatedCards = cards.filter((card) => card.id !== elementId)
+			setCards(updatedCards)
 		} else if (isSocialMedia === 'no' && isSocialMediaimportant === 'nope') {
-			notifyOnNoAndNope();
-			setNotInUseCards((elements) => [...elements, element[0]]);
-			const updatedCards = cards.filter((card) => card.id !== elementId);
-			setCards(updatedCards);
+			notifyOnNoAndNope()
+			setNotInUseCards((elements) => [...elements, element[0]])
+			const updatedCards = cards.filter((card) => card.id !== elementId)
+			setCards(updatedCards)
 		}
-	};
+	}
 	const handleItemDesc = (card: CardProp) => {
-		navigate(`${dashboardPagesMenu.marketingassets.path}/${card.id}`);
-	};
+		navigate(`${dashboardPagesMenu.marketingassets.path}/${card.id}`)
+	}
 	return (
 		<PageWrapper title={dashboardPagesMenu.marketingassets.text}>
 			<SubHeader>
@@ -283,12 +283,7 @@ const MarketingAssets = () => {
 					</p>
 				</SubHeaderLeft> */}
 				<SubHeaderLeft className='d-flex row mt-0'>
-					<Breadcrumb
-						list={[
-							{ title: 'My Digital Presence', to: '/' },
-							// { title: 'Edit User', to: '/' },
-						]}
-					/>
+					<Breadcrumb list={[{ title: 'Profile Hub', to: '/' }]} />
 				</SubHeaderLeft>
 				{/* <SubHeaderRight>
 					<CommonAvatarTeam>
@@ -298,7 +293,7 @@ const MarketingAssets = () => {
 			</SubHeader>
 			<Page container='fluid'>
 				<div className='row mt-3'>
-					<div className='display-6 fw-bold py-3'>My Digital Presence</div>
+					<div className='display-6 fw-bold py-3'>Proile Hub</div>
 					{existingCards.length === 0 ? (
 						// <p>Not Found</p>
 						<div />
@@ -415,7 +410,7 @@ const MarketingAssets = () => {
 				) : null}
 			</Page>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default MarketingAssets;
+export default MarketingAssets

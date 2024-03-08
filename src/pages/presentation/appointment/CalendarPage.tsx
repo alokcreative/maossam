@@ -44,6 +44,7 @@ import Tooltips from '../../../components/bootstrap/Tooltips'
 import useDarkMode from '../../../hooks/useDarkMode'
 import { TColor } from '../../../type/color-type'
 import { useNavigate } from 'react-router-dom'
+import Modal, { ModalBody, ModalHeader } from '../../../components/bootstrap/Modal'
 
 const localizer = dayjsLocalizer(dayjs)
 const now = new Date()
@@ -217,7 +218,20 @@ const CalendarPage = () => {
 		setDate(dayjs(e).toDate())
 		setViewMode(Views.DAY)
 	}
+	// For Modal
+	const [isOpen, setIsOpen] = useState<boolean>(() => {
+		const storedValue = localStorage.getItem('isOpen')
+		return storedValue ? JSON.parse(storedValue) : true
+	})
 
+	useEffect(() => {
+		// Set isOpen in localStorage when component unmounts
+		localStorage.setItem('isOpen', JSON.stringify(true))
+	}, [isOpen])
+
+	const handleCloseClick = () => {
+		setIsOpen(false)
+	}
 	// View modes; Month, Week, Work Week, Day and Agenda
 	const views = getViews()
 
@@ -400,20 +414,9 @@ const CalendarPage = () => {
 						</div>
 					))}
 				</div>
-				<div className='text-center'>
-					<div className='h4 text-center'>
-						Welcome to your daily working hours setup! Don't miss out on this crucial
-						step—it ensures we can keep you in the loop if your tasks clash with your
-						time slots or if you have room to add more tasks and accelerate towards your
-						goals.
-					</div>
-					<div className='h5'>
-						Remember, you can always adjust this later. Remember to allocate time for
-						those essential breaks and lunchtime pauses!
-					</div>
-				</div>
+
 				<div className='row h-100'>
-					<div className='col-xl-9'>
+					<div className='col-xl-12'>
 						<Card stretch style={{ minHeight: 600 }}>
 							<CardHeader>
 								<CardActions>
@@ -478,7 +481,7 @@ const CalendarPage = () => {
 							</CardBody>
 						</Card>
 					</div>
-					<div className='col-xl-3'>
+					{/* <div className='col-xl-3'>
 						<Card stretch style={{ minHeight: 600 }}>
 							<CardHeader>
 								<CardLabel icon='Today' iconColor='info'>
@@ -524,7 +527,8 @@ const CalendarPage = () => {
 								/>
 							</CardBody>
 						</Card>
-					</div>
+						
+					</div> */}
 				</div>
 
 				<OffCanvas
@@ -546,7 +550,6 @@ const CalendarPage = () => {
 					</OffCanvasHeader>
 					<OffCanvasBody tag='form' onSubmit={formik.handleSubmit} className='p-4'>
 						<div className='row g-4'>
-							{/* Name */}
 							<div className='col-12'>
 								<FormGroup id='eventName' label='Name'>
 									<Select
@@ -563,7 +566,7 @@ const CalendarPage = () => {
 									</Select>
 								</FormGroup>
 							</div>
-							{/* Date */}
+
 							<div className='col-12'>
 								<Card className='mb-0 bg-l10-info' shadow='sm'>
 									<CardHeader className='bg-l25-info'>
@@ -631,7 +634,7 @@ const CalendarPage = () => {
 									</CardBody>
 								</Card>
 							</div>
-							{/* Employee */}
+
 							<div className='col-12'>
 								<Card className='mb-0 bg-l10-dark' shadow='sm'>
 									<CardHeader className='bg-l25-dark'>
@@ -666,6 +669,27 @@ const CalendarPage = () => {
 						</div>
 					</OffCanvasBody>
 				</OffCanvas>
+				<Modal isOpen={isOpen} setIsOpen={setIsOpen} size='lg' isStaticBackdrop>
+					<ModalHeader setIsOpen={handleCloseClick} />
+					<ModalBody>
+						<div className='row g-4 px-4'>
+							<div className='col'>
+								<h4 className='text-center mb-4'>
+									Welcome to your daily working hours setup!
+								</h4>
+								<p className='text-center'>
+									Don't miss out on this crucial step—it ensures we can keep you
+									in the loop if your tasks clash with your time slots or if you
+									have room to add more tasks and accelerate towards your goals.
+								</p>
+								<p className='text-center'>
+									Remember, you can always adjust this later. Remember to allocate
+									time for those essential breaks and lunchtime pauses!
+								</p>
+							</div>
+						</div>
+					</ModalBody>
+				</Modal>
 			</Page>
 		</PageWrapper>
 	)
