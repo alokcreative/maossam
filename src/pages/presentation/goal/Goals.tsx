@@ -306,7 +306,7 @@ const Goals: FC = () => {
 				updateGoal({ id: updateGoalForm.values.id, goalData })
 					.unwrap()
 					.then((res) => {
-						setIsOpen(false)
+						setIsOffCanvasOpen(false)
 						refetch()
 						if (res) {
 							showNotification(
