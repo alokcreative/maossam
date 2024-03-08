@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useFormik } from 'formik';
-import { ApexOptions } from 'apexcharts';
-import Page from '../../../../layout/Page/Page';
-import PageWrapper from '../../../../layout/PageWrapper/PageWrapper';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { ApexOptions } from 'apexcharts'
+import Page from '../../../../layout/Page/Page'
+import PageWrapper from '../../../../layout/PageWrapper/PageWrapper'
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../../layout/SubHeader/SubHeader';
-import Button from '../../../../components/bootstrap/Button';
-import { adminDashboardPagesMenu, pagesMenu } from '../../../../menu';
-import tableData from '../../../../common/data/dummyProductData';
-import Avatar from '../../../../components/Avatar';
-import USERS, { Role } from '../../../../common/data/userDummyData';
+} from '../../../../layout/SubHeader/SubHeader'
+import Button from '../../../../components/bootstrap/Button'
+import { adminDashboardPagesMenu, pagesMenu } from '../../../../menu'
+import tableData from '../../../../common/data/dummyProductData'
+import Avatar from '../../../../components/Avatar'
+import USERS, { Role } from '../../../../common/data/userDummyData'
 import Card, {
 	CardBody,
 	CardFooter,
@@ -23,28 +23,28 @@ import Card, {
 	CardLabel,
 	CardSubTitle,
 	CardTitle,
-} from '../../../../components/bootstrap/Card';
-import Icon from '../../../../components/icon/Icon';
-import { priceFormat } from '../../../../helpers/helpers';
-import Chart from '../../../../components/extras/Chart';
-import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion';
-import PlaceholderImage from '../../../../components/extras/PlaceholderImage';
-import Input from '../../../../components/bootstrap/forms/Input';
-import FormGroup from '../../../../components/bootstrap/forms/FormGroup';
-import showNotification from '../../../../components/extras/showNotification';
-import useDarkMode from '../../../../hooks/useDarkMode';
-import Select from '../../../../components/bootstrap/forms/Select';
-import Alert from '../../../../components/bootstrap/Alert';
-import { RootState } from '../../../../store/store';
-import { useSelector } from 'react-redux';
+} from '../../../../components/bootstrap/Card'
+import Icon from '../../../../components/icon/Icon'
+import { priceFormat } from '../../../../helpers/helpers'
+import Chart from '../../../../components/extras/Chart'
+import Accordion, { AccordionItem } from '../../../../components/bootstrap/Accordion'
+import PlaceholderImage from '../../../../components/extras/PlaceholderImage'
+import Input from '../../../../components/bootstrap/forms/Input'
+import FormGroup from '../../../../components/bootstrap/forms/FormGroup'
+import showNotification from '../../../../components/extras/showNotification'
+import useDarkMode from '../../../../hooks/useDarkMode'
+import Select from '../../../../components/bootstrap/forms/Select'
+import Alert from '../../../../components/bootstrap/Alert'
+import { RootState } from '../../../../store/store'
+import { useSelector } from 'react-redux'
 
 interface IValues {
-	name: string;
-	image: string;
-	description: string;
-	category: string;
-	price: number;
-	stock: number;
+	name: string
+	image: string
+	description: string
+	category: string
+	price: number
+	stock: number
 }
 const validate = (values: IValues) => {
 	const errors = {
@@ -54,46 +54,46 @@ const validate = (values: IValues) => {
 		category: '',
 		price: 0,
 		stock: 0,
-	};
+	}
 
 	if (!values.name) {
-		errors.name = 'Required';
+		errors.name = 'Required'
 	} else if (values.name.length < 3) {
-		errors.name = 'Must be 3 characters or more';
+		errors.name = 'Must be 3 characters or more'
 	} else if (values.name.length > 20) {
-		errors.name = 'Must be 20 characters or less';
+		errors.name = 'Must be 20 characters or less'
 	}
 
 	if (!values.category) {
-		errors.category = 'Required';
+		errors.category = 'Required'
 	} else if (values.category.length < 3) {
-		errors.category = 'Must be 3 characters or more';
+		errors.category = 'Must be 3 characters or more'
 	} else if (values.category.length > 20) {
-		errors.category = 'Must be 20 characters or less';
+		errors.category = 'Must be 20 characters or less'
 	}
 
-	return errors;
-};
+	return errors
+}
 
-type TTabs = 'Summary' | 'Comments' | 'Edit';
+type TTabs = 'Summary' | 'Comments' | 'Edit'
 interface ITabs {
-	[key: string]: TTabs;
+	[key: string]: TTabs
 }
 
 const ProductDetailsPage = () => {
-	const { user } = useSelector((state: RootState) => state.auth);
+	const { user } = useSelector((state: RootState) => state.auth)
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
-	const role = localStorage?.getItem('role');
-	const { darkModeStatus } = useDarkMode();
+	const role = localStorage?.getItem('role')
+	const { darkModeStatus } = useDarkMode()
 
-	const { id } = useParams();
-	const navigate = useNavigate();
+	const { id } = useParams()
+	const navigate = useNavigate()
 
 	// @ts-ignore
-	const itemData = tableData.filter((item) => item.id.toString() === id.toString());
-	const data = itemData[0];
+	const itemData = tableData.filter((item) => item.id.toString() === id.toString())
+	const data = itemData[0]
 
 	const chartOptions: ApexOptions = {
 		colors: [process.env.REACT_APP_WARNING_COLOR],
@@ -116,8 +116,8 @@ const ProductDetailsPage = () => {
 			y: {
 				title: {
 					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					formatter(seriesName: string) {
-						return '';
+					formatter (seriesName: string) {
+						return ''
 					},
 				},
 			},
@@ -126,7 +126,7 @@ const ProductDetailsPage = () => {
 			curve: 'smooth',
 			width: 2,
 		},
-	};
+	}
 	const formikSelect = useFormik({
 		initialValues: {
 			itemCat: '',
@@ -139,15 +139,15 @@ const ProductDetailsPage = () => {
 			averageSellingMarket: '',
 		},
 		onSubmit: () => {},
-	});
+	})
 	const TABS: ITabs = {
 		SUMMARY: 'Summary',
 		COMMENTS: 'Comments',
 		EDIT: 'Edit',
-	};
-	const [activeTab, setActiveTab] = useState(TABS.SUMMARY);
+	}
+	const [activeTab, setActiveTab] = useState(TABS.SUMMARY)
 
-	const [editItem, setEditItem] = useState<IValues>(data);
+	const [editItem, setEditItem] = useState<IValues>(data)
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -166,9 +166,9 @@ const ProductDetailsPage = () => {
 					<span>Updated Successfully</span>
 				</span>,
 				'Product has been updated successfully',
-			);
+			)
 		},
-	});
+	})
 	useEffect(() => {
 		if (editItem) {
 			formik.setValues({
@@ -178,7 +178,7 @@ const ProductDetailsPage = () => {
 				category: data.category,
 				price: data.price,
 				stock: data.stock,
-			});
+			})
 		}
 		return () => {
 			formik.setValues({
@@ -188,10 +188,10 @@ const ProductDetailsPage = () => {
 				category: '',
 				price: 0,
 				stock: 0,
-			});
-		};
+			})
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [editItem]);
+	}, [editItem])
 
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.product.text}>
@@ -224,7 +224,7 @@ const ProductDetailsPage = () => {
 										</Button>
 									</div>
 
-									<div className='col-12'>
+									{/* <div className='col-12'>
 										<Button
 											icon='Chat'
 											color='info'
@@ -233,7 +233,7 @@ const ProductDetailsPage = () => {
 											onClick={() => setActiveTab(TABS.COMMENTS)}>
 											{TABS.COMMENTS}
 										</Button>
-									</div>
+									</div> */}
 									{role === 'user' && (
 										<div className='col-12'>
 											<Button
@@ -386,7 +386,7 @@ const ProductDetailsPage = () => {
 													</CardBody>
 												</Card>
 											</div>
-											<div className='col-lg-6'>
+											{/* <div className='col-lg-6'>
 												<Card
 													stretch
 													shadow='sm'
@@ -415,7 +415,7 @@ const ProductDetailsPage = () => {
 														</div>
 													</CardBody>
 												</Card>
-											</div>
+											</div> */}
 											{/* <div className='col-lg-6'>
 												<Card
 													stretch
@@ -683,7 +683,7 @@ const ProductDetailsPage = () => {
 																		setEditItem({
 																			...editItem,
 																			image: '',
-																		});
+																		})
 																	}}>
 																	Delete Image
 																</Button>
@@ -1170,7 +1170,7 @@ products?'>
 				</div>
 			</Page>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default ProductDetailsPage;
+export default ProductDetailsPage

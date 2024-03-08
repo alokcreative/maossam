@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
-import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader';
-import Button from '../../../components/bootstrap/Button';
-import Input from '../../../components/bootstrap/forms/Input';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
+import React, { FC, useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
+import SubHeader, { SubHeaderLeft, SubHeaderRight } from '../../../layout/SubHeader/SubHeader'
+import Button from '../../../components/bootstrap/Button'
+import Input from '../../../components/bootstrap/forms/Input'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
 import Card, {
 	CardBody,
 	CardFooter,
@@ -13,36 +13,33 @@ import Card, {
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import Page from '../../../layout/Page/Page';
+} from '../../../components/bootstrap/Card'
+import Page from '../../../layout/Page/Page'
 // eslint-disable-next-line import/no-named-as-default
-import PaginationButtons, {
-	dataPagination,
-	PER_COUNT,
-} from '../../../components/PaginationButtons';
+import PaginationButtons, { dataPagination, PER_COUNT } from '../../../components/PaginationButtons'
 import Modal, {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
 	ModalTitle,
-} from '../../../components/bootstrap/Modal';
-import { useNavigate, useParams } from 'react-router-dom';
+} from '../../../components/bootstrap/Modal'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
 	useCreateTaskMutation,
 	useDeleteTaskMutation,
 	useGetTaskByGoalIdQuery,
 	useUpdateTaskMutation,
-} from '../../../features/auth/taskManagementApiSlice';
-import Loading from '../../../common/other/Loading';
-import TaskTableRow from './tasks/TaskTableRow';
-import { Calendar as DatePicker } from 'react-date-range';
-import { format } from 'date-fns';
-import Icon from '../../../components/icon/Icon';
-import showNotification from '../../../components/extras/showNotification';
-import ConfirmationModal from '../../documentation/components/ConfirmationModal';
-import ReactQuill from 'react-quill';
-import parse from 'html-react-parser';
-import useSortableData from '../../../hooks/useSortableData';
+} from '../../../features/auth/taskManagementApiSlice'
+import Loading from '../../../common/other/Loading'
+import TaskTableRow from './tasks/TaskTableRow'
+import { Calendar as DatePicker } from 'react-date-range'
+import { format } from 'date-fns'
+import Icon from '../../../components/icon/Icon'
+import showNotification from '../../../components/extras/showNotification'
+import ConfirmationModal from '../../documentation/components/ConfirmationModal'
+import ReactQuill from 'react-quill'
+import parse from 'html-react-parser'
+import useSortableData from '../../../hooks/useSortableData'
 
 export const SELECT_OPTIONS = [
 	{ value: 1, text: 'Backlog' },
@@ -50,51 +47,51 @@ export const SELECT_OPTIONS = [
 	{ value: 3, text: 'Progress' },
 	{ value: 4, text: 'Done' },
 	{ value: 5, text: 'Hold' },
-];
+]
 
 interface ITask {
-	id: number;
-	title?: string;
-	description?: string;
+	id: number
+	title?: string
+	description?: string
 	// status?: string;
-	dueDate?: string | undefined;
-	category?: string;
-	expectedTime?: string;
+	dueDate?: string | undefined
+	category?: string
+	expectedTime?: string
 }
 
 const GoalDescription: FC = () => {
-	const { id } = useParams();
+	const { id } = useParams()
 
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [perPage, setPerPage] = useState(PER_COUNT['10']);
-	const navigate = useNavigate();
-	const [modalState, setModalState] = useState('Add Task');
-	const [showConfirmation, setShowConfirmation] = useState(false);
-	const [deleteId, setDeleteId] = useState<number>();
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [currentPage, setCurrentPage] = useState(1)
+	const [perPage, setPerPage] = useState(PER_COUNT['10'])
+	const navigate = useNavigate()
+	const [modalState, setModalState] = useState('Add Task')
+	const [showConfirmation, setShowConfirmation] = useState(false)
+	const [deleteId, setDeleteId] = useState<number>()
 	const { data, isLoading, isSuccess, refetch } = useGetTaskByGoalIdQuery(
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		Number(id!),
-	);
-	const [showMore, setShowMore] = useState<boolean>(false);
-	const [createTask] = useCreateTaskMutation();
+	)
+	const [showMore, setShowMore] = useState<boolean>(false)
+	const [createTask] = useCreateTaskMutation()
 	const [deleteTask] = useDeleteTaskMutation({
 		fixedCacheKey: 'deleteTask',
-	});
+	})
 	const [updateTask] = useUpdateTaskMutation({
 		fixedCacheKey: 'updateTask',
-	});
-	const [taskList, setTaskList] = useState(data && data.tasks);
-	const [date, setDate] = useState<Date>(new Date());
-	const role = localStorage?.getItem('role');
+	})
+	const [taskList, setTaskList] = useState(data && data.tasks)
+	const [date, setDate] = useState<Date>(new Date())
+	const role = localStorage?.getItem('role')
 
 	useEffect(() => {
-		refetch();
+		refetch()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id]);
+	}, [id])
 	useEffect(() => {
-		setTaskList(data && data.tasks);
-	}, [data]);
+		setTaskList(data && data.tasks)
+	}, [data])
 
 	const formiknewTask = useFormik({
 		initialValues: {
@@ -108,9 +105,9 @@ const GoalDescription: FC = () => {
 		},
 		enableReinitialize: true,
 		onSubmit: (values, { resetForm }) => {
-			console.log('values', values);
-			console.log('modalState', modalState);
-			console.log('role', role);
+			console.log('values', values)
+			console.log('modalState', modalState)
+			console.log('role', role)
 			if (modalState === 'Add Task') {
 				if (role === 'superadmin') {
 					createTask({
@@ -121,14 +118,14 @@ const GoalDescription: FC = () => {
 					})
 						.unwrap()
 						.then((res) => {
-							refetch();
-							formiknewTask.resetForm();
-							setDate(new Date());
+							refetch()
+							formiknewTask.resetForm()
+							setDate(new Date())
 						})
-						.catch(() => {});
+						.catch(() => {})
 				} else {
-					const parts = values.expectedTime.split(':');
-					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+					const parts = values.expectedTime.split(':')
+					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`
 					createTask({
 						title: values.name,
 						description: values.description,
@@ -139,11 +136,11 @@ const GoalDescription: FC = () => {
 					})
 						.unwrap()
 						.then((res) => {
-							refetch();
-							formiknewTask.resetForm();
-							setDate(new Date());
+							refetch()
+							formiknewTask.resetForm()
+							setDate(new Date())
 						})
-						.catch(() => {});
+						.catch(() => {})
 				}
 			}
 			if (modalState === 'Edit Task') {
@@ -152,7 +149,7 @@ const GoalDescription: FC = () => {
 						title: values.name,
 						description: values.description,
 						// status: values.status,
-					};
+					}
 					updateTask({
 						taskData,
 						task_id: values.id,
@@ -160,23 +157,23 @@ const GoalDescription: FC = () => {
 						.unwrap()
 						.then((res) => {
 							// console.log('response>>', res);
-							refetch();
-							formiknewTask.resetForm();
-							setDate(new Date());
+							refetch()
+							formiknewTask.resetForm()
+							setDate(new Date())
 						})
 						.catch((res) => {
 							// console.log('error', res);
-						});
+						})
 				} else {
-					const parts = values.expectedTime.split(':');
-					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`;
+					const parts = values.expectedTime.split(':')
+					const timeWithoutSeconds = `${parts[0]}:${parts[1]}`
 					const taskData = {
 						title: values.name,
 						description: values.description,
 						due_date: format(date, 'MM/dd/yyyy'),
 						expected_time: timeWithoutSeconds,
 						// status: values.status,
-					};
+					}
 					updateTask({
 						taskData,
 						task_id: values.id,
@@ -184,28 +181,28 @@ const GoalDescription: FC = () => {
 						.unwrap()
 						.then((res) => {
 							// console.log('response>>', res);
-							refetch();
-							formiknewTask.resetForm();
-							setDate(new Date());
+							refetch()
+							formiknewTask.resetForm()
+							setDate(new Date())
 						})
 						.catch((res) => {
 							// console.log('error', res);
-						});
+						})
 				}
 			}
 
 			// setTaskList([...taskList, newTask]);
-			setIsOpen(false);
-			resetForm();
+			setIsOpen(false)
+			resetForm()
 		},
-	});
+	})
 	const handledescription = (value: any) => {
-		formiknewTask.setFieldValue('description', value);
-	};
+		formiknewTask.setFieldValue('description', value)
+	}
 
 	const handleDeleteAction = () => {
-		const taskId = deleteId;
-		setShowConfirmation(false);
+		const taskId = deleteId
+		setShowConfirmation(false)
 		// setTaskList(taskList.filter((i) => i.id !== taskId));
 		if (taskId) {
 			deleteTask(taskId)
@@ -217,8 +214,8 @@ const GoalDescription: FC = () => {
 							<span>Task deleted successfully</span>
 						</span>,
 						``,
-					);
-					refetch();
+					)
+					refetch()
 				})
 				.catch((res) => {
 					showNotification(
@@ -227,35 +224,35 @@ const GoalDescription: FC = () => {
 							<span>{res.data.detail[0]}</span>
 						</span>,
 						``,
-					);
+					)
 					// console.log('Delete task rejects>>', res.data.detail[0]);
-				});
+				})
 		}
-	};
+	}
 	const handleEdit = (taskId: number) => {
-		setModalState(`Edit Task`);
-		const task = taskList.filter((i: ITask) => Number(i.id) === taskId);
-		formiknewTask.setFieldValue('name', task[0]?.title);
-		formiknewTask.setFieldValue('description', task[0]?.description);
-		formiknewTask.setFieldValue('dueDate', task[0]?.due_date);
+		setModalState(`Edit Task`)
+		const task = taskList.filter((i: ITask) => Number(i.id) === taskId)
+		formiknewTask.setFieldValue('name', task[0]?.title)
+		formiknewTask.setFieldValue('description', task[0]?.description)
+		formiknewTask.setFieldValue('dueDate', task[0]?.due_date)
 		// formiknewTask.setFieldValue('category', task[0]?.category);
 		// formiknewTask.setFieldValue('status', task[0]?.status);
-		formiknewTask.setFieldValue('expectedTime', task[0]?.expected_time);
-		formiknewTask.setFieldValue('id', taskId);
-		setIsOpen(true);
-	};
+		formiknewTask.setFieldValue('expectedTime', task[0]?.expected_time)
+		formiknewTask.setFieldValue('id', taskId)
+		setIsOpen(true)
+	}
 
 	const handleAddTask = () => {
-		formiknewTask.setFieldValue('name', '');
-		formiknewTask.setFieldValue('description', '');
-		formiknewTask.setFieldValue('dueDate', '');
-		formiknewTask.setFieldValue('category', '');
-		formiknewTask.setFieldValue('status', '');
-		formiknewTask.setFieldValue('expected_time', '');
-		setModalState('Add Task');
-		setIsOpen(true);
-	};
-	const { items, requestSort, getClassNamesFor } = useSortableData(taskList || []);
+		formiknewTask.setFieldValue('name', '')
+		formiknewTask.setFieldValue('description', '')
+		formiknewTask.setFieldValue('dueDate', '')
+		formiknewTask.setFieldValue('category', '')
+		formiknewTask.setFieldValue('status', '')
+		formiknewTask.setFieldValue('expected_time', '')
+		setModalState('Add Task')
+		setIsOpen(true)
+	}
+	const { items, requestSort, getClassNamesFor } = useSortableData(taskList || [])
 
 	return (
 		<PageWrapper>
@@ -312,7 +309,7 @@ const GoalDescription: FC = () => {
 												isLight
 												icon='Add'
 												onClick={() => {
-													handleAddTask();
+													handleAddTask()
 												}}>
 												Add Task
 											</Button>
@@ -360,19 +357,19 @@ const GoalDescription: FC = () => {
 														</th>
 														{role !== 'superadmin' && (
 															<>
-																<th
+																{/* <th
 																	scope='col'
 																	style={{
 																		whiteSpace: 'nowrap',
 																	}}>
 																	ExpectedTime
-																</th>
+																</th> */}
 																<th
 																	scope='col'
 																	style={{
 																		whiteSpace: 'nowrap',
 																	}}>
-																	Due Date
+																	Date / Time{' '}
 																</th>
 															</>
 														)}
@@ -399,8 +396,8 @@ const GoalDescription: FC = () => {
 																task={i}
 																edit={handleEdit}
 																deleteAction={() => {
-																	setShowConfirmation(true);
-																	setDeleteId(i.id);
+																	setShowConfirmation(true)
+																	setDeleteId(i.id)
 																}}
 															/>
 														))
@@ -522,7 +519,7 @@ const GoalDescription: FC = () => {
 							<Button
 								color='danger'
 								onClick={() => {
-									setIsOpen(false);
+									setIsOpen(false)
 								}}>
 								Cancel
 							</Button>
@@ -536,7 +533,7 @@ const GoalDescription: FC = () => {
 				onConfirm={handleDeleteAction}
 			/>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default GoalDescription;
+export default GoalDescription

@@ -4,6 +4,9 @@ import Button from '../../../../components/bootstrap/Button'
 import { dataPagination, PER_COUNT } from '../../../../components/PaginationButtons'
 import { useNavigate } from 'react-router-dom'
 import parse from 'html-react-parser'
+import classNames from 'classnames'
+import useDarkMode from '../../../../hooks/useDarkMode'
+import dayjs from 'dayjs'
 
 interface IGoalProps {
 	id: number
@@ -40,6 +43,7 @@ const GoalTableRows: FC<IProps> = ({
 	const navigate = useNavigate()
 	const logUserId = localStorage.getItem('UserId')
 	const [showMore, setShowMore] = useState<boolean>(false)
+	const { themeStatus, darkModeStatus } = useDarkMode()
 
 	return (
 		<tr>
@@ -59,7 +63,32 @@ const GoalTableRows: FC<IProps> = ({
 			</td>
 			{/* <td>{parse(i.description)}</td> */}
 			<td>{goalData.task_count}</td>
-			{role != 'superadmin' && <td className='text-nowrap'>{goalData.due_date}</td>}
+			{role != 'superadmin' && (
+				<td className='text-nowrap'>
+					<div className='d-flex align-items-center'>
+						<span
+							className={classNames(
+								'badge',
+								'border border-2',
+								[`border-${themeStatus}`],
+								'rounded-circle',
+								'bg-success',
+								'p-2 me-2',
+							)}
+						/>
+
+						<span className='text-nowrap'>
+							{dayjs(
+								`${
+									dayjs().format('YYYY') +
+									dayjs().format('MM') +
+									dayjs().add(1, 'days').format('DD')
+								} ${1030}`,
+							).format('MMM Do YYYY, h:mm a')}
+						</span>
+					</div>
+				</td>
+			)}
 
 			<td className='h5'>
 				<Badge

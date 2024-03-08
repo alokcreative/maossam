@@ -1,48 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import Page from '../../../layout/Page/Page';
-import classNames from 'classnames';
-import PageWrapper from '../../../layout/PageWrapper/PageWrapper';
+import React, { useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import Page from '../../../layout/Page/Page'
+import classNames from 'classnames'
+import PageWrapper from '../../../layout/PageWrapper/PageWrapper'
 import SubHeader, {
 	SubHeaderLeft,
 	SubHeaderRight,
 	SubheaderSeparator,
-} from '../../../layout/SubHeader/SubHeader';
-import Button from '../../../components/bootstrap/Button';
-import CommonGridProductItem from './ProductGridView';
-import tableData from '../../../common/data/dummyProductData';
+} from '../../../layout/SubHeader/SubHeader'
+import Button from '../../../components/bootstrap/Button'
+import CommonGridProductItem from './ProductGridView'
+import tableData from '../../../common/data/dummyProductData'
 import OffCanvas, {
 	OffCanvasBody,
 	OffCanvasHeader,
 	OffCanvasTitle,
-} from '../../../components/bootstrap/OffCanvas';
+} from '../../../components/bootstrap/OffCanvas'
 import Card, {
 	CardBody,
 	CardHeader,
 	CardLabel,
 	CardTitle,
-} from '../../../components/bootstrap/Card';
-import Badge from '../../../components/bootstrap/Badge';
-import Input from '../../../components/bootstrap/forms/Input';
-import PlaceholderImage from '../../../components/extras/PlaceholderImage';
-import FormGroup from '../../../components/bootstrap/forms/FormGroup';
-import { adminDashboardPagesMenu, pagesMenu } from '../../../menu';
-import useDarkMode from '../../../hooks/useDarkMode';
-import ProductListView from './ProductListView';
-import Select from '../../../components/bootstrap/forms/Select';
-import { useNavigate } from 'react-router-dom';
-import { string } from 'yargs';
-import { Role } from '../../../common/data/userDummyData';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
-import { useProduct } from '../../../contexts/productContext';
+} from '../../../components/bootstrap/Card'
+import Badge from '../../../components/bootstrap/Badge'
+import Input from '../../../components/bootstrap/forms/Input'
+import PlaceholderImage from '../../../components/extras/PlaceholderImage'
+import FormGroup from '../../../components/bootstrap/forms/FormGroup'
+import { adminDashboardPagesMenu, pagesMenu } from '../../../menu'
+import useDarkMode from '../../../hooks/useDarkMode'
+import ProductListView from './ProductListView'
+import Select from '../../../components/bootstrap/forms/Select'
+import { useNavigate } from 'react-router-dom'
+import { string } from 'yargs'
+import { Role } from '../../../common/data/userDummyData'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../store/store'
+import { useProduct } from '../../../contexts/productContext'
 
 interface IValues {
-	name: string;
-	price: number;
-	stock: number;
-	category: string;
-	image?: string | null;
+	name: string
+	price: number
+	stock: number
+	category: string
+	image?: string | null
 }
 const validate = (values: IValues) => {
 	const errors = {
@@ -50,54 +50,54 @@ const validate = (values: IValues) => {
 		price: '',
 		stock: '',
 		category: '',
-	};
+	}
 
 	if (!values.name) {
-		errors.name = 'Required';
+		errors.name = 'Required'
 	} else if (values.name.length < 3) {
-		errors.name = 'Must be 3 characters or more';
+		errors.name = 'Must be 3 characters or more'
 	} else if (values.name.length > 20) {
-		errors.name = 'Must be 20 characters or less';
+		errors.name = 'Must be 20 characters or less'
 	}
 
 	if (!values.price) {
-		errors.price = 'Required';
+		errors.price = 'Required'
 	} else if (values.price < 0) {
-		errors.price = 'Price should not be 0';
+		errors.price = 'Price should not be 0'
 	}
 
 	if (!values.stock) {
-		errors.stock = 'Required';
+		errors.stock = 'Required'
 	}
 
 	if (!values.category) {
-		errors.category = 'Required';
+		errors.category = 'Required'
 	} else if (values.category.length < 3) {
-		errors.category = 'Must be 3 characters or more';
+		errors.category = 'Must be 3 characters or more'
 	} else if (values.category.length > 20) {
-		errors.category = 'Must be 20 characters or less';
+		errors.category = 'Must be 20 characters or less'
 	}
 
-	return errors;
-};
+	return errors
+}
 
 const ProductPage = () => {
-	const { user } = useSelector((state: RootState) => state.auth);
+	const { user } = useSelector((state: RootState) => state.auth)
 	// const savedValue = localStorage?.getItem('user');
 	// const localUser = savedValue ? JSON.parse(savedValue) : null;
 	// const role = user.role || localUser?.role;
-	const { darkModeStatus } = useDarkMode();
-	const [data, setData] = useState(tableData);
-	const [editItem, setEditItem] = useState<IValues | null>(null);
-	const [editPanel, setEditPanel] = useState<boolean>(false);
-	const [productView, setproductView] = useState<boolean>(false);
-	const { gridData, setGridData } = useProduct();
+	const { darkModeStatus } = useDarkMode()
+	const [data, setData] = useState(tableData)
+	const [editItem, setEditItem] = useState<IValues | null>(null)
+	const [editPanel, setEditPanel] = useState<boolean>(false)
+	const [productView, setproductView] = useState<boolean>(false)
+	const { gridData, setGridData } = useProduct()
 
-	const [filterableData, setFilterableData] = useState(data);
-	const role = localStorage?.getItem('role');
+	const [filterableData, setFilterableData] = useState(data)
+	const role = localStorage?.getItem('role')
 
 	const searchAndFilterData = (searchValue: string) => {
-		const tempData = data;
+		const tempData = data
 
 		return tempData.filter((item) => {
 			return (
@@ -107,20 +107,20 @@ const ProductPage = () => {
 				item.description.toLowerCase().includes(searchValue) ||
 				item.price.toString().includes(searchValue) ||
 				item.stock.toString().includes(searchValue)
-			);
-		});
-	};
-	function handleRemove(id: number) {
-		const newData = data.filter((item) => item.id !== id);
-		setData(newData);
+			)
+		})
+	}
+	function handleRemove (id: number) {
+		const newData = data.filter((item) => item.id !== id)
+		setData(newData)
 	}
 
 	const setProductView = (status: boolean) => {
-		setproductView(status);
-	};
-	const navigate = useNavigate();
-	function handleEdit(id: number) {
-		const newData = data.filter((item) => item.id === id);
+		setproductView(status)
+	}
+	const navigate = useNavigate()
+	function handleEdit (id: number) {
+		const newData = data.filter((item) => item.id === id)
 		// setEditItem(newData[0]);
 	}
 
@@ -134,20 +134,20 @@ const ProductPage = () => {
 		validate,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: (values) => {
-			setEditPanel(false);
+			setEditPanel(false)
 		},
-	});
+	})
 
 	const formikSelect = useFormik({
 		initialValues: {
 			itemCat: '',
 		},
 		onSubmit: () => {},
-	});
+	})
 	const LIST = [
 		{ value: 'Service', text: 'Service' },
 		{ value: 'Product', text: 'Product' },
-	];
+	]
 	useEffect(() => {
 		if (editItem) {
 			formik.setValues({
@@ -155,7 +155,7 @@ const ProductPage = () => {
 				price: editItem.price,
 				stock: editItem.stock,
 				category: editItem.category,
-			});
+			})
 		}
 		return () => {
 			formik.setValues({
@@ -163,37 +163,37 @@ const ProductPage = () => {
 				price: 0,
 				stock: 0,
 				category: '',
-			});
-		};
+			})
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [editItem]);
+	}, [editItem])
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const debounce = (func: any, wait: number | undefined) => {
-		let timeout: string | number | NodeJS.Timeout | undefined;
+		let timeout: string | number | NodeJS.Timeout | undefined
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		return function executedFunction(...args: any[]) {
+		return function executedFunction (...args: any[]) {
 			const later = () => {
-				clearTimeout(timeout);
-				func(...args);
-			};
+				clearTimeout(timeout)
+				func(...args)
+			}
 
-			clearTimeout(timeout);
-			timeout = setTimeout(later, wait);
-		};
-	};
+			clearTimeout(timeout)
+			timeout = setTimeout(later, wait)
+		}
+	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const onFormSubmit = (values: { search: any }) => {
-		const searchValue = values.search.toString().toLowerCase();
-		const newData = searchAndFilterData(searchValue);
+		const searchValue = values.search.toString().toLowerCase()
+		const newData = searchAndFilterData(searchValue)
 		if (!values.search) {
-			setFilterableData(data);
+			setFilterableData(data)
 		} else {
-			setFilterableData(newData);
+			setFilterableData(newData)
 		}
-	};
+	}
 	const formikSearch = useFormik({
 		initialValues: {
 			search: '',
@@ -201,7 +201,7 @@ const ProductPage = () => {
 
 		onSubmit: onFormSubmit,
 		onReset: () => setFilterableData(data),
-	});
+	})
 	return (
 		<PageWrapper title={adminDashboardPagesMenu.product.text}>
 			<SubHeader>
@@ -225,7 +225,7 @@ const ProductPage = () => {
 						className='form-control border-0 shadow-none bg-transparent'
 						placeholder='Search...'
 						onChange={(e: { target: { value: string | any[] } }) => {
-							formikSearch.handleChange(e);
+							formikSearch.handleChange(e)
 							if (e.target.value)
 								debounce(
 									() =>
@@ -234,9 +234,9 @@ const ProductPage = () => {
 											search: e.target.value,
 										}),
 									100,
-								)();
+								)()
 
-							if (e.target.value.length === 0) formikSearch.resetForm();
+							if (e.target.value.length === 0) formikSearch.resetForm()
 						}}
 						value={formikSearch.values.search}
 					/>
@@ -265,8 +265,8 @@ const ProductPage = () => {
 							isLight
 							icon='Add'
 							onClick={() => {
-								setEditItem(null);
-								setEditPanel(true);
+								setEditItem(null)
+								setEditPanel(true)
 							}}>
 							Add New
 						</Button>
@@ -356,7 +356,7 @@ const ProductPage = () => {
 													icon='Delete'
 													className='w-100'
 													onClick={() => {
-														setEditItem({ ...editItem, image: null });
+														setEditItem({ ...editItem, image: null })
 													}}>
 													Delete Image
 												</Button>
@@ -458,7 +458,7 @@ const ProductPage = () => {
 				</div>
 			</OffCanvas>
 		</PageWrapper>
-	);
-};
+	)
+}
 
-export default ProductPage;
+export default ProductPage

@@ -297,6 +297,7 @@ const Goals: FC = () => {
 			return errors
 		},
 		onSubmit: (values, { resetForm }) => {
+			setIsOffCanvasOpen(false)
 			if (role === 'superadmin') {
 				const goalData = {
 					title: values.name,
@@ -306,7 +307,6 @@ const Goals: FC = () => {
 				updateGoal({ id: updateGoalForm.values.id, goalData })
 					.unwrap()
 					.then((res) => {
-						setIsOffCanvasOpen(false)
 						refetch()
 						if (res) {
 							showNotification(
@@ -357,6 +357,7 @@ const Goals: FC = () => {
 	const handleDelete = () => {
 		const id = deleteId
 		setShowConfirmation(false)
+
 		if (data && id) {
 			const newGoals = data.filter((i: IGoalProps) => i.id !== id)
 			setGoalList(newGoals)
@@ -639,7 +640,7 @@ const Goals: FC = () => {
 																	style={{
 																		whiteSpace: 'nowrap',
 																	}}>
-																	Deadline
+																	Date / Time{' '}
 																</th>
 															)}
 
@@ -873,7 +874,7 @@ const Goals: FC = () => {
 							</FormGroup>
 						</div>
 						<div className='col-6'>
-							<FormGroup id='date' label='Date'>
+							<FormGroup id='date' label='Start Date'>
 								<Input
 									onChange={updateGoalForm.handleChange}
 									value={updateGoalForm.values.date}
@@ -882,7 +883,25 @@ const Goals: FC = () => {
 							</FormGroup>
 						</div>
 						<div className='col-6'>
-							<FormGroup id='time' label='time'>
+							<FormGroup id='time' label='Start Time'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.time}
+									type='time'
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-6'>
+							<FormGroup id='date' label='End Date'>
+								<Input
+									onChange={updateGoalForm.handleChange}
+									value={updateGoalForm.values.date}
+									type='date'
+								/>
+							</FormGroup>
+						</div>
+						<div className='col-6'>
+							<FormGroup id='time' label='End Time'>
 								<Input
 									onChange={updateGoalForm.handleChange}
 									value={updateGoalForm.values.time}
