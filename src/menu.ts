@@ -95,13 +95,13 @@ export const dashboardPagesMenu = {
 		icon: 'AreaChart',
 		subMenu: null,
 	},
-	calendar: {
-		id: 'calendar',
-		text: 'Calendar',
-		path: '/calendar',
-		icon: 'analytics',
-		subMenu: null,
-	},
+	// calendar: {
+	// 	id: 'calendar',
+	// 	text: 'Calendar',
+	// 	path: '/calendar',
+	// 	icon: 'analytics',
+	// 	subMenu: null,
+	// },
 };
 export const adminDashboardPagesMenu = {
 	dashboard: {
@@ -122,6 +122,13 @@ export const adminDashboardPagesMenu = {
 		id: 'products',
 		text: 'Products',
 		path: '/products',
+		icon: 'inventory_2',
+		subMenu: null,
+	},
+	customer: {
+		id: 'customer',
+		text: 'customer',
+		path: '/customer',
 		icon: 'inventory_2',
 		subMenu: null,
 	},
@@ -167,13 +174,13 @@ export const adminDashboardPagesMenu = {
 		icon: 'AreaChart',
 		subMenu: null,
 	},
-	calendar: {
-		id: 'calendar',
-		text: 'Calendar',
-		path: '/calendar',
-		icon: 'analytics',
-		subMenu: null,
-	},
+	// calendar: {
+	// 	id: 'calendar',
+	// 	text: 'Calendar',
+	// 	path: '/calendar',
+	// 	icon: 'analytics',
+	// 	subMenu: null,
+	// },
 };
 
 export const modalPages = {

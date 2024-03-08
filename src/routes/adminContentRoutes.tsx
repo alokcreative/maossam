@@ -1,33 +1,35 @@
-import React, { lazy } from 'react';
-import { RouteProps } from 'react-router-dom';
-import { pagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu';
-import Login from '../pages/presentation/auth/Login';
-import Profile from '../pages/presentation/profile/Profile';
-import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets';
-import Tasks from '../pages/presentation/goal/tasks/Tasks';
-import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManagement';
-import ProductPage from '../pages/presentation/products/ProductPage';
-import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage';
-import Goals from '../pages/presentation/goal/Goals';
-import GoalDescription from '../pages/presentation/goal/GoalDescription';
-import SubTask from '../pages/presentation/goal/tasks/SubTask';
-import WebIndex from '../pages/presentation/dashboard/WebIndex';
-import ToolBox from '../pages/presentation/toolbox/ToolBox';
-import CalendarPage from '../pages/presentation/appointment/CalendarPage';
-import FaqPage from '../pages/presentation/faq-page/FaqPage';
-import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail';
-import EditUser from '../pages/superAdmin/UserManagement/EditUser';
+import React, { lazy } from 'react'
+import { RouteProps } from 'react-router-dom'
+import { pagesMenu, adminDashboardPagesMenu, dashboardPagesMenu } from '../menu'
+import Login from '../pages/presentation/auth/Login'
+import Profile from '../pages/presentation/profile/Profile'
+import MarketingAssets from '../pages/presentation/dashboard/Marketing/MarketingAssets'
+import Tasks from '../pages/presentation/goal/tasks/Tasks'
+import TaskManagement from '../pages/presentation/goal/tasks/taskboard/TaskManagement'
+import ProductPage from '../pages/presentation/products/ProductPage'
+import ProductDetailsPage from '../pages/presentation/products/productDetails/ProductDetailsPage'
+import Goals from '../pages/presentation/goal/Goals'
+import GoalDescription from '../pages/presentation/goal/GoalDescription'
+import SubTask from '../pages/presentation/goal/tasks/SubTask'
+import WebIndex from '../pages/presentation/dashboard/WebIndex'
+import ToolBox from '../pages/presentation/toolbox/ToolBox'
+import CalendarPage from '../pages/presentation/appointment/CalendarPage'
+import FaqPage from '../pages/presentation/faq-page/FaqPage'
+import AssetDetail from '../pages/presentation/dashboard/Marketing/MarketingAssetForms/AssetDetail'
+import EditUser from '../pages/superAdmin/UserManagement/EditUser'
+import CustomersList from '../pages/presentation/crm/CustomersList'
+import Customer from '../pages/presentation/crm/Customer'
 
 const DASHBOARD = {
 	DashboardAdmin: lazy(() => import('../pages/superAdmin/dashboard/DashboardAdmin')),
-};
+}
 const USERS = {
 	USERLIST: lazy(() => import('../pages/superAdmin/UserManagement/userList')),
-};
+}
 
 const AUTH = {
 	PAGE_404: lazy(() => import('../pages/presentation/auth/Page404')),
-};
+}
 
 const APP = {
 	PROJECT_MANAGEMENT: {
@@ -68,7 +70,7 @@ const APP = {
 		WITH_LIST: lazy(() => import('../pages/presentation/chat/WithListChatPage')),
 		ONLY_LIST: lazy(() => import('../pages/presentation/chat/OnlyListChatPage')),
 	},
-};
+}
 
 const presentation: RouteProps[] = [
 	/**
@@ -99,7 +101,7 @@ const presentation: RouteProps[] = [
 		path: `${pagesMenu.profile.path}/:id`,
 		element: <Profile />,
 	},
-];
+]
 const documentation: RouteProps[] = [
 	{
 		path: adminDashboardPagesMenu.users.path,
@@ -108,6 +110,14 @@ const documentation: RouteProps[] = [
 	{
 		path: `${adminDashboardPagesMenu.users.path}/:id`,
 		element: <EditUser />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.customer.path}`,
+		element: <CustomersList />,
+	},
+	{
+		path: `${adminDashboardPagesMenu.customer.path}/:id`,
+		element: <Customer />,
 	},
 	{
 		path: `${adminDashboardPagesMenu.tasks.path}`,
@@ -169,10 +179,10 @@ const documentation: RouteProps[] = [
 		path: `${pagesMenu.tools.subMenu.itemID.path}/:id`,
 		element: <APP.TOOLS.VIEW />,
 	},
-	{
-		path: `${adminDashboardPagesMenu.calendar.path}`,
-		element: <CalendarPage />,
-	},
+	// {
+	// 	path: `${adminDashboardPagesMenu.calendar.path}`,
+	// 	element: <CalendarPage />,
+	// },
 	{
 		path: dashboardPagesMenu.faq.path,
 		element: <FaqPage />,
@@ -181,7 +191,7 @@ const documentation: RouteProps[] = [
 		path: `${dashboardPagesMenu.faq.path}/:id`,
 		element: <APP.KNOWLEDGE.VIEW />,
 	},
-];
-const adminContents = [...presentation, ...documentation];
+]
+const adminContents = [...presentation, ...documentation]
 
-export default adminContents;
+export default adminContents

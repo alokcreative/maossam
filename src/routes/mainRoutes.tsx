@@ -901,10 +901,10 @@ const documentation: RouteProps[] = [
 		path: `${dashboardPagesMenu.toolbox.path}`,
 		element: <ToolBox />,
 	},
-	{
-		path: `${dashboardPagesMenu.calendar.path}`,
-		element: <CalendarPage />,
-	},
+	// {
+	// 	path: `${dashboardPagesMenu.calendar.path}`,
+	// 	element: <CalendarPage />,
+	// },
 ]
 const contents = [...presentation, ...documentation]
 
