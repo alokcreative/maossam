@@ -36,7 +36,7 @@ const WorkingTimeSlotHeader = () => {
 		<Header>
 			<HeaderLeft>
 				<div className='d-flex ' style={{ gap: '45%' }}>
-					<div className='h4 text-dark'>Hi, {userData?.first_name}</div>
+					<div className='h4 text-dark'>Hi, {userData?.first_name}!</div>
 					<div className='h4 text-dark'>Working Time slots</div>
 				</div>
 
