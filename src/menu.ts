@@ -128,8 +128,8 @@ export const adminDashboardPagesMenu = {
 	customer: {
 		id: 'customer',
 		text: 'customer',
-		path: '/customer',
-		icon: 'inventory_2',
+		path: '/Customer',
+		icon: 'PersonSearch',
 		subMenu: null,
 	},
 	goals: {

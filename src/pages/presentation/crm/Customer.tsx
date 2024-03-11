@@ -244,6 +244,8 @@ const Customer = () => {
 											<th>Connection</th>
 											<th>Email</th>
 											<th>Tel</th>
+											<th>Date</th>
+											<th>Price</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -270,6 +272,18 @@ const Customer = () => {
 												<td>Colleague</td>
 												<td>JenniferFerriera@dayrep.com</td>
 												<td>(555) 555-1234</td>
+												<td>
+													<span className='text-nowrap'>
+														{dayjs(
+															`${
+																dayjs().format('YYYY') +
+																dayjs().format('MM') +
+																dayjs().add(1, 'days').format('DD')
+															} ${1030}`,
+														).format('MMM Do YYYY, h:mm a')}
+													</span>
+												</td>
+												<td>$95</td>
 											</tr>
 										))}
 										{/* {dataPagination(items, currentPage, perPage).map((i) => (
@@ -397,7 +411,8 @@ const Customer = () => {
 										<div>{item.city}</div>
 										<div>{`${item.state}, ${item.stateFull}`}</div>
 										<div>{item.zip}</div>
-										<div>{userData?.country}</div>
+										<div>{userData?.country || item.stateFullDelivery}</div>
+										<div>{userData?.phone_number}</div>
 										<br />
 										<div className='row g-2'>
 											<div className='col-auto'>
@@ -416,8 +431,9 @@ const Customer = () => {
 											</div>
 										</div>
 									</div>
-									<div className='col-md-6'>
+									{/* <div className='col-md-6'>
 										<p className='lead fw-bold'>Delivery address</p>
+										<div>Contact Number</div>
 										<div>{userData?.phone_number}</div>
 										<div>{item.streetAddressDelivery}</div>
 										<div>{item.streetAddress2Delivery}</div>
@@ -445,7 +461,7 @@ const Customer = () => {
 												</Button>
 											</div>
 										</div>
-									</div>
+									</div> */}
 								</div>
 							</CardBody>
 						</Card>
