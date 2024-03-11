@@ -834,9 +834,7 @@ const Goals: FC = () => {
 			<OffCanvas setOpen={setIsOffCanvasOpen} isOpen={isOffCanvasOpen} titleId='canvas-title'>
 				<OffCanvasHeader setOpen={setIsOffCanvasOpen} className='p-4'>
 					<OffCanvasTitle id='canvas-title'>
-						{logUserId == createdBy || role == 'superadmin'
-							? 'Edit Goal'
-							: 'Set Deadline'}
+					Edit Goal
 					</OffCanvasTitle>
 				</OffCanvasHeader>
 				<OffCanvasBody tag='form' onSubmit={updateGoalForm.handleSubmit} className='p-4'>
