@@ -324,7 +324,7 @@ const Tasks: FC = () => {
 						<CardHeader>
 							<CardLabel icon='CalendarToday' iconColor='info'>
 								<CardTitle tag='div' className='h5'>
-									Tasks List
+									Timeframe Tasks List
 								</CardTitle>
 							</CardLabel>
 						</CardHeader>
@@ -354,7 +354,7 @@ const Tasks: FC = () => {
 										{role != 'superadmin' && (
 											<>
 												<th scope='col' style={{ whiteSpace: 'nowrap' }}>
-													Date/Time
+													End Date/Time
 												</th>
 												{/* <th scope='col'>
 													<span style={{ whiteSpace: 'nowrap' }}>

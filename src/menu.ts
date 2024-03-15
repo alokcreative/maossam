@@ -61,7 +61,7 @@ export const dashboardPagesMenu = {
 	},
 	tasks: {
 		id: 'tasks',
-		text: 'Tasks',
+		text: 'Timeframe Tasks',
 		path: '/tasks',
 		icon: 'flag',
 		subMenu: null,
@@ -141,7 +141,7 @@ export const adminDashboardPagesMenu = {
 	},
 	tasks: {
 		id: 'tasks',
-		text: 'Tasks',
+		text: 'Timeframe Tasks',
 		path: '/tasks',
 		icon: 'flag',
 		subMenu: null,

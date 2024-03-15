@@ -299,7 +299,7 @@ const GoalDescription: FC = () => {
 									<div className='row col-12 d-flex'>
 										<CardLabel icon='Task' iconColor='success'>
 											<CardTitle tag='div' className='h5'>
-												Tasks List
+												Timeframe Tasks List
 											</CardTitle>
 										</CardLabel>
 										<div>
@@ -369,7 +369,7 @@ const GoalDescription: FC = () => {
 																	style={{
 																		whiteSpace: 'nowrap',
 																	}}>
-																	Date / Time{' '}
+																	End Date / Time{' '}
 																</th>
 															</>
 														)}

@@ -640,7 +640,7 @@ const Goals: FC = () => {
 																	style={{
 																		whiteSpace: 'nowrap',
 																	}}>
-																	Date / Time{' '}
+																	End Date / Time{' '}
 																</th>
 															)}
 

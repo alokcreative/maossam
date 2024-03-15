@@ -429,7 +429,7 @@ const CalendarPage = () => {
 								</CardActions>
 								<CardActions>
 									<div className='d-flex align-items-center gap-2'>
-										<Button
+										{/* <Button
 											icon='add'
 											color='info'
 											isLink
@@ -437,7 +437,7 @@ const CalendarPage = () => {
 												navigate('/add-task')
 											}}>
 											New Task
-										</Button>
+										</Button> */}
 										<CalendarViewModeButtons
 											setViewMode={setViewMode}
 											viewMode={viewMode}
