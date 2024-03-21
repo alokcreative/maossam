@@ -10,6 +10,7 @@ import { useRegisterUserMutation } from '../../../features/auth/authApiSlice';
 import showNotification from '../../../components/extras/showNotification';
 import Icon from '../../../components/icon/Icon';
 import { TInputTypes } from '../../../type/input-type';
+import { modalPages } from '../../../menu'
 
 const Signup: FC = () => {
 	const [RegisterUserMutation, { isLoading }] = useRegisterUserMutation();
@@ -87,7 +88,7 @@ const Signup: FC = () => {
 						.then((data) => {
 							localStorage.setItem('access_token', data.tokens.access_token);
 							localStorage.setItem('refresh_token', data.tokens.refresh_token);
-							navigate('/modals-step-form');
+							navigate(`../${modalPages.modal.path}`);
 						})
 						.catch((rejected) => {
 							showNotification(
